@@ -7,17 +7,31 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "frog-cv-generator-tauri",
+    "productName": "frog - CV Generator",
     "version": "0.1.0"
   },
   "tauri": {
     "allowlist": {
+      "http": {
+        "all": true,
+        "request": true,
+        "scope": ["https://**/*"]
+      },
       "shell": {
         "sidecar": true,
+        "open": true,
         "scope": [{ "name": "binaries/main", "sidecar": true, "args": true }]
       },
       "path": {
         "all": true
+      },
+      "dialog": {
+        "all": true,
+        "ask": true,
+        "confirm": true,
+        "message": true,
+        "open": true,
+        "save": true
       },
       "fs": {
         "readFile": true,
@@ -25,7 +39,18 @@
         "readDir": true,
         "createDir": true,
         "exists": true,
-        "scope": ["$RESOURCE/**"]
+        "scope": ["$RESOURCE/**", "$APPDATA/**"]
+      },
+      "window": {
+        "all": false,
+        "close": true,
+        "hide": true,
+        "show": true,
+        "maximize": true,
+        "minimize": true,
+        "unmaximize": true,
+        "unminimize": true,
+        "startDragging": true
       }
     },
     "bundle": {
@@ -70,14 +95,17 @@
     "windows": [
       {
         "fullscreen": false,
-        "minWidth": 700,
+        "minWidth": 800,
         "minHeight": 500,
         "width": 800,
         "height": 600,
-
+        "transparent": true,
         "resizable": true,
-        "title": "frog - CV Generator"
+        "title": "frog - CV Generator",
+        "titleBarStyle": "Overlay",
+        "hiddenTitle": true
       }
-    ]
+    ],
+    "macOSPrivateApi": true
   }
 }

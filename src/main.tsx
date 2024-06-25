@@ -1,14 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 
-import { CssBaseline, CssVarsProvider } from "@mui/joy";
 import App from "./app";
+import TitleBar from "./features/titlebar/components/TitleBar";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <CssVarsProvider defaultMode="light">
-      <CssBaseline />
-      <App />
-    </CssVarsProvider>
+    <TitleBar />
+    <App />
   </React.StrictMode>
 );

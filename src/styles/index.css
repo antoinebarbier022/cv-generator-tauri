@@ -1,0 +1,40 @@
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --app-border-width: 0.5rem;
+  --titlebar-height: var(--app-border-width);
+  --app-footer-height: 0.5rem;
+  --app-background: rgba(105, 6, 224, 0.598);
+
+  --scrollbar-color: rgba(var(--joy-palette-neutral-mainChannel) / 0.3);
+}
+
+html,
+body {
+  background: var(--app-background) !important;
+  overflow: hidden;
+}
+
+/* ===== Scrollbar CSS ===== */
+/* Firefox */
+* {
+  scrollbar-width: auto;
+  scrollbar-color: var(--scrollbar-color) transparent;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-color);
+  border-radius: 10px;
+  border: 3px solid transparent;
+}
