@@ -24,6 +24,7 @@ export interface UserData {
   description: string;
   linkedin: string;
   twitter: string;
+  github: string;
   formations: string[];
   employment_history: string[];
   articles_and_others: string[];
@@ -81,7 +82,7 @@ export const TestPage = () => {
     await store.save();
   };
 
-  const emptyInitialValues = {
+  const emptyInitialValues: UserData = {
     firstname: "",
     lastname: "",
     email: "",
@@ -92,6 +93,7 @@ export const TestPage = () => {
     description: "",
     linkedin: "",
     twitter: "",
+    github: "",
     formations: [],
     employment_history: [],
     articles_and_others: [],
@@ -126,8 +128,6 @@ export const TestPage = () => {
 
   return (
     <Stack component={Container} gap={4}>
-      {JSON.stringify(initialValues, null, 2)}
-
       <UserForm formik={formik} />
 
       <Button
