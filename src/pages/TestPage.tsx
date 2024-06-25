@@ -1,13 +1,11 @@
-import { Alert, Button, Container, Stack, Typography } from "@mui/joy";
+import { Container, Stack, Typography } from "@mui/joy";
 import {
   BaseDirectory,
   exists,
-  readBinaryFile,
   readTextFile,
   writeTextFile,
 } from "@tauri-apps/api/fs";
-import { appDataDir, downloadDir, resolveResource } from "@tauri-apps/api/path";
-import { Command } from "@tauri-apps/api/shell";
+import { appDataDir } from "@tauri-apps/api/path";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { Store } from "tauri-plugin-store-api";
@@ -44,8 +42,6 @@ export interface UserDataExperience {
 }
 
 export const TestPage = () => {
-  const [message, setMessage] = useState("");
-
   useEffect(() => {
     exists("user-data.json", { dir: BaseDirectory.AppData }).then((exist) => {
       if (!exist) {
@@ -59,8 +55,6 @@ export const TestPage = () => {
       }
     });
   }, []);
-
-  const [error, setError] = useState("");
 
   const [, setFile] = useState<Uint8Array | null>(null);
 
@@ -129,40 +123,6 @@ export const TestPage = () => {
   return (
     <Stack component={Container} gap={4}>
       <UserForm formik={formik} />
-
-      <Button
-        onClick={async () => {
-          const resourceDataPath = await resolveResource("resources");
-          const resourceTemplatePath = await resolveResource(
-            "resources/CV_Nom_Prenom_Capability.pptx"
-          );
-
-          console.log(resourceDataPath);
-          console.log(resourceTemplatePath);
-          const command = Command.sidecar("binaries/main", [
-            "--data-folder",
-            resourceDataPath,
-            "--template",
-            resourceTemplatePath,
-            "--output-folder",
-            await downloadDir(),
-          ]);
-          const output = await command.execute();
-          const test = await readBinaryFile(
-            resourceDataPath + "/test_presentation.pptx"
-          );
-
-          setFile(test);
-          console.log(test);
-          setMessage(output.stdout);
-          setError(output.stderr);
-          console.log(output);
-        }}
-      >
-        Test Python script
-      </Button>
-      {message && <Alert color="success">{message} </Alert>}
-      {error && <Alert color="danger">{error}</Alert>}
     </Stack>
   );
 };

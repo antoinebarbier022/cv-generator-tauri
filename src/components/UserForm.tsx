@@ -1,8 +1,14 @@
-import { AddRounded, Person, RemoveRounded } from "@mui/icons-material";
+import {
+  AddRounded,
+  CloudUploadOutlined,
+  RemoveRounded,
+} from "@mui/icons-material";
 import {
   AspectRatio,
+  Avatar,
   Button,
   Card,
+  CardOverflow,
   Divider,
   FormControl,
   FormLabel,
@@ -31,12 +37,20 @@ export const UserForm = ({ formik }: Props) => {
 
         <Stack direction={"row-reverse"} gap={4}>
           <Stack gap={1}>
-            <AspectRatio ratio={1} sx={{ width: "180px", height: "180px" }}>
-              <Card>
-                <Person />
-              </Card>
-            </AspectRatio>
-            <Button size="sm">Upload</Button>
+            <Card>
+              <CardOverflow>
+                <AspectRatio ratio={1} sx={{ width: "180px", height: "180px" }}>
+                  <Avatar />
+                </AspectRatio>
+              </CardOverflow>
+            </Card>
+            <Button
+              size="sm"
+              startDecorator={<CloudUploadOutlined />}
+              sx={{ fontWeight: "500" }}
+            >
+              Upload image
+            </Button>
           </Stack>
           <Stack direction={"column"} gap={2} flex={1}>
             <Stack direction={"row"} gap={2} flexWrap={"wrap"}>

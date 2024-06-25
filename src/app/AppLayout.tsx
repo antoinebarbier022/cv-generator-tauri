@@ -25,6 +25,7 @@ export const AppLayout = ({ sidebar }: Props) => {
         sx={{
           userSelect: "none",
           margin: 0,
+          overflow: "auto",
         }}
       >
         {sidebar}

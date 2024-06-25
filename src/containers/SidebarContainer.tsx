@@ -11,6 +11,7 @@ import {
   Button,
   Card,
   Divider,
+  Link,
   List,
   ListItem,
   ListItemButton,
@@ -21,7 +22,12 @@ import {
   Typography,
 } from "@mui/joy";
 
+import { downloadDir, resolveResource } from "@tauri-apps/api/path";
+import { Command } from "@tauri-apps/api/shell";
+import { useState } from "react";
+
 export const SidebarContainer = () => {
+  const [isLoadingGeneration, setIsLoadingGeneration] = useState(false);
   return (
     <Sheet
       component={Stack}
@@ -46,11 +52,27 @@ export const SidebarContainer = () => {
           paddingX: "var(--app-border-width)",
         }}
       >
-        <Card>
+        <Card
+          sx={(theme) => ({
+            "&:hover": {
+              backgroundColor: `rgba(${theme.vars.palette.primary.lightChannel} / 0.1)`,
+            },
+          })}
+        >
           <Stack direction={"row"} gap={2} alignItems={"center"}>
             <Avatar size="md">AB</Avatar>
+
             <Typography level="body-md" textColor={"text.primary"}>
-              Antoine Barbier
+              <Link
+                component="button"
+                onClick={() => {
+                  alert("profile");
+                }}
+                overlay
+                underline="none"
+              >
+                Antoine Barbier
+              </Link>
             </Typography>
           </Stack>
         </Card>
@@ -112,9 +134,38 @@ export const SidebarContainer = () => {
           </ListItem>
         </List>
 
-        <Button color="primary" variant="solid" sx={{ marginX: 1 }}>
-          CV Generator
-        </Button>
+        <Stack gap={1}>
+          <Button
+            color="primary"
+            variant="solid"
+            sx={{ marginX: 1 }}
+            loading={isLoadingGeneration}
+            onClick={async () => {
+              setIsLoadingGeneration(true);
+              const resourceDataPath = await resolveResource("resources");
+              const resourceTemplatePath = await resolveResource(
+                "resources/CV_Nom_Prenom_Capability.pptx"
+              );
+
+              console.log(resourceDataPath);
+              console.log(resourceTemplatePath);
+              const command = Command.sidecar("binaries/main", [
+                "--data-folder",
+                resourceDataPath,
+                "--template",
+                resourceTemplatePath,
+                "--output-folder",
+                await downloadDir(),
+              ]);
+              const output = await command.execute();
+
+              alert(JSON.stringify(output));
+              setIsLoadingGeneration(false);
+            }}
+          >
+            Generate CV
+          </Button>
+        </Stack>
       </Stack>
     </Sheet>
   );
