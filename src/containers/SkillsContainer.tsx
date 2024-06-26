@@ -1,3 +1,18 @@
+import { Typography } from "@mui/joy";
+import { SkillsForm } from "../components/SkillsForm";
+import { useCVForm } from "../hooks/useCVForm";
+import { PageLayout } from "../layouts/PageLayout";
+
 export const SkillsContainer = () => {
-  return <></>;
+  const { initialValues, formik } = useCVForm();
+
+  return (
+    <PageLayout title={"Skills"}>
+      {initialValues ? (
+        <SkillsForm formik={formik} />
+      ) : (
+        <Typography>Loading...</Typography>
+      )}
+    </PageLayout>
+  );
 };

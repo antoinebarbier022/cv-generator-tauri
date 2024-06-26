@@ -1,3 +1,18 @@
+import { Typography } from "@mui/joy";
+import { ProfileForm } from "../components/ProfileForm";
+import { useCVForm } from "../hooks/useCVForm";
+import { PageLayout } from "../layouts/PageLayout";
+
 export const ProfileContainer = () => {
-  return <></>;
+  const { initialValues, formik } = useCVForm();
+
+  return (
+    <PageLayout title={"Profile"}>
+      {initialValues ? (
+        <ProfileForm formik={formik} />
+      ) : (
+        <Typography>Loading...</Typography>
+      )}
+    </PageLayout>
+  );
 };

@@ -1,3 +1,18 @@
+import { Typography } from "@mui/joy";
+import { FormationForm } from "../components/FormationForm";
+import { useCVForm } from "../hooks/useCVForm";
+import { PageLayout } from "../layouts/PageLayout";
+
 export const FormationContainer = () => {
-  return <></>;
+  const { initialValues, formik } = useCVForm();
+
+  return (
+    <PageLayout title={"Formation"}>
+      {initialValues ? (
+        <FormationForm formik={formik} />
+      ) : (
+        <Typography>Loading...</Typography>
+      )}
+    </PageLayout>
+  );
 };

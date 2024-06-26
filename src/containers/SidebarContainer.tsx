@@ -24,10 +24,51 @@ import {
 
 import { downloadDir, resolveResource } from "@tauri-apps/api/path";
 import { Command } from "@tauri-apps/api/shell";
-import { useState } from "react";
+import { Fragment, ReactNode, useState } from "react";
+import { NavLink } from "react-router-dom";
 
 export const SidebarContainer = () => {
   const [isLoadingGeneration, setIsLoadingGeneration] = useState(false);
+
+  type NavigationType = {
+    label: string;
+    icon: ReactNode;
+    to: string;
+    divider?: boolean;
+  };
+  const navigation: NavigationType[] = [
+    {
+      icon: <Person />,
+      label: "General",
+      to: "/profile",
+    },
+    {
+      icon: <HomeRepairServiceRounded />,
+      label: "Skills",
+      to: "/skills",
+    },
+    {
+      icon: <SchoolRounded />,
+      label: "Formation",
+      to: "/formation",
+    },
+    {
+      icon: <TimelineRounded />,
+      label: "Employment History",
+      to: "/employment-history",
+    },
+    {
+      icon: <BusinessRounded />,
+      label: "Projects",
+      to: "/projects",
+      divider: true,
+    },
+    {
+      icon: <Construction />,
+      label: "CV Configuration",
+      to: "/cv-configuration",
+    },
+  ];
   return (
     <Sheet
       component={Stack}
@@ -45,7 +86,7 @@ export const SidebarContainer = () => {
         }}
       ></Stack>
       <Stack
-        gap={2}
+        gap={1}
         justifyContent={"space-between"}
         flex={1}
         sx={{
@@ -54,6 +95,8 @@ export const SidebarContainer = () => {
       >
         <Card
           sx={(theme) => ({
+            paddingY: 1.5,
+            paddingX: 2,
             "&:hover": {
               backgroundColor: `rgba(${theme.vars.palette.primary.lightChannel} / 0.1)`,
             },
@@ -63,75 +106,31 @@ export const SidebarContainer = () => {
             <Avatar size="md">AB</Avatar>
 
             <Typography level="body-md" textColor={"text.primary"}>
-              <Link
-                component="button"
-                onClick={() => {
-                  alert("profile");
-                }}
-                overlay
-                underline="none"
-              >
+              <Link component={NavLink} to="/profile" overlay underline="none">
                 Antoine Barbier
               </Link>
             </Typography>
           </Stack>
         </Card>
         <List>
-          <ListItem>
-            <ListItemButton>
-              <ListItemDecorator>
-                <Person />
-              </ListItemDecorator>
-              <ListItemContent>General</ListItemContent>
-            </ListItemButton>
-          </ListItem>
-
-          <ListItem>
-            <ListItemButton>
-              <ListItemDecorator>
-                <HomeRepairServiceRounded />
-              </ListItemDecorator>
-              <ListItemContent>Skills</ListItemContent>
-            </ListItemButton>
-          </ListItem>
-
-          <ListItem>
-            <ListItemButton>
-              <ListItemDecorator>
-                <SchoolRounded />
-              </ListItemDecorator>
-              <ListItemContent>Formations</ListItemContent>
-            </ListItemButton>
-          </ListItem>
-
-          <ListItem>
-            <ListItemButton>
-              <ListItemDecorator>
-                <TimelineRounded />
-              </ListItemDecorator>
-              <ListItemContent>Employment History</ListItemContent>
-            </ListItemButton>
-          </ListItem>
-
-          <ListItem>
-            <ListItemButton>
-              <ListItemDecorator>
-                <BusinessRounded />
-              </ListItemDecorator>
-              <ListItemContent>Projects</ListItemContent>
-            </ListItemButton>
-          </ListItem>
-
-          <Divider sx={{ marginY: 2 }} />
-
-          <ListItem>
-            <ListItemButton>
-              <ListItemDecorator>
-                <Construction />
-              </ListItemDecorator>
-              <ListItemContent>CV Configuration</ListItemContent>
-            </ListItemButton>
-          </ListItem>
+          {navigation.map((value, index) => (
+            <Fragment key={`nav-${index}-${value.to}`}>
+              <ListItem>
+                <NavLink to={value.to} className={"w-full no-underline"}>
+                  {({ isActive }) => (
+                    <ListItemButton
+                      selected={isActive}
+                      sx={{ borderRadius: "xs" }}
+                    >
+                      <ListItemDecorator>{value.icon}</ListItemDecorator>
+                      <ListItemContent>{value.label}</ListItemContent>
+                    </ListItemButton>
+                  )}
+                </NavLink>
+              </ListItem>
+              {value.divider && <Divider sx={{ marginY: 1.5 }} />}
+            </Fragment>
+          ))}
         </List>
 
         <Stack gap={1}>

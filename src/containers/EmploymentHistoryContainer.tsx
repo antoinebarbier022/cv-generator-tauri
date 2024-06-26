@@ -1,15 +1,15 @@
 import { Typography } from "@mui/joy";
-import { ProjectsForm } from "../components/ProjectsForm";
+import { EmploymentHistoryForm } from "../components/EmploymentHistoryForm";
 import { useCVForm } from "../hooks/useCVForm";
 import { PageLayout } from "../layouts/PageLayout";
 
-export const ProjectsContainer = () => {
+export const EmploymentHistoryContainer = () => {
   const { initialValues, formik } = useCVForm();
 
   return (
-    <PageLayout title={"Projects"}>
+    <PageLayout title={"Employment History"}>
       {initialValues ? (
-        <ProjectsForm formik={formik} />
+        <EmploymentHistoryForm formik={formik} />
       ) : (
         <Typography>Loading...</Typography>
       )}

@@ -1,8 +1,8 @@
 import { Box, Stack } from "@mui/joy";
-import { PropsWithChildren, ReactNode } from "react";
+import { ReactNode } from "react";
 import { Outlet } from "react-router-dom";
 
-interface Props extends PropsWithChildren {
+interface Props {
   sidebar: ReactNode;
 }
 export const AppLayout = ({ sidebar }: Props) => {
