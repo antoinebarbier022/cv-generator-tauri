@@ -2,7 +2,6 @@ import {
   BusinessRounded,
   Construction,
   HomeRepairServiceRounded,
-  Person,
   SchoolRounded,
   TimelineRounded,
 } from "@mui/icons-material";
@@ -37,11 +36,11 @@ export const SidebarContainer = () => {
     divider?: boolean;
   };
   const navigation: NavigationType[] = [
-    {
+    /*{
       icon: <Person />,
       label: "General",
       to: "/profile",
-    },
+    },*/
     {
       icon: <HomeRepairServiceRounded />,
       label: "Skills",
@@ -94,11 +93,15 @@ export const SidebarContainer = () => {
         }}
       >
         <Card
+          role="navigation"
           sx={(theme) => ({
             paddingY: 1.5,
             paddingX: 2,
             "&:hover": {
-              backgroundColor: `rgba(${theme.vars.palette.primary.lightChannel} / 0.1)`,
+              backgroundColor: `rgba(${theme.vars.palette.primary.lightChannel} / 0.05)`,
+            },
+            "&:has([aria-current='page'])": {
+              backgroundColor: `rgba(${theme.vars.palette.primary.lightChannel} / 0.22)`,
             },
           })}
         >
@@ -106,9 +109,17 @@ export const SidebarContainer = () => {
             <Avatar size="md">AB</Avatar>
 
             <Typography level="body-md" textColor={"text.primary"}>
-              <Link component={NavLink} to="/profile" overlay underline="none">
-                Antoine Barbier
-              </Link>
+              <NavLink to="/profile">
+                {({ isActive }) => (
+                  <Link
+                    overlay
+                    underline="none"
+                    aria-current={isActive ? "page" : undefined}
+                  >
+                    Antoine Barbier
+                  </Link>
+                )}
+              </NavLink>
             </Typography>
           </Stack>
         </Card>
@@ -119,6 +130,7 @@ export const SidebarContainer = () => {
                 <NavLink to={value.to} className={"w-full no-underline"}>
                   {({ isActive }) => (
                     <ListItemButton
+                      tabIndex={-1}
                       selected={isActive}
                       sx={{ borderRadius: "xs" }}
                     >
