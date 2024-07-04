@@ -162,10 +162,8 @@ export const SidebarContainer = () => {
               setIsLoadingGeneration(true);
               const appDataDirPath = await appDataDir();
               const command = Command.sidecar("binaries/main", [
-                "--path-data-fr",
-                await join(appDataDirPath, "data_fr.json"),
-                "--path-data-en",
-                await join(appDataDirPath, "data_en.json"),
+                "--path-data",
+                await join(appDataDirPath, "data.json"),
                 "--path-img",
                 await resolveResource(await join("resources", "IMG_9838.jpg")),
                 "--path-template",
