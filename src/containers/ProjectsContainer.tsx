@@ -1,5 +1,5 @@
 import { Typography } from "@mui/joy";
-import { ProjectsForm } from "../components/ProjectsForm";
+import { ProjectsForm } from "../components/form/ProjectsForm";
 import { useCVForm } from "../hooks/useCVForm";
 import { PageLayout } from "../layouts/PageLayout";
 

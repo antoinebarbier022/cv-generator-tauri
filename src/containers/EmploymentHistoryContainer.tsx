@@ -1,5 +1,5 @@
 import { Typography } from "@mui/joy";
-import { EmploymentHistoryForm } from "../components/EmploymentHistoryForm";
+import { EmploymentHistoryForm } from "../components/form/EmploymentHistoryForm";
 import { useCVForm } from "../hooks/useCVForm";
 import { PageLayout } from "../layouts/PageLayout";
 

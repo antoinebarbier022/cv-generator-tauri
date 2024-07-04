@@ -21,7 +21,12 @@ import {
   Typography,
 } from "@mui/joy";
 
-import { downloadDir, resolveResource } from "@tauri-apps/api/path";
+import {
+  appDataDir,
+  downloadDir,
+  join,
+  resolveResource,
+} from "@tauri-apps/api/path";
 import { Command } from "@tauri-apps/api/shell";
 import { Fragment, ReactNode, useState } from "react";
 import { NavLink } from "react-router-dom";
@@ -68,6 +73,7 @@ export const SidebarContainer = () => {
       to: "/cv-configuration",
     },
   ];
+
   return (
     <Sheet
       component={Stack}
@@ -84,6 +90,7 @@ export const SidebarContainer = () => {
           paddingX: "var(--app-border-width)",
         }}
       ></Stack>
+
       <Stack
         gap={1}
         justifyContent={"space-between"}
@@ -153,25 +160,24 @@ export const SidebarContainer = () => {
             loading={isLoadingGeneration}
             onClick={async () => {
               setIsLoadingGeneration(true);
-              const resourceDataPath = await resolveResource("resources");
-              const resourceTemplatePath = await resolveResource(
-                "resources/CV_Nom_Prenom_Capability.pptx"
-              );
-
-              console.log(resourceDataPath);
-              console.log(resourceTemplatePath);
+              const appDataDirPath = await appDataDir();
               const command = Command.sidecar("binaries/main", [
-                "--data-folder",
-                resourceDataPath,
-                "--template",
-                resourceTemplatePath,
+                "--path-data-fr",
+                await join(appDataDirPath, "data_fr.json"),
+                "--path-data-en",
+                await join(appDataDirPath, "data_en.json"),
+                "--path-img",
+                await resolveResource(await join("resources", "IMG_9838.jpg")),
+                "--path-template",
+                await resolveResource(
+                  await join("resources", "CV_Nom_Prenom_Capability.pptx")
+                ),
                 "--output-folder",
                 await downloadDir(),
               ]);
               const output = await command.execute();
-
-              alert(JSON.stringify(output));
               setIsLoadingGeneration(false);
+              alert(JSON.stringify(output));
             }}
           >
             Generate CV

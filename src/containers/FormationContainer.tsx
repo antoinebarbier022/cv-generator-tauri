@@ -1,5 +1,5 @@
 import { Typography } from "@mui/joy";
-import { FormationForm } from "../components/FormationForm";
+import { FormationForm } from "../components/form/FormationForm";
 import { useCVForm } from "../hooks/useCVForm";
 import { PageLayout } from "../layouts/PageLayout";
 

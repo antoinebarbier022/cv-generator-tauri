@@ -1,3 +1,6 @@
+@import url("./_font-benton-sans.css");
+@import url("./_font-ubuntu.css");
+
 @tailwind components;
 @tailwind utilities;
 
@@ -14,6 +17,7 @@ html,
 body {
   background: var(--app-background) !important;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 /* ===== Scrollbar CSS ===== */
@@ -37,4 +41,8 @@ body {
   background-color: var(--scrollbar-color);
   border-radius: 10px;
   border: 3px solid transparent;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
 }

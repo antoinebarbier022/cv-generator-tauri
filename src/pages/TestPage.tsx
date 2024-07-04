@@ -2,24 +2,29 @@ import { Container, Stack, Typography } from "@mui/joy";
 import { appDataDir } from "@tauri-apps/api/path";
 import { Store } from "tauri-plugin-store-api";
 
+interface Translation {
+  en: string;
+  fr: string;
+  [key: string]: string;
+}
 export interface UserData {
   firstname: string;
   lastname: string;
   email: string;
-  role: string;
+  role: Translation;
   grade: string;
   entity: string;
   team: string;
-  description: string;
+  description: Translation;
   linkedin: string;
   twitter: string;
   github: string;
-  formations: string[];
-  employment_history: string[];
-  articles_and_others: string[];
-  sectors: string[];
-  skills: string[];
-  languages: string[];
+  formations: Translation[];
+  employment_history: Translation[];
+  articles_and_others: Translation[];
+  sectors: Translation[];
+  skills: Translation[];
+  languages: Translation[];
   experiences: UserDataExperience[];
 }
 
@@ -28,8 +33,8 @@ export interface UserDataExperience {
   client: string;
   role: string;
   date: string;
-  context: string;
-  contribution: string;
+  context: Translation;
+  contribution: Translation;
 }
 
 export const TestPage = () => {

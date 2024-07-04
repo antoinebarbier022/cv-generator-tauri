@@ -1,5 +1,5 @@
 import { Typography } from "@mui/joy";
-import { SkillsForm } from "../components/SkillsForm";
+import { SkillsForm } from "../components/form/SkillsForm";
 import { useCVForm } from "../hooks/useCVForm";
 import { PageLayout } from "../layouts/PageLayout";
 

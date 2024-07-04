@@ -63,24 +63,51 @@ export default extendTheme({
     JoyInput: {
       styleOverrides: {
         root: {
+          backgroundColor: "white",
           boxShadow: "none",
           borderWidth: 0.5,
+          flex: 1,
+        },
+      },
+    },
+    JoyFormLabel: {
+      styleOverrides: {
+        root: {
+          marginBottom: 4,
+          fontSize: "12px",
         },
       },
     },
     JoySelect: {
       styleOverrides: {
         root: {
+          backgroundColor: "white",
           boxShadow: "none",
           borderWidth: 0.5,
         },
       },
     },
+    JoyChip: {
+      styleOverrides: {
+        root: {
+          borderRadius: "4px",
+          minWidth: "4ch",
+          textAlign: "center",
+        },
+      },
+    },
+
     JoyTextarea: {
       styleOverrides: {
         root: {
+          backgroundColor: "white",
           boxShadow: "none",
           borderWidth: 0.5,
+          flex: 1,
+          minWidth: "400px",
+          flexDirection: "row",
+          alignItems: "baseline",
+          gap: 1,
         },
       },
     },

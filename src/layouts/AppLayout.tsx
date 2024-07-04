@@ -25,6 +25,7 @@ export const AppLayout = ({ sidebar }: Props) => {
         sx={{
           userSelect: "none",
           margin: 0,
+          scrollbarGutter: "stable",
           overflow: "auto",
         }}
       >
@@ -38,7 +39,14 @@ export const AppLayout = ({ sidebar }: Props) => {
           backgroundColor: "common.white",
         }}
       >
-        <Stack sx={{ margin: 0.5, paddingY: 2 }} overflow={"auto"}>
+        <Stack
+          sx={{
+            margin: 0.5,
+            paddingY: 2,
+            scrollbarGutter: "stable",
+            overflowY: "scroll",
+          }}
+        >
           <Outlet />
         </Stack>
       </Stack>
