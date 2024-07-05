@@ -17,8 +17,9 @@ import {
 } from "@mui/joy";
 import { FormikProps } from "formik";
 import { useState } from "react";
-import { CV_LANGUAGES } from "../../constants/languages";
-import { UserData, UserDataExperience } from "../../pages/TestPage";
+
+import { CV_LANGUAGES } from "../../configuration/constants/languages";
+import { UserData, UserDataExperience } from "../../storage/types/storage";
 
 interface Props {
   formik: FormikProps<UserData>;

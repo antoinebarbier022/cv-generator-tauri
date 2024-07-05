@@ -15,8 +15,8 @@ import {
   Textarea,
 } from "@mui/joy";
 import { FormikProps } from "formik";
-import { CV_LANGUAGES } from "../../constants/languages";
-import { UserData } from "../../pages/TestPage";
+import { UserData } from "../../../app/Views/TestPage";
+import { CV_LANGUAGES } from "../../configuration/constants/languages";
 
 interface Props {
   formik: FormikProps<UserData>;

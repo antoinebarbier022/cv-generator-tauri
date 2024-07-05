@@ -1,7 +1,7 @@
 import { AddRounded, RemoveRounded } from "@mui/icons-material";
 import { Button, IconButton, Input, Stack } from "@mui/joy";
 import { FormikProps } from "formik";
-import { UserData } from "../../pages/TestPage";
+import { UserData } from "../../storage/types/storage";
 
 interface Props {
   formik: FormikProps<UserData>;

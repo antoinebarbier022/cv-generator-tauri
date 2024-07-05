@@ -1,12 +1,12 @@
 import { AddRounded, RemoveRounded } from "@mui/icons-material";
 import { Button, IconButton, Input, Stack } from "@mui/joy";
 import { FormikProps } from "formik";
-import { UserData } from "../../pages/TestPage";
+import { UserData } from "../../storage/types/storage";
 
 interface Props {
   formik: FormikProps<UserData>;
 }
-export const SkillsForm = ({ formik }: Props) => {
+export const EmploymentHistoryForm = ({ formik }: Props) => {
   return (
     <Stack component="form" gap={4} onSubmit={formik.handleSubmit}>
       <Stack gap={2}>
@@ -14,27 +14,30 @@ export const SkillsForm = ({ formik }: Props) => {
           size="sm"
           variant="outlined"
           startDecorator={<AddRounded />}
-          disabled={Boolean(formik.errors.skills)}
+          disabled={Boolean(formik.errors.employment_history)}
           onClick={() =>
-            formik.setFieldValue("skills", [
-              ...(formik.values.skills ?? []),
+            formik.setFieldValue("employment_history", [
+              ...(formik.values.employment_history ?? []),
               "",
             ])
           }
         >
-          Add Skill
+          Add Employment History
         </Button>
-        <Stack gap={2}>
-          {formik.values.skills?.map((field, index) => (
+        <Stack>
+          {formik.values.employment_history?.map((field, index) => (
             <Stack direction="row" key={index}>
               <Input
                 size="sm"
-                name={`skills[${index}].fr`}
-                placeholder="Skill"
+                name={`employment_history[${index}].fr`}
+                placeholder="Employment"
                 value={field.fr}
                 onChange={formik.handleChange}
                 autoComplete="off"
-                error={formik.touched.skills && Boolean(formik.errors.skills)}
+                error={
+                  formik.touched.employment_history &&
+                  Boolean(formik.errors.employment_history)
+                }
                 sx={{
                   borderEndEndRadius: 0,
                   borderStartEndRadius: 0,
@@ -48,9 +51,10 @@ export const SkillsForm = ({ formik }: Props) => {
                 size="sm"
                 variant="solid"
                 onClick={() =>
-                  formik.setFieldValue("skills", [
-                    ...(formik.values.skills?.filter((_, i) => i !== index) ??
-                      []),
+                  formik.setFieldValue("employment_history", [
+                    ...(formik.values.employment_history?.filter(
+                      (_, i) => i !== index
+                    ) ?? []),
                   ])
                 }
                 sx={{ borderEndStartRadius: 0, borderStartStartRadius: 0 }}
