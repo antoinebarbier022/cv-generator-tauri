@@ -3,4 +3,5 @@ export type NavigationType = {
   icon: ReactNode;
   to: string;
   divider?: boolean;
+  hide?: boolean;
 };

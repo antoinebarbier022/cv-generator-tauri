@@ -15,14 +15,17 @@ import {
   Textarea,
 } from "@mui/joy";
 import { FormikProps } from "formik";
-import { UserData } from "../../../app/Views/TestPage";
+
 import { CV_LANGUAGES } from "../../configuration/constants/languages";
+import { UserData } from "../../storage/types/storage";
 
 interface Props {
   formik: FormikProps<UserData>;
 }
 
 export const ProfileForm = ({ formik }: Props) => {
+  const gradeOptions = ["A", "B", "C", "D", "E", "F"];
+  const entityOptions = ["Customer Data & Tech"];
   return (
     <Stack component="form" gap={4} onSubmit={formik.handleSubmit}>
       <Stack gap={2}>
@@ -78,7 +81,7 @@ export const ProfileForm = ({ formik }: Props) => {
                   placeholder="A"
                   sx={{ width: "7ch" }}
                 >
-                  {["A", "B", "C", "D", "E", "F"].map((value) => (
+                  {gradeOptions.map((value) => (
                     <Option value={value} key={`grade-${value}`}>
                       {value}
                     </Option>
@@ -88,12 +91,21 @@ export const ProfileForm = ({ formik }: Props) => {
 
               <FormControl sx={{ flex: 1 }}>
                 <FormLabel>Entity</FormLabel>
-                <Input
+
+                <Select
                   name="entity"
                   value={formik.values.entity}
-                  onChange={formik.handleChange}
+                  onChange={(_, value) => {
+                    formik.setFieldValue("entity", value);
+                  }}
                   placeholder="Entity"
-                />
+                >
+                  {entityOptions.map((option) => (
+                    <Option value={option} key={`entity-${option}`}>
+                      {option}
+                    </Option>
+                  ))}
+                </Select>
               </FormControl>
             </Stack>
 

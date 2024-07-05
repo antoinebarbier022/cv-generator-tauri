@@ -1,10 +1,10 @@
 import { Typography } from "@mui/joy";
 import { PageLayout } from "../../../layouts/PageLayout";
+import { useFormCV } from "../../cv-generation/hooks/useFormCV";
 import { SkillsForm } from "../components/SkillsForm";
-import { useCVForm } from "../hooks/useCVForm";
 
 export const SkillsContainer = () => {
-  const { userData, formik } = useCVForm();
+  const { userData, formik } = useFormCV();
 
   return (
     <PageLayout title={"Skills"}>

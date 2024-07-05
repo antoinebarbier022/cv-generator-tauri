@@ -1,12 +1,12 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import { CvConfigurationContainer } from "../features/configuration/containers/CvConfigurationContainer";
-import { EmploymentHistoryContainer } from "../features/form/containers/EmploymentHistoryContainer";
-import { FormationContainer } from "../features/form/containers/FormationContainer";
-import { ProfileContainer } from "../features/form/containers/ProfileContainer";
-import { ProjectsContainer } from "../features/form/containers/ProjectsContainer";
-import { SkillsContainer } from "../features/form/containers/SkillsContainer";
+import { EmploymentHistoryContainer } from "../features/employment-history/containers/EmploymentHistoryContainer";
+import { FormationContainer } from "../features/formations/containers/FormationContainer";
+import { ProfileContainer } from "../features/profile/containers/ProfileContainer";
+import { ProjectsContainer } from "../features/projects/containers/ProjectsContainer";
 import { SidebarContainer } from "../features/sidebar/containers/SidebarContainer";
+import { SkillsContainer } from "../features/skills/containers/SkillsContainer";
 import { AppLayout } from "../layouts/AppLayout";
 
 export const AppRouter = () => {

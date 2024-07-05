@@ -1,3 +1,5 @@
+import { UUID } from "crypto";
+
 interface Translation {
   en: string;
   fr: string;
@@ -25,6 +27,7 @@ export interface UserData {
 }
 
 export interface UserDataExperience {
+  id: UUID;
   program: string;
   client: string;
   role: string;

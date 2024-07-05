@@ -18,7 +18,7 @@ export const NavigationList = (props: Props) => {
     <List>
       {props.navigation.map((value, index) => (
         <Fragment key={`nav-${index}-${value.to}`}>
-          <ListItem>
+          <ListItem sx={{ visibility: value.hide ? "hidden" : "visible" }}>
             <NavLink to={value.to} className={"w-full no-underline"}>
               {({ isActive }) => (
                 <ListItemButton

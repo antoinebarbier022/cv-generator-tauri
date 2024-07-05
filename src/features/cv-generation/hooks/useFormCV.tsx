@@ -6,7 +6,7 @@ import { useGetDataStorage } from "../../storage/hooks/useGetDataStorage";
 import { useSetDataStorage } from "../../storage/hooks/useSetDataStorage";
 import { UserData } from "../../storage/types/storage";
 
-export const useCVForm = () => {
+export const useFormCV = () => {
   const emptyInitialValues: UserData = {
     firstname: "",
     lastname: "",

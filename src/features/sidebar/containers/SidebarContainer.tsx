@@ -39,12 +39,13 @@ export const SidebarContainer = () => {
       icon: <BusinessRounded />,
       label: "Projects",
       to: "/projects",
-      divider: true,
+      divider: false,
     },
     {
       icon: <Construction />,
       label: "CV Configuration",
       to: "/cv-configuration",
+      hide: true,
     },
   ];
 

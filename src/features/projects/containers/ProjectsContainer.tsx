@@ -1,16 +1,16 @@
 import { Typography } from "@mui/joy";
 import { PageLayout } from "../../../layouts/PageLayout";
+import { useFormCV } from "../../cv-generation/hooks/useFormCV";
 import { ProjectsForm } from "../components/ProjectsForm";
-import { useCVForm } from "../hooks/useCVForm";
 
 export const ProjectsContainer = () => {
-  const { userData, formik } = useCVForm();
+  const { userData, formik } = useFormCV();
 
   return (
     <PageLayout title={"Projects"}>
-      {userData.data && <ProjectsForm formik={formik} />}
       {userData.isPending && <Typography>Loading...</Typography>}
       {userData.isError && <Typography>Error.</Typography>}
+      {userData.data && <ProjectsForm formik={formik} />}
     </PageLayout>
   );
 };
