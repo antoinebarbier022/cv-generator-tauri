@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { DataService } from "../services/DataService";
+import { StorageService } from "../services/StorageService";
 
 export const useGetDataStorage = () => {
-  return useQuery({ queryKey: ["data"], queryFn: DataService.get });
+  return useQuery({ queryKey: ["data"], queryFn: StorageService.getData });
 };

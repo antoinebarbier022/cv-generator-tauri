@@ -21,9 +21,10 @@ import { UserData } from "../../storage/types/storage";
 
 interface Props {
   formik: FormikProps<UserData>;
+  image: string | undefined;
 }
 
-export const ProfileForm = ({ formik }: Props) => {
+export const ProfileForm = ({ image, formik }: Props) => {
   const gradeOptions = ["A", "B", "C", "D", "E", "F"];
   const entityOptions = ["Customer Data & Tech"];
   return (
@@ -34,7 +35,7 @@ export const ProfileForm = ({ formik }: Props) => {
             <Card>
               <CardOverflow>
                 <AspectRatio ratio={1} sx={{ width: "160px", height: "160px" }}>
-                  <Avatar />
+                  <Avatar sx={{ borderRadius: 0 }} src={image} />
                 </AspectRatio>
               </CardOverflow>
             </Card>

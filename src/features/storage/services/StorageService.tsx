@@ -1,0 +1,41 @@
+import {
+  BaseDirectory,
+  exists,
+  readTextFile,
+  writeTextFile,
+} from "@tauri-apps/api/fs";
+import { join, resolveResource } from "@tauri-apps/api/path";
+import { convertFileSrc } from "@tauri-apps/api/tauri";
+import { UserData } from "../types/storage";
+
+const FILE = `data.json`;
+
+export const StorageService = {
+  getData: async (): Promise<UserData> => {
+    const existFile = await exists(FILE, { dir: BaseDirectory.AppData });
+    if (!existFile) {
+      throw new Error("File does not exist");
+    }
+
+    const data = await readTextFile(FILE, { dir: BaseDirectory.AppData });
+    return JSON.parse(data) as UserData;
+  },
+  setData: async ({ values }: { values: UserData }): Promise<UserData> => {
+    try {
+      await writeTextFile(
+        { path: FILE, contents: JSON.stringify(values) },
+        { dir: BaseDirectory.AppData }
+      );
+      const data = await readTextFile(FILE, { dir: BaseDirectory.AppData });
+      return JSON.parse(data) as UserData;
+    } catch (e) {
+      throw new Error("Error when update the data storage");
+    }
+  },
+  getImageProfile: async (): Promise<string> => {
+    const data = convertFileSrc(
+      await resolveResource(await join("resources", "IMG_9838.jpg"))
+    );
+    return data;
+  },
+};

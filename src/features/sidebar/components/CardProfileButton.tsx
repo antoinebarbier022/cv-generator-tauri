@@ -5,6 +5,7 @@ interface Props {
   fullName: string;
   initials: string;
   linkTo: string;
+  image: string | undefined;
 }
 export const CardProfileButton = (props: Props) => {
   return (
@@ -22,7 +23,9 @@ export const CardProfileButton = (props: Props) => {
       })}
     >
       <Stack direction={"row"} gap={2} alignItems={"center"}>
-        <Avatar size="md">{props.initials}</Avatar>
+        <Avatar variant="outlined" src={props.image} size="md">
+          {props.initials}
+        </Avatar>
 
         <Typography level="body-md" textColor={"text.primary"}>
           <NavLink to={props.linkTo}>
