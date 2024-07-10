@@ -63,7 +63,23 @@ export const DebugModal = (props: Props) => {
         sx={{ minWidth: "60vw", maxWidth: { sm: "80vw", md: "60vw" } }}
       >
         <ModalClose />
-        <Typography>data.json</Typography>
+        <Stack>
+          <Typography level="title-lg">
+            Raw content <span className="font-mono">[.json]</span>
+          </Typography>
+          <Typography
+            startDecorator={<UpdateRounded />}
+            level="body-xs"
+            sx={{
+              width: "fit-content",
+            }}
+          >
+            {format(
+              fromUnixTime(data.dataUpdatedAt / 1000),
+              "dd/MM/yyyy HH:mm"
+            )}
+          </Typography>
+        </Stack>
 
         <Card
           component={Stack}
@@ -75,24 +91,6 @@ export const DebugModal = (props: Props) => {
           }}
           className="group"
         >
-          <Typography
-            startDecorator={<UpdateRounded />}
-            level="body-xs"
-            sx={{
-              position: "sticky",
-              top: "0",
-              right: "0",
-              marginLeft: "auto",
-              width: "fit-content",
-              backgroundColor: "white",
-              borderRadius: "sm",
-            }}
-          >
-            {format(
-              fromUnixTime(data.dataUpdatedAt / 1000),
-              "dd/MM/yyyy HH:mm"
-            )}
-          </Typography>
           <Typography component={"pre"} fontFamily={"monospace"}>
             {JSON.stringify(data.data, null, 2)}
           </Typography>

@@ -29,6 +29,8 @@ export const SkillsForm = ({ formik }: Props) => {
           position: "fixed",
           top: "2rem",
           right: "2rem",
+          zIndex: 10,
+          backgroundColor: "white",
         }}
         onClick={handleAddSkill}
       >
@@ -42,7 +44,8 @@ export const SkillsForm = ({ formik }: Props) => {
               index={index}
               title={
                 <AccordionTitle
-                  content={field.fr}
+                  isWarningIcon={Boolean(!field.fr || !field.en)}
+                  content={Boolean(field.fr) ? field.fr : field.en}
                   index={index}
                   placeholder={`Skills ${index + 1}`}
                 />

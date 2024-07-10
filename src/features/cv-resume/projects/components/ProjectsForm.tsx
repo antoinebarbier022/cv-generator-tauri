@@ -49,6 +49,8 @@ export const ProjectsForm = ({ formik }: Props) => {
           position: "fixed",
           top: "2rem",
           right: "2rem",
+          zIndex: 10,
+          backgroundColor: "white",
         }}
         onClick={handleAddProject}
       >

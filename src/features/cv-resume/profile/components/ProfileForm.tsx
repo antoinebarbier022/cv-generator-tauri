@@ -26,7 +26,13 @@ interface Props {
 
 export const ProfileForm = ({ image, formik, onClickUploadPicture }: Props) => {
   const gradeOptions = ["A", "B", "C", "D", "E", "F"];
-  const entityOptions = ["Customer Data & Tech"];
+
+  const entityOptions = new Map<string, string>([
+    ["BR", "Business Reinvention"],
+    ["CXT", "CX Transformation"],
+    ["CDT", "Customer Data & Tech"],
+    ["CD", "Creative & Design"],
+  ]);
   return (
     <Stack component="form" gap={4} onSubmit={formik.handleSubmit}>
       <Stack gap={2}>
@@ -102,12 +108,16 @@ export const ProfileForm = ({ image, formik, onClickUploadPicture }: Props) => {
                   value={formik.values.entity}
                   onChange={(_, value) => {
                     formik.setFieldValue("entity", value);
+                    formik.setFieldValue(
+                      "team",
+                      (value && entityOptions.get(value)) ?? ""
+                    );
                   }}
                   placeholder="Entity"
                 >
-                  {entityOptions.map((option) => (
-                    <Option value={option} key={`entity-${option}`}>
-                      {option}
+                  {Array.from(entityOptions).map(([key, value]) => (
+                    <Option value={key} key={`entity-${key}`}>
+                      {value}
                     </Option>
                   ))}
                 </Select>

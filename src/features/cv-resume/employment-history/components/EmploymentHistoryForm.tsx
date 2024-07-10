@@ -31,6 +31,8 @@ export const EmploymentHistoryForm = ({ formik }: Props) => {
           position: "fixed",
           top: "2rem",
           right: "2rem",
+          zIndex: 10,
+          backgroundColor: "white",
         }}
         onClick={handleAddEmploymentHistory}
       >
@@ -43,7 +45,8 @@ export const EmploymentHistoryForm = ({ formik }: Props) => {
               index={index}
               title={
                 <AccordionTitle
-                  content={field.fr}
+                  isWarningIcon={Boolean(!field.fr || !field.en)}
+                  content={Boolean(field.fr) ? field.fr : field.en}
                   index={index}
                   placeholder={`Employment History ${index + 1}`}
                 />

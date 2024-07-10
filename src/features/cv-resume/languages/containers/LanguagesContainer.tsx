@@ -8,7 +8,7 @@ export const LanguagesContainer = () => {
   const { userData, formik } = useFormCV();
 
   return (
-    <PageLayout title={"Skills"}>
+    <PageLayout title={"Languages"}>
       {userData.data && <LanguagesForm formik={formik} />}
       {userData.isPending && <Typography>Loading...</Typography>}
       {userData.isError && <Typography>Error.</Typography>}

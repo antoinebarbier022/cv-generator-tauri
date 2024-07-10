@@ -32,6 +32,8 @@ export const FormationForm = ({ formik }: Props) => {
           position: "fixed",
           top: "2rem",
           right: "2rem",
+          zIndex: 10,
+          backgroundColor: "white",
         }}
         onClick={handleAddFormation}
       >
@@ -45,7 +47,8 @@ export const FormationForm = ({ formik }: Props) => {
               index={index}
               title={
                 <AccordionTitle
-                  content={field.fr}
+                  isWarningIcon={Boolean(!field.fr || !field.en)}
+                  content={Boolean(field.fr) ? field.fr : field.en}
                   index={index}
                   placeholder={`Formation ${index + 1}`}
                 />
