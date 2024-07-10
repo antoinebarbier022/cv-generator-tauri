@@ -4,7 +4,7 @@ import { FormikProps } from "formik";
 import { useState } from "react";
 import { AccordionCard } from "../../../../components/AccordionCard";
 import { AccordionTitle } from "../../../../components/AccordionTitle";
-import { CV_LANGUAGES } from "../../../configuration/constants/languages";
+import { CV_LANGUAGES } from "../../../../constants/languages";
 import { UserData } from "../../../storage/types/storage";
 
 interface Props {

@@ -31,6 +31,7 @@ export const CardProfileButton = (props: Props) => {
           <NavLink to={props.linkTo}>
             {({ isActive }) => (
               <Link
+                component={Typography}
                 overlay
                 underline="none"
                 aria-current={isActive ? "page" : undefined}

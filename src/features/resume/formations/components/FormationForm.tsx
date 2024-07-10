@@ -10,23 +10,24 @@ import { UserData } from "../../../storage/types/storage";
 interface Props {
   formik: FormikProps<UserData>;
 }
-export const EmploymentHistoryForm = ({ formik }: Props) => {
+export const FormationForm = ({ formik }: Props) => {
   const [indexExpandedAccordion, setIndexExpandedAccordion] = useState<
     number | null
   >(0);
 
-  const handleAddEmploymentHistory = () =>
-    formik.setFieldValue("employment_history", [
-      ...(formik.values.employment_history ?? []),
+  const handleAddFormation = () =>
+    formik.setFieldValue("formations", [
+      ...(formik.values.formations ?? []),
       "",
     ]);
+
   return (
-    <form onSubmit={formik.handleSubmit}>
+    <Stack component="form" gap={4} onSubmit={formik.handleSubmit}>
       <Button
         size="sm"
         variant="outlined"
         startDecorator={<AddRounded />}
-        disabled={Boolean(formik.errors.employment_history)}
+        disabled={Boolean(formik.errors.formations)}
         sx={{
           position: "fixed",
           top: "2rem",
@@ -34,12 +35,13 @@ export const EmploymentHistoryForm = ({ formik }: Props) => {
           zIndex: 10,
           backgroundColor: "white",
         }}
-        onClick={handleAddEmploymentHistory}
+        onClick={handleAddFormation}
       >
-        Add Employment History
+        Add formation
       </Button>
+
       <AccordionGroup disableDivider component={Stack} gap={1}>
-        {formik.values.employment_history?.map((field, index) => (
+        {formik.values.formations?.map((field, index) => (
           <Stack direction="row" width={"100%"} key={index}>
             <AccordionCard
               index={index}
@@ -47,7 +49,7 @@ export const EmploymentHistoryForm = ({ formik }: Props) => {
                 <AccordionTitle
                   isWarningIcon={Boolean(!field.fr || !field.en)}
                   content={Boolean(field.fr) ? field.fr : field.en}
-                  placeholder={`Employment History ${index + 1}`}
+                  placeholder={`Formation ${index + 1}`}
                 />
               }
               expanded={indexExpandedAccordion === index}
@@ -55,22 +57,21 @@ export const EmploymentHistoryForm = ({ formik }: Props) => {
                 setIndexExpandedAccordion(expanded ? index : null);
               }}
               onDelete={() =>
-                formik.setFieldValue("employment_history", [
-                  ...(formik.values.employment_history?.filter(
-                    (_, i) => i !== index
-                  ) ?? []),
+                formik.setFieldValue("formations", [
+                  ...(formik.values.formations?.filter((_, i) => i !== index) ??
+                    []),
                 ])
               }
             >
               <Stack flex={1} gap={1} marginTop={1}>
                 {CV_LANGUAGES.map((lang) => (
                   <Textarea
-                    key={`employment_history[${index}].${lang}`}
-                    name={`employment_history[${index}].${lang}`}
+                    key={`formations[${index}].${lang}`}
+                    name={`formations[${index}].${lang}`}
                     startDecorator={<Chip>{lang}</Chip>}
-                    minRows={2}
-                    maxRows={4}
                     value={field[lang as string]}
+                    minRows={2}
+                    maxRows={2}
                     onChange={formik.handleChange}
                     placeholder=""
                   />
@@ -80,6 +81,6 @@ export const EmploymentHistoryForm = ({ formik }: Props) => {
           </Stack>
         ))}
       </AccordionGroup>
-    </form>
+    </Stack>
   );
 };

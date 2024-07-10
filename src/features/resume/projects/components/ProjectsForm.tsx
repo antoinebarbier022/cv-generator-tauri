@@ -73,6 +73,7 @@ export const ProjectsForm = ({ formik }: Props) => {
       <AccordionGroup component={Stack} gap={1} disableDivider>
         {formik.values.experiences?.map((field, index) => (
           <AccordionCard
+            key={`accordion-project-${index}-${field.id}`}
             index={index}
             title={
               <AccordionTitle

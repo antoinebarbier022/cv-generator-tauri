@@ -7,7 +7,7 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "frog - CV Generator",
+    "productName": "CV Generator - frog",
     "version": "0.1.0"
   },
   "tauri": {
@@ -61,8 +61,8 @@
       "externalBin": ["binaries/main"],
       "resources": ["resources/*"],
       "active": true,
-      "category": "DeveloperTool",
-      "copyright": "",
+      "category": "productivity",
+      "copyright": "frog",
       "deb": {
         "depends": []
       },
@@ -105,7 +105,7 @@
         "height": 600,
         "transparent": true,
         "resizable": true,
-        "title": "frog - CV Generator",
+        "title": "CV Generator - frog",
         "titleBarStyle": "Overlay",
         "hiddenTitle": true
       }

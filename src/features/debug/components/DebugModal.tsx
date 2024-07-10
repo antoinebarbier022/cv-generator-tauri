@@ -84,11 +84,6 @@ export const DebugModal = (props: Props) => {
         <Card
           component={Stack}
           sx={{ overflowY: "auto", position: "relative" }}
-          slotProps={{
-            root: {
-              contentEditable: "false",
-            },
-          }}
           className="group"
         >
           <Typography component={"pre"} fontFamily={"monospace"}>
