@@ -4,6 +4,7 @@ import { CvConfigurationContainer } from "../features/configuration/containers/C
 import { FormationContainer } from "../features/cv-resume/formations/containers/FormationContainer";
 
 import { EmploymentHistoryContainer } from "../features/cv-resume/employment-history/containers/EmploymentHistoryContainer";
+import { LanguagesContainer } from "../features/cv-resume/languages/containers/LanguagesContainer";
 import { ProfileContainer } from "../features/cv-resume/profile/containers/ProfileContainer";
 import { ProjectsContainer } from "../features/cv-resume/projects/containers/ProjectsContainer";
 import { SkillsContainer } from "../features/cv-resume/skills/containers/SkillsContainer";
@@ -18,6 +19,7 @@ export const AppRouter = () => {
           <Route index element={<Navigate to={"/profile"} />} />
           <Route path="profile" element={<ProfileContainer />} />
           <Route path="skills" element={<SkillsContainer />} />
+          <Route path="languages" element={<LanguagesContainer />} />
           <Route path="projects" element={<ProjectsContainer />} />
           <Route path="formation" element={<FormationContainer />} />
           <Route

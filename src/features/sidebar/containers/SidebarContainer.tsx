@@ -2,6 +2,7 @@ import {
   BusinessRounded,
   Construction,
   HomeRepairServiceRounded,
+  LanguageRounded,
   SchoolRounded,
   TimelineRounded,
 } from "@mui/icons-material";
@@ -42,6 +43,11 @@ export const SidebarContainer = () => {
       icon: <SchoolRounded />,
       label: "Formation",
       to: "/formation",
+    },
+    {
+      icon: <LanguageRounded />,
+      label: "Languages",
+      to: "/languages",
     },
     {
       icon: <TimelineRounded />,
