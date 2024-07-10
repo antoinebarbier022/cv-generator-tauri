@@ -14,7 +14,7 @@
     "allowlist": {
       "protocol": {
         "asset": true,
-        "assetScope": ["$RESOURCE/**"]
+        "assetScope": ["$RESOURCE/**", "$APPDATA/**"]
       },
       "http": {
         "all": true,

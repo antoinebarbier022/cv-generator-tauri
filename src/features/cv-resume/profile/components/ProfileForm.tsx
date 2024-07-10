@@ -21,9 +21,10 @@ import { UserData } from "../../../storage/types/storage";
 interface Props {
   formik: FormikProps<UserData>;
   image: string | undefined;
+  onClickUploadPicture: () => void;
 }
 
-export const ProfileForm = ({ image, formik }: Props) => {
+export const ProfileForm = ({ image, formik, onClickUploadPicture }: Props) => {
   const gradeOptions = ["A", "B", "C", "D", "E", "F"];
   const entityOptions = ["Customer Data & Tech"];
   return (
@@ -34,7 +35,10 @@ export const ProfileForm = ({ image, formik }: Props) => {
             <Card>
               <CardOverflow>
                 <AspectRatio ratio={1} sx={{ width: "160px", height: "160px" }}>
-                  <Avatar sx={{ borderRadius: 0 }} src={image} />
+                  <Avatar
+                    sx={{ borderRadius: 0 }}
+                    src={`${image}?removeCache=${new Date()}`}
+                  />
                 </AspectRatio>
               </CardOverflow>
             </Card>
@@ -42,6 +46,7 @@ export const ProfileForm = ({ image, formik }: Props) => {
               size="sm"
               startDecorator={<CloudUploadOutlined />}
               sx={{ fontWeight: "500" }}
+              onClick={onClickUploadPicture}
             >
               Upload image
             </Button>

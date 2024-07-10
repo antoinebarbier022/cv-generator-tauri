@@ -1,13 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { StorageService } from "../services/StorageService";
 
-export const useSetDataStorage = () => {
+export const useSetImageProfileStorage = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationKey: ["setData"],
-    mutationFn: StorageService.setContentData,
+    mutationKey: ["set_image_profile"],
+    mutationFn: StorageService.setImageProfile,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["data"] });
+      queryClient.invalidateQueries({ queryKey: ["image_profile"] });
     },
   });
 };

@@ -8,7 +8,7 @@ import {
 import { ChildProcess, Command } from "@tauri-apps/api/shell";
 
 export const CVGenerationService = {
-  getPathToSave: async (): Promise<string> => {
+  generate: async (): Promise<ChildProcess> => {
     const defaultFileName = "test_cv";
     const filePath = await save({
       defaultPath: (await downloadDir()) + "/" + defaultFileName + ".pptx",
@@ -17,13 +17,7 @@ export const CVGenerationService = {
     if (!filePath) {
       throw Error("Filepath is wrong");
     }
-    return filePath;
-  },
-  generate: async ({
-    filePath,
-  }: {
-    filePath: string;
-  }): Promise<ChildProcess> => {
+
     const appDataDirPath = await appDataDir();
     const outputFolderPath = filePath.replace(filePath, "");
     const outputFileName = filePath
@@ -33,7 +27,10 @@ export const CVGenerationService = {
       "--path-data",
       await join(appDataDirPath, "data.json"),
       "--path-img",
-      await resolveResource(await join("resources", "IMG_9838.jpg")),
+      await join(
+        await appDataDir(),
+        `profile.${localStorage.getItem("profile_picture_extension")}`
+      ),
       "--path-template",
       await resolveResource(
         await join("resources", "CV_Nom_Prenom_Capability.pptx")
