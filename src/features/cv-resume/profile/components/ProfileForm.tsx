@@ -70,6 +70,7 @@ export const ProfileForm = ({ image, formik, onClickUploadPicture }: Props) => {
                   placeholder="Lastname"
                 />
               </FormControl>
+
               <FormControl sx={{ flex: 1 }}>
                 <FormLabel>Firstname</FormLabel>
                 <Input
@@ -116,8 +117,9 @@ export const ProfileForm = ({ image, formik, onClickUploadPicture }: Props) => {
                   placeholder="Entity"
                 >
                   {Array.from(entityOptions).map(([key, value]) => (
-                    <Option value={key} key={`entity-${key}`}>
+                    <Option value={key} label={value} key={`entity-${key}`}>
                       {value}
+                      <span className="w-[5ch] text-neutral-500">[{key}]</span>
                     </Option>
                   ))}
                 </Select>

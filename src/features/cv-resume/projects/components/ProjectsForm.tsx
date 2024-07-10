@@ -4,6 +4,7 @@ import { FormikProps } from "formik";
 import { useState } from "react";
 
 import { AccordionCard } from "../../../../components/AccordionCard";
+import { AccordionTitle } from "../../../../components/AccordionTitle";
 import { UserData, UserDataExperience } from "../../../storage/types/storage";
 import { ProjectForm } from "./ProjectForm";
 import { ProjectTitle } from "./ProjectTitle";
@@ -38,6 +39,18 @@ export const ProjectsForm = ({ formik }: Props) => {
     ]);
   };
 
+  const isMissingField = (experience: UserDataExperience) => {
+    return Boolean(
+      !experience.client ||
+        !experience.program ||
+        !experience.date ||
+        !experience.context.fr ||
+        !experience.context.en ||
+        !experience.contribution.fr ||
+        !experience.contribution.en
+    );
+  };
+
   return (
     <form onSubmit={formik.handleSubmit}>
       <Button
@@ -62,10 +75,15 @@ export const ProjectsForm = ({ formik }: Props) => {
           <AccordionCard
             index={index}
             title={
-              <ProjectTitle
-                program={field.program}
-                client={field.client}
-                date={field.date}
+              <AccordionTitle
+                content={
+                  <ProjectTitle
+                    program={field.program}
+                    client={field.client}
+                    date={field.date}
+                  />
+                }
+                isWarningIcon={isMissingField(field)}
               />
             }
             onExpandedChange={(_, expanded) => {

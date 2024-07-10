@@ -1,12 +1,23 @@
 import { Alert, Container, Divider, Stack, Typography } from "@mui/joy";
 import { PropsWithChildren, ReactNode } from "react";
-import { ErrorBoundary } from "react-error-boundary";
+import { ErrorBoundary, FallbackProps } from "react-error-boundary";
 
 interface Props extends PropsWithChildren {
   title: string;
   endDecorator?: ReactNode;
 }
 export const PageLayout = ({ title, endDecorator, children }: Props) => {
+  const fallbackRender = ({ error }: FallbackProps) => {
+    return (
+      <Alert color="danger">
+        <Stack gap={1}>
+          <p className="m-0">Something went wrong...</p>
+          <pre className="m-0">{error.message}</pre>
+        </Stack>
+      </Alert>
+    );
+  };
+
   return (
     <Stack component={Container} gap={4}>
       <Stack gap={1}>
@@ -17,11 +28,7 @@ export const PageLayout = ({ title, endDecorator, children }: Props) => {
 
         <Divider></Divider>
       </Stack>
-      <ErrorBoundary
-        fallback={<Alert color="danger">Something went wrong</Alert>}
-      >
-        {children}
-      </ErrorBoundary>
+      <ErrorBoundary fallbackRender={fallbackRender}>{children}</ErrorBoundary>
     </Stack>
   );
 };

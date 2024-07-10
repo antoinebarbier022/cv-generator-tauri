@@ -46,7 +46,6 @@ export const LanguagesForm = ({ formik }: Props) => {
                 <AccordionTitle
                   isWarningIcon={Boolean(!field.fr || !field.en)}
                   content={Boolean(field.fr) ? field.fr : field.en}
-                  index={index}
                   placeholder={`Languages ${index + 1}`}
                 />
               }

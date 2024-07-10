@@ -1,10 +1,10 @@
 import { WarningRounded } from "@mui/icons-material";
 import { Stack, Tooltip, Typography } from "@mui/joy";
+import { ReactNode } from "react";
 
 interface Props {
-  content: string;
-  placeholder: string;
-  index: number;
+  content: string | ReactNode;
+  placeholder?: string;
   isWarningIcon?: boolean;
 }
 export const AccordionTitle = (props: Props) => {
