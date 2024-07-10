@@ -1,6 +1,7 @@
 import { Typography } from "@mui/joy";
-import { PageLayout } from "../../../layouts/PageLayout";
-import { useFormCV } from "../../cv-generation/hooks/useFormCV";
+
+import { PageLayout } from "../../../../layouts/PageLayout";
+import { useFormCV } from "../../../cv-generation/hooks/useFormCV";
 import { ProjectsForm } from "../components/ProjectsForm";
 
 export const ProjectsContainer = () => {

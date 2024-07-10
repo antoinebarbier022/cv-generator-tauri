@@ -1,7 +1,8 @@
 import { Typography } from "@mui/joy";
-import { PageLayout } from "../../../layouts/PageLayout";
-import { useFormCV } from "../../cv-generation/hooks/useFormCV";
-import { useGetImageProfileStorage } from "../../storage/hooks/useGetImageProfileStorage";
+
+import { PageLayout } from "../../../../layouts/PageLayout";
+import { useFormCV } from "../../../cv-generation/hooks/useFormCV";
+import { useGetImageProfileStorage } from "../../../storage/hooks/useGetImageProfileStorage";
 import { ProfileForm } from "../components/ProfileForm";
 
 export const ProfileContainer = () => {

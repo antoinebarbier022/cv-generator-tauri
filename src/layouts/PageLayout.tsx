@@ -1,5 +1,6 @@
-import { Container, Divider, Stack, Typography } from "@mui/joy";
+import { Alert, Container, Divider, Stack, Typography } from "@mui/joy";
 import { PropsWithChildren } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 
 interface Props extends PropsWithChildren {
   title: string;
@@ -11,7 +12,11 @@ export const PageLayout = ({ title, children }: Props) => {
         <Typography level="h2">{title}</Typography>
         <Divider></Divider>
       </Stack>
-      {children}
+      <ErrorBoundary
+        fallback={<Alert color="danger">Something went wrong</Alert>}
+      >
+        {children}
+      </ErrorBoundary>
     </Stack>
   );
 };

@@ -1,26 +1,15 @@
 import {
   BusinessRounded,
-  CheckRounded,
   Construction,
-  ContentCopy,
   HomeRepairServiceRounded,
   SchoolRounded,
   TimelineRounded,
 } from "@mui/icons-material";
-import {
-  Button,
-  Card,
-  Modal,
-  ModalClose,
-  ModalDialog,
-  Sheet,
-  Stack,
-  Typography,
-} from "@mui/joy";
+import { Button, Sheet, Stack } from "@mui/joy";
 
 import { useState } from "react";
 import { useGenerateCV } from "../../cv-generation/hooks/useGenerateCV";
-import { useGetDataStorage } from "../../storage/hooks/useGetDataStorage";
+import { DebugModal } from "../../debug/components/DebugModal";
 import { useGetImageProfileStorage } from "../../storage/hooks/useGetImageProfileStorage";
 import { CardProfileButton } from "../components/CardProfileButton";
 import { NavigationList } from "../components/NavigationList";
@@ -30,7 +19,6 @@ export const SidebarContainer = () => {
   const generateCV = useGenerateCV();
 
   const image = useGetImageProfileStorage();
-  const data = useGetDataStorage();
 
   const [isOpenDebugModal, setOpenDebugModal] = useState(false);
   const handleCloseDebugModal = () => {
@@ -42,17 +30,6 @@ export const SidebarContainer = () => {
 
   const handleGenerateCV = () => {
     generateCV.mutate();
-  };
-
-  const [isCopied, setIsCopied] = useState(false);
-  const handleCopyToClipboard = (value: string) => {
-    if (value) {
-      setIsCopied(true);
-      navigator.clipboard.writeText(value);
-      setTimeout(() => {
-        setIsCopied(false);
-      }, 2000);
-    }
   };
 
   const navigation: NavigationType[] = [
@@ -122,7 +99,6 @@ export const SidebarContainer = () => {
               color="primary"
               variant="outlined"
               sx={{ marginX: 1 }}
-              loading={generateCV.isPending}
               onClick={handleOpenDebugModal}
             >
               Debug
@@ -139,43 +115,7 @@ export const SidebarContainer = () => {
           </Stack>
         </Stack>
       </Sheet>
-      <Modal open={isOpenDebugModal} onClose={handleCloseDebugModal}>
-        <ModalDialog sx={{ minWidth: "60vw" }}>
-          <ModalClose />
-          <Typography>data.json</Typography>
-
-          <Card
-            component={Stack}
-            sx={{ overflowY: "auto", position: "relative" }}
-            slotProps={{
-              root: {
-                contentEditable: "false",
-              },
-            }}
-            className="group"
-          >
-            <Typography component={"pre"} fontFamily={"monospace"}>
-              {JSON.stringify(data.data, null, 2)}
-            </Typography>
-          </Card>
-          <Button
-            variant="outlined"
-            startDecorator={
-              isCopied ? (
-                <CheckRounded sx={{ fontSize: "1rem" }} />
-              ) : (
-                <ContentCopy sx={{ fontSize: "1rem" }} />
-              )
-            }
-            sx={{ position: "sticky", right: "1rem", top: "1rem" }}
-            onClick={() =>
-              handleCopyToClipboard(JSON.stringify(data.data, null, 2))
-            }
-          >
-            Copier
-          </Button>
-        </ModalDialog>
-      </Modal>
+      <DebugModal open={isOpenDebugModal} onClose={handleCloseDebugModal} />
     </>
   );
 };

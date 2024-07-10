@@ -3,8 +3,8 @@ import { AccordionGroup, Button, Stack } from "@mui/joy";
 import { FormikProps } from "formik";
 import { useState } from "react";
 
-import { AccordionCard } from "../../../components/AccordionCard";
-import { UserData, UserDataExperience } from "../../storage/types/storage";
+import { AccordionCard } from "../../../../components/AccordionCard";
+import { UserData, UserDataExperience } from "../../../storage/types/storage";
 import { ProjectForm } from "./ProjectForm";
 import { ProjectTitle } from "./ProjectTitle";
 

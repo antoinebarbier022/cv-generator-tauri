@@ -2,10 +2,10 @@ import { AddRounded } from "@mui/icons-material";
 import { AccordionGroup, Button, Chip, Stack, Textarea } from "@mui/joy";
 import { FormikProps } from "formik";
 import { useState } from "react";
-import { AccordionCard } from "../../../components/AccordionCard";
-import { AccordionTitle } from "../../../components/AccordionTitle";
-import { CV_LANGUAGES } from "../../configuration/constants/languages";
-import { UserData } from "../../storage/types/storage";
+import { AccordionCard } from "../../../../components/AccordionCard";
+import { AccordionTitle } from "../../../../components/AccordionTitle";
+import { CV_LANGUAGES } from "../../../configuration/constants/languages";
+import { UserData } from "../../../storage/types/storage";
 
 interface Props {
   formik: FormikProps<UserData>;
