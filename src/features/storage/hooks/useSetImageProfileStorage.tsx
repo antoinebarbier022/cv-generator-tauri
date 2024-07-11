@@ -9,9 +9,11 @@ export const useSetImageProfileStorage = () => {
     mutationKey: ["set_image_profile"],
     mutationFn: StorageService.setImageProfile,
     onSuccess: async (data) => {
-      await formik.setFieldValue("picture", data);
-      await queryClient.invalidateQueries({ queryKey: ["image_profile"] });
-      await queryClient.invalidateQueries({ queryKey: ["data"] });
+      if (data !== null) {
+        await formik.setFieldValue("picture", data);
+        await queryClient.invalidateQueries({ queryKey: ["image_profile"] });
+        await queryClient.invalidateQueries({ queryKey: ["data"] });
+      }
     },
   });
 };

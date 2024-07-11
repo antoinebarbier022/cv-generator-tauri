@@ -57,12 +57,12 @@ export const StorageService = {
       return "";
     }
   },
-  setImageProfile: async (): Promise<string> => {
+  setImageProfile: async (): Promise<string | null> => {
     const filePath = await open({
       defaultPath: await pictureDir(),
     });
-    if (!filePath) {
-      return "";
+    if (filePath === null) {
+      return null;
     }
     const extension = await extname(filePath as string);
     const picture = await readBinaryFile(filePath as string);
