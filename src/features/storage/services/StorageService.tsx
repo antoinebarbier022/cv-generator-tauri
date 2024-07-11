@@ -9,6 +9,7 @@ import {
 } from "@tauri-apps/api/fs";
 import { appDataDir, extname, join, pictureDir } from "@tauri-apps/api/path";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
+import { emptyInitialContentResume } from "../../../constants/emptyInitialContentResume";
 import { UserData } from "../types/storage";
 
 const CONTENT_DATA_FILE = `data.json`;
@@ -19,7 +20,7 @@ export const StorageService = {
       dir: BaseDirectory.AppData,
     });
     if (!existFile) {
-      throw new Error("File does not exist");
+      return emptyInitialContentResume;
     }
 
     const data = await readTextFile(CONTENT_DATA_FILE, {

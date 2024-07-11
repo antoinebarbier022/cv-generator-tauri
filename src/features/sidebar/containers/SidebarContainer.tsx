@@ -8,9 +8,10 @@ import {
 } from "@mui/icons-material";
 import { Button, Sheet, Stack } from "@mui/joy";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useGenerateCV } from "../../cv-generation/hooks/useGenerateCV";
 import { DebugModal } from "../../debug/components/DebugModal";
+import { useGetDataStorage } from "../../storage/hooks/useGetDataStorage";
 import { useGetImageProfileStorage } from "../../storage/hooks/useGetImageProfileStorage";
 import { CardProfileButton } from "../components/CardProfileButton";
 import { NavigationList } from "../components/NavigationList";
@@ -20,6 +21,21 @@ export const SidebarContainer = () => {
   const generateCV = useGenerateCV();
 
   const image = useGetImageProfileStorage();
+  const contentResume = useGetDataStorage();
+
+  const fullName = useMemo(() => {
+    const firstname = contentResume.data?.firstname;
+    const lastname = contentResume.data?.lastname;
+    if (Boolean(firstname) && Boolean(lastname)) {
+      return `${contentResume.data?.firstname} ${contentResume.data?.lastname}`;
+    } else if (Boolean(firstname)) {
+      return `${contentResume.data?.firstname}`;
+    } else if (Boolean(lastname)) {
+      return `${contentResume.data?.lastname}`;
+    } else {
+      return "";
+    }
+  }, [contentResume.data?.firstname, contentResume.data?.lastname]);
 
   const [isOpenDebugModal, setOpenDebugModal] = useState(false);
   const handleCloseDebugModal = () => {
@@ -93,8 +109,7 @@ export const SidebarContainer = () => {
         >
           <CardProfileButton
             image={image.data}
-            fullName={"Antoine Barbier"}
-            initials={"AB"}
+            fullName={Boolean(fullName) ? fullName : "Your Profile"}
             linkTo={"/profile"}
           />
 

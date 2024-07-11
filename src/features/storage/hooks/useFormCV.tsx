@@ -2,43 +2,17 @@ import { useFormik } from "formik";
 import debounce from "just-debounce-it";
 import { useCallback, useEffect } from "react";
 
-import { useGetDataStorage } from "../../storage/hooks/useGetDataStorage";
-import { useSetDataStorage } from "../../storage/hooks/useSetDataStorage";
-import { UserData } from "../../storage/types/storage";
+import { emptyInitialContentResume } from "../../../constants/emptyInitialContentResume";
+import { UserData } from "../types/storage";
+import { useGetDataStorage } from "./useGetDataStorage";
+import { useSetDataStorage } from "./useSetDataStorage";
 
 export const useFormCV = () => {
-  const emptyInitialValues: UserData = {
-    firstname: "",
-    lastname: "",
-    email: "",
-    role: {
-      en: "",
-      fr: "",
-    },
-    grade: "",
-    entity: "",
-    team: "",
-    description: {
-      en: "",
-      fr: "",
-    },
-    linkedin: "",
-    twitter: "",
-    github: "",
-    formations: [],
-    employment_history: [],
-    articles_and_others: [],
-    sectors: [],
-    skills: [],
-    languages: [],
-    experiences: [],
-  };
-
   const userData = useGetDataStorage();
   const dataMutation = useSetDataStorage();
 
   const formik = useFormik<UserData>({
-    initialValues: userData.data ?? emptyInitialValues,
+    initialValues: userData.data ?? emptyInitialContentResume,
     enableReinitialize: true,
     onSubmit: async (values) => {
       dataMutation.mutate({ values });

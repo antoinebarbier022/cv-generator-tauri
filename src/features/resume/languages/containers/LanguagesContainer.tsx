@@ -1,7 +1,7 @@
 import { Typography } from "@mui/joy";
 
 import { PageLayout } from "../../../../layouts/PageLayout";
-import { useFormCV } from "../../../cv-generation/hooks/useFormCV";
+import { useFormCV } from "../../../storage/hooks/useFormCV";
 import { LanguagesForm } from "../components/LanguagesForm";
 
 export const LanguagesContainer = () => {

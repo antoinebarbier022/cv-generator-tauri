@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 
 interface Props {
   fullName: string;
-  initials: string;
+
   linkTo: string;
   image: string | undefined;
 }
@@ -23,9 +23,15 @@ export const CardProfileButton = (props: Props) => {
       })}
     >
       <Stack direction={"row"} gap={2} alignItems={"center"}>
-        <Avatar variant="outlined" src={props.image} size="md">
-          {props.initials}
-        </Avatar>
+        <Avatar
+          variant="outlined"
+          src={
+            Boolean(props.image)
+              ? `${props.image}?removeCache=${new Date()}`
+              : undefined
+          }
+          size="md"
+        />
 
         <Typography level="body-md" textColor={"text.primary"}>
           <NavLink to={props.linkTo}>
@@ -36,7 +42,7 @@ export const CardProfileButton = (props: Props) => {
                 underline="none"
                 aria-current={isActive ? "page" : undefined}
               >
-                {props.fullName}
+                {props.fullName ?? "Profile"}
               </Link>
             )}
           </NavLink>
