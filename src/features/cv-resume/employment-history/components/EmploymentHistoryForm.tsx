@@ -1,5 +1,5 @@
 import { AddRounded } from "@mui/icons-material";
-import { AccordionGroup, Button, Chip, Stack, Textarea } from "@mui/joy";
+import { AccordionGroup, Chip, IconButton, Stack, Textarea } from "@mui/joy";
 import { FormikProps } from "formik";
 import { useState } from "react";
 import { AccordionCard } from "../../../../components/AccordionCard";
@@ -22,10 +22,9 @@ export const EmploymentHistoryForm = ({ formik }: Props) => {
     ]);
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Button
+      <IconButton
         size="sm"
-        variant="outlined"
-        startDecorator={<AddRounded />}
+        variant="solid"
         disabled={Boolean(formik.errors.employment_history)}
         sx={{
           position: "fixed",
@@ -36,8 +35,8 @@ export const EmploymentHistoryForm = ({ formik }: Props) => {
         }}
         onClick={handleAddEmploymentHistory}
       >
-        Add Employment History
-      </Button>
+        <AddRounded />
+      </IconButton>
       <AccordionGroup disableDivider component={Stack} gap={1}>
         {formik.values.employment_history?.map((field, index) => (
           <Stack direction="row" width={"100%"} key={index}>

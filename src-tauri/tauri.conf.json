@@ -73,7 +73,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "com.frog.cv-generator",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -91,7 +91,7 @@
       }
     },
     "security": {
-      "csp": "default-src 'self'; img-src 'self' asset: https://asset.localhost"
+      "csp": null
     },
     "updater": {
       "active": false

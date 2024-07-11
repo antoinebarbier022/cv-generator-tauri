@@ -23,7 +23,17 @@ export const PageLayout = ({ title, endDecorator, children }: Props) => {
       <Stack gap={1}>
         <Stack>
           <Typography level="h2">{title}</Typography>
-          {endDecorator}
+
+          <Stack
+            sx={{
+              position: "fixed",
+              top: "2rem",
+              right: "2rem",
+              zIndex: 10,
+            }}
+          >
+            {endDecorator}
+          </Stack>
         </Stack>
 
         <Divider></Divider>

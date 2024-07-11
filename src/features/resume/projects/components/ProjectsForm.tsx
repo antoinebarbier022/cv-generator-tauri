@@ -1,5 +1,4 @@
-import { AddRounded } from "@mui/icons-material";
-import { AccordionGroup, Button, Stack } from "@mui/joy";
+import { AccordionGroup, Stack } from "@mui/joy";
 import { FormikProps } from "formik";
 import { useState } from "react";
 
@@ -18,27 +17,6 @@ export const ProjectsForm = ({ formik }: Props) => {
     number | null
   >(0);
 
-  const handleAddProject = () => {
-    formik.setFieldValue("experiences", [
-      ...(formik.values.experiences ?? []),
-      {
-        id: crypto.randomUUID(),
-        client: "",
-        program: "",
-        role: "",
-        date: "",
-        context: {
-          en: "",
-          fr: "",
-        },
-        contribution: {
-          en: "",
-          fr: "",
-        },
-      } as UserDataExperience,
-    ]);
-  };
-
   const isMissingField = (experience: UserDataExperience) => {
     return Boolean(
       !experience.client ||
@@ -53,23 +31,6 @@ export const ProjectsForm = ({ formik }: Props) => {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Button
-        size="sm"
-        variant="outlined"
-        startDecorator={<AddRounded />}
-        disabled={Boolean(formik.errors.experiences)}
-        sx={{
-          position: "fixed",
-          top: "2rem",
-          right: "2rem",
-          zIndex: 10,
-          backgroundColor: "white",
-        }}
-        onClick={handleAddProject}
-      >
-        Add Project
-      </Button>
-
       <AccordionGroup component={Stack} gap={1} disableDivider>
         {formik.values.experiences?.map((field, index) => (
           <AccordionCard

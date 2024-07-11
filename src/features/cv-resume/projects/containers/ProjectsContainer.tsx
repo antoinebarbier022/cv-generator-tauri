@@ -1,8 +1,8 @@
 import { Typography } from "@mui/joy";
 
 import { PageLayout } from "../../../../layouts/PageLayout";
+import { ProjectsForm } from "../../../resume/projects/components/ProjectsForm";
 import { useFormCV } from "../../../storage/hooks/useFormCV";
-import { ProjectsForm } from "../components/ProjectsForm";
 
 export const ProjectsContainer = () => {
   const { userData, formik } = useFormCV();

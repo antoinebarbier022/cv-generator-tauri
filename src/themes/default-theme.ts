@@ -44,7 +44,13 @@ export default extendTheme({
         maxWidth: "xl",
       },
     },
-
+    JoyIconButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: "100%",
+        },
+      },
+    },
     JoyLink: {
       styleOverrides: {
         root: {

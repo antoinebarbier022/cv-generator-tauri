@@ -48,10 +48,18 @@ export const StorageService = {
   },
   getImageProfile: async (): Promise<string> => {
     const extension = localStorage.getItem("profile_picture_extension");
-    const data = convertFileSrc(
-      await join(await appDataDir(), `profile.${extension}`)
-    );
-    return data;
+    if (!extension) {
+      return "";
+    }
+    let picture;
+    try {
+      picture = await join(await appDataDir(), `profile.${extension}`);
+      await readTextFile(picture);
+      const data = convertFileSrc(picture);
+      return data;
+    } catch {
+      return "";
+    }
   },
   setImageProfile: async (): Promise<void> => {
     const filePath = await open({

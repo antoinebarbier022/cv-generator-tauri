@@ -1,5 +1,4 @@
-import { AddRounded } from "@mui/icons-material";
-import { AccordionGroup, Button, Chip, Input, Stack } from "@mui/joy";
+import { AccordionGroup, Chip, Input, Stack } from "@mui/joy";
 import { FormikProps } from "formik";
 import { useState } from "react";
 import { AccordionCard } from "../../../../components/AccordionCard";
@@ -15,28 +14,8 @@ export const SkillsForm = ({ formik }: Props) => {
     number | null
   >(0);
 
-  const handleAddSkill = () =>
-    formik.setFieldValue("skills", [...(formik.values.skills ?? []), ""]);
-
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Button
-        size="sm"
-        variant="outlined"
-        startDecorator={<AddRounded />}
-        disabled={Boolean(formik.errors.skills)}
-        sx={{
-          position: "fixed",
-          top: "2rem",
-          right: "2rem",
-          zIndex: 10,
-          backgroundColor: "white",
-        }}
-        onClick={handleAddSkill}
-      >
-        Add Skill
-      </Button>
-
       <AccordionGroup disableDivider component={Stack} gap={1}>
         {formik.values.skills?.map((field, index) => (
           <Stack direction="row" width={"100%"} key={index}>
