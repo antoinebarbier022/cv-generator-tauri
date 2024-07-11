@@ -3,6 +3,7 @@ import { UserData } from "../features/storage/types/storage";
 export const emptyInitialContentResume: UserData = {
   firstname: "",
   lastname: "",
+  picture: "",
   email: "",
   role: {
     en: "",

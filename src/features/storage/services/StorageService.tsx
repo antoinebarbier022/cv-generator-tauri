@@ -46,40 +46,34 @@ export const StorageService = {
       throw new Error("Error when update the data storage");
     }
   },
-  getImageProfile: async (): Promise<string> => {
-    const extension = localStorage.getItem("profile_picture_extension");
-    if (!extension) {
+  getImageProfile: async (pictureFilePath: string): Promise<string> => {
+    if (!pictureFilePath) {
       return "";
     }
-    let picture;
     try {
-      picture = await join(await appDataDir(), `profile.${extension}`);
-      await readTextFile(picture);
-      const data = convertFileSrc(picture);
+      const data = convertFileSrc(pictureFilePath);
       return data;
     } catch {
       return "";
     }
   },
-  setImageProfile: async (): Promise<void> => {
+  setImageProfile: async (): Promise<string> => {
     const filePath = await open({
       defaultPath: await pictureDir(),
     });
-    if (filePath) {
-      try {
-        const extension = await extname(filePath as string);
-        const picture = await readBinaryFile(filePath as string);
-        localStorage.setItem("profile_picture_extension", extension);
-        await writeBinaryFile(
-          {
-            path: `profile.${extension}`,
-            contents: picture,
-          },
-          { dir: BaseDirectory.AppData }
-        );
-      } catch (e) {
-        throw new Error("Error set profile image to storage");
-      }
+    if (!filePath) {
+      return "";
     }
+    const extension = await extname(filePath as string);
+    const picture = await readBinaryFile(filePath as string);
+
+    await writeBinaryFile(
+      {
+        path: `profile.${extension}`,
+        contents: picture,
+      },
+      { dir: BaseDirectory.AppData }
+    );
+    return await join(await appDataDir(), `profile.${extension}`);
   },
 };

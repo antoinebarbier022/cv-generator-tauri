@@ -14,17 +14,17 @@ import {
   Stack,
   Textarea,
 } from "@mui/joy";
+import { convertFileSrc } from "@tauri-apps/api/tauri";
 import { FormikProps } from "formik";
 import { CV_LANGUAGES } from "../../../../constants/languages";
 import { UserData } from "../../../storage/types/storage";
 
 interface Props {
   formik: FormikProps<UserData>;
-  image: string | undefined;
   onClickUploadPicture: () => void;
 }
 
-export const ProfileForm = ({ image, formik, onClickUploadPicture }: Props) => {
+export const ProfileForm = ({ formik, onClickUploadPicture }: Props) => {
   const gradeOptions = ["A", "B", "C", "D", "E", "F"];
 
   const entityOptions = new Map<string, string>([
@@ -43,7 +43,9 @@ export const ProfileForm = ({ image, formik, onClickUploadPicture }: Props) => {
                 <AspectRatio ratio={1} sx={{ width: "160px", height: "160px" }}>
                   <Avatar
                     sx={{ borderRadius: 0 }}
-                    src={`${image}?removeCache=${new Date()}`}
+                    src={`${convertFileSrc(
+                      formik.values.picture
+                    )}?removeCache=${new Date()}`}
                   />
                 </AspectRatio>
               </CardOverflow>
@@ -88,7 +90,9 @@ export const ProfileForm = ({ image, formik, onClickUploadPicture }: Props) => {
                 <FormLabel>Grade</FormLabel>
                 <Select
                   name="grade"
-                  value={formik.values.grade}
+                  value={
+                    Boolean(formik.values.grade) ? formik.values.grade : null
+                  }
                   onChange={(_, value) => formik.setFieldValue("grade", value)}
                   placeholder="A"
                   sx={{ width: "7ch" }}
@@ -106,7 +110,9 @@ export const ProfileForm = ({ image, formik, onClickUploadPicture }: Props) => {
 
                 <Select
                   name="entity"
-                  value={formik.values.entity}
+                  value={
+                    Boolean(formik.values.entity) ? formik.values.entity : null
+                  }
                   onChange={(_, value) => {
                     formik.setFieldValue("entity", value);
                     formik.setFieldValue(

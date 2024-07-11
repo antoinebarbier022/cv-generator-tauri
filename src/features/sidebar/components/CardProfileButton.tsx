@@ -1,9 +1,9 @@
 import { Avatar, Card, Link, Stack, Typography } from "@mui/joy";
+import { convertFileSrc } from "@tauri-apps/api/tauri";
 import { NavLink } from "react-router-dom";
 
 interface Props {
   fullName: string;
-
   linkTo: string;
   image: string | undefined;
 }
@@ -26,8 +26,8 @@ export const CardProfileButton = (props: Props) => {
         <Avatar
           variant="outlined"
           src={
-            Boolean(props.image)
-              ? `${props.image}?removeCache=${new Date()}`
+            props.image
+              ? `${convertFileSrc(props.image)}?removeCache=${new Date()}`
               : undefined
           }
           size="md"

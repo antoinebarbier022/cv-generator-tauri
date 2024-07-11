@@ -12,7 +12,6 @@ import { useMemo, useState } from "react";
 import { useGenerateCV } from "../../cv-generation/hooks/useGenerateCV";
 import { DebugModal } from "../../debug/components/DebugModal";
 import { useGetDataStorage } from "../../storage/hooks/useGetDataStorage";
-import { useGetImageProfileStorage } from "../../storage/hooks/useGetImageProfileStorage";
 import { CardProfileButton } from "../components/CardProfileButton";
 import { NavigationList } from "../components/NavigationList";
 import { NavigationType } from "../types/sidebar";
@@ -20,7 +19,6 @@ import { NavigationType } from "../types/sidebar";
 export const SidebarContainer = () => {
   const generateCV = useGenerateCV();
 
-  const image = useGetImageProfileStorage();
   const contentResume = useGetDataStorage();
 
   const fullName = useMemo(() => {
@@ -108,7 +106,7 @@ export const SidebarContainer = () => {
           paddingX={"var(--app-border-width)"}
         >
           <CardProfileButton
-            image={image.data}
+            image={contentResume.data?.picture}
             fullName={Boolean(fullName) ? fullName : "Your Profile"}
             linkTo={"/profile"}
           />

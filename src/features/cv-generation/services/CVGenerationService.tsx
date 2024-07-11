@@ -26,11 +26,6 @@ export const CVGenerationService = {
     const command = Command.sidecar("binaries/main", [
       "--path-data",
       await join(appDataDirPath, "data.json"),
-      "--path-img",
-      await join(
-        await appDataDir(),
-        `profile.${localStorage.getItem("profile_picture_extension")}`
-      ),
       "--path-template",
       await resolveResource(
         await join("resources", "CV_Nom_Prenom_Capability.pptx")

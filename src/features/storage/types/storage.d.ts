@@ -8,6 +8,7 @@ interface Translation {
 export interface UserData {
   firstname: string;
   lastname: string;
+  picture: string;
   email: string;
   role: Translation;
   grade: string;

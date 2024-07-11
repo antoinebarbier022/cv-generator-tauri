@@ -20,7 +20,7 @@ export const useFormCV = () => {
   });
 
   const debouncedSubmit = useCallback(
-    debounce(() => formik.submitForm(), 2000),
+    debounce(() => formik.submitForm(), 500),
     [2000, formik.submitForm]
   );
 
