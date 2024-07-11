@@ -63,17 +63,6 @@ export const ProfileForm = ({ formik, onClickUploadPicture }: Props) => {
           <Stack direction={"column"} gap={"1rem"}>
             <Stack direction={"row"} gap={2} flexWrap={"wrap"}>
               <FormControl sx={{ flex: 1 }}>
-                <FormLabel>Lastname</FormLabel>
-                <Input
-                  id="lastname"
-                  name="lastname"
-                  value={formik.values.lastname}
-                  onChange={formik.handleChange}
-                  placeholder="Lastname"
-                />
-              </FormControl>
-
-              <FormControl sx={{ flex: 1 }}>
                 <FormLabel>Firstname</FormLabel>
                 <Input
                   id="firstname"
@@ -81,6 +70,17 @@ export const ProfileForm = ({ formik, onClickUploadPicture }: Props) => {
                   value={formik.values.firstname}
                   onChange={formik.handleChange}
                   placeholder="Firstname"
+                />
+              </FormControl>
+
+              <FormControl sx={{ flex: 1 }}>
+                <FormLabel>Lastname</FormLabel>
+                <Input
+                  id="lastname"
+                  name="lastname"
+                  value={formik.values.lastname}
+                  onChange={formik.handleChange}
+                  placeholder="Lastname"
                 />
               </FormControl>
             </Stack>
