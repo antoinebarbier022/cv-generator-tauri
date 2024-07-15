@@ -100,7 +100,7 @@
       {
         "fullscreen": false,
         "minWidth": 800,
-        "minHeight": 300,
+        "minHeight": 500,
         "width": 800,
         "height": 600,
         "transparent": true,
