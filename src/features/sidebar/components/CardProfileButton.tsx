@@ -33,7 +33,11 @@ export const CardProfileButton = (props: Props) => {
           size="md"
         />
 
-        <Typography level="body-md" textColor={"text.primary"}>
+        <Typography
+          level="body-md"
+          textColor={"text.primary"}
+          className="!line-clamp-2"
+        >
           <NavLink to={props.linkTo}>
             {({ isActive }) => (
               <Link
