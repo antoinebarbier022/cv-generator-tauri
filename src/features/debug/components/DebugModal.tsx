@@ -15,6 +15,7 @@ import { format, fromUnixTime } from "date-fns";
 import { useState } from "react";
 import { useGetDataStorage } from "../../storage/hooks/useGetDataStorage";
 import { useSetDataStorage } from "../../storage/hooks/useSetDataStorage";
+import { UserData } from "../../storage/types/storage";
 import { dataContentValidationSchema } from "../../storage/validations/dataContentValidationSchema";
 
 interface Props {
@@ -40,7 +41,7 @@ export const DebugModal = (props: Props) => {
       const text = JSON.parse(await readTextFile(selected as string));
 
       dataContentValidationSchema
-        .validate(text)
+        .validate(text as UserData)
         .then(() => mutationDataToStorage.mutate({ values: text }))
         .catch((e) => alert(e));
     }
