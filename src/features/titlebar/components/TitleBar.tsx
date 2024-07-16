@@ -1,6 +1,7 @@
 import { Stack } from "@mui/joy";
 
 export const TitleBar = () => {
+  // titlebar
   return (
     <Stack
       data-tauri-drag-region
