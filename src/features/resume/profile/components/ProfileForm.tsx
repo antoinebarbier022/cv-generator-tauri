@@ -25,10 +25,15 @@ import { UserData } from "../../../storage/types/storage";
 
 interface Props {
   formik: FormikProps<UserData>;
-  onClickUploadPicture: () => void;
+  onUploadPicture: () => void;
+  onDeletePicture: () => void;
 }
 
-export const ProfileForm = ({ formik, onClickUploadPicture }: Props) => {
+export const ProfileForm = ({
+  formik,
+  onUploadPicture,
+  onDeletePicture,
+}: Props) => {
   const { t } = useTranslation();
   const gradeOptions = ["A", "B", "C", "D", "E", "F"];
 
@@ -154,13 +159,21 @@ export const ProfileForm = ({ formik, onClickUploadPicture }: Props) => {
                 size="sm"
                 startDecorator={<CloudUploadOutlined />}
                 sx={{ fontWeight: "500" }}
-                onClick={onClickUploadPicture}
+                onClick={onUploadPicture}
               >
                 {formik.values.picture
                   ? t("button.replace-profile-image.label")
                   : t("button.upload-profile-image.label")}
               </Button>
-              <Typography level="body-xs" component={Link} textAlign={"center"}>
+              <Typography
+                level="body-xs"
+                visibility={
+                  Boolean(formik.values.picture) ? "visible" : "hidden"
+                }
+                component={Link}
+                onClick={onDeletePicture}
+                textAlign={"center"}
+              >
                 {t("button.delete-profile-image.label")}
               </Typography>
             </Stack>

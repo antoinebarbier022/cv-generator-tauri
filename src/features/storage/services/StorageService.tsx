@@ -57,6 +57,7 @@ export const StorageService = {
       return "";
     }
   },
+
   setImageProfile: async (): Promise<string | null> => {
     const filePath = await open({
       defaultPath: await pictureDir(),

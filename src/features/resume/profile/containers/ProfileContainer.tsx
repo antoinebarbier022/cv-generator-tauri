@@ -2,6 +2,7 @@ import { Typography } from "@mui/joy";
 
 import { useTranslation } from "react-i18next";
 import { PageLayout } from "../../../../layouts/PageLayout";
+import { useDeleteImageProfileStorage } from "../../../storage/hooks/useDeleteImageProfileStorage";
 import { useFormCV } from "../../../storage/hooks/useFormCV";
 import { useSetImageProfileStorage } from "../../../storage/hooks/useSetImageProfileStorage";
 import { ProfileForm } from "../components/ProfileForm";
@@ -10,10 +11,15 @@ export const ProfileContainer = () => {
   const { t } = useTranslation();
   const { userData, formik } = useFormCV();
 
-  const mutationPicture = useSetImageProfileStorage();
+  const mutationReplacePicture = useSetImageProfileStorage();
+  const mutationDeletePicture = useDeleteImageProfileStorage();
 
   const handleChangePicture = () => {
-    mutationPicture.mutate();
+    mutationReplacePicture.mutate();
+  };
+
+  const handleDeletePicture = () => {
+    mutationDeletePicture.mutate();
   };
 
   return (
@@ -21,7 +27,8 @@ export const ProfileContainer = () => {
       {userData.data && (
         <ProfileForm
           formik={formik}
-          onClickUploadPicture={handleChangePicture}
+          onUploadPicture={handleChangePicture}
+          onDeletePicture={handleDeletePicture}
         />
       )}
       {userData.isPending && <Typography>Loading...</Typography>}
