@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
 import debounce from "just-debounce-it";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 
 import { emptyInitialContentResume } from "../../../constants/emptyInitialContentResume";
 import { UserData } from "../types/storage";
@@ -11,9 +11,14 @@ export const useFormCV = () => {
   const userData = useGetDataStorage();
   const dataMutation = useSetDataStorage();
 
+  const initialValues = useMemo(() => userData.data, [userData.data]);
+
   const formik = useFormik<UserData>({
-    initialValues: userData.data ?? emptyInitialContentResume,
+    initialValues: initialValues ?? emptyInitialContentResume,
     enableReinitialize: true,
+    validateOnBlur: false,
+    validateOnMount: false,
+    validateOnChange: false,
     onSubmit: async (values) => {
       dataMutation.mutate({ values });
     },

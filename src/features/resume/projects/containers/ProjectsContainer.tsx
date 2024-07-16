@@ -1,5 +1,6 @@
 import { Typography } from "@mui/joy";
 
+import { useTranslation } from "react-i18next";
 import { IconButtonAdd } from "../../../../components/IconButtonAdd";
 import { PageLayout } from "../../../../layouts/PageLayout";
 import { useFormCV } from "../../../storage/hooks/useFormCV";
@@ -7,6 +8,7 @@ import { UserDataExperience } from "../../../storage/types/storage";
 import { ProjectsForm } from "../components/ProjectsForm";
 
 export const ProjectsContainer = () => {
+  const { t } = useTranslation();
   const { userData, formik } = useFormCV();
 
   const handleAddProject = () => {
@@ -32,7 +34,7 @@ export const ProjectsContainer = () => {
 
   return (
     <PageLayout
-      title={"Projects"}
+      title={t("resume.section.projects.title")}
       endDecorator={<IconButtonAdd onClick={handleAddProject} />}
     >
       {userData.isPending && <Typography>Loading...</Typography>}

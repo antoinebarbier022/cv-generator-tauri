@@ -11,8 +11,8 @@ export const AccordionTitle = (props: Props) => {
   return (
     <Stack direction={"row"} alignItems={"center"} gap={1}>
       {props.isWarningIcon && (
-        <Tooltip title="Missing field" arrow variant="outlined">
-          <WarningRounded sx={{ color: "danger.500" }} />
+        <Tooltip title="Missing translation" arrow variant="outlined">
+          <WarningRounded sx={{ color: "warning.400" }} />
         </Tooltip>
       )}
 

@@ -23,11 +23,18 @@ export const SkillsForm = ({ formik }: Props) => {
               index={index}
               title={
                 <AccordionTitle
-                  isWarningIcon={Boolean(!field.fr || !field.en)}
+                  isWarningIcon={Boolean(
+                    (field.fr && !field.en) || (!field.fr && field.en)
+                  )}
                   content={Boolean(field.fr) ? field.fr : field.en}
                   placeholder={`Skills ${index + 1}`}
                 />
               }
+              isNew={Boolean(
+                formik.values.skills &&
+                  !formik.values.skills[index].fr &&
+                  !formik.values.skills[index].en
+              )}
               expanded={indexExpandedAccordion === index}
               onExpandedChange={(_, expanded) => {
                 setIndexExpandedAccordion(expanded ? index : null);

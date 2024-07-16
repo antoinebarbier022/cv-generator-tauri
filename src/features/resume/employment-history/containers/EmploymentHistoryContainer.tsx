@@ -11,7 +11,7 @@ export const EmploymentHistoryContainer = () => {
   const handleAddEmploymentHistory = () =>
     formik.setFieldValue("employment_history", [
       ...(formik.values.employment_history ?? []),
-      "",
+      { fr: "", en: "" },
     ]);
 
   return (

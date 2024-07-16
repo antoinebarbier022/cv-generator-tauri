@@ -14,6 +14,7 @@ interface Props extends PropsWithChildren {
   index: number;
   title: ReactNode;
   expanded?: boolean;
+  isNew?: boolean;
   onExpandedChange?: (event: React.SyntheticEvent, expanded: boolean) => void;
   onDelete: () => void;
 }
@@ -33,11 +34,15 @@ export const AccordionCard = (props: Props) => {
         #{String(props.index + 1).padStart(2, "0")}
       </Typography>
 
-      <Card sx={{ padding: 0, overflow: "hidden", flex: 1 }}>
+      <Card
+        color={props.isNew ? "primary" : undefined}
+        sx={{ padding: 0, overflow: "hidden", flex: 1 }}
+      >
         <Stack
           direction={"row-reverse"}
           alignItems={"start"}
           justifyContent={"space-between"}
+          flex={1}
           gap={1}
         >
           <Stack

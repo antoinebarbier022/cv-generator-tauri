@@ -19,13 +19,10 @@ export const ProjectsForm = ({ formik }: Props) => {
 
   const isMissingField = (experience: UserDataExperience) => {
     return Boolean(
-      !experience.client ||
-        !experience.program ||
-        !experience.date ||
-        !experience.context.fr ||
-        !experience.context.en ||
-        !experience.contribution.fr ||
-        !experience.contribution.en
+      (!experience.context.fr && experience.context.en) ||
+        (experience.context.fr && !experience.context.en) ||
+        (!experience.contribution.fr && experience.contribution.en) ||
+        (experience.contribution.fr && !experience.contribution.en)
     );
   };
 
@@ -42,6 +39,7 @@ export const ProjectsForm = ({ formik }: Props) => {
                   <ProjectTitle
                     program={field.program}
                     client={field.client}
+                    role={field.role}
                     date={field.date}
                   />
                 }

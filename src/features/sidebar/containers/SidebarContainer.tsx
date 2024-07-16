@@ -9,6 +9,7 @@ import {
 import { Button, Sheet, Stack } from "@mui/joy";
 
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useGenerateCV } from "../../cv-generation/hooks/useGenerateCV";
 import { DebugModal } from "../../debug/components/DebugModal";
 import { useGetDataStorage } from "../../storage/hooks/useGetDataStorage";
@@ -17,8 +18,9 @@ import { NavigationList } from "../components/NavigationList";
 import { NavigationType } from "../types/sidebar";
 
 export const SidebarContainer = () => {
-  const generateCV = useGenerateCV();
+  const { t } = useTranslation();
 
+  const generateCV = useGenerateCV();
   const contentResume = useGetDataStorage();
 
   const fullName = useMemo(() => {
@@ -50,33 +52,33 @@ export const SidebarContainer = () => {
   const navigation: NavigationType[] = [
     {
       icon: <HomeRepairServiceRounded />,
-      label: "Skills",
+      label: t("sidebar.navigation.skills"),
       to: "/skills",
     },
     {
       icon: <SchoolRounded />,
-      label: "Formation",
+      label: t("sidebar.navigation.formation"),
       to: "/formation",
     },
     {
       icon: <LanguageRounded />,
-      label: "Languages",
+      label: t("sidebar.navigation.languages"),
       to: "/languages",
     },
     {
       icon: <TimelineRounded />,
-      label: "Employment History",
+      label: t("sidebar.navigation.employment-history"),
       to: "/employment-history",
     },
     {
       icon: <BusinessRounded />,
-      label: "Projects",
+      label: t("sidebar.navigation.projects"),
       to: "/projects",
       divider: false,
     },
     {
       icon: <Construction />,
-      label: "CV Configuration",
+      label: t("sidebar.navigation.cv-configuration"),
       to: "/cv-configuration",
       hide: true,
     },
@@ -107,7 +109,7 @@ export const SidebarContainer = () => {
         >
           <CardProfileButton
             image={contentResume.data?.picture}
-            fullName={Boolean(fullName) ? fullName : "Your Profile"}
+            fullName={Boolean(fullName) ? fullName : "Profile"}
             linkTo={"/profile"}
           />
 
@@ -129,7 +131,7 @@ export const SidebarContainer = () => {
               loading={generateCV.isPending}
               onClick={handleGenerateCV}
             >
-              Generate CV
+              {t("button.generate-cv.label")}
             </Button>
           </Stack>
         </Stack>

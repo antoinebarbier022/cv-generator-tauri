@@ -1,3 +1,4 @@
+import "@/configs/i18n.config";
 import { CssBaseline, CssVarsProvider } from "@mui/joy";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";

@@ -1,6 +1,7 @@
 import { AccordionGroup, Chip, Stack, Textarea } from "@mui/joy";
 import { FormikProps } from "formik";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { AccordionCard } from "../../../../components/AccordionCard";
 import { AccordionTitle } from "../../../../components/AccordionTitle";
 import { CV_LANGUAGES } from "../../../../constants/languages";
@@ -10,6 +11,7 @@ interface Props {
   formik: FormikProps<UserData>;
 }
 export const FormationForm = ({ formik }: Props) => {
+  const { t } = useTranslation();
   const [indexExpandedAccordion, setIndexExpandedAccordion] = useState<
     number | null
   >(0);
@@ -23,9 +25,13 @@ export const FormationForm = ({ formik }: Props) => {
               index={index}
               title={
                 <AccordionTitle
-                  isWarningIcon={Boolean(!field.fr || !field.en)}
+                  isWarningIcon={Boolean(
+                    (field.fr && !field.en) || (!field.fr && field.en)
+                  )}
                   content={Boolean(field.fr) ? field.fr : field.en}
-                  placeholder={`Formation ${index + 1}`}
+                  placeholder={`${t("input.formation.placeholder")} ${
+                    index + 1
+                  }`}
                 />
               }
               expanded={indexExpandedAccordion === index}
@@ -49,7 +55,7 @@ export const FormationForm = ({ formik }: Props) => {
                     minRows={2}
                     maxRows={2}
                     onChange={formik.handleChange}
-                    placeholder=""
+                    placeholder={t("input.firstname.placeholder")}
                   />
                 ))}
               </Stack>

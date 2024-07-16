@@ -23,7 +23,9 @@ export const EmploymentHistoryForm = ({ formik }: Props) => {
               index={index}
               title={
                 <AccordionTitle
-                  isWarningIcon={Boolean(!field.fr || !field.en)}
+                  isWarningIcon={Boolean(
+                    (field.fr && !field.en) || (!field.fr && field.en)
+                  )}
                   content={Boolean(field.fr) ? field.fr : field.en}
                   placeholder={`Employment History ${index + 1}`}
                 />
