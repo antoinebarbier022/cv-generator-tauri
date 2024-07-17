@@ -15,11 +15,15 @@ export const ProfileContainer = () => {
   const mutationDeletePicture = useDeleteImageProfileStorage();
 
   const handleChangePicture = () => {
-    mutationReplacePicture.mutate();
+    mutationReplacePicture.mutate(undefined, {
+      onSuccess: () => formik.submitForm(),
+    });
   };
 
   const handleDeletePicture = () => {
-    mutationDeletePicture.mutate();
+    mutationDeletePicture.mutate(undefined, {
+      onSuccess: () => formik.submitForm(),
+    });
   };
 
   return (

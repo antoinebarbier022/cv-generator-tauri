@@ -37,12 +37,13 @@ export const ProjectTitle = (props: Props) => {
           {t("input.project.role.label")}
         </span>
       )}{" "}
-      -{" "}
+      (
       {props.date || (
-        <span className="text-gray-400 italic">
-          {t("input.project.date.label")}
+        <span className="text-gray-400">
+          {t("input.project.date.placeholder")}
         </span>
       )}
+      )
     </Typography>
   );
 };

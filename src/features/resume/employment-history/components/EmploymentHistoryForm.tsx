@@ -1,6 +1,7 @@
 import { AccordionGroup, Chip, Stack, Textarea } from "@mui/joy";
 import { FormikProps } from "formik";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { AccordionCard } from "../../../../components/AccordionCard";
 import { AccordionTitle } from "../../../../components/AccordionTitle";
 import { CV_LANGUAGES } from "../../../../constants/languages";
@@ -10,6 +11,7 @@ interface Props {
   formik: FormikProps<UserData>;
 }
 export const EmploymentHistoryForm = ({ formik }: Props) => {
+  const { t } = useTranslation();
   const [indexExpandedAccordion, setIndexExpandedAccordion] = useState<
     number | null
   >(0);
@@ -27,7 +29,9 @@ export const EmploymentHistoryForm = ({ formik }: Props) => {
                     (field.fr && !field.en) || (!field.fr && field.en)
                   )}
                   content={Boolean(field.fr) ? field.fr : field.en}
-                  placeholder={`Employment History ${index + 1}`}
+                  placeholder={`${t("input.employment-history.label")} ${
+                    index + 1
+                  }`}
                 />
               }
               expanded={indexExpandedAccordion === index}
@@ -53,7 +57,7 @@ export const EmploymentHistoryForm = ({ formik }: Props) => {
                     maxRows={4}
                     value={field[lang as string]}
                     onChange={formik.handleChange}
-                    placeholder=""
+                    placeholder={t("input.employment-history.placeholder")}
                   />
                 ))}
               </Stack>

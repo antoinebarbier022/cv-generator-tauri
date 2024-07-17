@@ -1,4 +1,3 @@
-import { CloudUploadOutlined } from "@mui/icons-material";
 import {
   AspectRatio,
   Avatar,
@@ -146,7 +145,11 @@ export const ProfileForm = ({
               <CardOverflow>
                 <AspectRatio ratio={1} sx={{ width: "160px", height: "160px" }}>
                   <Avatar
-                    sx={{ borderRadius: 0 }}
+                    sx={{
+                      borderRadius: 0,
+                      backgroundColor: "neutral.50",
+                      width: "100%",
+                    }}
                     src={`${convertFileSrc(
                       formik.values.picture
                     )}?removeCache=${new Date()}`}
@@ -157,7 +160,8 @@ export const ProfileForm = ({
             <Stack gap={1}>
               <Button
                 size="sm"
-                startDecorator={<CloudUploadOutlined />}
+                variant="outlined"
+                color="neutral"
                 sx={{ fontWeight: "500" }}
                 onClick={onUploadPicture}
               >

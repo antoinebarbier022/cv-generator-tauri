@@ -29,9 +29,7 @@ export const FormationForm = ({ formik }: Props) => {
                     (field.fr && !field.en) || (!field.fr && field.en)
                   )}
                   content={Boolean(field.fr) ? field.fr : field.en}
-                  placeholder={`${t("input.formation.placeholder")} ${
-                    index + 1
-                  }`}
+                  placeholder={`${t("input.formation.label")} ${index + 1}`}
                 />
               }
               expanded={indexExpandedAccordion === index}
@@ -56,7 +54,7 @@ export const FormationForm = ({ formik }: Props) => {
                     minRows={2}
                     maxRows={2}
                     onChange={formik.handleChange}
-                    placeholder={t("input.firstname.placeholder")}
+                    placeholder={t("input.formation.placeholder")}
                   />
                 ))}
               </Stack>
