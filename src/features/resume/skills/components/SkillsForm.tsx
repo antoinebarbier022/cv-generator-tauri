@@ -32,11 +32,6 @@ export const SkillsForm = ({ formik }: Props) => {
                   placeholder={`${t("input.skill.label")} ${index + 1}`}
                 />
               }
-              isNew={Boolean(
-                formik.values.skills &&
-                  !formik.values.skills[index].fr &&
-                  !formik.values.skills[index].en
-              )}
               expanded={indexExpandedAccordion === index}
               onExpandedChange={(_, expanded) => {
                 setIndexExpandedAccordion(expanded ? index : null);

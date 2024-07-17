@@ -7,7 +7,7 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "CV Generator - frog",
+    "productName": "CV Generator",
     "version": "0.1.0"
   },
   "tauri": {
@@ -105,7 +105,7 @@
         "height": 600,
         "transparent": true,
         "resizable": true,
-        "title": "CV Generator - frog",
+        "title": "CV Generator",
         "titleBarStyle": "Overlay",
         "hiddenTitle": true
       }
