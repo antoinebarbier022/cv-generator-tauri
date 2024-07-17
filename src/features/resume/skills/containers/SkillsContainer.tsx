@@ -1,6 +1,7 @@
 import { Typography } from "@mui/joy";
 
 import { useTranslation } from "react-i18next";
+import { EmptyState } from "../../../../components/EmptyState";
 import { IconButtonAdd } from "../../../../components/IconButtonAdd";
 import { PageLayout } from "../../../../layouts/PageLayout";
 import { useFormCV } from "../../../storage/hooks/useFormCV";
@@ -17,14 +18,25 @@ export const SkillsContainer = () => {
     ]);
   };
 
+  const isEmptyData = userData.data && userData.data?.skills.length === 0;
+
   return (
     <PageLayout
       title={t("resume.section.skills.title")}
       endDecorator={<IconButtonAdd onClick={handleAddSkill} />}
     >
-      {userData.data && <SkillsForm formik={formik} />}
       {userData.isPending && <Typography>Loading...</Typography>}
       {userData.isError && <Typography>Error.</Typography>}
+      {isEmptyData ? (
+        <EmptyState
+          title={t("empty-state.skills.title")}
+          description={t("empty-state.skills.description")}
+          labelButton={t("empty-state.skills.button.label")}
+          onClickButton={handleAddSkill}
+        />
+      ) : (
+        <SkillsForm formik={formik} />
+      )}
     </PageLayout>
   );
 };

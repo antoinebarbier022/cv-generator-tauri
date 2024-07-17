@@ -47,6 +47,18 @@ export default extendTheme({
           "800": "#7A2701",
           "900": "#3D1300",
         },
+        neutral: {
+          "50": "#F0F0F0",
+          "100": "#E3E3E3",
+          "200": "#C4C4C4",
+          "300": "#A8A8A8",
+          "400": "#8C8C8C",
+          "500": "#6F6F6F",
+          "600": "#595959",
+          "700": "#424242",
+          "800": "#2B2B2B",
+          "900": "#171717",
+        },
       },
     },
   },
@@ -77,6 +89,9 @@ export default extendTheme({
           backgroundColor: `rgba(${theme.palette.neutral.darkChannel} / 0.7)`,
         }),
       },
+    },
+    JoyCard: {
+      styleOverrides: {},
     },
 
     JoyInput: {

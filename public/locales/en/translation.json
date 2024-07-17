@@ -37,7 +37,9 @@
   "input.twitter.placeholder": "Twitter",
   "input.role.label": "Role",
   "input.role.placeholder": "Role",
-  "input.description.label": "Description",
+  "input.formation.label": "Role",
+  "input.formation.placeholder": "Formation",
+  "input.description.label": "Formation",
   "input.description.placeholder": "A short description about you",
   "input.project.program.label": "Program",
   "input.project.program.placeholder": "Program/Project",
@@ -46,9 +48,29 @@
   "input.project.role.label": "Role",
   "input.project.role.placeholder": "Role",
   "input.project.date.label": "Date",
-  "input.project.date.placeholder": "(YYYY)",
+  "input.project.date.placeholder": "YYYY",
   "input.project.context.label": "Context",
   "input.project.context.placeholder": "1 line about the program/project",
   "input.project.contribution.label": "Contribution",
-  "input.project.contribution.placeholder": "2/3 lines about our contribution"
+  "input.project.contribution.placeholder": "2/3 lines about our contribution",
+
+  "empty-state.project.title": "No projects",
+  "empty-state.project.description": "You have not added any projects yet.",
+  "empty-state.project.button.label": "New project",
+
+  "empty-state.formation.title": "No formations",
+  "empty-state.formation.description": "You have not added any formations yet.",
+  "empty-state.formation.button.label": "New formation",
+
+  "empty-state.skills.title": "No skills",
+  "empty-state.skills.description": "You have not added any skills yet.",
+  "empty-state.skills.button.label": "New skill",
+
+  "empty-state.languages.title": "No languages",
+  "empty-state.languages.description": "You have not added any languages yet.",
+  "empty-state.languages.button.label": "New language",
+
+  "empty-state.employment-history.title": "No employment history",
+  "empty-state.employment-history.description": "You have not added any employment history yet.",
+  "empty-state.employment-history.button.label": "New employment history"
 }

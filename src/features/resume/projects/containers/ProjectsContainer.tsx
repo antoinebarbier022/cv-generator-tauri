@@ -1,6 +1,7 @@
 import { Typography } from "@mui/joy";
 
 import { useTranslation } from "react-i18next";
+import { EmptyState } from "../../../../components/EmptyState";
 import { IconButtonAdd } from "../../../../components/IconButtonAdd";
 import { PageLayout } from "../../../../layouts/PageLayout";
 import { useFormCV } from "../../../storage/hooks/useFormCV";
@@ -31,6 +32,7 @@ export const ProjectsContainer = () => {
       } as UserDataExperience,
     ]);
   };
+  const isEmptyData = userData.data && userData.data?.experiences.length === 0;
 
   return (
     <PageLayout
@@ -39,7 +41,16 @@ export const ProjectsContainer = () => {
     >
       {userData.isPending && <Typography>Loading...</Typography>}
       {userData.isError && <Typography>Error.</Typography>}
-      {userData.data && <ProjectsForm formik={formik} />}
+      {isEmptyData ? (
+        <EmptyState
+          title={t("empty-state.project.title")}
+          description={t("empty-state.project.description")}
+          labelButton={t("empty-state.project.button.label")}
+          onClickButton={handleAddProject}
+        />
+      ) : (
+        <ProjectsForm formik={formik} />
+      )}
     </PageLayout>
   );
 };

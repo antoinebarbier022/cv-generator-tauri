@@ -1,4 +1,12 @@
-import { Chip, FormControl, FormLabel, Input, Stack, Textarea } from "@mui/joy";
+import {
+  Chip,
+  FormControl,
+  FormLabel,
+  Input,
+  Stack,
+  Textarea,
+  Typography,
+} from "@mui/joy";
 import { FormikProps } from "formik";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -51,6 +59,7 @@ export const ProjectForm = ({ formik, field, index }: Props) => {
         placeholder: t("input.project.context.placeholder"),
         minRows: 2,
         maxRows: 4,
+        maxLength: 50,
         getValue: (lang: string) => field.context[lang],
       },
       {
@@ -59,6 +68,7 @@ export const ProjectForm = ({ formik, field, index }: Props) => {
         placeholder: t("input.project.contribution.placeholder"),
         minRows: 3,
         maxRows: 6,
+        maxLength: 255,
         getValue: (lang: string) => field.contribution[lang],
       },
     ],
@@ -114,6 +124,31 @@ export const ProjectForm = ({ formik, field, index }: Props) => {
                 error={
                   formik.touched.experiences &&
                   Boolean(formik.errors.experiences)
+                }
+                slotProps={{
+                  endDecorator: {
+                    sx: {
+                      alignSelf: "flex-end",
+                    },
+                  },
+                }}
+                endDecorator={
+                  <Typography
+                    level="body-xs"
+                    textColor={"neutral.500"}
+                    sx={{ ml: "auto" }}
+                  >
+                    <Typography
+                      textColor={
+                        item.getValue(lang).length > item.maxLength
+                          ? "danger.400"
+                          : "neutral.400"
+                      }
+                    >
+                      {item.getValue(lang).length}
+                    </Typography>{" "}
+                    / {item.maxLength}
+                  </Typography>
                 }
               />
             ))}
