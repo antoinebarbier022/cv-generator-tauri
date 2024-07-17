@@ -11,11 +11,13 @@ export const LanguagesContainer = () => {
   const { t } = useTranslation();
   const { userData, formik } = useFormCV();
 
-  const handleAddLanguage = () =>
+  const handleAddLanguage = () => {
     formik.setFieldValue("languages", [
       ...(formik.values.languages ?? []),
       { fr: "", en: "" },
     ]);
+    formik.submitForm();
+  };
 
   const isEmptyData = userData.data && userData.data?.languages.length === 0;
 

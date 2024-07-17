@@ -31,6 +31,7 @@ export const ProjectsContainer = () => {
         },
       } as UserDataExperience,
     ]);
+    formik.submitForm();
   };
   const isEmptyData = userData.data && userData.data?.experiences.length === 0;
 

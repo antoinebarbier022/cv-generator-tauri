@@ -16,6 +16,7 @@ export const SkillsContainer = () => {
       ...(formik.values.skills ?? []),
       { fr: "", en: "" },
     ]);
+    formik.submitForm();
   };
 
   const isEmptyData = userData.data && userData.data?.skills.length === 0;

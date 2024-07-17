@@ -34,12 +34,13 @@ export const LanguagesForm = ({ formik }: Props) => {
               onExpandedChange={(_, expanded) => {
                 setIndexExpandedAccordion(expanded ? index : null);
               }}
-              onDelete={() =>
+              onDelete={() => {
                 formik.setFieldValue("languages", [
                   ...(formik.values.languages?.filter((_, i) => i !== index) ??
                     []),
-                ])
-              }
+                ]);
+                formik.submitForm();
+              }}
             >
               <Stack flex={1} gap={1} marginTop={1}>
                 {CV_LANGUAGES.map((lang) => (

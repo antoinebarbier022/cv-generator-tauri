@@ -11,11 +11,13 @@ export const EmploymentHistoryContainer = () => {
   const { userData, formik } = useFormCV();
   const { t } = useTranslation();
 
-  const handleAddEmploymentHistory = () =>
+  const handleAddEmploymentHistory = () => {
     formik.setFieldValue("employment_history", [
       ...(formik.values.employment_history ?? []),
       { fr: "", en: "" },
     ]);
+    formik.submitForm();
+  };
 
   const isEmptyData =
     userData.data && userData.data?.employment_history.length === 0;

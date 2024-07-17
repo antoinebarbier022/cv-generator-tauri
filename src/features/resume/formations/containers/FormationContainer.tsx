@@ -10,11 +10,13 @@ export const FormationContainer = () => {
   const { t } = useTranslation();
   const { userData, formik } = useFormCV();
 
-  const handleAddFormation = () =>
+  const handleAddFormation = () => {
     formik.setFieldValue("formations", [
       ...(formik.values.formations ?? []),
       { fr: "", en: "" },
     ]);
+    formik.submitForm();
+  };
 
   const isEmptyData = userData.data && userData.data?.formations.length === 0;
 

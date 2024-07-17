@@ -50,12 +50,13 @@ export const ProjectsForm = ({ formik }: Props) => {
               setIndexExpandedAccordion(expanded ? index : null);
             }}
             expanded={indexExpandedAccordion === index}
-            onDelete={() =>
+            onDelete={() => {
               formik.setFieldValue("experiences", [
                 ...(formik.values.experiences?.filter((_, i) => i !== index) ??
                   []),
-              ])
-            }
+              ]);
+              formik.submitForm();
+            }}
           >
             <ProjectForm formik={formik} field={field} index={index} />
           </AccordionCard>
