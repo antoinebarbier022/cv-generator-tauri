@@ -43,7 +43,7 @@
         "readDir": true,
         "createDir": true,
         "exists": true,
-        "scope": ["$RESOURCE/**", "$APPDATA/**"]
+        "scope": ["$RESOURCE/**", "$APPDATA/", "$APPDATA/**"]
       },
       "window": {
         "all": false,

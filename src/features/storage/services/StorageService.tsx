@@ -28,6 +28,7 @@ export const StorageService = {
     });
     return JSON.parse(data) as UserData;
   },
+
   setContentData: async ({
     values,
   }: {
@@ -42,6 +43,7 @@ export const StorageService = {
     });
     return JSON.parse(data) as UserData;
   },
+
   getImageProfile: async (pictureFilePath: string): Promise<string> => {
     if (!pictureFilePath) {
       return "";
