@@ -8,5 +8,8 @@ export const useGenerateCV = () => {
     onSuccess: (data) => {
       alert(JSON.stringify(data));
     },
+    onError: (e) => {
+      alert(e);
+    },
   });
 };
