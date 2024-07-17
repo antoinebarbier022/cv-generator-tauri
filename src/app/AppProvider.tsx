@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { PropsWithChildren } from "react";
 import { ToastContainer } from "react-toastify";
+import { BetaBadge } from "../features/debug/components/BetaBadge.tsx";
 import "../styles/index.css";
 import theme from "../themes/default-theme.ts";
 
@@ -21,6 +22,7 @@ export const AppProvider = ({ children }: PropsWithChildren) => {
     >
       <CssBaseline />
       <QueryClientProvider client={queryClient}>
+        <BetaBadge />
         {children}
         <ReactQueryDevtools
           initialIsOpen={false}
