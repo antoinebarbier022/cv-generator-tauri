@@ -33,18 +33,14 @@ export const StorageService = {
   }: {
     values: UserData;
   }): Promise<UserData> => {
-    try {
-      await writeTextFile(
-        { path: CONTENT_DATA_FILE, contents: JSON.stringify(values) },
-        { dir: BaseDirectory.AppData }
-      );
-      const data = await readTextFile(CONTENT_DATA_FILE, {
-        dir: BaseDirectory.AppData,
-      });
-      return JSON.parse(data) as UserData;
-    } catch (e) {
-      throw new Error("Error when update the data storage");
-    }
+    await writeTextFile(
+      { path: CONTENT_DATA_FILE, contents: JSON.stringify(values) },
+      { dir: BaseDirectory.AppData }
+    );
+    const data = await readTextFile(CONTENT_DATA_FILE, {
+      dir: BaseDirectory.AppData,
+    });
+    return JSON.parse(data) as UserData;
   },
   getImageProfile: async (pictureFilePath: string): Promise<string> => {
     if (!pictureFilePath) {
