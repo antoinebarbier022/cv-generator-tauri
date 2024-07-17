@@ -12,5 +12,8 @@ export const useDeleteImageProfileStorage = () => {
       await queryClient.invalidateQueries({ queryKey: ["image_profile"] });
       await queryClient.invalidateQueries({ queryKey: ["data"] });
     },
+    onError: (e) => {
+      alert(e);
+    },
   });
 };

@@ -15,5 +15,8 @@ export const useSetImageProfileStorage = () => {
         await queryClient.invalidateQueries({ queryKey: ["data"] });
       }
     },
+    onError: (e) => {
+      alert(e);
+    },
   });
 };

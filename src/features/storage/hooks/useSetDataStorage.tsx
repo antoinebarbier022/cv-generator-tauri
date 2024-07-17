@@ -9,5 +9,8 @@ export const useSetDataStorage = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["data"] });
     },
+    onError: (e) => {
+      alert(e);
+    },
   });
 };
