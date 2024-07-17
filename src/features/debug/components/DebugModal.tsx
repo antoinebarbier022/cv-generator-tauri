@@ -13,6 +13,7 @@ import { readTextFile } from "@tauri-apps/api/fs";
 import { format, fromUnixTime } from "date-fns";
 
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useGetDataStorage } from "../../storage/hooks/useGetDataStorage";
 import { useSetDataStorage } from "../../storage/hooks/useSetDataStorage";
 import { UserData } from "../../storage/types/storage";
@@ -24,6 +25,7 @@ interface Props {
 }
 
 export const DebugModal = (props: Props) => {
+  const { t } = useTranslation();
   const mutationDataToStorage = useSetDataStorage();
   const data = useGetDataStorage();
 
@@ -66,7 +68,7 @@ export const DebugModal = (props: Props) => {
         <ModalClose />
         <Stack>
           <Typography level="title-lg">
-            Raw content <span className="font-mono">[.json]</span>
+            {t("debug-panel.title")} <span className="font-mono">[.json]</span>
           </Typography>
           <Typography
             startDecorator={<UpdateRounded />}
@@ -94,7 +96,7 @@ export const DebugModal = (props: Props) => {
 
         <Stack direction={"row"} gap={1}>
           <Button sx={{ flex: 1 }} onClick={handleImportNewData}>
-            Importer un nouveau JSON
+            {t("debug-panel.button.import-content-file.label")}
           </Button>
           <Button
             variant="outlined"
@@ -109,7 +111,7 @@ export const DebugModal = (props: Props) => {
               handleCopyToClipboard(JSON.stringify(data.data, null, 2))
             }
           >
-            Copier le JSON
+            {t("debug-panel.button.copy-file-content.label")}
           </Button>
         </Stack>
       </ModalDialog>

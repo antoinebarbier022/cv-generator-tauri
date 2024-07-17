@@ -1,6 +1,6 @@
 {
   "app.title": "CV Generator - frog",
-  "warning.missing-translation": "Missing field",
+  "warning.missing-translation": "Missing translation",
   "languages.fr": "fr",
   "languages.en": "en",
   "resume.section.skills.title": "Skills",
@@ -16,9 +16,11 @@
   "sidebar.navigation.employment-history": "Employment History",
   "sidebar.navigation.projects": "Projects",
   "sidebar.navigation.cv-configuration": "CV Configuration",
+
   "debug-panel.title": "Raw content",
   "debug-panel.button.import-content-file.label": "Import a new JSON",
   "debug-panel.button.copy-file-content.label": "Copier le JSON",
+
   "button.upload-profile-image.label": "Upload image",
   "button.replace-profile-image.label": "Replace image",
   "button.delete-profile-image.label": "Delete",
