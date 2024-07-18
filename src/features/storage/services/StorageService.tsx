@@ -35,10 +35,16 @@ export const StorageService = {
   }: {
     values: UserData;
   }): Promise<UserData> => {
-    const isAppDataDirPath = await exists(await appDataDir());
-    if (!isAppDataDirPath) {
-      await createDir(await appDataDir());
+    // if appDir doesn't exist
+    try {
+      const isAppDataDirPath = await exists(await appDataDir());
+      if (!isAppDataDirPath) {
+        await createDir(await appDataDir());
+      }
+    } catch (e) {
+      console.error(e);
     }
+
     await writeTextFile(
       { path: CONTENT_DATA_FILE, contents: JSON.stringify(values) },
       { dir: BaseDirectory.AppData }
@@ -71,10 +77,16 @@ export const StorageService = {
     const extension = await extname(filePath as string);
     const picture = await readBinaryFile(filePath as string);
 
-    const isAppDataDirPath = await exists(await appDataDir());
-    if (!isAppDataDirPath) {
-      await createDir(await appDataDir());
+    // if appDir doesn't exist
+    try {
+      const isAppDataDirPath = await exists(await appDataDir());
+      if (!isAppDataDirPath) {
+        await createDir(await appDataDir());
+      }
+    } catch (e) {
+      console.error(e);
     }
+
     await writeBinaryFile(
       {
         path: `profile.${extension}`,
