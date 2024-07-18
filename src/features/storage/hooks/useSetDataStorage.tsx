@@ -10,7 +10,7 @@ export const useSetDataStorage = () => {
       queryClient.invalidateQueries({ queryKey: ["data"] });
     },
     onError: (e) => {
-      alert(e);
+      alert(`SetDataStorage: ${e}`);
     },
   });
 };

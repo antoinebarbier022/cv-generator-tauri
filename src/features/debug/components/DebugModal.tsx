@@ -45,7 +45,7 @@ export const DebugModal = (props: Props) => {
       dataContentValidationSchema
         .validate(text as UserData)
         .then(() => mutationDataToStorage.mutate({ values: text }))
-        .catch((e) => alert(e));
+        .catch((e) => alert(`DEBUG Validation Schema: ${e}`));
     }
   };
 

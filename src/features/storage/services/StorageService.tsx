@@ -27,6 +27,7 @@ export const StorageService = {
     const data = await readTextFile(CONTENT_DATA_FILE, {
       dir: BaseDirectory.AppData,
     });
+
     return JSON.parse(data) as UserData;
   },
 

@@ -6,10 +6,10 @@ export const useGenerateCV = () => {
     mutationKey: ["generateCV"],
     mutationFn: CVGenerationService.generate,
     onSuccess: (data) => {
-      alert(JSON.stringify(data));
+      alert(`Generate CV [success] : ${JSON.stringify(data)}`);
     },
     onError: (e) => {
-      alert(e);
+      alert(`Generate CV [error] : ${e}`);
     },
   });
 };
