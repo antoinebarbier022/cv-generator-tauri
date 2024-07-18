@@ -1,0 +1,53 @@
+
+
+# 0.1.0 (2024-07-18)
+
+
+### Bug Fixes
+
+* add "$APPDATA/" inside auri.conf.json inside fs scope ([f9f1812](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/f9f1812e77c83415955118ce618df54b34718e4c))
+* add alerts on errors ([7ac4141](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/7ac4141a8fa395f25094a55b12451bdef19d971f))
+* add import material ([7977071](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/7977071a10251556890ac0fffe1a00022bedbb50))
+* add missing translations ([e08aa24](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/e08aa24ed63c7e1f1d8dde92688d341f252a6e32))
+* add text before alerts contents ([d8baad9](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/d8baad911d06b29275fee3d11ffecb0777e47cd2))
+* bug "unknown variant executeAndReturn" -> update cargo ([f7f5963](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/f7f5963a604561c60ef55d34ad2a5bf0432c06e6))
+* bug image reset on cancel dialog ([62a289f](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/62a289fbde43e31868f59aefcc8164c5dc54c127))
+* change add button design ([fe210ff](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/fe210ff5d1d3c493538f2ca768ca8bd3aa596018))
+* change minHeight ([d5e0cf7](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/d5e0cf7d3b756d9097e6c36c9f64a5c7bccf2c55))
+* change setContentData (remove try catch) ([89ab239](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/89ab2397e6568696c0e9444d769e78af11f4d2a0))
+* change the way to upload image ([9cc9723](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/9cc97233ca51e10d91eb07b84b2bb21cff83757f))
+* change wording Historique professionnel -> antécédent professionnel ([31e1527](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/31e152714a11ac6fca6a5d2fbee695432c164cfe))
+* clean form design ([237d96f](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/237d96f819ffa4a7d9992b7c9d81732b7774ecb1))
+* create dataDir if it doesn't exist ([74c936d](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/74c936dc81fdb26eaec2e1c52ffb8b4d1e9d356a))
+* display error when there is the creation of appDir ([277b421](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/277b42181bfb8b09e5382c8a081b96b97fc243b3))
+* fullName too long inside sidebar ([5ede50c](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/5ede50ce53be34d2aaf196a54ac2b48dee150be2))
+* image cache ([8071bb0](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/8071bb0784033fd37b185a7263e7129ee014578b))
+* inverse firstname and lastname inside form ([9e743ba](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/9e743ba3e4517d3fca08e3a7da114f51be8edb5b))
+* required fields on schema for content validation ([859203f](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/859203f50f010d1af30a1c20d81c14a3aab5f72d))
+* set initial data when there is no data file ([a58024f](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/a58024f3b86fb7c5f868292a32a0e2b0d9853094))
+* sidebar selected tab ([61da874](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/61da874582612e601ddd882f486b0c5842602719))
+* submit form after delete or add new item ([2a46468](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/2a46468c25f0546168fef52d43f8b8b5025424a3))
+* user select none on beta badge ([8a9b229](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/8a9b229948cc75c9ba45a51f2e5b79909d95f24c))
+* wrong file (naming) ([efc1e6e](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/efc1e6e59908f8cb7dec499fe665f622c95b7782))
+
+
+### Features
+
+* add accordion and form for all view ([fe6afc0](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/fe6afc0150e3acabb753d59a90a97d4ccf0d4797))
+* add beta badge ([6af77f6](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/6af77f6f0f6afaeacfe109770719fe6c8bee2b7e))
+* add empty state ([b16392c](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/b16392cd298cdb31e14b314517edf6d505bf7d35))
+* add generate cv on Click (mock) ([87f5c5a](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/87f5c5a65c1afc35922e5385a4df9e22da637837))
+* add i18n ([3575898](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/35758988678f590403346772dd8cedb3ee66fa48))
+* add icon missing field on projects ([b086b35](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/b086b35e23157ad59f6c9da4c92c1d32b96b1a6b))
+* add icons ([448e63c](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/448e63c68cbd88db30f58a2205a996b6ec8eb8a7))
+* add information about missing field ([cfd7a3b](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/cfd7a3bccac2a7a83c662b67c10c60e20cd23957))
+* add languages ([fe4c0ac](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/fe4c0ac43db97edc3115b5f117398a5234434dd0))
+* add placeholders ([092f0e5](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/092f0e58354cd59c3faa3904d78df0bf1dc09040))
+* add react query, services, hooks ... ([7f5b03f](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/7f5b03f904e404af8da22afcfeee65ebf2ba0491))
+* add routes ([f177306](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/f1773064be2b56d105109ce31f605bcd529c25ef))
+* app layout, theme, sidebar ... ([460755c](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/460755c7166b7337ae1b1b910634ce8fdadc5a60))
+* change data model for only when file that contain all translations ([5005659](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/5005659c3ca9833f595ed8ae6f111cf96d0f5ee9))
+* delete profile image ([6a0ab2c](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/6a0ab2cd749b9d5cf9c852ff02672fee45968e3b))
+* display userImage ([080734b](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/080734b72dc87953ea62c06b50660b56f26b7b3d))
+* import config ([dd539c3](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/dd539c39cf038b6422ec37888394cd359a92426f))
+* new python binary with the new data model ([eaf449d](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/eaf449d1c4a8a9245497f55ea46b8f48a73a1e7d))
