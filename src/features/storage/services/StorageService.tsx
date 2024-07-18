@@ -17,18 +17,33 @@ const CONTENT_DATA_FILE = `data.json`;
 
 export const StorageService = {
   getContentData: async (): Promise<UserData> => {
-    const existFile = await exists(CONTENT_DATA_FILE, {
-      dir: BaseDirectory.AppData,
-    });
-    if (!existFile) {
+    let data;
+    try {
+      const existFile = await exists(CONTENT_DATA_FILE, {
+        dir: BaseDirectory.AppData,
+      });
+
+      if (!existFile) {
+        console.warn(
+          `File ${CONTENT_DATA_FILE} does not exist. Returning empty initial content.`
+        );
+        return emptyInitialContentResume;
+      }
+
+      data = await readTextFile(CONTENT_DATA_FILE, {
+        dir: BaseDirectory.AppData,
+      });
+    } catch (error) {
+      console.error("Error accessing the content data file:", error);
       return emptyInitialContentResume;
     }
 
-    const data = await readTextFile(CONTENT_DATA_FILE, {
-      dir: BaseDirectory.AppData,
-    });
-
-    return JSON.parse(data) as UserData;
+    try {
+      return JSON.parse(data) as UserData;
+    } catch (jsonError) {
+      console.error("Failed to parse JSON data:", jsonError);
+      return emptyInitialContentResume;
+    }
   },
 
   setContentData: async ({
@@ -36,65 +51,77 @@ export const StorageService = {
   }: {
     values: UserData;
   }): Promise<UserData> => {
-    // if appDir doesn't exist
     try {
-      const isAppDataDirPath = await exists(await appDataDir());
-      if (!isAppDataDirPath) {
-        await createDir(await appDataDir());
+      const suggestedAppDataPath = await appDataDir();
+      const isExistAppDataDirPath = await exists(suggestedAppDataPath);
+
+      if (!isExistAppDataDirPath) {
+        await createDir(suggestedAppDataPath, { recursive: true });
       }
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      console.error("Error create folder appDataDir:", error);
+      throw error;
     }
 
-    await writeTextFile(
-      { path: CONTENT_DATA_FILE, contents: JSON.stringify(values) },
-      { dir: BaseDirectory.AppData }
-    );
-    const data = await readTextFile(CONTENT_DATA_FILE, {
-      dir: BaseDirectory.AppData,
-    });
-    return JSON.parse(data) as UserData;
+    try {
+      await writeTextFile(
+        { path: CONTENT_DATA_FILE, contents: JSON.stringify(values) },
+        { dir: BaseDirectory.AppData }
+      );
+    } catch (writeFileError) {
+      console.error("Failed to write file:", writeFileError);
+      throw new Error("Failed to write content data file");
+    }
+    return values;
   },
 
   getImageProfile: async (pictureFilePath: string): Promise<string> => {
-    if (!pictureFilePath) {
+    if (!Boolean(pictureFilePath)) {
       return "";
     }
-    try {
-      const data = convertFileSrc(pictureFilePath);
-      return data;
-    } catch {
-      return "";
-    }
+    return convertFileSrc(pictureFilePath);
   },
 
   setImageProfile: async (): Promise<string | null> => {
-    const filePath = await open({
-      defaultPath: await pictureDir(),
-    });
-    if (filePath === null) {
-      return null;
-    }
-    const extension = await extname(filePath as string);
-    const picture = await readBinaryFile(filePath as string);
-
-    // if appDir doesn't exist
+    let filePath;
     try {
-      const isAppDataDirPath = await exists(await appDataDir());
-      if (!isAppDataDirPath) {
-        await createDir(await appDataDir());
+      filePath = await open({
+        defaultPath: await pictureDir(),
+      });
+
+      if (filePath === null) {
+        return null;
       }
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      console.error("Error open dialog:", error);
+      throw error;
     }
 
-    await writeBinaryFile(
-      {
-        path: `profile.${extension}`,
-        contents: picture,
-      },
-      { dir: BaseDirectory.AppData }
-    );
-    return await join(await appDataDir(), `profile.${extension}`);
+    try {
+      const suggestedAppDataPath = await appDataDir();
+      const isExistAppDataDirPath = await exists(suggestedAppDataPath);
+      if (!isExistAppDataDirPath) {
+        await createDir(suggestedAppDataPath, { recursive: true });
+      }
+    } catch (error) {
+      console.error("Error create folder appDataDir:", error);
+      throw error;
+    }
+
+    try {
+      const extension = await extname(filePath as string);
+      const picture = await readBinaryFile(filePath as string);
+      await writeBinaryFile(
+        {
+          path: `profile.${extension}`,
+          contents: picture,
+        },
+        { dir: BaseDirectory.AppData }
+      );
+      return await join(await appDataDir(), `profile.${extension}`);
+    } catch (error) {
+      console.error("Error write image inside AppDataDir:", error);
+      throw error;
+    }
   },
 };

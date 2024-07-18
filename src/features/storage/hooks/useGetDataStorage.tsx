@@ -4,6 +4,6 @@ import { StorageService } from "../services/StorageService";
 export const useGetDataStorage = () => {
   return useQuery({
     queryKey: ["data"],
-    queryFn: StorageService.getContentData,
+    queryFn: () => StorageService.getContentData(),
   });
 };

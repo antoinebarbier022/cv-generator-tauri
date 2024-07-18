@@ -13,7 +13,7 @@ export const useDeleteImageProfileStorage = () => {
       await queryClient.invalidateQueries({ queryKey: ["data"] });
     },
     onError: (e) => {
-      alert(`DeleteImageStorage: ${e}`);
+      alert(e);
     },
   });
 };
