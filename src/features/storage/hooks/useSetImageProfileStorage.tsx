@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 import { StorageService } from "../services/StorageService";
 import { useFormCV } from "./useFormCV";
 
@@ -16,7 +17,9 @@ export const useSetImageProfileStorage = () => {
       }
     },
     onError: (e) => {
-      alert(e);
+      toast.error(e.message, {
+        toastId: "set_image_profile.error",
+      });
     },
   });
 };

@@ -8,10 +8,9 @@ import {
 } from "@mui/icons-material";
 import { Button, Sheet, Stack } from "@mui/joy";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useGenerateCV } from "../../cv-generation/hooks/useGenerateCV";
-import { DebugModal } from "../../debug/components/DebugModal";
 import { useGetDataStorage } from "../../storage/hooks/useGetDataStorage";
 import { CardProfileButton } from "../components/CardProfileButton";
 import { NavigationList } from "../components/NavigationList";
@@ -36,14 +35,6 @@ export const SidebarContainer = () => {
       return "";
     }
   }, [contentResume.data?.firstname, contentResume.data?.lastname]);
-
-  const [isOpenDebugModal, setOpenDebugModal] = useState(false);
-  const handleCloseDebugModal = () => {
-    setOpenDebugModal(false);
-  };
-  const handleOpenDebugModal = () => {
-    setOpenDebugModal(true);
-  };
 
   const handleGenerateCV = () => {
     generateCV.mutate();
@@ -118,14 +109,6 @@ export const SidebarContainer = () => {
           <Stack gap={1}>
             <Button
               color="primary"
-              variant="outlined"
-              sx={{ marginX: 1 }}
-              onClick={handleOpenDebugModal}
-            >
-              Debug
-            </Button>
-            <Button
-              color="primary"
               variant="solid"
               sx={{ marginX: 1 }}
               loading={generateCV.isPending}
@@ -136,7 +119,6 @@ export const SidebarContainer = () => {
           </Stack>
         </Stack>
       </Sheet>
-      <DebugModal open={isOpenDebugModal} onClose={handleCloseDebugModal} />
     </>
   );
 };

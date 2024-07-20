@@ -63,7 +63,7 @@ export const DebugModal = (props: Props) => {
   return (
     <Modal open={props.open} onClose={props.onClose}>
       <ModalDialog
-        sx={{ minWidth: "60vw", maxWidth: { sm: "80vw", md: "60vw" } }}
+        sx={{ minWidth: { sm: "80vw", lg: "60vw" }, maxWidth: { sm: "80vw" } }}
       >
         <ModalClose />
         <Stack>

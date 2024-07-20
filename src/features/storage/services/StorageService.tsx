@@ -87,6 +87,12 @@ export const StorageService = {
     try {
       filePath = await open({
         defaultPath: await pictureDir(),
+        filters: [
+          {
+            name: "Image",
+            extensions: ["png", "jpeg", "jpg", "HEIC", "svg", "webp"],
+          },
+        ],
       });
 
       if (filePath === null) {

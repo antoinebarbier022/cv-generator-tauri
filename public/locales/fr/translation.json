@@ -7,13 +7,13 @@
   "resume.section.formation.title": "Formation",
   "resume.section.languages.title": "Langues",
   "resume.section.projects.title": "Projets",
-  "resume.section.employment-history.title": "Antécédents professionnels",
+  "resume.section.employment-history.title": "Emplois précédents",
   "resume.section.profile.title": "Profil",
   "sidebar.navigation.profile": "Profil",
   "sidebar.navigation.skills": "Compétences",
   "sidebar.navigation.formation": "Formation",
   "sidebar.navigation.languages": "Langues",
-  "sidebar.navigation.employment-history": "Antécédents professionnels",
+  "sidebar.navigation.employment-history": "Emplois précédents",
   "sidebar.navigation.projects": "Projets",
   "sidebar.navigation.cv-configuration": "Configuration du CV",
   "debug-panel.title": "Contenu brut",
@@ -70,7 +70,7 @@
   "empty-state.languages.title": "Aucune langue",
   "empty-state.languages.description": "Vous n'avez pas encore ajouté de langues.",
   "empty-state.languages.button.label": "Nouvelle langue",
-  "empty-state.employment-history.title": "Aucun antécédent professionnel",
-  "empty-state.employment-history.description": "Vous n'avez pas encore ajouté d'antécédents professionnels.",
-  "empty-state.employment-history.button.label": "Nouvel antécédents professionnels"
+  "empty-state.employment-history.title": "Aucun emploi",
+  "empty-state.employment-history.description": "Vous n'avez pas encore ajouté d'emploi antérieur à frog.",
+  "empty-state.employment-history.button.label": "Nouvel emploi antérieur à frog"
 }

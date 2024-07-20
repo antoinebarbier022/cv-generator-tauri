@@ -1,5 +1,6 @@
 @import url("./_font-benton-sans.css");
 @import url("./_font-ubuntu.css");
+@import url("./_toastify.css");
 
 @tailwind components;
 @tailwind utilities;

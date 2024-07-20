@@ -1,4 +1,5 @@
 import { save } from "@tauri-apps/api/dialog";
+import { BaseDirectory, readTextFile } from "@tauri-apps/api/fs";
 import {
   appDataDir,
   downloadDir,
@@ -7,15 +8,32 @@ import {
 } from "@tauri-apps/api/path";
 import { ChildProcess, Command } from "@tauri-apps/api/shell";
 
+import { UserData } from "../../storage/types/storage";
+
 export const CVGenerationService = {
-  generate: async (): Promise<ChildProcess> => {
-    const defaultFileName = "test_cv";
+  generate: async (): Promise<ChildProcess | null> => {
+    let data: UserData;
+    try {
+      data = JSON.parse(
+        await readTextFile("data.json", {
+          dir: BaseDirectory.AppData,
+        })
+      );
+    } catch (error) {
+      console.error("Error accessing the content data file:", error);
+      throw Error(`Error accessing the content data file: ${error}`);
+    }
+
+    const defaultFileName =
+      `CV_${data.lastname}_${data.firstname}_${data.entity}`.replace(/_$/, "");
+
     const filePath = await save({
       defaultPath: (await downloadDir()) + "/" + defaultFileName + ".pptx",
       title: "Sauvegarder",
     });
     if (!filePath) {
-      throw Error("Filepath is wrong");
+      console.warn("Filepath is wrong");
+      return null;
     }
 
     const appDataDirPath = await appDataDir();
@@ -36,6 +54,9 @@ export const CVGenerationService = {
       outputFileName,
     ]);
     const output = await command.execute();
+    if (output.stderr) {
+      throw Error(output.stderr);
+    }
     return output;
   },
 };

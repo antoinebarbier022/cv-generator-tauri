@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 import { useFormCV } from "./useFormCV";
 
 export const useDeleteImageProfileStorage = () => {
@@ -13,7 +14,9 @@ export const useDeleteImageProfileStorage = () => {
       await queryClient.invalidateQueries({ queryKey: ["data"] });
     },
     onError: (e) => {
-      alert(e);
+      toast.error(e.message, {
+        toastId: "delete_image_profile.error",
+      });
     },
   });
 };

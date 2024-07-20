@@ -8,7 +8,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "tauri": "tauri",
-    "release": "release-it"
+    "release": "release-it --preRelease=beta --preReleaseBase=1"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
@@ -33,6 +33,7 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
+    "@release-it/bumper": "^6.0.1",
     "@release-it/conventional-changelog": "^8.0.1",
     "@tanstack/eslint-plugin-query": "^5.47.0",
     "@tanstack/react-query-devtools": "^5.49.2",

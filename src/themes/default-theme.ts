@@ -1,19 +1,4 @@
-import { PaletteRange, extendTheme } from "@mui/joy/styles";
-
-declare module "@mui/joy/styles" {
-  interface ColorPalettePropOverrides {
-    secondary: true;
-  }
-  interface Palette {
-    secondary: PaletteRange;
-  }
-}
-
-declare module "@mui/joy/Typography" {
-  interface TypographyPropsVariantOverrides {
-    question: true;
-  }
-}
+import { extendTheme } from "@mui/joy/styles";
 
 export default extendTheme({
   fontFamily: {

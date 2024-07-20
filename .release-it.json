@@ -7,7 +7,7 @@
     "before:init": ["git pull"]
   },
   "github": {
-    "release": true
+    "release": false
   },
   "plugins": {
     "@release-it/conventional-changelog": {
@@ -15,6 +15,17 @@
         "name": "angular"
       },
       "infile": "CHANGELOG.md"
+    },
+    "@release-it/bumper": {
+      "out": [
+        {
+          "file": "./src-tauri/Cargo.toml",
+          "path": "package.version"
+        },
+        {
+          "file": "./src-tauri/Cargo.lock"
+        }
+      ]
     }
   }
 }
