@@ -7,7 +7,9 @@
     "before:init": ["git pull"]
   },
   "github": {
-    "release": false
+    "release": true,
+    "releaseName": "Release v${version}",
+    "assets": null
   },
   "plugins": {
     "@release-it/conventional-changelog": {

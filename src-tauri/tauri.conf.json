@@ -62,7 +62,7 @@
       "resources": ["resources/*"],
       "active": true,
       "category": "productivity",
-      "copyright": "frog",
+      "copyright": "@2024 frog. All rights reserved.",
       "deb": {
         "depends": []
       },
