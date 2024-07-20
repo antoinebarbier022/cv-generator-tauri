@@ -1,8 +1,8 @@
 [package]
 name = "cv_generator"
-version = "0.1.0"
+version = "0.1.1-beta.0"
 description = ""
-authors = ["Antoine Barbier <antoine.c.barbier@frog.co>"]
+authors = [ "Antoine Barbier <antoine.c.barbier@frog.co>" ]
 license = ""
 repository = ""
 default-run = "cv_generator"
@@ -11,44 +11,44 @@ rust-version = "1.60"
 
 [build-dependencies.tauri-build]
 version = "1.5.2"
-features = []
+features = [ ]
 
 [dependencies]
 serde_json = "1.0"
 window-vibrancy = "0.4.0"
 
-[dependencies.serde]
-version = "1.0"
-features = ["derive"]
+  [dependencies.serde]
+  version = "1.0"
+  features = [ "derive" ]
 
-[dependencies.tauri]
-version = "1.6.5"
-features = [
-    "shell-sidecar",
-    "shell-open",
-    "protocol-asset",
-    "window-maximize",
-    "window-close",
-    "window-start-dragging",
-    "window-minimize",
-    "window-hide",
-    "window-unmaximize",
-    "window-unminimize",
-    "window-show",
-    "macos-private-api",
-    "dialog-all",
-    "http-all",
-    "fs-read-dir",
-    "fs-exists",
-    "fs-read-file",
-    "fs-create-dir",
-    "fs-write-file",
-    "path-all",
+  [dependencies.tauri]
+  version = "1.6.5"
+  features = [
+  "shell-sidecar",
+  "shell-open",
+  "protocol-asset",
+  "window-maximize",
+  "window-close",
+  "window-start-dragging",
+  "window-minimize",
+  "window-hide",
+  "window-unmaximize",
+  "window-unminimize",
+  "window-show",
+  "macos-private-api",
+  "dialog-all",
+  "http-all",
+  "fs-read-dir",
+  "fs-exists",
+  "fs-read-file",
+  "fs-create-dir",
+  "fs-write-file",
+  "path-all"
 ]
 
-[dependencies.tauri-plugin-store]
-git = "https://github.com/tauri-apps/plugins-workspace"
-branch = "v1"
+  [dependencies.tauri-plugin-store]
+  git = "https://github.com/tauri-apps/plugins-workspace"
+  branch = "v1"
 
 [features]
-custom-protocol = ["tauri/custom-protocol"]
+custom-protocol = [ "tauri/custom-protocol" ]

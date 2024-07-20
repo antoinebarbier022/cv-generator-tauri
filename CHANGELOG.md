@@ -1,3 +1,7 @@
+
+
+## [0.1.1-beta.0](https://github.com/antoinebarbier022/frog-cv-generator-tauri/compare/0.1.0...0.1.1-beta.0) (2024-07-20)
+
 # 0.1.0 (2024-07-18)
 
 ### Bug Fixes
