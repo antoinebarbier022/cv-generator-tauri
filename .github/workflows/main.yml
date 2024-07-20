@@ -4,34 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  release:
-    runs-on: ubuntu-latest
-    outputs:
-      tag: ${{ steps.get-version.outputs.tag }}
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: git config
-        run: |
-          git config user.name "${GITHUB_ACTOR}"
-          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-      - run: npm install
-      - run: npm run release
-        id: release-it
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: "Get Previous tag"
-        id: previoustag
-        uses: "WyriHaximus/github-action-get-previous-tag@v1"
-
-      - name: Print release version
-        id: get-version
-        run: echo "tag=${{ steps.previoustag.outputs.tag }}" >> "$GITHUB_OUTPUT"
-
   publish-tauri:
-    needs: release
     permissions:
       contents: write
     strategy:
@@ -46,10 +19,6 @@ jobs:
     runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v4
-
-      - name: Print release version
-        id: get-version
-        run: echo "${{ needs.release.outputs.tag }}"
 
       - name: install dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-22.04'
@@ -90,8 +59,7 @@ jobs:
           APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         with:
-          tagName: ${{needs.release.outputs.tag}}
-          appVersion: ${{needs.release.outputs.tag}}
+          tagName: "__VERSION__"
           releaseName: "Release v__VERSION__"
           releaseBody: "See the assets to download this version and install."
           releaseDraft: false
