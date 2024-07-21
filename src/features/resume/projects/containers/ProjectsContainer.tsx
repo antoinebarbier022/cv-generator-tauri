@@ -14,7 +14,6 @@ export const ProjectsContainer = () => {
 
   const handleAddProject = () => {
     formik.setFieldValue("experiences", [
-      ...(formik.values.experiences ?? []),
       {
         id: crypto.randomUUID(),
         client: "",
@@ -30,6 +29,7 @@ export const ProjectsContainer = () => {
           fr: "",
         },
       } as UserDataExperience,
+      ...(formik.values.experiences ?? []),
     ]);
     formik.submitForm();
   };
