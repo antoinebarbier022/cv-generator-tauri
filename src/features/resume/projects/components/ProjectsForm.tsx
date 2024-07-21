@@ -15,7 +15,7 @@ interface Props {
 export const ProjectsForm = ({ formik }: Props) => {
   const [indexExpandedAccordion, setIndexExpandedAccordion] = useState<
     number | null
-  >(0);
+  >(null);
 
   const isMissingField = (experience: UserDataExperience) => {
     return Boolean(

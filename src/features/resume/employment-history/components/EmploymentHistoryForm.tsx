@@ -14,7 +14,7 @@ export const EmploymentHistoryForm = ({ formik }: Props) => {
   const { t } = useTranslation();
   const [indexExpandedAccordion, setIndexExpandedAccordion] = useState<
     number | null
-  >(0);
+  >(null);
 
   return (
     <form onSubmit={formik.handleSubmit}>

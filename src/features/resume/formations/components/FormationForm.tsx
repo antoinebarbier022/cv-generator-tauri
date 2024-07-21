@@ -14,7 +14,7 @@ export const FormationForm = ({ formik }: Props) => {
   const { t } = useTranslation();
   const [indexExpandedAccordion, setIndexExpandedAccordion] = useState<
     number | null
-  >(0);
+  >(null);
 
   return (
     <Stack component="form" gap={4} onSubmit={formik.handleSubmit}>
