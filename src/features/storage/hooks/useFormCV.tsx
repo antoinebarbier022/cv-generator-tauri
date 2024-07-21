@@ -50,8 +50,8 @@ export const useFormCV = () => {
     };
 
     formik.setFieldValue(fieldName, [
-      ...(formik.values[fieldName] ?? []),
       fieldValue(),
+      ...(formik.values[fieldName] ?? []),
     ]);
     formik.submitForm();
   };
