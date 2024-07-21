@@ -19,7 +19,7 @@ export const emptyInitialContentResume: UserData = {
   linkedin: "",
   twitter: "",
   github: "",
-  formations: [],
+  formation: [],
   employment_history: [],
   articles_and_others: [],
   sectors: [],

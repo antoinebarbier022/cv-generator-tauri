@@ -45,6 +45,7 @@ export const AppLayout = ({ sidebar }: Props) => {
             paddingY: 2,
             scrollbarGutter: "stable",
             overflowY: "scroll",
+            flex: 1,
           }}
         >
           <Outlet />

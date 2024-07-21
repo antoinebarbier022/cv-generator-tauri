@@ -3,7 +3,7 @@ import debounce from "just-debounce-it";
 import { useCallback, useEffect, useMemo } from "react";
 
 import { emptyInitialContentResume } from "../../../constants/emptyInitialContentResume";
-import { UserData } from "../types/storage";
+import { ResumeContentSection, Translation, UserData } from "../types/storage";
 import { useGetDataStorage } from "./useGetDataStorage";
 import { useSetDataStorage } from "./useSetDataStorage";
 
@@ -24,6 +24,51 @@ export const useFormCV = () => {
     },
   });
 
+  type ResumeSectionFieldName =
+    | "employment_history"
+    | "skills"
+    | "languages"
+    | "formation";
+
+  const handleAddItemSection = ({
+    fieldName,
+  }: {
+    fieldName: ResumeSectionFieldName;
+  }) => {
+    const fieldValue = () => {
+      switch (fieldName) {
+        case "employment_history":
+        case "skills":
+        case "languages":
+        case "formation":
+        default:
+          return {
+            id: crypto.randomUUID(),
+            content: { fr: "", en: "" },
+          } as ResumeContentSection<Translation>;
+      }
+    };
+
+    formik.setFieldValue(fieldName, [
+      ...(formik.values[fieldName] ?? []),
+      fieldValue(),
+    ]);
+    formik.submitForm();
+  };
+
+  const handleDeleteItemSection = ({
+    fieldName,
+    idSelected,
+  }: {
+    fieldName: ResumeSectionFieldName;
+    idSelected: string;
+  }) => {
+    formik.setFieldValue(fieldName, [
+      ...(formik.values[fieldName]?.filter((v) => v.id !== idSelected) ?? []),
+    ]);
+    formik.submitForm();
+  };
+
   const debouncedSubmit = useCallback(
     debounce(() => formik.submitForm(), 500),
     [2000, formik.submitForm]
@@ -35,5 +80,5 @@ export const useFormCV = () => {
     }
   }, [debouncedSubmit, formik.values]);
 
-  return { formik, userData };
+  return { formik, userData, handleAddItemSection, handleDeleteItemSection };
 };

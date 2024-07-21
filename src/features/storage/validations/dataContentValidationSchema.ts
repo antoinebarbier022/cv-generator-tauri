@@ -5,6 +5,14 @@ const translationSchema = yup.object().shape({
   fr: yup.string().nullable(),
 });
 
+const sectionSchema = (content: yup.AnyObjectSchema) =>
+  yup.array().of(
+    yup.object().shape({
+      id: yup.string().uuid(),
+      content,
+    })
+  );
+
 const experienceSchema = yup.object().shape({
   program: yup.string(),
   client: yup.string(),
@@ -24,11 +32,11 @@ export const dataContentValidationSchema = yup.object().shape({
   description: translationSchema.required(),
   linkedin: yup.string().required(),
   twitter: yup.string(),
-  formations: yup.array().of(translationSchema),
-  employment_history: yup.array().of(translationSchema),
-  articles_and_others: yup.array().of(yup.string()),
-  sectors: yup.array().of(translationSchema),
-  skills: yup.array().of(translationSchema),
-  languages: yup.array().of(translationSchema),
-  experiences: yup.array().of(experienceSchema),
+  formation: sectionSchema(translationSchema),
+  employment_history: sectionSchema(translationSchema),
+  articles_and_others: sectionSchema(translationSchema),
+  sectors: sectionSchema(translationSchema),
+  skills: sectionSchema(translationSchema),
+  languages: sectionSchema(translationSchema),
+  experiences: sectionSchema(experienceSchema),
 });

@@ -1,4 +1,4 @@
-import { DeleteOutline } from "@mui/icons-material";
+import { DeleteOutline, DragIndicatorRounded } from "@mui/icons-material";
 import {
   Accordion,
   AccordionDetails,
@@ -8,77 +8,123 @@ import {
   Stack,
   Typography,
 } from "@mui/joy";
-import { PropsWithChildren, ReactNode } from "react";
+import { forwardRef, PropsWithChildren, ReactNode } from "react";
+import {
+  DraggableProvidedDragHandleProps,
+  DraggableStateSnapshot,
+} from "react-beautiful-dnd";
 
 interface Props extends PropsWithChildren {
   index: number;
   title: ReactNode;
   expanded?: boolean;
   isNew?: boolean;
+  isDragIndicator?: boolean;
+  isIndexIndicator?: boolean;
+  dragHandleProps?: DraggableProvidedDragHandleProps | null | undefined;
+  snapshot?: DraggableStateSnapshot;
   onExpandedChange?: (event: React.SyntheticEvent, expanded: boolean) => void;
   onDelete: () => void;
 }
 
-export const AccordionCard = (props: Props) => {
-  return (
-    <Stack
-      direction={"row"}
-      flex={1}
-      sx={{
-        "--project-accordion-summary-height": "3rem",
-      }}
-      gap={1}
-      alignItems={"center"}
-    >
-      <Typography textColor={"text.tertiary"}>
-        #{String(props.index + 1).padStart(2, "0")}
-      </Typography>
-
-      <Card
-        color={props.isNew ? "primary" : undefined}
-        sx={{ padding: 0, overflow: "hidden", flex: 1 }}
+export const AccordionCard = forwardRef<HTMLDivElement, Props>(
+  (
+    {
+      index,
+      title,
+      expanded,
+      isNew,
+      isDragIndicator,
+      isIndexIndicator,
+      onExpandedChange,
+      onDelete,
+      dragHandleProps,
+      snapshot,
+      children,
+      ...props
+    },
+    ref
+  ) => {
+    return (
+      <Stack
+        ref={ref}
+        {...props}
+        direction={"row"}
+        flex={1}
+        sx={{
+          "--project-accordion-summary-height": "3rem",
+          paddingY: 0.5,
+        }}
+        gap={1}
+        alignItems={"center"}
       >
-        <Stack
-          direction={"row-reverse"}
-          alignItems={"start"}
-          justifyContent={"space-between"}
-          flex={1}
-          gap={1}
+        {isIndexIndicator && (
+          <Typography textColor={"text.tertiary"} level="body-md">
+            {String(index + 1).padStart(2, "0")}
+          </Typography>
+        )}
+
+        <Card
+          color={isNew ? "primary" : undefined}
+          sx={{ padding: 0, overflow: "hidden", flex: 1 }}
         >
           <Stack
-            sx={{
-              height: "var(--project-accordion-summary-height)",
-              marginRight: 1,
-            }}
+            direction={"row"}
             alignItems={"center"}
-            justifyContent={"center"}
+            justifyContent={"space-between"}
+            flex={1}
+            paddingLeft={0.5}
+            gap={0.5}
           >
-            <IconButton
-              color="neutral"
-              size="sm"
-              variant="plain"
-              onClick={props.onDelete}
-              sx={{ width: "fit-content" }}
+            {isDragIndicator && (
+              <Stack alignItems={"center"} paddingLeft={0.5}>
+                <DragIndicatorRounded />
+              </Stack>
+            )}
+
+            <Accordion
+              sx={{ flex: 1 }}
+              expanded={expanded}
+              onChange={onExpandedChange}
             >
-              <DeleteOutline />
-            </IconButton>
-          </Stack>
-          <Accordion
-            sx={{ flex: 1 }}
-            expanded={props.expanded}
-            onChange={props.onExpandedChange}
-          >
-            <AccordionSummary
+              <AccordionSummary
+                slotProps={{
+                  button: {
+                    sx: {
+                      borderRadius: "sm",
+                    },
+                  },
+                }}
+                sx={{
+                  height: "var(--project-accordion-summary-height)",
+                  paddingY: 1,
+                }}
+              >
+                {title}
+              </AccordionSummary>
+              <AccordionDetails>{children}</AccordionDetails>
+            </Accordion>
+            <Stack
               sx={{
                 height: "var(--project-accordion-summary-height)",
+                marginRight: 1,
               }}
+              alignItems={"center"}
+              justifyContent={"center"}
             >
-              {props.title}
-            </AccordionSummary>
-            <AccordionDetails>{props.children}</AccordionDetails>
-          </Accordion>
-        </Stack>
-      </Card>
-    </Stack>
-  );
-};
+              <IconButton
+                color="neutral"
+                size="sm"
+                variant="plain"
+                onClick={onDelete}
+                sx={{ width: "fit-content" }}
+              >
+                <DeleteOutline />
+              </IconButton>
+            </Stack>
+          </Stack>
+        </Card>
+      </Stack>
+    );
+  }
+);

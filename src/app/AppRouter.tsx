@@ -1,17 +1,17 @@
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 
-import { FormationContainer } from "../features/resume/formations/containers/FormationContainer";
+import { Formation } from "./Views/Formation";
 
 import { listen } from "@tauri-apps/api/event";
 import { useEffect } from "react";
 import { DebugModal } from "../features/debug/components/DebugModal";
-import { EmploymentHistoryContainer } from "../features/resume/employment-history/containers/EmploymentHistoryContainer";
-import { LanguagesContainer } from "../features/resume/languages/containers/LanguagesContainer";
-import { ProfileContainer } from "../features/resume/profile/containers/ProfileContainer";
-import { ProjectsContainer } from "../features/resume/projects/containers/ProjectsContainer";
-import { SkillsContainer } from "../features/resume/skills/containers/SkillsContainer";
+import { ProjectsContainer } from "../features/projects/containers/ProjectsContainer";
 import { SidebarContainer } from "../features/sidebar/containers/SidebarContainer";
 import { AppLayout } from "../layouts/AppLayout";
+import { EmploymentHistory } from "./Views/EmploymentHistory";
+import { Languages } from "./Views/Languages";
+import { Profile } from "./Views/Profile";
+import { Skills } from "./Views/Skills";
 
 export const AppRouter = () => {
   const navigate = useNavigate();
@@ -32,19 +32,16 @@ export const AppRouter = () => {
     <Routes>
       <Route path="/" element={<AppLayout sidebar={<SidebarContainer />} />}>
         <Route index element={<Navigate to={"/profile"} />} />
-        <Route path="profile" element={<ProfileContainer />} />
-        <Route path="skills" element={<SkillsContainer />} />
-        <Route path="languages" element={<LanguagesContainer />} />
+        <Route path="profile" element={<Profile />} />
+        <Route path="skills" element={<Skills />} />
+        <Route path="languages" element={<Languages />} />
         <Route path="projects" element={<ProjectsContainer />} />
-        <Route path="formation" element={<FormationContainer />} />
+        <Route path="formation" element={<Formation />} />
         <Route
           path="debug"
           element={<DebugModal open={true} onClose={() => navigate(-1)} />}
         />
-        <Route
-          path="employment-history"
-          element={<EmploymentHistoryContainer />}
-        />
+        <Route path="employment-history" element={<EmploymentHistory />} />
       </Route>
     </Routes>
   );

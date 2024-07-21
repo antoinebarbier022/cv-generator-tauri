@@ -5,6 +5,11 @@ interface Translation {
   fr: string;
   [key: string]: string;
 }
+
+export interface ResumeContentSection<T> {
+  id: UUID;
+  content: T;
+}
 export interface UserData {
   firstname: string;
   lastname: string;
@@ -18,20 +23,19 @@ export interface UserData {
   linkedin: string;
   twitter: string;
   github: string;
-  formations: Translation[];
-  employment_history: Translation[];
-  articles_and_others: Translation[];
-  sectors: Translation[];
-  skills: Translation[];
-  languages: Translation[];
-  experiences: UserDataExperience[];
+  formation: ResumeContentSection<Translation>[];
+  employment_history: ResumeContentSection<Translation>[];
+  articles_and_others: ResumeContentSection<Translation>[];
+  sectors: ResumeContentSection<Translation>[];
+  skills: ResumeContentSection<Translation>[];
+  languages: ResumeContentSection<Translation>[];
+  experiences: ResumeContentSection<UserDataExperience>[];
 }
 
 export interface UserDataExperience {
-  id: UUID;
   program: string;
   client: string;
-  role: string;
+  role: Translation;
   date: string;
   context: Translation;
   contribution: Translation;
