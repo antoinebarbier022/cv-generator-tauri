@@ -42,7 +42,7 @@ export const StorageService = {
       return JSON.parse(data) as UserData;
     } catch (jsonError) {
       console.error("Failed to parse JSON data:", jsonError);
-      return emptyInitialContentResume;
+      throw Error(`Failed to parse JSON data:${jsonError}`);
     }
   },
 
