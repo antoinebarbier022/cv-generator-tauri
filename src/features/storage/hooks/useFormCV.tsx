@@ -30,7 +30,8 @@ export const useFormCV = () => {
     | "employment_history"
     | "skills"
     | "languages"
-    | "formation";
+    | "formation"
+    | "experiences";
 
   const handleAddItemSection = ({
     fieldName,

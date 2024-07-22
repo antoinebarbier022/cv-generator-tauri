@@ -1,10 +1,11 @@
 import {
   ResumeContentSection,
   Translation,
+  UserDataExperience,
 } from "../features/storage/types/storage";
 
 export const reorderListSection = (
-  list: ResumeContentSection<Translation>[],
+  list: ResumeContentSection<Translation | UserDataExperience>[],
   startIndex: number,
   endIndex: number
 ) => {
