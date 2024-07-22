@@ -15,7 +15,7 @@ import {
 } from "react-beautiful-dnd";
 
 interface Props extends PropsWithChildren {
-  index: number;
+  indexCount: number;
   title: ReactNode;
   expanded?: boolean;
   isNew?: boolean;
@@ -30,7 +30,7 @@ interface Props extends PropsWithChildren {
 export const AccordionCard = forwardRef<HTMLDivElement, Props>(
   (
     {
-      index,
+      indexCount,
       title,
       expanded,
       isNew,
@@ -60,7 +60,7 @@ export const AccordionCard = forwardRef<HTMLDivElement, Props>(
       >
         {isIndexIndicator && (
           <Typography textColor={"text.tertiary"} level="body-md">
-            {String(index + 1).padStart(2, "0")}
+            {String(indexCount + 1).padStart(2, "0")}
           </Typography>
         )}
 

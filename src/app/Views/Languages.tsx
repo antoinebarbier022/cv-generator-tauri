@@ -45,7 +45,7 @@ export const Languages = () => {
             {formik.values.languages?.map((field, index) => (
               <Stack direction="row" width={"100%"} key={index}>
                 <AccordionCard
-                  index={index}
+                  indexCount={index}
                   title={
                     <AccordionTitle
                       isWarningIcon={Boolean(

@@ -1,6 +1,7 @@
 import { AccordionGroup, Chip, Input, Stack, Typography } from "@mui/joy";
 
 import { useState } from "react";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { useTranslation } from "react-i18next";
 import { AccordionCard } from "../../components/AccordionCard";
 import { AccordionTitle } from "../../components/AccordionTitle";
@@ -12,8 +13,13 @@ import { PageLayout } from "../../layouts/PageLayout";
 
 export const Skills = () => {
   const { t } = useTranslation();
-  const { userData, formik, handleAddItemSection, handleDeleteItemSection } =
-    useFormCV();
+  const {
+    userData,
+    formik,
+    handleAddItemSection,
+    handleDeleteItemSection,
+    dragEnded,
+  } = useFormCV();
 
   const [indexExpandedAccordion, setIndexExpandedAccordion] = useState<
     string | null
@@ -22,81 +28,106 @@ export const Skills = () => {
   const isEmptyData = userData.data && userData.data?.skills.length === 0;
 
   return (
-    <PageLayout
-      title={t("resume.section.skills.title")}
-      endDecorator={
-        <IconButtonAdd
-          onClick={() => handleAddItemSection({ fieldName: "skills" })}
-        />
-      }
-    >
-      {userData.isPending && <Typography>Loading...</Typography>}
-      {userData.isError && <Typography>Error.</Typography>}
-      {isEmptyData ? (
-        <EmptyState
-          title={t("empty-state.skills.title")}
-          description={t("empty-state.skills.description")}
-          labelButton={t("empty-state.skills.button.label")}
-          onClickButton={() => handleAddItemSection({ fieldName: "skills" })}
-        />
-      ) : (
-        <form onSubmit={formik.handleSubmit}>
-          <AccordionGroup disableDivider component={Stack}>
-            {formik.values.skills?.map((field, index) => (
-              <Stack direction="row" width={"100%"} key={index}>
-                <AccordionCard
-                  index={index}
-                  title={
-                    <AccordionTitle
-                      isWarningIcon={Boolean(
-                        (field.content.fr && !field.content.en) ||
-                          (!field.content.fr && field.content.en)
+    <DragDropContext onDragEnd={(result) => dragEnded(result, "skills")}>
+      <Droppable droppableId="droppable">
+        {(provided) => (
+          <PageLayout
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+            title={t("resume.section.skills.title")}
+            endDecorator={
+              <IconButtonAdd
+                onClick={() => handleAddItemSection({ fieldName: "skills" })}
+              />
+            }
+          >
+            {userData.isPending && <Typography>Loading...</Typography>}
+            {userData.isError && <Typography>Error.</Typography>}
+            {isEmptyData ? (
+              <EmptyState
+                title={t("empty-state.skills.title")}
+                description={t("empty-state.skills.description")}
+                labelButton={t("empty-state.skills.button.label")}
+                onClickButton={() =>
+                  handleAddItemSection({ fieldName: "skills" })
+                }
+              />
+            ) : (
+              <form onSubmit={formik.handleSubmit}>
+                <AccordionGroup disableDivider component={Stack}>
+                  {formik.values.skills?.map((field, index) => (
+                    <Draggable
+                      key={field.id}
+                      draggableId={field.id}
+                      index={index}
+                    >
+                      {(_provided) => (
+                        <AccordionCard
+                          key={field.id}
+                          indexCount={index}
+                          isDragIndicator
+                          ref={_provided.innerRef}
+                          {..._provided.draggableProps}
+                          {..._provided.dragHandleProps}
+                          title={
+                            <AccordionTitle
+                              isWarningIcon={Boolean(
+                                (field.content.fr && !field.content.en) ||
+                                  (!field.content.fr && field.content.en)
+                              )}
+                              content={
+                                Boolean(field.content.fr)
+                                  ? field.content.fr
+                                  : field.content.en
+                              }
+                              placeholder={`${t("input.skill.label")} ${
+                                index + 1
+                              }`}
+                            />
+                          }
+                          expanded={indexExpandedAccordion === field.id}
+                          onExpandedChange={(_, expanded) => {
+                            setIndexExpandedAccordion(
+                              expanded ? field.id : null
+                            );
+                          }}
+                          onDelete={() =>
+                            handleDeleteItemSection({
+                              fieldName: "skills",
+                              idSelected: field.id,
+                            })
+                          }
+                        >
+                          <Stack flex={1} gap={1} marginTop={1}>
+                            {CV_LANGUAGES.map((lang) => (
+                              <Input
+                                key={`skills[${index}].content.${lang}`}
+                                name={`skills[${index}].content.${lang}`}
+                                startDecorator={
+                                  <Chip
+                                    sx={{
+                                      marginLeft: -0.75,
+                                    }}
+                                  >
+                                    {lang}
+                                  </Chip>
+                                }
+                                value={field.content[lang as string]}
+                                onChange={formik.handleChange}
+                                placeholder=""
+                              />
+                            ))}
+                          </Stack>
+                        </AccordionCard>
                       )}
-                      content={
-                        Boolean(field.content.fr)
-                          ? field.content.fr
-                          : field.content.en
-                      }
-                      placeholder={`${t("input.skill.label")} ${index + 1}`}
-                    />
-                  }
-                  expanded={indexExpandedAccordion === field.id}
-                  onExpandedChange={(_, expanded) => {
-                    setIndexExpandedAccordion(expanded ? field.id : null);
-                  }}
-                  onDelete={() =>
-                    handleDeleteItemSection({
-                      fieldName: "skills",
-                      idSelected: field.id,
-                    })
-                  }
-                >
-                  <Stack flex={1} gap={1} marginTop={1}>
-                    {CV_LANGUAGES.map((lang) => (
-                      <Input
-                        key={`skills[${index}].content.${lang}`}
-                        name={`skills[${index}].content.${lang}`}
-                        startDecorator={
-                          <Chip
-                            sx={{
-                              marginLeft: -0.75,
-                            }}
-                          >
-                            {lang}
-                          </Chip>
-                        }
-                        value={field.content[lang as string]}
-                        onChange={formik.handleChange}
-                        placeholder=""
-                      />
-                    ))}
-                  </Stack>
-                </AccordionCard>
-              </Stack>
-            ))}
-          </AccordionGroup>
-        </form>
-      )}
-    </PageLayout>
+                    </Draggable>
+                  ))}
+                </AccordionGroup>
+              </form>
+            )}
+          </PageLayout>
+        )}
+      </Droppable>
+    </DragDropContext>
   );
 };

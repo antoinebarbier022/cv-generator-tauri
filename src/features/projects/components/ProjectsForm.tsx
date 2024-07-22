@@ -34,7 +34,7 @@ export const ProjectsForm = ({ formik }: Props) => {
         {formik.values.experiences?.map((field, index) => (
           <AccordionCard
             key={`accordion-project-${index}-${field.id}`}
-            index={index}
+            indexCount={index}
             title={
               <AccordionTitle
                 content={

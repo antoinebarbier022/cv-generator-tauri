@@ -2,7 +2,9 @@ import { useFormik } from "formik";
 import debounce from "just-debounce-it";
 import { useCallback, useEffect, useMemo } from "react";
 
+import { DropResult } from "react-beautiful-dnd";
 import { emptyInitialContentResume } from "../../../constants/emptyInitialContentResume";
+import { reorderListSection } from "../../../utils/drag-and-drop.utils";
 import { ResumeContentSection, Translation, UserData } from "../types/storage";
 import { useGetDataStorage } from "./useGetDataStorage";
 import { useSetDataStorage } from "./useSetDataStorage";
@@ -56,6 +58,21 @@ export const useFormCV = () => {
     formik.submitForm();
   };
 
+  const dragEnded = (result: DropResult, fieldName: ResumeSectionFieldName) => {
+    if (!result.destination) {
+      return;
+    }
+
+    const items = reorderListSection(
+      formik.values[fieldName],
+      result.source.index,
+      result.destination.index
+    );
+
+    formik.setFieldValue(fieldName, items);
+    formik.submitForm();
+  };
+
   const handleDeleteItemSection = ({
     fieldName,
     idSelected,
@@ -80,5 +97,11 @@ export const useFormCV = () => {
     }
   }, [debouncedSubmit, formik.values]);
 
-  return { formik, userData, handleAddItemSection, handleDeleteItemSection };
+  return {
+    formik,
+    userData,
+    handleAddItemSection,
+    handleDeleteItemSection,
+    dragEnded,
+  };
 };
