@@ -26,7 +26,9 @@
   "button.upload-profile-image.label": "Upload image",
   "button.replace-profile-image.label": "Replace image",
   "button.delete-profile-image.label": "Delete image",
-  "button.generate-cv.label": "Generate CV",
+  "button.generate.label": "Generate",
+  "button.save.label": "Save",
+  "button.save-as.label": "Save as",
 
   "input.firstname.label": "Firstname",
   "input.firstname.placeholder": "Firstname",

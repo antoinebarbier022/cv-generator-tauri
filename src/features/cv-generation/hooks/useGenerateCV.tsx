@@ -8,11 +8,11 @@ export const useGenerateCV = () => {
     mutationFn: CVGenerationService.generate,
     onSuccess: (data) => {
       if (data) {
-        toast.success(`Generate CV succeeded`);
+        toast.success(`Generation succeeded`);
       }
     },
     onError: (e) => {
-      alert(`Generate CV [error] : ${e}`);
+      alert(`Generate [error] : ${e}`);
     },
   });
 };

@@ -122,7 +122,7 @@ export const SidebarContainer = () => {
               loading={generateCV.isPending}
               onClick={handleGenerateCV}
             >
-              {t("button.generate-cv.label")}
+              {t("button.generate.label")}
             </Button>
           </Stack>
         </Stack>

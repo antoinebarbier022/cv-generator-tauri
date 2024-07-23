@@ -36,7 +36,7 @@ fn create_app_menu() -> Menu {
                 .add_native_item(MenuItem::Separator)
                 .add_item(CustomMenuItem::new("file.reset", "Reset all"))
                 .add_native_item(MenuItem::Separator)
-                .add_item(CustomMenuItem::new("file.generate", "Generate CV").accelerator("Cmd+G")),
+                .add_item(CustomMenuItem::new("file.generate", "Generate").accelerator("Cmd+G")),
         ))
         .add_submenu(Submenu::new(
             "Edit",
