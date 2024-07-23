@@ -46,7 +46,7 @@ export const PageLayout = forwardRef<HTMLDivElement, Props>(
           <Divider></Divider>
         </Stack>
         <ErrorBoundary fallbackRender={fallbackRender}>
-          {children}
+          <Stack paddingBottom={4}>{children}</Stack>
         </ErrorBoundary>
       </Stack>
     );
