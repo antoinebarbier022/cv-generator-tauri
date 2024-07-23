@@ -31,12 +31,20 @@ fn create_app_menu() -> Menu {
         .add_submenu(Submenu::new(
             "File",
             Menu::new()
-                .add_item(CustomMenuItem::new("file.export", "Export"))
-                .add_item(CustomMenuItem::new("file.import", "Import"))
+                .add_item(CustomMenuItem::new("file.export", "Export").disabled())
+                .add_item(CustomMenuItem::new("file.import", "Import").disabled())
                 .add_native_item(MenuItem::Separator)
                 .add_item(CustomMenuItem::new("file.reset", "Reset all"))
                 .add_native_item(MenuItem::Separator)
-                .add_item(CustomMenuItem::new("file.generate", "Generate").accelerator("Cmd+G")),
+                .add_item(
+                    CustomMenuItem::new("file.generate", "Generate and save")
+                        .accelerator("Cmd+G")
+                        .disabled(),
+                )
+                .add_item(
+                    CustomMenuItem::new("file.generate-and-save-as", "Generate and save as...")
+                        .accelerator("Cmd+Shift+G"),
+                ),
         ))
         .add_submenu(Submenu::new(
             "Edit",
@@ -107,6 +115,12 @@ fn main() {
             }
             if event.menu_item_id() == "file.generate" {
                 event.window().emit("file-generate", "").unwrap();
+            }
+            if event.menu_item_id() == "file.generate-and-save-as" {
+                event
+                    .window()
+                    .emit("file-generate-and-save-as", "")
+                    .unwrap();
             }
         })
         .setup(|app| {

@@ -11,7 +11,7 @@ import { Button, Sheet, Stack } from "@mui/joy";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useAskOutputPath } from "../../cv-generation/hooks/useAskOutputPath";
-import { useGenerateCV } from "../../cv-generation/hooks/useGenerateCV";
+import { useGenerate } from "../../cv-generation/hooks/useGenerate";
 import { useGetDataStorage } from "../../storage/hooks/useGetDataStorage";
 import { CardProfileButton } from "../components/CardProfileButton";
 import { NavigationList } from "../components/NavigationList";
@@ -21,7 +21,7 @@ export const SidebarContainer = () => {
   const { t } = useTranslation();
 
   const askOutputPath = useAskOutputPath();
-  const generateCV = useGenerateCV();
+  const generateCV = useGenerate();
   const contentResume = useGetDataStorage();
 
   const fullName = useMemo(() => {

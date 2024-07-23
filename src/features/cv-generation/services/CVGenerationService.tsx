@@ -29,7 +29,6 @@ export const CVGenerationService = {
 
     const filePath = await save({
       defaultPath: (await downloadDir()) + "/" + defaultFileName + ".pptx",
-      title: "Sauvegarder",
     });
     if (!filePath) {
       console.warn("Filepath is wrong");
