@@ -66,15 +66,10 @@ fn create_app_menu() -> Menu {
         ))
         .add_submenu(Submenu::new(
             "Debug",
-            Menu::new()
-                .add_item(
-                    CustomMenuItem::new("debug.open-panel", "Open debug panel")
-                        .accelerator("Cmd+Shift+D"),
-                )
-                .add_item(
-                    CustomMenuItem::new("debug.developer-tools", "Developer Tools")
-                        .accelerator("Option+Cmd+I"),
-                ),
+            Menu::new().add_item(
+                CustomMenuItem::new("debug.open-panel", "Open debug panel")
+                    .accelerator("Cmd+Shift+D"),
+            ),
         ))
         .add_submenu(Submenu::new(
             "Help",
@@ -96,13 +91,6 @@ fn main() {
             }
             if event.menu_item_id() == "debug.open-panel" {
                 event.window().emit("debug-open-panel", "").unwrap();
-            }
-            if event.menu_item_id() == "debug.developer-tools" {
-                if event.window().is_devtools_open() {
-                    event.window().close_devtools();
-                } else {
-                    event.window().open_devtools();
-                }
             }
             if event.menu_item_id() == "file.export" {
                 event.window().emit("file-export", "").unwrap();
