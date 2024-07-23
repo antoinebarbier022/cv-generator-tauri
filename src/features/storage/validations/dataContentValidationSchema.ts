@@ -8,7 +8,7 @@ const translationSchema = yup.object().shape({
 const sectionSchema = (content: yup.AnyObjectSchema) =>
   yup.array().of(
     yup.object().shape({
-      id: yup.string().uuid(),
+      id: yup.string(),
       content,
     })
   );
@@ -16,8 +16,8 @@ const sectionSchema = (content: yup.AnyObjectSchema) =>
 const experienceSchema = yup.object().shape({
   program: yup.string(),
   client: yup.string(),
-  role: yup.string(),
   date: yup.string(),
+  role: translationSchema,
   context: translationSchema,
   contribution: translationSchema,
 });

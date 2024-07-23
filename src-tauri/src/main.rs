@@ -32,7 +32,7 @@ fn create_app_menu() -> Menu {
             "File",
             Menu::new()
                 .add_item(CustomMenuItem::new("file.export", "Export").disabled())
-                .add_item(CustomMenuItem::new("file.import", "Import").disabled())
+                .add_item(CustomMenuItem::new("file.import", "Import"))
                 .add_native_item(MenuItem::Separator)
                 .add_item(CustomMenuItem::new("file.reset", "Reset all"))
                 .add_native_item(MenuItem::Separator)
