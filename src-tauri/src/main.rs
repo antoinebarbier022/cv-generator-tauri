@@ -16,17 +16,9 @@ fn create_app_menu() -> Menu {
                     AboutMetadata::default(),
                 ))
                 .add_native_item(MenuItem::Separator)
-                .add_item(
-                    CustomMenuItem::new("preferences_app".to_string(), "Preferences...").disabled(),
-                )
-                .add_item(
-                    CustomMenuItem::new("share_app".to_string(), "Share CV Generator").disabled(),
-                )
+                .add_item(CustomMenuItem::new("preferences_app", "Preferences...").disabled())
                 .add_native_item(MenuItem::Separator)
-                .add_item(
-                    CustomMenuItem::new("update_app".to_string(), "Check for Updates...")
-                        .disabled(),
-                )
+                .add_item(CustomMenuItem::new("update_app", "Check for Updates...").disabled())
                 .add_native_item(MenuItem::Separator)
                 .add_native_item(MenuItem::Services)
                 .add_native_item(MenuItem::Separator)
@@ -39,9 +31,12 @@ fn create_app_menu() -> Menu {
         .add_submenu(Submenu::new(
             "File",
             Menu::new()
-                .add_item(CustomMenuItem::new("file.export".to_string(), "Export JSON").disabled())
+                .add_item(CustomMenuItem::new("file.export", "Export"))
+                .add_item(CustomMenuItem::new("file.import", "Import"))
                 .add_native_item(MenuItem::Separator)
-                .add_item(CustomMenuItem::new("file.generate".to_string(), "Generate CV").disabled()),
+                .add_item(CustomMenuItem::new("file.reset", "Reset all"))
+                .add_native_item(MenuItem::Separator)
+                .add_item(CustomMenuItem::new("file.generate", "Generate CV").accelerator("Cmd+G")),
         ))
         .add_submenu(Submenu::new(
             "Edit",
@@ -63,14 +58,14 @@ fn create_app_menu() -> Menu {
         ))
         .add_submenu(Submenu::new(
             "Debug",
-            Menu::new().add_item(CustomMenuItem::new(
-                "debug-open-panel".to_string(),
-                "Open debug panel",
-            ).accelerator("Cmd+Shift+D")),
+            Menu::new().add_item(
+                CustomMenuItem::new("debug.open-panel", "Open debug panel")
+                    .accelerator("Cmd+Shift+D"),
+            ),
         ))
         .add_submenu(Submenu::new(
             "Help",
-            Menu::new().add_item(CustomMenuItem::new("help-slack-open-url".to_string(), "Canal Slack")),
+            Menu::new().add_item(CustomMenuItem::new("help.open-url-slack", "Canal Slack")),
         ));
 }
 
@@ -78,14 +73,30 @@ fn main() {
     tauri::Builder::default()
         .menu(create_app_menu())
         .on_menu_event(|event| {
-            if event.menu_item_id() == "help-slack-open-url" { 
-                open(&event.window().shell_scope(), "https://capgemini.enterprise.slack.com/archives/C07DCNBUT4Z", None).unwrap();
+            if event.menu_item_id() == "help.open-url-slack" {
+                open(
+                    &event.window().shell_scope(),
+                    "https://capgemini.enterprise.slack.com/archives/C07DCNBUT4Z",
+                    None,
+                )
+                .unwrap();
             }
-            if event.menu_item_id() == "debug-open-panel" {
-                event.window().emit("navigate-to-debug-panel", "").unwrap();
+            if event.menu_item_id() == "debug.open-panel" {
+                event.window().emit("debug-open-panel", "").unwrap();
+            }
+            if event.menu_item_id() == "file.export" {
+                event.window().emit("file-export", "").unwrap();
+            }
+            if event.menu_item_id() == "file.import" {
+                event.window().emit("file-import", "").unwrap();
+            }
+            if event.menu_item_id() == "file.reset" {
+                event.window().emit("file-reset", "").unwrap();
+            }
+            if event.menu_item_id() == "file.generate" {
+                event.window().emit("file-generate", "").unwrap();
             }
         })
-        
         .setup(|app| {
             let window = app.get_window("main").unwrap();
 

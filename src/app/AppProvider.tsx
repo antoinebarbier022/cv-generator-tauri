@@ -6,7 +6,7 @@ import { PropsWithChildren } from "react";
 import { BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { BetaBadge } from "../features/debug/components/BetaBadge.tsx";
+import { BetaBadge } from "../components/BetaBadge.tsx";
 import "../styles/index.css";
 import theme from "../themes/default-theme.ts";
 

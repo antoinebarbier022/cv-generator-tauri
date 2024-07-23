@@ -14,17 +14,17 @@ import { format, fromUnixTime } from "date-fns";
 
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useGetDataStorage } from "../../storage/hooks/useGetDataStorage";
-import { useSetDataStorage } from "../../storage/hooks/useSetDataStorage";
-import { UserData } from "../../storage/types/storage";
-import { dataContentValidationSchema } from "../../storage/validations/dataContentValidationSchema";
+import { useGetDataStorage } from "../../../storage/hooks/useGetDataStorage";
+import { useSetDataStorage } from "../../../storage/hooks/useSetDataStorage";
+import { UserData } from "../../../storage/types/storage";
+import { dataContentValidationSchema } from "../../../storage/validations/dataContentValidationSchema";
 
 interface Props {
   open: boolean;
   onClose: () => void;
 }
 
-export const DebugModal = (props: Props) => {
+export const MenuModalDebug = (props: Props) => {
   const { t } = useTranslation();
   const mutationDataToStorage = useSetDataStorage();
   const data = useGetDataStorage();

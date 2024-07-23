@@ -69,9 +69,9 @@ export default extendTheme({
     },
     JoyModal: {
       styleOverrides: {
-        backdrop: ({ theme }) => ({
+        backdrop: () => ({
           backdropFilter: "none",
-          backgroundColor: `rgba(${theme.palette.neutral.darkChannel} / 0.7)`,
+          backgroundColor: "#00000099",
         }),
       },
     },

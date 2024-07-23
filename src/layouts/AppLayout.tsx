@@ -15,7 +15,7 @@ export const AppLayout = ({ sidebar }: Props) => {
       maxHeight={appHeight}
       sx={{
         display: "grid",
-        gridTemplateColumns: "280px auto",
+        gridTemplateColumns: "260px auto",
         paddingRight: "var(--app-border-width)",
         paddingBottom:
           "calc(var(--app-border-width) + var(--app-footer-height)) ",
