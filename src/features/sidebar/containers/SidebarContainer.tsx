@@ -17,11 +17,14 @@ import { CardProfileButton } from "../components/CardProfileButton";
 import { NavigationList } from "../components/NavigationList";
 import { NavigationType } from "../types/sidebar";
 
-export const SidebarContainer = () => {
+interface Props {
+  isLoadingGenerate?: boolean;
+}
+export const SidebarContainer = ({ isLoadingGenerate }: Props) => {
   const { t } = useTranslation();
 
   const askOutputPath = useAskOutputPath();
-  const generateCV = useGenerate();
+  const generate = useGenerate();
   const contentResume = useGetDataStorage();
 
   const fullName = useMemo(() => {
@@ -40,9 +43,10 @@ export const SidebarContainer = () => {
 
   const handleGenerateCV = () => {
     askOutputPath.mutate(undefined, {
+      onSettled: () => {},
       onSuccess: (data) => {
         if (data) {
-          generateCV.mutate(data);
+          generate.mutate(data);
         }
       },
     });
@@ -119,7 +123,7 @@ export const SidebarContainer = () => {
               color="primary"
               variant="solid"
               sx={{ marginX: 1 }}
-              loading={generateCV.isPending}
+              loading={generate.isPending || isLoadingGenerate}
               onClick={handleGenerateCV}
             >
               {t("button.generate.label")}

@@ -20,7 +20,7 @@ export const AppProvider = ({ children }: PropsWithChildren) => {
     <CssVarsProvider
       theme={theme}
       defaultMode="light"
-      modeStorageKey="joy-mode-scheme-light"
+      modeStorageKey="joy-mode-scheme-dark"
     >
       <CssBaseline />
       <QueryClientProvider client={queryClient}>

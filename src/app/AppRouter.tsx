@@ -24,14 +24,23 @@ import { Skills } from "./Views/Skills";
 
 export const AppRouter = () => {
   const navigate = useNavigate();
-  useMenuEvents();
+  const { isLoadingGenerate } = useMenuEvents();
 
   const location = useLocation();
   const background = location.state && location.state.background;
   return (
     <>
       <Routes location={background || location}>
-        <Route path="/" element={<AppLayout sidebar={<SidebarContainer />} />}>
+        <Route
+          path="/"
+          element={
+            <AppLayout
+              sidebar={
+                <SidebarContainer isLoadingGenerate={isLoadingGenerate} />
+              }
+            />
+          }
+        >
           <Route index element={<Navigate to={"/profile"} />} />
           <Route path="profile" element={<Profile />} />
           <Route path="skills" element={<Skills />} />

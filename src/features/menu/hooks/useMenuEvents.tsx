@@ -2,6 +2,8 @@ import { confirm } from "@tauri-apps/api/dialog";
 import { listen } from "@tauri-apps/api/event";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useAskOutputPath } from "../../cv-generation/hooks/useAskOutputPath";
+import { useGenerate } from "../../cv-generation/hooks/useGenerate";
 import { useResetDataStorage } from "../../storage/hooks/useResetDataStorage";
 
 export const useMenuEvents = () => {
@@ -66,4 +68,25 @@ export const useMenuEvents = () => {
       unlisten.then((dispose) => dispose());
     };
   }, []);
+
+  const askOutputPath = useAskOutputPath();
+  const generate = useGenerate();
+
+  useEffect(() => {
+    const unlisten = listen("file-generate-and-save-as", async () => {
+      askOutputPath.mutate(undefined, {
+        onSettled: () => {},
+        onSuccess: (data) => {
+          if (data) {
+            generate.mutate(data);
+          }
+        },
+      });
+      return () => {
+        unlisten.then((dispose) => dispose());
+      };
+    });
+  }, [history]);
+
+  return { isLoadingGenerate: generate.isPending };
 };

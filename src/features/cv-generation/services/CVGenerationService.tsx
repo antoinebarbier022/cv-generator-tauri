@@ -12,6 +12,7 @@ import { UserData } from "../../storage/types/storage";
 
 export const CVGenerationService = {
   askOutputPath: async (): Promise<string | null> => {
+    console.count("ask output");
     let data: UserData;
     try {
       data = JSON.parse(
@@ -27,14 +28,18 @@ export const CVGenerationService = {
     const defaultFileName =
       `CV_${data.lastname}_${data.firstname}_${data.entity}`.replace(/_$/, "");
 
-    const filePath = await save({
-      defaultPath: (await downloadDir()) + "/" + defaultFileName + ".pptx",
-    });
-    if (!filePath) {
-      console.warn("Filepath is wrong");
-      return null;
+    try {
+      const filePath = await save({
+        defaultPath: (await downloadDir()) + "/" + defaultFileName + ".pptx",
+      });
+      if (!filePath) {
+        console.warn("Filepath is wrong");
+        return null;
+      }
+      return filePath;
+    } catch {
+      throw Error("Error on open save dialog");
     }
-    return filePath;
   },
   generate: async (outputFilePath: string): Promise<ChildProcess> => {
     const appDataDirPath = await appDataDir();

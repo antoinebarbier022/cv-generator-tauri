@@ -234,9 +234,7 @@ export const Profile = () => {
                       }
                       value={formik.values.role[lang]}
                       onChange={formik.handleChange}
-                      placeholder={`${t(
-                        "input.role.placeholder"
-                      )} ${lang.toUpperCase()}`}
+                      placeholder={`${t("input.role.placeholder")}`}
                     />
                   ))}
                 </Stack>
