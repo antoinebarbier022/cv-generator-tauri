@@ -2,7 +2,7 @@ import { listen } from "@tauri-apps/api/event";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-export const useTauriEvents = () => {
+export const useMenuEvents = () => {
   const navigate = useNavigate();
   const routerLocation = useLocation();
   const setupListener = (eventName: string, navigateTo: string) => {
@@ -11,6 +11,7 @@ export const useTauriEvents = () => {
         navigate(navigateTo, {
           state: { background: routerLocation },
         });
+        console.log(routerLocation);
       }
     });
   };

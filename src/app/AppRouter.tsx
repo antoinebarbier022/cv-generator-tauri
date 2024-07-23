@@ -14,9 +14,9 @@ import { MenuModalExport } from "../features/menu/containers/menu-modal-export/m
 import { MenuModalGenerate } from "../features/menu/containers/menu-modal-generate/menu-modal-generate";
 import { MenuModalImport } from "../features/menu/containers/menu-modal-import/menu-modal-import";
 import { MenuModalReset } from "../features/menu/containers/menu-modal-reset/menu-modal-reset";
+import { useMenuEvents } from "../features/menu/hooks/useMenuEvents";
 import { ProjectsContainer } from "../features/projects/containers/ProjectsContainer";
 import { SidebarContainer } from "../features/sidebar/containers/SidebarContainer";
-import { useTauriEvents } from "../hooks/useTauriEvents";
 import { AppLayout } from "../layouts/AppLayout";
 import { EmploymentHistory } from "./Views/EmploymentHistory";
 import { Languages } from "./Views/Languages";
@@ -25,7 +25,8 @@ import { Skills } from "./Views/Skills";
 
 export const AppRouter = () => {
   const navigate = useNavigate();
-  useTauriEvents();
+  useMenuEvents();
+
   const location = useLocation();
   const background = location.state && location.state.background;
   return (
