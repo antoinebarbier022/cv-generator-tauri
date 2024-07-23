@@ -10,6 +10,7 @@ import { Button, Sheet, Stack } from "@mui/joy";
 
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { useAskOutputPath } from "../../cv-generation/hooks/useAskOutputPath";
 import { useGenerateCV } from "../../cv-generation/hooks/useGenerateCV";
 import { useGetDataStorage } from "../../storage/hooks/useGetDataStorage";
 import { CardProfileButton } from "../components/CardProfileButton";
@@ -19,6 +20,7 @@ import { NavigationType } from "../types/sidebar";
 export const SidebarContainer = () => {
   const { t } = useTranslation();
 
+  const askOutputPath = useAskOutputPath();
   const generateCV = useGenerateCV();
   const contentResume = useGetDataStorage();
 
@@ -37,7 +39,13 @@ export const SidebarContainer = () => {
   }, [contentResume.data?.firstname, contentResume.data?.lastname]);
 
   const handleGenerateCV = () => {
-    generateCV.mutate();
+    askOutputPath.mutate(undefined, {
+      onSuccess: (data) => {
+        if (data) {
+          generateCV.mutate(data);
+        }
+      },
+    });
   };
 
   const navigation: NavigationType[] = [

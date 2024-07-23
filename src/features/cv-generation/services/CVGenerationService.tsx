@@ -11,7 +11,7 @@ import { ChildProcess, Command } from "@tauri-apps/api/shell";
 import { UserData } from "../../storage/types/storage";
 
 export const CVGenerationService = {
-  generate: async (): Promise<ChildProcess | null> => {
+  askOutputPath: async (): Promise<string | null> => {
     let data: UserData;
     try {
       data = JSON.parse(
@@ -35,10 +35,12 @@ export const CVGenerationService = {
       console.warn("Filepath is wrong");
       return null;
     }
-
+    return filePath;
+  },
+  generate: async (outputFilePath: string): Promise<ChildProcess> => {
     const appDataDirPath = await appDataDir();
-    const outputFolderPath = filePath.replace(filePath, "");
-    const outputFileName = filePath
+    const outputFolderPath = outputFilePath.replace(outputFilePath, "");
+    const outputFileName = outputFilePath
       .replace(outputFolderPath, "")
       .replace(".pptx", "");
     const command = Command.sidecar("binaries/main", [
