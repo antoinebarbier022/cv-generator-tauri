@@ -13,8 +13,11 @@ export const useMenuEvents = () => {
   const setupListener = (eventName: string, navigateTo: string) => {
     return listen(eventName, () => {
       if (location.pathname !== navigateTo) {
+        console.log(routerLocation);
         navigate(navigateTo, {
-          state: { background: routerLocation },
+          state: {
+            background: { ...routerLocation, pathname: location.pathname },
+          },
         });
       }
     });
