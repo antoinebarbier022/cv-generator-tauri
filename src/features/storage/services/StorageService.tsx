@@ -16,6 +16,32 @@ import { UserData } from "../types/storage";
 const CONTENT_DATA_FILE = `data.json`;
 
 export const StorageService = {
+  resetContentData: async (): Promise<void> => {
+    try {
+      const suggestedAppDataPath = await appDataDir();
+      const isExistAppDataDirPath = await exists(suggestedAppDataPath);
+
+      if (!isExistAppDataDirPath) {
+        await createDir(suggestedAppDataPath, { recursive: true });
+      }
+    } catch (error) {
+      console.error("Error create folder appDataDir:", error);
+      throw error;
+    }
+
+    try {
+      await writeTextFile(
+        {
+          path: CONTENT_DATA_FILE,
+          contents: JSON.stringify(emptyInitialContentResume),
+        },
+        { dir: BaseDirectory.AppData }
+      );
+    } catch (writeFileError) {
+      console.error("Failed to reset content data file:", writeFileError);
+      throw new Error("Failed to reset content data file");
+    }
+  },
   getContentData: async (): Promise<UserData> => {
     let data;
     try {

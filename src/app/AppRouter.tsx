@@ -13,7 +13,6 @@ import { MenuModalDebug } from "../features/menu/containers/menu-modal-debug/men
 import { MenuModalExport } from "../features/menu/containers/menu-modal-export/menu-modal-export";
 import { MenuModalGenerate } from "../features/menu/containers/menu-modal-generate/menu-modal-generate";
 import { MenuModalImport } from "../features/menu/containers/menu-modal-import/menu-modal-import";
-import { MenuModalReset } from "../features/menu/containers/menu-modal-reset/menu-modal-reset";
 import { useMenuEvents } from "../features/menu/hooks/useMenuEvents";
 import { ProjectsContainer } from "../features/projects/containers/ProjectsContainer";
 import { SidebarContainer } from "../features/sidebar/containers/SidebarContainer";
@@ -58,10 +57,6 @@ export const AppRouter = () => {
           <Route
             path="import"
             element={<MenuModalImport open onClose={() => navigate(-1)} />}
-          />
-          <Route
-            path="reset"
-            element={<MenuModalReset open onClose={() => navigate(-1)} />}
           />
           <Route
             path="generate"
