@@ -1,5 +1,37 @@
 
 
+## [0.1.1-beta.4](https://github.com/antoinebarbier022/frog-cv-generator-tauri/compare/0.1.1-beta.2...0.1.1-beta.4) (2024-7-23)
+
+
+### Bug Fixes
+
+* add copy, cut, paste and selectAll shortcuts ([ac9bd10](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/ac9bd10c2a484161c747d3fc9765c1d34aa41c9a))
+* add new element at the top of the list ([5c472fc](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/5c472fcfb82b412575eb698c154ab93c835c16f4))
+* display JSON parse error ([48949bf](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/48949bf259e689e7c85edb54434a4382dad34174))
+* generate cv service -> split ask output path and generation ([516ec42](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/516ec42fbc6c222768f9631cb4381cb46bda5ab9))
+* **generate cv:** loading state on the generate button on click on menu > file > generate ([a503423](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/a50342384c0d27f9b5fe3da3731167bdf70cf6d7))
+* **layout:** add paddingBottom on the AppLayout for the content ([c4cae62](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/c4cae6213291fb0555f4f0ef65de4c7bd9d543e3))
+* new project is added on top ([0678971](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/06789713b100f9aa29450e5b1deee8ec43a64e2b))
+* **profile:** error when image profile is empty ([b30089a](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/b30089ac94563af5438d3b9fe7dd567f6f44de90))
+* **resume:** initial accordions are all closed ([f4a4bbf](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/f4a4bbfc9650d5314abf54f2c13c937af3e4e9cf))
+* **router with modals:** open modal with the right page in background ([af273bd](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/af273bdc4635d54f3ccc38c79a66f60f74d0ea1f))
+* **script python:** add parentheses around project date ([0724e93](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/0724e9388541bc39f8a727abd5dcad7f0a772a14))
+* **wording:** change "generate CV" by "generate" ([bbb001c](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/bbb001ccba90e3a8b9948fb88f50a4ebe04e0344))
+
+
+### Features
+
+* add file menu items (open empty modals) ([945642e](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/945642e934c5440631acd613a0bd34e9e5b95c1c))
+* drag and drop employment history (sort) + change data model ([60813f4](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/60813f48dea35a7c76fa2ff990a9a7dae229dbd1))
+* **formation:** add reorder with drag and drop ([0dc30c1](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/0dc30c17a8b76aec2ae1e241825dab515389a9a5))
+* **languages:** add reorder with drag and drop ([0ed7a8f](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/0ed7a8feec0ed3132cffb04672f529d281cb4158))
+* **menu:** add "generate and save as" inside menu ([6df39f1](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/6df39f1881f7198439563fe64fc6e3016a880b91))
+* **menu:** add import json ([2c6c545](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/2c6c545d1da30aaca4a65400d468e0cdeb252d1e))
+* **menu:** add reset all data inside menu file ([394a98c](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/394a98c3fd9cc5e4ebb565deb8b52cead5238da1))
+* **menu:** open devtools ([5407901](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/540790123720085890ef1acf3a29ebf481c70184))
+* **projects:** add reorder with drag and drop ([48b9132](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/48b913202589302b3c75b059ef694ae116902b1e))
+* **skill:** add reorder with drag and drop ([4c72a40](https://github.com/antoinebarbier022/frog-cv-generator-tauri/commit/4c72a407ea2595f3fef5aebefb19c11846af7d37))
+
 ## [0.1.1-beta.3](https://github.com/antoinebarbier022/frog-cv-generator-tauri/compare/0.1.1-beta.2...0.1.1-beta.3) (2024-7-23)
 
 
