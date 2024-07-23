@@ -176,9 +176,13 @@ export const Profile = () => {
                           backgroundColor: "neutral.50",
                           width: "100%",
                         }}
-                        src={`${convertFileSrc(
+                        src={
                           formik.values.picture
-                        )}?removeCache=${new Date()}`}
+                            ? `${convertFileSrc(
+                                formik.values.picture
+                              )}?removeCache=${new Date()}`
+                            : ""
+                        }
                       />
                     </AspectRatio>
                   </CardOverflow>
