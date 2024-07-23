@@ -66,4 +66,5 @@ jobs:
           releaseName: "Release v__VERSION__"
           releaseDraft: false
           prerelease: true
+          includeUpdaterJson: true
           args: ${{ matrix.args }}
