@@ -527,7 +527,7 @@ dependencies = [
 
 [[package]]
 name = "cv_generator"
-version = "0.1.1-beta.5"
+version = "0.1.1-beta.6"
 dependencies = [
  "serde",
  "serde_json",

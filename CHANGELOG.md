@@ -1,5 +1,25 @@
 
 
+## [0.1.1-beta.6](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.5...0.1.1-beta.6) (2024-7-24)
+
+
+### Bug Fixes
+
+* **accordion title:** animation when accordion expanded change ([a9e58e5](https://github.com/antoinebarbier022/cv-generator-tauri/commit/a9e58e5931183c4789ee890f172f1e8dd23018f2))
+* **profile picture:** remove the picture file from path and not only the reference of the path. ([88ddd6d](https://github.com/antoinebarbier022/cv-generator-tauri/commit/88ddd6dc04e11a306785b5e96e01b6e4dd9f802d))
+* **profile picture:** remove upload of svg ([262bc0a](https://github.com/antoinebarbier022/cv-generator-tauri/commit/262bc0a02125678e460dbefceb218451b9a2fbfb))
+
+
+### Features
+
+* **page layout:** add chip to display the count of items ([de23aac](https://github.com/antoinebarbier022/cv-generator-tauri/commit/de23aacbb4ee66af10cfd59c55c62a59d3e7bcd4))
+* **reset:** to avoid losing data, we store an archive of reset data inside appData ([15efb49](https://github.com/antoinebarbier022/cv-generator-tauri/commit/15efb494a3c8121e10702927b1231749fa13d9dd))
+
+
+### Performance Improvements
+
+* when the accordion is not expanded, don't render details (that remove an animation but there is better performances) ([7b9be7a](https://github.com/antoinebarbier022/cv-generator-tauri/commit/7b9be7a93d5fbde1ebfe79aa834d80302dc1e781))
+
 ## [0.1.1-beta.5](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.4...0.1.1-beta.5) (2024-7-24)
 
 

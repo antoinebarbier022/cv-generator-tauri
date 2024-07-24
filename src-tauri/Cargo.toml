@@ -1,6 +1,6 @@
 [package]
 name = "cv_generator"
-version = "0.1.1-beta.5"
+version = "0.1.1-beta.6"
 description = ""
 authors = [ "Antoine Barbier <antoine.c.barbier@frog.co>" ]
 license = ""
@@ -23,7 +23,10 @@ window-vibrancy = "0.4.0"
 
   [dependencies.tauri]
   version = "1.6.5"
-  features = [ "fs-rename-file", "fs-remove-file", "updater",
+  features = [
+  "fs-rename-file",
+  "fs-remove-file",
+  "updater",
   "shell-sidecar",
   "shell-open",
   "protocol-asset",
