@@ -102,7 +102,7 @@ export const AccordionCard = forwardRef<HTMLDivElement, Props>(
               >
                 {title}
               </AccordionSummary>
-              <AccordionDetails>{children}</AccordionDetails>
+              <AccordionDetails>{expanded && children}</AccordionDetails>
             </Accordion>
             <Stack
               sx={{
