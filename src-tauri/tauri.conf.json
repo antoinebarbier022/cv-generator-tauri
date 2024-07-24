@@ -42,6 +42,7 @@
         "writeFile": true,
         "readDir": true,
         "createDir": true,
+        "removeFile": true,
         "exists": true,
         "scope": ["$RESOURCE/**", "$APPDATA/", "$APPDATA/**"]
       },
