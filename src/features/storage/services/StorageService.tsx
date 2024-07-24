@@ -1,3 +1,4 @@
+import { getVersion } from "@tauri-apps/api/app";
 import { open } from "@tauri-apps/api/dialog";
 import {
   BaseDirectory,
@@ -5,11 +6,13 @@ import {
   exists,
   readBinaryFile,
   readTextFile,
+  renameFile,
   writeBinaryFile,
   writeTextFile,
 } from "@tauri-apps/api/fs";
 import { appDataDir, extname, join, pictureDir } from "@tauri-apps/api/path";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
+import { format } from "date-fns";
 import { emptyInitialContentResume } from "../../../constants/emptyInitialContentResume";
 import { UserData } from "../types/storage";
 
@@ -17,6 +20,16 @@ const CONTENT_DATA_FILE = `data.json`;
 
 export const StorageService = {
   resetContentData: async (): Promise<void> => {
+    const appVersion = await getVersion();
+    const formattedDate = format(new Date(), "yyyy-MM-dd_HH-mm");
+    await renameFile(
+      CONTENT_DATA_FILE,
+      `data--${formattedDate}--${appVersion}.json`,
+      {
+        dir: BaseDirectory.AppData,
+      }
+    );
+
     try {
       const suggestedAppDataPath = await appDataDir();
       const isExistAppDataDirPath = await exists(suggestedAppDataPath);
