@@ -8,7 +8,13 @@ import {
   Stack,
   Typography,
 } from "@mui/joy";
-import { forwardRef, PropsWithChildren, ReactNode } from "react";
+import {
+  forwardRef,
+  PropsWithChildren,
+  ReactNode,
+  useRef,
+  useState,
+} from "react";
 import {
   DraggableProvidedDragHandleProps,
   DraggableStateSnapshot,
@@ -45,6 +51,28 @@ export const AccordionCard = forwardRef<HTMLDivElement, Props>(
     },
     ref
   ) => {
+    const [displayChildren, setDisplayChildren] = useState(expanded);
+    const timerRef = useRef<number | null>(null);
+    const handleExpandedChange = (
+      event: React.SyntheticEvent,
+      expanded: boolean
+    ) => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+        console.log("Timer annulé");
+      }
+      if (onExpandedChange) {
+        onExpandedChange(event, expanded);
+        if (!expanded) {
+          timerRef.current = window.setTimeout(() => {
+            setDisplayChildren(false);
+          }, 500);
+        } else {
+          setDisplayChildren(true);
+        }
+      }
+    };
     return (
       <Stack
         ref={ref}
@@ -85,7 +113,7 @@ export const AccordionCard = forwardRef<HTMLDivElement, Props>(
             <Accordion
               sx={{ flex: 1 }}
               expanded={expanded}
-              onChange={onExpandedChange}
+              onChange={handleExpandedChange}
             >
               <AccordionSummary
                 slotProps={{
@@ -102,7 +130,7 @@ export const AccordionCard = forwardRef<HTMLDivElement, Props>(
               >
                 {title}
               </AccordionSummary>
-              <AccordionDetails>{expanded && children}</AccordionDetails>
+              <AccordionDetails>{displayChildren && children}</AccordionDetails>
             </Accordion>
             <Stack
               sx={{
