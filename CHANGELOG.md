@@ -1,5 +1,12 @@
 
 
+## [0.1.1-beta.5](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.4...0.1.1-beta.5) (2024-7-24)
+
+
+### Bug Fixes
+
+* change github repository ([2440b28](https://github.com/antoinebarbier022/cv-generator-tauri/commit/2440b2846f9cf7b8f270632c849d40c22d3f2821))
+
 ## [0.1.1-beta.4](https://github.com/antoinebarbier022/frog-cv-generator-tauri/compare/0.1.1-beta.2...0.1.1-beta.4) (2024-7-23)
 
 
