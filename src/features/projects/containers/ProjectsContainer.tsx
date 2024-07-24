@@ -71,6 +71,7 @@ export const ProjectsContainer = () => {
             ref={provided.innerRef}
             {...provided.droppableProps}
             title={t("resume.section.projects.title")}
+            chip={String(formik.values.experiences.length)}
             endDecorator={<IconButtonAdd onClick={handleAddProject} />}
           >
             {userData.isPending && <Typography>Loading...</Typography>}

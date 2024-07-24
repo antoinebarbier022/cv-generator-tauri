@@ -38,6 +38,7 @@ export const EmploymentHistory = () => {
             ref={provided.innerRef}
             {...provided.droppableProps}
             title={t("resume.section.employment-history.title")}
+            chip={String(formik.values.employment_history.length)}
             endDecorator={
               <IconButtonAdd
                 onClick={() =>

@@ -34,6 +34,7 @@ export const Formation = () => {
             ref={provided.innerRef}
             {...provided.droppableProps}
             title={t("resume.section.formation.title")}
+            chip={String(formik.values.formation.length)}
             endDecorator={
               <IconButtonAdd
                 onClick={() => handleAddItemSection({ fieldName: "formation" })}

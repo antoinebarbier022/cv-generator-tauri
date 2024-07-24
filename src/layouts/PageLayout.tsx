@@ -1,13 +1,14 @@
-import { Alert, Container, Divider, Stack, Typography } from "@mui/joy";
+import { Alert, Chip, Container, Divider, Stack, Typography } from "@mui/joy";
 import { forwardRef, PropsWithChildren, ReactNode } from "react";
 import { ErrorBoundary, FallbackProps } from "react-error-boundary";
 
 interface Props extends PropsWithChildren {
   title: string;
+  chip?: string;
   endDecorator?: ReactNode;
 }
 export const PageLayout = forwardRef<HTMLDivElement, Props>(
-  ({ title, endDecorator, children, ...props }, ref) => {
+  ({ title, chip, endDecorator, children, ...props }, ref) => {
     const fallbackRender = ({ error }: FallbackProps) => {
       return (
         <Alert color="danger">
@@ -29,7 +30,25 @@ export const PageLayout = forwardRef<HTMLDivElement, Props>(
       >
         <Stack gap={1}>
           <Stack>
-            <Typography level="h2">{title}</Typography>
+            <Typography
+              endDecorator={
+                chip && (
+                  <Chip size="md" sx={{ marginTop: "6px", borderRadius: "lg" }}>
+                    {chip}
+                  </Chip>
+                )
+              }
+              slotProps={{
+                endDecorator: {
+                  sx: {
+                    alignSelf: "center",
+                  },
+                },
+              }}
+              level="h2"
+            >
+              {title}
+            </Typography>
 
             <Stack
               sx={{

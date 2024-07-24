@@ -35,6 +35,7 @@ export const Languages = () => {
             ref={provided.innerRef}
             {...provided.droppableProps}
             title={t("resume.section.languages.title")}
+            chip={String(formik.values.languages.length)}
             endDecorator={
               <IconButtonAdd
                 onClick={() => handleAddItemSection({ fieldName: "languages" })}

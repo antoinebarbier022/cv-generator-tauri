@@ -35,6 +35,7 @@ export const Skills = () => {
             ref={provided.innerRef}
             {...provided.droppableProps}
             title={t("resume.section.skills.title")}
+            chip={String(formik.values.skills.length)}
             endDecorator={
               <IconButtonAdd
                 onClick={() => handleAddItemSection({ fieldName: "skills" })}
