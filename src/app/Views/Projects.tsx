@@ -3,21 +3,21 @@ import { AccordionGroup, Stack, Typography } from "@mui/joy";
 import { useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { useTranslation } from "react-i18next";
-import { AccordionCard } from "../../../components/AccordionCard";
-import { AccordionTitle } from "../../../components/AccordionTitle";
-import { EmptyState } from "../../../components/EmptyState";
-import { IconButtonAdd } from "../../../components/IconButtonAdd";
-import { PageLayout } from "../../../layouts/PageLayout";
+import { AccordionCard } from "../../components/AccordionCard";
+import { AccordionTitle } from "../../components/AccordionTitle";
+import { EmptyState } from "../../components/EmptyState";
+import { IconButtonAdd } from "../../components/IconButtonAdd";
+import { PageLayout } from "../../layouts/PageLayout";
 
-import { useFormCV } from "../../form/hooks/useFormCV";
+import { ProjectForm } from "../../components/ProjectForm";
+import { ProjectTitle } from "../../components/ProjectTitle";
+import { useFormCV } from "../../features/form/hooks/useFormCV";
 import {
   ResumeContentSection,
   UserDataExperience,
-} from "../../storage/types/storage";
-import { ProjectForm } from "../components/ProjectForm";
-import { ProjectTitle } from "../components/ProjectTitle";
+} from "../../features/storage/types/storage";
 
-export const ProjectsContainer = () => {
+export const Projects = () => {
   const { t } = useTranslation();
   const { userData, formik, dragEnded } = useFormCV();
 

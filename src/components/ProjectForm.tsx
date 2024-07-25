@@ -10,8 +10,11 @@ import {
 import { FormikProps } from "formik";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { CV_LANGUAGES } from "../../form/constants/cv-languages";
-import { UserData, UserDataExperience } from "../../storage/types/storage";
+import { CV_LANGUAGES } from "../features/form/constants/cv-languages";
+import {
+  UserData,
+  UserDataExperience,
+} from "../features/storage/types/storage";
 
 interface Props {
   formik: FormikProps<UserData>;

@@ -6,9 +6,10 @@
 @tailwind utilities;
 
 :root {
-  --app-border-width: 0.5rem;
+  --app-border-width: 10px;
+  --app-footer-height: 4px;
   --titlebar-height: var(--app-border-width);
-  --app-footer-height: 0.5rem;
+
   --app-background: rgba(105, 6, 224, 0.598);
 
   --scrollbar-color: rgba(var(--joy-palette-neutral-mainChannel) / 0.3);

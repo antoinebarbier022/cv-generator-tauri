@@ -12,12 +12,12 @@ import { Alert } from "@mui/joy";
 import { MenuModalDebug } from "../features/menu/containers/menu-modal-debug/menu-modal-debug";
 
 import { useMenuEvents } from "../features/menu/hooks/useMenuEvents";
-import { ProjectsContainer } from "../features/projects/containers/ProjectsContainer";
 import { SidebarContainer } from "../features/sidebar/containers/SidebarContainer";
 import { AppLayout } from "../layouts/AppLayout";
 import { EmploymentHistory } from "./Views/EmploymentHistory";
 import { Languages } from "./Views/Languages";
 import { Profile } from "./Views/Profile";
+import { Projects } from "./Views/Projects";
 import { Skills } from "./Views/Skills";
 
 export const AppRouter = () => {
@@ -43,7 +43,7 @@ export const AppRouter = () => {
           <Route path="profile" element={<Profile />} />
           <Route path="skills" element={<Skills />} />
           <Route path="languages" element={<Languages />} />
-          <Route path="projects" element={<ProjectsContainer />} />
+          <Route path="projects" element={<Projects />} />
           <Route path="formation" element={<Formation />} />
 
           <Route path="employment-history" element={<EmploymentHistory />} />
