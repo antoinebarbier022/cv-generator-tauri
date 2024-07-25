@@ -10,7 +10,7 @@ import {
 import { FormikProps } from "formik";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { CV_LANGUAGES } from "../../../constants/languages";
+import { CV_LANGUAGES } from "../../form/constants/cv-languages";
 import { UserData, UserDataExperience } from "../../storage/types/storage";
 
 interface Props {

@@ -19,9 +19,9 @@ import {
 
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 import { useTranslation } from "react-i18next";
-import { CV_LANGUAGES } from "../../constants/languages";
+import { CV_LANGUAGES } from "../../features/form/constants/cv-languages";
+import { useFormCV } from "../../features/form/hooks/useFormCV";
 import { useDeleteImageProfileStorage } from "../../features/storage/hooks/useDeleteImageProfileStorage";
-import { useFormCV } from "../../features/storage/hooks/useFormCV";
 import { useSetImageProfileStorage } from "../../features/storage/hooks/useSetImageProfileStorage";
 import { PageLayout } from "../../layouts/PageLayout";
 

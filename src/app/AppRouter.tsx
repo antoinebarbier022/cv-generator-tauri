@@ -10,9 +10,7 @@ import { Formation } from "./Views/Formation";
 
 import { Alert } from "@mui/joy";
 import { MenuModalDebug } from "../features/menu/containers/menu-modal-debug/menu-modal-debug";
-import { MenuModalExport } from "../features/menu/containers/menu-modal-export/menu-modal-export";
-import { MenuModalGenerate } from "../features/menu/containers/menu-modal-generate/menu-modal-generate";
-import { MenuModalImport } from "../features/menu/containers/menu-modal-import/menu-modal-import";
+
 import { useMenuEvents } from "../features/menu/hooks/useMenuEvents";
 import { ProjectsContainer } from "../features/projects/containers/ProjectsContainer";
 import { SidebarContainer } from "../features/sidebar/containers/SidebarContainer";
@@ -58,18 +56,6 @@ export const AppRouter = () => {
           <Route
             path="debug"
             element={<MenuModalDebug open onClose={() => navigate(-1)} />}
-          />
-          <Route
-            path="export"
-            element={<MenuModalExport open onClose={() => navigate(-1)} />}
-          />
-          <Route
-            path="import"
-            element={<MenuModalImport open onClose={() => navigate(-1)} />}
-          />
-          <Route
-            path="generate"
-            element={<MenuModalGenerate open onClose={() => navigate(-1)} />}
           />
         </Routes>
       )}

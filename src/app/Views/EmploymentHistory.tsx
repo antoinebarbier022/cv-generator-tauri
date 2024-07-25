@@ -7,8 +7,9 @@ import { AccordionCard } from "../../components/AccordionCard";
 import { AccordionTitle } from "../../components/AccordionTitle";
 import { EmptyState } from "../../components/EmptyState";
 import { IconButtonAdd } from "../../components/IconButtonAdd";
-import { CV_LANGUAGES } from "../../constants/languages";
-import { useFormCV } from "../../features/storage/hooks/useFormCV";
+import { CV_LANGUAGES } from "../../features/form/constants/cv-languages";
+
+import { useFormCV } from "../../features/form/hooks/useFormCV";
 import { PageLayout } from "../../layouts/PageLayout";
 
 export const EmploymentHistory = () => {

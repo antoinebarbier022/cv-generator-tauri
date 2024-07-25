@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { message } from "@tauri-apps/api/dialog";
+import { useFormCV } from "../../form/hooks/useFormCV";
 import { StorageService } from "../services/StorageService";
-import { useFormCV } from "./useFormCV";
 
 export const useSetImageProfileStorage = () => {
   const { formik } = useFormCV();

@@ -8,7 +8,8 @@ import { AccordionTitle } from "../../../components/AccordionTitle";
 import { EmptyState } from "../../../components/EmptyState";
 import { IconButtonAdd } from "../../../components/IconButtonAdd";
 import { PageLayout } from "../../../layouts/PageLayout";
-import { useFormCV } from "../../storage/hooks/useFormCV";
+
+import { useFormCV } from "../../form/hooks/useFormCV";
 import {
   ResumeContentSection,
   UserDataExperience,

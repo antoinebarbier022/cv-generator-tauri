@@ -3,11 +3,15 @@ import debounce from "just-debounce-it";
 import { useCallback, useEffect, useMemo } from "react";
 
 import { DropResult } from "react-beautiful-dnd";
-import { emptyInitialContentResume } from "../../../constants/emptyInitialContentResume";
 import { reorderListSection } from "../../../utils/drag-and-drop.utils";
-import { ResumeContentSection, Translation, UserData } from "../types/storage";
-import { useGetDataStorage } from "./useGetDataStorage";
-import { useSetDataStorage } from "./useSetDataStorage";
+import { useGetDataStorage } from "../../storage/hooks/useGetDataStorage";
+import { useSetDataStorage } from "../../storage/hooks/useSetDataStorage";
+import {
+  ResumeContentSection,
+  Translation,
+  UserData,
+} from "../../storage/types/storage";
+import { emptyInitialContentResume } from "../constants/emptyInitialContentResume";
 
 export const useFormCV = () => {
   const userData = useGetDataStorage();

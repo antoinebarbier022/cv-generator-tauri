@@ -14,10 +14,10 @@ import { format, fromUnixTime } from "date-fns";
 
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { dataContentValidationSchema } from "../../../form/validations/dataContentValidationSchema";
 import { useGetDataStorage } from "../../../storage/hooks/useGetDataStorage";
 import { useSetDataStorage } from "../../../storage/hooks/useSetDataStorage";
 import { UserData } from "../../../storage/types/storage";
-import { dataContentValidationSchema } from "../../../storage/validations/dataContentValidationSchema";
 
 interface Props {
   open: boolean;
