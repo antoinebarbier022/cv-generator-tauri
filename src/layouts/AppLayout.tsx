@@ -41,7 +41,6 @@ export const AppLayout = ({ sidebar }: Props) => {
       >
         <Stack
           sx={{
-            margin: 0.5,
             paddingY: 2,
             scrollbarGutter: "stable",
             overflowY: "scroll",
