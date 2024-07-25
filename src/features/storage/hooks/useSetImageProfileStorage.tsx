@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "react-toastify";
+import { message } from "@tauri-apps/api/dialog";
 import { StorageService } from "../services/StorageService";
 import { useFormCV } from "./useFormCV";
 
@@ -16,10 +16,8 @@ export const useSetImageProfileStorage = () => {
         await queryClient.invalidateQueries({ queryKey: ["data"] });
       }
     },
-    onError: (e) => {
-      toast.error(e.message, {
-        toastId: "set_image_profile.error",
-      });
+    onError: async (error) => {
+      await message(error.message, { title: error.name, type: "error" });
     },
   });
 };

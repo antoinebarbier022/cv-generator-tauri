@@ -15,10 +15,27 @@ import { convertFileSrc } from "@tauri-apps/api/tauri";
 import { format } from "date-fns";
 import { emptyInitialContentResume } from "../../../constants/emptyInitialContentResume";
 import { UserData } from "../types/storage";
+import { dataContentValidationSchema } from "../validations/dataContentValidationSchema";
 
 const CONTENT_DATA_FILE = `data.json`;
 
 export const StorageService = {
+  importContentData: async (): Promise<void> => {
+    const selected = await open({
+      multiple: false,
+      filters: [
+        {
+          name: "Json",
+          extensions: ["json"],
+        },
+      ],
+    });
+    if (selected) {
+      const text = JSON.parse(await readTextFile(selected as string));
+      await dataContentValidationSchema.validate(text as UserData);
+      await StorageService.setContentData({ values: text });
+    }
+  },
   resetContentData: async (): Promise<void> => {
     const appVersion = await getVersion();
     const formattedDate = format(new Date(), "yyyy-MM-dd_HH-mm");
@@ -30,16 +47,9 @@ export const StorageService = {
       }
     );
 
-    try {
-      const suggestedAppDataPath = await appDataDir();
-      const isExistAppDataDirPath = await exists(suggestedAppDataPath);
-
-      if (!isExistAppDataDirPath) {
-        await createDir(suggestedAppDataPath, { recursive: true });
-      }
-    } catch (error) {
-      console.error("Error create folder appDataDir:", error);
-      throw error;
+    const isExistAppDataDirPath = await StorageService.isAppDataDir();
+    if (isExistAppDataDirPath) {
+      await StorageService.createAppDataDir();
     }
 
     try {
@@ -55,12 +65,26 @@ export const StorageService = {
       throw new Error("Failed to reset content data file");
     }
   },
+  isContentDataFile: async (): Promise<boolean> => {
+    return await exists(CONTENT_DATA_FILE, {
+      dir: BaseDirectory.AppData,
+    });
+  },
+  isAppDataDir: async (): Promise<boolean> => {
+    return await exists(await appDataDir());
+  },
+  createAppDataDir: async (): Promise<void> => {
+    try {
+      await createDir(await appDataDir(), { recursive: true });
+    } catch (error) {
+      console.error("Error create folder appDataDir:", error);
+      throw error;
+    }
+  },
   getContentData: async (): Promise<UserData> => {
     let data;
     try {
-      const existFile = await exists(CONTENT_DATA_FILE, {
-        dir: BaseDirectory.AppData,
-      });
+      const existFile = await StorageService.isContentDataFile();
 
       if (!existFile) {
         console.warn(
@@ -90,16 +114,9 @@ export const StorageService = {
   }: {
     values: UserData;
   }): Promise<UserData> => {
-    try {
-      const suggestedAppDataPath = await appDataDir();
-      const isExistAppDataDirPath = await exists(suggestedAppDataPath);
-
-      if (!isExistAppDataDirPath) {
-        await createDir(suggestedAppDataPath, { recursive: true });
-      }
-    } catch (error) {
-      console.error("Error create folder appDataDir:", error);
-      throw error;
+    const isExistAppDataDirPath = await StorageService.isAppDataDir();
+    if (isExistAppDataDirPath) {
+      await StorageService.createAppDataDir();
     }
 
     try {
@@ -115,10 +132,7 @@ export const StorageService = {
   },
 
   getImageProfile: async (pictureFilePath: string): Promise<string> => {
-    if (!Boolean(pictureFilePath)) {
-      return "";
-    }
-    return convertFileSrc(pictureFilePath);
+    return pictureFilePath ? convertFileSrc(pictureFilePath) : "";
   },
 
   setImageProfile: async (): Promise<string | null> => {

@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "react-toastify";
+import { message } from "@tauri-apps/api/dialog";
 import { StorageService } from "../services/StorageService";
 
 export const useSetDataStorage = () => {
@@ -10,10 +10,8 @@ export const useSetDataStorage = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["data"] });
     },
-    onError: (e) => {
-      toast.error(e.message, {
-        toastId: "setData.error",
-      });
+    onError: async (error) => {
+      await message(error.message, { title: error.name, type: "error" });
     },
   });
 };

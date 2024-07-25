@@ -1,72 +1,21 @@
-import { confirm, message, open } from "@tauri-apps/api/dialog";
+import { confirm } from "@tauri-apps/api/dialog";
 import { listen } from "@tauri-apps/api/event";
-import { readTextFile } from "@tauri-apps/api/fs";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import { useAskOutputPath } from "../../cv-generation/hooks/useAskOutputPath";
 import { useGenerate } from "../../cv-generation/hooks/useGenerate";
+import { useImportDataContent } from "../../storage/hooks/useImportDataContent";
 import { useResetDataStorage } from "../../storage/hooks/useResetDataStorage";
-import { useSetDataStorage } from "../../storage/hooks/useSetDataStorage";
-import { UserData } from "../../storage/types/storage";
-import { dataContentValidationSchema } from "../../storage/validations/dataContentValidationSchema";
 
 export const useMenuEvents = () => {
   const navigate = useNavigate();
 
   const routerLocation = useLocation();
 
-  const mutationDataToStorage = useSetDataStorage();
-
-  const handleImportNewData = async () => {
-    const selected = await open({
-      multiple: false,
-      filters: [
-        {
-          name: "Json",
-          extensions: ["json"],
-        },
-      ],
-    });
-    if (selected) {
-      const text = JSON.parse(await readTextFile(selected as string));
-
-      dataContentValidationSchema
-        .validate(text as UserData)
-        .then(() =>
-          mutationDataToStorage.mutate(
-            { values: text },
-            {
-              onSuccess: () => {
-                toast.success("JSON is imported");
-              },
-            }
-          )
-        )
-        .catch(async (e: Error) => {
-          switch (e.name) {
-            case "ValidationError":
-              await message(
-                `The imported JSON file schema is not valid. Please check the following error: ${e.message}`,
-                {
-                  title: `Import Error: ${e.name}`,
-                  type: "error",
-                }
-              );
-              break;
-
-            default:
-              await message(`${e.message}`, {
-                title: `${e.name}`,
-                type: "error",
-              });
-              break;
-          }
-        });
-    }
-  };
-
   const resetDataStorage = useResetDataStorage();
+
+  const mutationImport = useImportDataContent();
+
   const setupListener = (eventName: string, navigateTo: string) => {
     return listen(eventName, () => {
       if (location.pathname !== navigateTo) {
@@ -89,7 +38,7 @@ export const useMenuEvents = () => {
   }, [history]);
 
   useEffect(() => {
-    const unlisten = listen("file-import", handleImportNewData);
+    const unlisten = listen("file-import", () => mutationImport.mutate());
     return () => {
       unlisten.then((dispose) => dispose());
     };

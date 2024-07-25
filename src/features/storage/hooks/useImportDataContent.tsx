@@ -1,20 +1,20 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { message } from "@tauri-apps/api/dialog";
-import { removeFile } from "@tauri-apps/api/fs";
+import { toast } from "react-toastify";
+import { StorageService } from "../services/StorageService";
 import { useFormCV } from "./useFormCV";
 
-export const useDeleteImageProfileStorage = () => {
+export const useImportDataContent = () => {
   const { formik } = useFormCV();
   const queryClient = useQueryClient();
   return useMutation({
-    mutationKey: ["delete_image_profile"],
-    mutationFn: async () => {
-      await removeFile(formik.values.picture);
-    },
+    mutationKey: ["import-data-content"],
+    mutationFn: () => StorageService.importContentData(),
     onSuccess: async () => {
       await formik.setFieldValue("picture", "");
       await queryClient.invalidateQueries({ queryKey: ["image_profile"] });
       await queryClient.invalidateQueries({ queryKey: ["data"] });
+      toast.success("JSON is imported");
     },
     onError: async (error) => {
       await message(error.message, { title: error.name, type: "error" });
