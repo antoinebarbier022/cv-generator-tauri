@@ -112,7 +112,7 @@ export const EmploymentHistory = () => {
                                 name={`employment_history[${index}].content.${lang}`}
                                 startDecorator={<Chip>{lang}</Chip>}
                                 minRows={2}
-                                maxRows={4}
+                                maxRows={2}
                                 value={field.content[lang as string]}
                                 onChange={formik.handleChange}
                                 placeholder={t(
