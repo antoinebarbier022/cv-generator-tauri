@@ -118,6 +118,35 @@ export const EmploymentHistory = () => {
                                 placeholder={t(
                                   "input.employment-history.placeholder"
                                 )}
+                                slotProps={{
+                                  endDecorator: {
+                                    sx: {
+                                      alignSelf: "flex-end",
+                                    },
+                                  },
+                                }}
+                                endDecorator={
+                                  <Typography
+                                    level="body-xs"
+                                    textColor={"neutral.500"}
+                                    sx={{ ml: "auto" }}
+                                  >
+                                    <Typography
+                                      textColor={
+                                        formik.values.employment_history[index]
+                                          .content[lang].length > 55
+                                          ? "danger.400"
+                                          : "neutral.400"
+                                      }
+                                    >
+                                      {
+                                        formik.values.employment_history[index]
+                                          .content[lang].length
+                                      }
+                                    </Typography>{" "}
+                                    / {55}
+                                  </Typography>
+                                }
                               />
                             ))}
                           </Stack>

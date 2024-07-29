@@ -109,6 +109,37 @@ export const Formation = () => {
                                 maxRows={2}
                                 onChange={formik.handleChange}
                                 placeholder={t("input.formation.placeholder")}
+                                slotProps={{
+                                  endDecorator: {
+                                    sx: {
+                                      alignSelf: "flex-end",
+                                    },
+                                  },
+                                }}
+                                endDecorator={
+                                  <Typography
+                                    level="body-xs"
+                                    textColor={"neutral.500"}
+                                    sx={{ ml: "auto" }}
+                                  >
+                                    <Typography
+                                      textColor={
+                                        formik.values.formation[index].content[
+                                          lang
+                                        ].length > 55
+                                          ? "danger.400"
+                                          : "neutral.400"
+                                      }
+                                    >
+                                      {
+                                        formik.values.formation[index].content[
+                                          lang
+                                        ].length
+                                      }
+                                    </Typography>{" "}
+                                    / {55}
+                                  </Typography>
+                                }
                               />
                             ))}
                           </Stack>
