@@ -105,7 +105,12 @@ export const AccordionCard = forwardRef<HTMLDivElement, Props>(
             gap={0.5}
           >
             {isDragIndicator && (
-              <Stack alignItems={"center"} paddingLeft={0.5}>
+              <Stack
+                alignItems={"center"}
+                height={"var(--project-accordion-summary-height)"}
+                justifyContent={"center"}
+                paddingLeft={0.5}
+              >
                 <DragIndicatorRounded />
               </Stack>
             )}
@@ -137,6 +142,7 @@ export const AccordionCard = forwardRef<HTMLDivElement, Props>(
                 height: "var(--project-accordion-summary-height)",
                 marginRight: 1,
               }}
+              alignSelf={"start"}
               alignItems={"center"}
               justifyContent={"center"}
             >
