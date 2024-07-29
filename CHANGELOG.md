@@ -1,5 +1,15 @@
 
 
+## [0.1.1-beta.7](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.6...0.1.1-beta.7) (2024-7-29)
+
+
+### Bug Fixes
+
+* **design:** change app border width (larger) ([730883b](https://github.com/antoinebarbier022/cv-generator-tauri/commit/730883b6a2b999ba1d912734b73e20dd89fbaccc))
+* **design:** margin inside page view (border when scrolling) ([5a10ae1](https://github.com/antoinebarbier022/cv-generator-tauri/commit/5a10ae13e3c20c6d6a9d5f99addbac0e224fc383))
+* **import:** save old data when import a new data file ([995a5f7](https://github.com/antoinebarbier022/cv-generator-tauri/commit/995a5f7e0448375bdb0ee8273b61b2524a205b64))
+* **script python:** populate frog cv formation, languages ... ([79bce85](https://github.com/antoinebarbier022/cv-generator-tauri/commit/79bce85912daba634617f4a2c8e8e0e067d92033))
+
 ## [0.1.1-beta.6](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.5...0.1.1-beta.6) (2024-7-24)
 
 
