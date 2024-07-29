@@ -26,7 +26,7 @@ export const PageLayout = forwardRef<HTMLDivElement, Props>(
         {...props}
         component={Container}
         gap={4}
-        sx={{ height: "100%" }}
+        sx={{ flex: 1 }}
       >
         <Stack gap={1}>
           <Stack>
@@ -65,7 +65,9 @@ export const PageLayout = forwardRef<HTMLDivElement, Props>(
           <Divider></Divider>
         </Stack>
         <ErrorBoundary fallbackRender={fallbackRender}>
-          <Stack paddingBottom={4}>{children}</Stack>
+          <Stack sx={{ flex: 1 }} paddingBottom={4}>
+            {children}
+          </Stack>
         </ErrorBoundary>
       </Stack>
     );
