@@ -1,5 +1,20 @@
 
 
+## [0.1.1-beta.8](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.7...0.1.1-beta.8) (2024-7-29)
+
+
+### Bug Fixes
+
+* **accordion card:** delete icon positioned on the right of the title at start when the accordion is expanded ([64d20a3](https://github.com/antoinebarbier022/cv-generator-tauri/commit/64d20a3f9d4de4713574c680b62dc85e19af0f72))
+* **design:** employment history overflow ([2f9287d](https://github.com/antoinebarbier022/cv-generator-tauri/commit/2f9287d0826dcb0ecbd7cab0244fd73100b25eb9))
+* **drag and drop:** droppable zone ([f373b58](https://github.com/antoinebarbier022/cv-generator-tauri/commit/f373b58fe2b3c527a6118334790493fba9449240))
+
+
+### Features
+
+* add character counter on employment_history and formation ([05453b9](https://github.com/antoinebarbier022/cv-generator-tauri/commit/05453b93a6fe587339a85b04a9884827a30e2459))
+* add maxLength to languages and skills ([b484d49](https://github.com/antoinebarbier022/cv-generator-tauri/commit/b484d492439040851e28903314cf11932c42659b))
+
 ## [0.1.1-beta.7](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.6...0.1.1-beta.7) (2024-7-29)
 
 
