@@ -113,6 +113,11 @@ export const Skills = () => {
                                     {lang}
                                   </Chip>
                                 }
+                                slotProps={{
+                                  input: {
+                                    maxLength: 50,
+                                  },
+                                }}
                                 value={field.content[lang as string]}
                                 onChange={formik.handleChange}
                                 placeholder=""
