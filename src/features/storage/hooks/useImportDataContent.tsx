@@ -9,7 +9,7 @@ export const useImportDataContent = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ["import-data-content"],
-    mutationFn: () => StorageService.importContentData(),
+    mutationFn: StorageService.importContentData,
     onSuccess: async () => {
       await formik.setFieldValue("picture", "");
       await queryClient.invalidateQueries({ queryKey: ["image_profile"] });

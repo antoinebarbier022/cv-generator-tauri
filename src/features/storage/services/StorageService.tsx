@@ -33,6 +33,7 @@ export const StorageService = {
     if (selected) {
       const text = JSON.parse(await readTextFile(selected as string));
       await dataContentValidationSchema.validate(text as UserData);
+      await StorageService.resetContentData();
       await StorageService.setContentData({ values: text });
     }
   },
