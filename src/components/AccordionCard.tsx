@@ -20,6 +20,8 @@ import {
   DraggableStateSnapshot,
 } from "react-beautiful-dnd";
 
+import { confirm } from "@tauri-apps/api/dialog";
+
 interface Props extends PropsWithChildren {
   indexCount: number;
   title: ReactNode;
@@ -71,6 +73,16 @@ export const AccordionCard = forwardRef<HTMLDivElement, Props>(
         } else {
           setDisplayChildren(true);
         }
+      }
+    };
+
+    const handleDelete = async () => {
+      const confirmed = await confirm(
+        "This action cannot be reverted. Are you sure?",
+        { title: `Delete item`, type: "warning" }
+      );
+      if (confirmed) {
+        onDelete();
       }
     };
     return (
@@ -150,7 +162,7 @@ export const AccordionCard = forwardRef<HTMLDivElement, Props>(
                 color="neutral"
                 size="sm"
                 variant="plain"
-                onClick={onDelete}
+                onClick={handleDelete}
                 sx={{ width: "fit-content" }}
               >
                 <DeleteOutline />
