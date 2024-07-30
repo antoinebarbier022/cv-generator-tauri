@@ -1,5 +1,13 @@
 
 
+## [0.1.1-beta.9](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.8...0.1.1-beta.9) (2024-7-30)
+
+
+### Features
+
+* add confirmation dialog before deleting an item ([0758c55](https://github.com/antoinebarbier022/cv-generator-tauri/commit/0758c5554b1263d5df835195742675a4614c9137))
+* **sectors:** add new section -> Sectors ([0b2a183](https://github.com/antoinebarbier022/cv-generator-tauri/commit/0b2a1834d4c1428c22b90aa96d73833026cc9ac4))
+
 ## [0.1.1-beta.8](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.7...0.1.1-beta.8) (2024-7-29)
 
 
