@@ -5,6 +5,7 @@
   "languages.en": "en",
 
   "resume.section.skills.title": "Skills",
+  "resume.section.sectors.title": "Sectors",
   "resume.section.formation.title": "Formation",
   "resume.section.languages.title": "Languages",
   "resume.section.projects.title": "Projects",
@@ -13,6 +14,7 @@
 
   "sidebar.navigation.profile": "Profile",
   "sidebar.navigation.skills": "Skills",
+  "sidebar.navigation.sectors": "Sectors",
   "sidebar.navigation.formation": "Formation",
   "sidebar.navigation.languages": "Languages",
   "sidebar.navigation.employment-history": "Employment History",
@@ -51,6 +53,7 @@
   "input.employment-history.label": "Employment",
   "input.employment-history.placeholder": "Lorem ipsum (0000 - 0000)",
   "input.skill.label": "Skill",
+  "input.sector.label": "Sector",
   "input.language.label": "Language",
   "input.language.placeholder": "langue - level",
   "input.project.program.label": "Program",
@@ -75,6 +78,9 @@
   "empty-state.skills.title": "No skills",
   "empty-state.skills.description": "You have not added any skills yet.",
   "empty-state.skills.button.label": "New skill",
+  "empty-state.sectors.title": "No sectors",
+  "empty-state.sectors.description": "You have not added any sectors yet.",
+  "empty-state.sectors.button.label": "New sector",
   "empty-state.languages.title": "No languages",
   "empty-state.languages.description": "You have not added any languages yet.",
   "empty-state.languages.button.label": "New language",

@@ -18,6 +18,7 @@ import { EmploymentHistory } from "./Views/EmploymentHistory";
 import { Languages } from "./Views/Languages";
 import { Profile } from "./Views/Profile";
 import { Projects } from "./Views/Projects";
+import { Sectors } from "./Views/Sectors";
 import { Skills } from "./Views/Skills";
 
 export const AppRouter = () => {
@@ -42,6 +43,7 @@ export const AppRouter = () => {
           <Route index element={<Navigate to={"/profile"} />} />
           <Route path="profile" element={<Profile />} />
           <Route path="skills" element={<Skills />} />
+          <Route path="sectors" element={<Sectors />} />
           <Route path="languages" element={<Languages />} />
           <Route path="projects" element={<Projects />} />
           <Route path="formation" element={<Formation />} />

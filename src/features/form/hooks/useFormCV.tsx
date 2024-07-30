@@ -33,6 +33,7 @@ export const useFormCV = () => {
   type ResumeSectionFieldName =
     | "employment_history"
     | "skills"
+    | "sectors"
     | "languages"
     | "formation"
     | "experiences";

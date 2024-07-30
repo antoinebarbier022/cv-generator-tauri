@@ -1,6 +1,7 @@
 import {
   BusinessRounded,
   Construction,
+  HandymanRounded,
   HomeRepairServiceRounded,
   LanguageRounded,
   SchoolRounded,
@@ -57,6 +58,11 @@ export const SidebarContainer = ({ isLoadingGenerate }: Props) => {
       icon: <HomeRepairServiceRounded />,
       label: t("sidebar.navigation.skills"),
       to: "/skills",
+    },
+    {
+      icon: <HandymanRounded />,
+      label: t("sidebar.navigation.sectors"),
+      to: "/sectors",
     },
     {
       icon: <SchoolRounded />,
