@@ -13,7 +13,7 @@ import { MenuModalDebug } from "../features/menu/containers/menu-modal-debug/men
 
 import { useMenuEvents } from "../features/menu/hooks/useMenuEvents";
 import { SidebarContainer } from "../features/sidebar/containers/SidebarContainer";
-import { AppLayout } from "../layouts/AppLayout";
+import { AppLayout } from "../layouts/app-layout";
 import { EmploymentHistory } from "./Views/EmploymentHistory";
 import { Languages } from "./Views/Languages";
 import { Profile } from "./Views/Profile";

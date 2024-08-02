@@ -10,7 +10,7 @@ import { IconButtonAdd } from "../../components/IconButtonAdd";
 import { CV_LANGUAGES } from "../../features/form/constants/cv-languages";
 
 import { useFormCV } from "../../features/form/hooks/useFormCV";
-import { PageLayout } from "../../layouts/PageLayout";
+import { PageLayout } from "../../layouts/page-layout";
 
 export const EmploymentHistory = () => {
   const {

@@ -7,7 +7,7 @@ import { AccordionCard } from "../../components/AccordionCard";
 import { AccordionTitle } from "../../components/AccordionTitle";
 import { EmptyState } from "../../components/EmptyState";
 import { IconButtonAdd } from "../../components/IconButtonAdd";
-import { PageLayout } from "../../layouts/PageLayout";
+import { PageLayout } from "../../layouts/page-layout";
 
 import { ProjectForm } from "../../components/ProjectForm";
 import { ProjectTitle } from "../../components/ProjectTitle";

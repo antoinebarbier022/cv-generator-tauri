@@ -23,7 +23,7 @@ import { CV_LANGUAGES } from "../../features/form/constants/cv-languages";
 import { useFormCV } from "../../features/form/hooks/useFormCV";
 import { useDeleteImageProfileStorage } from "../../features/storage/hooks/useDeleteImageProfileStorage";
 import { useSetImageProfileStorage } from "../../features/storage/hooks/useSetImageProfileStorage";
-import { PageLayout } from "../../layouts/PageLayout";
+import { PageLayout } from "../../layouts/page-layout";
 
 export const Profile = () => {
   const { t } = useTranslation();
