@@ -19,6 +19,7 @@ export const Skills = () => {
     handleAddItemSection,
     handleDeleteItemSection,
     dragEnded,
+    isEmpty,
   } = useFormCV();
 
   const [indexExpandedAccordion, setIndexExpandedAccordion] = useState<
@@ -67,6 +68,7 @@ export const Skills = () => {
                           key={field.id}
                           indexCount={index}
                           isDragIndicator
+                          isEmpty={isEmpty(field.content)}
                           ref={_provided.innerRef}
                           {..._provided.draggableProps}
                           {..._provided.dragHandleProps}

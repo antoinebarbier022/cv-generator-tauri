@@ -19,6 +19,7 @@ export const EmploymentHistory = () => {
     handleAddItemSection,
     handleDeleteItemSection,
     dragEnded,
+    isEmpty,
   } = useFormCV();
   const { t } = useTranslation();
 
@@ -74,6 +75,7 @@ export const EmploymentHistory = () => {
                           indexCount={index}
                           isDragIndicator
                           ref={_provided.innerRef}
+                          isEmpty={isEmpty(field.content)}
                           {..._provided.draggableProps}
                           {..._provided.dragHandleProps}
                           title={

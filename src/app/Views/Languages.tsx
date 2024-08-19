@@ -19,6 +19,7 @@ export const Languages = () => {
     handleAddItemSection,
     handleDeleteItemSection,
     dragEnded,
+    isEmpty,
   } = useFormCV();
 
   const [indexExpandedAccordion, setIndexExpandedAccordion] = useState<
@@ -66,6 +67,7 @@ export const Languages = () => {
                         <AccordionCard
                           key={field.id}
                           indexCount={index}
+                          isEmpty={isEmpty(field.content)}
                           isDragIndicator
                           ref={_provided.innerRef}
                           {..._provided.draggableProps}

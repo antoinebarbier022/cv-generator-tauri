@@ -18,6 +18,7 @@ export const Formation = () => {
     handleAddItemSection,
     handleDeleteItemSection,
     dragEnded,
+    isEmpty,
   } = useFormCV();
 
   const [indexExpandedAccordion, setIndexExpandedAccordion] = useState<
@@ -66,6 +67,7 @@ export const Formation = () => {
                           key={field.id}
                           indexCount={index}
                           isDragIndicator
+                          isEmpty={isEmpty(field.content)}
                           ref={_provided.innerRef}
                           {..._provided.draggableProps}
                           {..._provided.dragHandleProps}

@@ -19,7 +19,7 @@ import {
 
 export const Projects = () => {
   const { t } = useTranslation();
-  const { userData, formik, dragEnded } = useFormCV();
+  const { userData, formik, dragEnded, isEmpty } = useFormCV();
 
   const handleAddProject = () => {
     formik.setFieldValue("experiences", [
@@ -122,6 +122,7 @@ export const Projects = () => {
                               expanded ? field.id : null
                             );
                           }}
+                          isEmpty={isEmpty(field.content)}
                           expanded={indexExpandedAccordion === field.id}
                           onDelete={() => {
                             formik.setFieldValue("experiences", [

@@ -26,6 +26,7 @@ interface Props extends PropsWithChildren {
   indexCount: number;
   title: ReactNode;
   expanded?: boolean;
+  isEmpty?: boolean;
   isNew?: boolean;
   isDragIndicator?: boolean;
   isIndexIndicator?: boolean;
@@ -41,6 +42,7 @@ export const AccordionCard = forwardRef<HTMLDivElement, Props>(
       indexCount,
       title,
       expanded,
+      isEmpty,
       isNew,
       isDragIndicator,
       isIndexIndicator,
@@ -77,12 +79,16 @@ export const AccordionCard = forwardRef<HTMLDivElement, Props>(
     };
 
     const handleDelete = async () => {
-      const confirmed = await confirm(
-        "This action cannot be reverted. Are you sure?",
-        { title: `Delete item`, type: "warning" }
-      );
-      if (confirmed) {
+      if (isEmpty) {
         onDelete();
+      } else {
+        const confirmed = await confirm(
+          "This action cannot be reverted. Are you sure?",
+          { title: `Delete item`, type: "warning" }
+        );
+        if (confirmed) {
+          onDelete();
+        }
       }
     };
     return (

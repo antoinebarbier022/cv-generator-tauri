@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo } from "react";
 
 import { DropResult } from "react-beautiful-dnd";
 import { reorderListSection } from "../../../utils/drag-and-drop.utils";
+import { isEmptyObject } from "../../../utils/object.utils";
 import { useGetDataStorage } from "../../storage/hooks/useGetDataStorage";
 import { useSetDataStorage } from "../../storage/hooks/useSetDataStorage";
 import {
@@ -103,11 +104,14 @@ export const useFormCV = () => {
     }
   }, [debouncedSubmit, formik.values]);
 
+  const isEmpty = (experience: any) => isEmptyObject(experience);
+
   return {
     formik,
     userData,
     handleAddItemSection,
     handleDeleteItemSection,
     dragEnded,
+    isEmpty,
   };
 };
