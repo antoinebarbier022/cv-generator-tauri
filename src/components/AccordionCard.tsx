@@ -6,6 +6,7 @@ import {
   Card,
   IconButton,
   Stack,
+  Switch,
   Typography,
 } from "@mui/joy";
 import {
@@ -27,6 +28,7 @@ interface Props extends PropsWithChildren {
   title: ReactNode;
   expanded?: boolean;
   isEmpty?: boolean;
+  isHidden?: boolean;
   isNew?: boolean;
   isDragIndicator?: boolean;
   isIndexIndicator?: boolean;
@@ -34,6 +36,7 @@ interface Props extends PropsWithChildren {
   snapshot?: DraggableStateSnapshot;
   onExpandedChange?: (event: React.SyntheticEvent, expanded: boolean) => void;
   onDelete: () => void;
+  onChangeHidden: (value: boolean) => void;
 }
 
 export const AccordionCard = forwardRef<HTMLDivElement, Props>(
@@ -44,9 +47,11 @@ export const AccordionCard = forwardRef<HTMLDivElement, Props>(
       expanded,
       isEmpty,
       isNew,
+      isHidden,
       isDragIndicator,
       isIndexIndicator,
       onExpandedChange,
+      onChangeHidden,
       onDelete,
       dragHandleProps,
       snapshot,
@@ -109,10 +114,28 @@ export const AccordionCard = forwardRef<HTMLDivElement, Props>(
             {String(indexCount + 1).padStart(2, "0")}
           </Typography>
         )}
+        <Switch
+          checked={!isHidden}
+          onChange={(event) => onChangeHidden(!event.target.checked)}
+        />
 
         <Card
           color={isNew ? "primary" : undefined}
-          sx={{ padding: 0, overflow: "hidden", flex: 1 }}
+          sx={{
+            padding: 0,
+            overflow: "hidden",
+            flex: 1,
+
+            background: isHidden
+              ? `repeating-linear-gradient(
+              -45deg,
+              #f3f3f3,
+              #f3f3f3 10px,
+              #ececec 10px,
+              #ececec 20px
+            )`
+              : undefined,
+          }}
         >
           <Stack
             direction={"row"}
@@ -147,6 +170,7 @@ export const AccordionCard = forwardRef<HTMLDivElement, Props>(
                   },
                 }}
                 sx={{
+                  opacity: isHidden ? 0.55 : 1,
                   height: "var(--project-accordion-summary-height)",
                   paddingY: 1,
                 }}
@@ -156,10 +180,12 @@ export const AccordionCard = forwardRef<HTMLDivElement, Props>(
               <AccordionDetails>{displayChildren && children}</AccordionDetails>
             </Accordion>
             <Stack
+              direction={"row"}
               sx={{
                 height: "var(--project-accordion-summary-height)",
                 marginRight: 1,
               }}
+              gap={1}
               alignSelf={"start"}
               alignItems={"center"}
               justifyContent={"center"}

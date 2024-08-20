@@ -64,6 +64,13 @@ export const Formation = () => {
                     >
                       {(_provided) => (
                         <AccordionCard
+                          onChangeHidden={(value) => {
+                            const newContent = [...formik.values.formation];
+                            newContent[index].isHidden = value;
+                            formik.setFieldValue("formation", newContent);
+                            formik.submitForm();
+                          }}
+                          isHidden={field.isHidden}
                           key={field.id}
                           indexCount={index}
                           isDragIndicator

@@ -65,6 +65,13 @@ export const Languages = () => {
                     >
                       {(_provided) => (
                         <AccordionCard
+                          onChangeHidden={(value) => {
+                            const newContent = [...formik.values.languages];
+                            newContent[index].isHidden = value;
+                            formik.setFieldValue("languages", newContent);
+                            formik.submitForm();
+                          }}
+                          isHidden={field.isHidden}
                           key={field.id}
                           indexCount={index}
                           isEmpty={isEmpty(field.content)}

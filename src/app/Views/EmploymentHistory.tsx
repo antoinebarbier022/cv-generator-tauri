@@ -71,6 +71,18 @@ export const EmploymentHistory = () => {
                     >
                       {(_provided) => (
                         <AccordionCard
+                          onChangeHidden={(value) => {
+                            const newContent = [
+                              ...formik.values.employment_history,
+                            ];
+                            newContent[index].isHidden = value;
+                            formik.setFieldValue(
+                              "employment_history",
+                              newContent
+                            );
+                            formik.submitForm();
+                          }}
+                          isHidden={field.isHidden}
                           key={field.id}
                           indexCount={index}
                           isDragIndicator

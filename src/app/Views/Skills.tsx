@@ -65,6 +65,13 @@ export const Skills = () => {
                     >
                       {(_provided) => (
                         <AccordionCard
+                          onChangeHidden={(value) => {
+                            const newContent = [...formik.values.skills];
+                            newContent[index].isHidden = value;
+                            formik.setFieldValue("skills", newContent);
+                            formik.submitForm();
+                          }}
+                          isHidden={field.isHidden}
                           key={field.id}
                           indexCount={index}
                           isDragIndicator

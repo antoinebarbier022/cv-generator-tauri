@@ -8,6 +8,7 @@ interface Translation {
 
 export interface ResumeContentSection<T> {
   id: UUID;
+  isHidden?: boolean;
   content: T;
 }
 export interface UserData {

@@ -65,6 +65,13 @@ export const Sectors = () => {
                     >
                       {(_provided) => (
                         <AccordionCard
+                          onChangeHidden={(value) => {
+                            const newContent = [...formik.values.sectors];
+                            newContent[index].isHidden = value;
+                            formik.setFieldValue("sectors", newContent);
+                            formik.submitForm();
+                          }}
+                          isHidden={field.isHidden}
                           key={field.id}
                           indexCount={index}
                           isEmpty={isEmpty(field.content)}
