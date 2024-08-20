@@ -20,7 +20,7 @@ import { UserData } from "../types/storage";
 const CONTENT_DATA_FILE = `data.json`;
 
 export const StorageService = {
-  importContentData: async (): Promise<void> => {
+  importContentData: async (): Promise<any | null> => {
     const selected = await open({
       multiple: false,
       filters: [
@@ -35,6 +35,9 @@ export const StorageService = {
       await dataContentValidationSchema.validate(text as UserData);
       await StorageService.resetContentData();
       await StorageService.setContentData({ values: text });
+      return text;
+    } else {
+      return null;
     }
   },
   resetContentData: async (): Promise<void> => {

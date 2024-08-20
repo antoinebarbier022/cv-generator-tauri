@@ -10,11 +10,13 @@ export const useImportDataContent = () => {
   return useMutation({
     mutationKey: ["import-data-content"],
     mutationFn: StorageService.importContentData,
-    onSuccess: async () => {
-      await formik.setFieldValue("picture", "");
-      await queryClient.invalidateQueries({ queryKey: ["image_profile"] });
-      await queryClient.invalidateQueries({ queryKey: ["data"] });
-      toast.success("JSON is imported");
+    onSuccess: async (data) => {
+      if (data !== null) {
+        await formik.setFieldValue("picture", "");
+        await queryClient.invalidateQueries({ queryKey: ["image_profile"] });
+        await queryClient.invalidateQueries({ queryKey: ["data"] });
+        toast.success("JSON is imported");
+      }
     },
     onError: async (error) => {
       await message(error.message, { title: error.name, type: "error" });
