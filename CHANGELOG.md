@@ -1,5 +1,17 @@
 
 
+## [0.1.1-beta.10](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.9...0.1.1-beta.10) (2024-8-20)
+
+
+### Bug Fixes
+
+* remove dialog for remove confirmation if the content is empty ([ca19efc](https://github.com/antoinebarbier022/cv-generator-tauri/commit/ca19efcf07adb0ac80acec6c70e565b9a3942264))
+
+
+### Features
+
+* add visibility option to hide items ([084c6c9](https://github.com/antoinebarbier022/cv-generator-tauri/commit/084c6c971e8545aa648fd5dd3e2508cce6b35139))
+
 ## [0.1.1-beta.9](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.8...0.1.1-beta.9) (2024-7-30)
 
 
