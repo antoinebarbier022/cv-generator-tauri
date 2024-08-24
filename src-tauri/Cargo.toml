@@ -2,7 +2,7 @@
 name = "cv_generator"
 version = "0.1.1-beta.10"
 description = ""
-authors = [ "Antoine Barbier <antoine.c.barbier@frog.co>" ]
+authors = ["Antoine Barbier <antoine.c.barbier@frog.co>"]
 license = ""
 repository = ""
 default-run = "cv_generator"
@@ -11,19 +11,20 @@ rust-version = "1.60"
 
 [build-dependencies.tauri-build]
 version = "1.5.2"
-features = [ ]
+features = []
 
 [dependencies]
+command-group = "5.0.1"
 serde_json = "1.0"
 window-vibrancy = "0.4.0"
 
-  [dependencies.serde]
-  version = "1.0"
-  features = [ "derive" ]
+[dependencies.serde]
+version = "1.0"
+features = ["derive"]
 
-  [dependencies.tauri]
-  version = "1.6.5"
-  features = [
+[dependencies.tauri]
+version = "1.6.5"
+features = [
   "fs-rename-file",
   "fs-remove-file",
   "updater",
@@ -46,12 +47,12 @@ window-vibrancy = "0.4.0"
   "fs-read-file",
   "fs-create-dir",
   "fs-write-file",
-  "path-all"
+  "path-all",
 ]
 
-  [dependencies.tauri-plugin-store]
-  git = "https://github.com/tauri-apps/plugins-workspace"
-  branch = "v1"
+[dependencies.tauri-plugin-store]
+git = "https://github.com/tauri-apps/plugins-workspace"
+branch = "v1"
 
 [features]
-custom-protocol = [ "tauri/custom-protocol" ]
+custom-protocol = ["tauri/custom-protocol"]

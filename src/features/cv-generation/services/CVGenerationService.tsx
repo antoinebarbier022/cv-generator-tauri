@@ -6,7 +6,7 @@ import {
   join,
   resolveResource,
 } from "@tauri-apps/api/path";
-import { ChildProcess, Command } from "@tauri-apps/api/shell";
+import { ChildProcess } from "@tauri-apps/api/shell";
 
 import { UserData } from "../../storage/types/storage";
 
@@ -47,6 +47,26 @@ export const CVGenerationService = {
     const outputFileName = outputFilePath
       .replace(outputFolderPath, "")
       .replace(".pptx", "");
+
+    const response = await fetch(
+      "http://127.0.0.1:8008/api/v1/generate-cv-pptx",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          output_filename: outputFileName,
+          output_folder: outputFolderPath,
+          path_data: await join(appDataDirPath, "data.json"),
+          path_template: await resolveResource(
+            await join("resources", "CV_Nom_Prenom_Capability.pptx")
+          ),
+        }),
+      }
+    );
+    const output = await response.json();
+    /*
     const command = Command.sidecar("binaries/main", [
       "--path-data",
       await join(appDataDirPath, "data.json"),
@@ -62,7 +82,8 @@ export const CVGenerationService = {
     const output = await command.execute();
     if (output.stderr) {
       throw Error(output.stderr);
-    }
+    }*/
+
     return output;
   },
 };

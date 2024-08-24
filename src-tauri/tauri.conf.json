@@ -3,7 +3,7 @@
   "build": {
     "beforeBuildCommand": "npm run build",
     "beforeDevCommand": "npm run dev",
-    "devPath": "http://localhost:1420",
+    "devPath": "http://localhost:3000",
     "distDir": "../dist"
   },
   "package": {
@@ -24,7 +24,10 @@
       "shell": {
         "sidecar": true,
         "open": true,
-        "scope": [{ "name": "binaries/main", "sidecar": true, "args": true }]
+        "scope": [
+          { "name": "binaries/main", "sidecar": true, "args": true },
+          { "name": "binaries/api", "sidecar": true, "args": true }
+        ]
       },
       "path": {
         "all": true
@@ -60,7 +63,7 @@
       }
     },
     "bundle": {
-      "externalBin": ["binaries/main"],
+      "externalBin": ["binaries/main", "binaries/api"],
       "resources": ["resources/*"],
       "active": true,
       "category": "productivity",
