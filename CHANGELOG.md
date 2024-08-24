@@ -1,5 +1,12 @@
 
 
+## [0.1.1-beta.12](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.11...0.1.1-beta.12) (2024-8-24)
+
+
+### Bug Fixes
+
+* change baseURL app for production ([c16dfba](https://github.com/antoinebarbier022/cv-generator-tauri/commit/c16dfba56c9d39a4a05f6eb41ce1c694dbf88e99))
+
 ## [0.1.1-beta.11](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.10...0.1.1-beta.11) (2024-8-24)
 
 
