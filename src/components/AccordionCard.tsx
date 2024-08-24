@@ -69,7 +69,6 @@ export const AccordionCard = forwardRef<HTMLDivElement, Props>(
       if (timerRef.current) {
         clearTimeout(timerRef.current);
         timerRef.current = null;
-        console.log("Timer annulé");
       }
       if (onExpandedChange) {
         onExpandedChange(event, expanded);
