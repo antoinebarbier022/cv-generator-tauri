@@ -17,8 +17,10 @@ import {
   Typography,
 } from "@mui/joy";
 
+import { useQuery } from "@tanstack/react-query";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 import { useTranslation } from "react-i18next";
+import { CVGenerationService } from "../../features/cv-generation/services/CVGenerationService";
 import { CV_LANGUAGES } from "../../features/form/constants/cv-languages";
 import { useFormCV } from "../../features/form/hooks/useFormCV";
 import { useDeleteImageProfileStorage } from "../../features/storage/hooks/useDeleteImageProfileStorage";
@@ -28,6 +30,11 @@ import { PageLayout } from "../../layouts/page-layout";
 export const Profile = () => {
   const { t } = useTranslation();
   const { userData, formik } = useFormCV();
+
+  const test = useQuery({
+    queryKey: ["test"],
+    queryFn: () => CVGenerationService.connected(),
+  });
 
   const mutationReplacePicture = useSetImageProfileStorage();
   const mutationDeletePicture = useDeleteImageProfileStorage();
@@ -59,6 +66,8 @@ export const Profile = () => {
       {userData.isError && <Typography>Error.</Typography>}
       {userData.data && (
         <Stack component="form" gap={4} onSubmit={formik.handleSubmit}>
+          {JSON.stringify(test.data)}
+          {JSON.stringify(test.error)}
           <Stack>
             <Stack direction={"row"} gap={2}>
               <Stack direction={"column"} gap={"1rem"} flex={1}>

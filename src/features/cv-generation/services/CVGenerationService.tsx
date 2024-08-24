@@ -41,6 +41,18 @@ export const CVGenerationService = {
       throw Error("Error on open save dialog");
     }
   },
+  connected: async (): Promise<ChildProcess> => {
+    const baseURL = "http://localhost:8008";
+
+    const response = await fetch(`${baseURL}/api/v1/connect`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const output = await response.json();
+    return output;
+  },
   generate: async (outputFilePath: string): Promise<ChildProcess> => {
     const appDataDirPath = await appDataDir();
     const outputFolderPath = outputFilePath.replace(outputFilePath, "");
@@ -48,9 +60,7 @@ export const CVGenerationService = {
       .replace(outputFolderPath, "")
       .replace(".pptx", "");
 
-    const baseURL = import.meta.env.DEV
-      ? "http://127.0.0.1:8008"
-      : "tauri://localhost";
+    const baseURL = "http://localhost:8008";
 
     const response = await fetch(`${baseURL}/api/v1/generate-cv-pptx`, {
       method: "POST",
