@@ -1,5 +1,12 @@
 
 
+## [0.1.1-beta.13](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.12...0.1.1-beta.13) (2024-8-24)
+
+
+### Bug Fixes
+
+* generation cv with the new internal api ([d4e63e2](https://github.com/antoinebarbier022/cv-generator-tauri/commit/d4e63e2fb07756549e5e518de1c324af3fd54752))
+
 ## [0.1.1-beta.12](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.11...0.1.1-beta.12) (2024-8-24)
 
 
