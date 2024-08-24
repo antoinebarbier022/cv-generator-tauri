@@ -1,5 +1,12 @@
 
 
+## [0.1.1-beta.14](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.13...0.1.1-beta.14) (2024-8-24)
+
+
+### Bug Fixes
+
+* remove console log and debug message on interface ([b1007e3](https://github.com/antoinebarbier022/cv-generator-tauri/commit/b1007e3350b083af8e8df43fc8ea6ec93ff07361))
+
 ## [0.1.1-beta.13](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.12...0.1.1-beta.13) (2024-8-24)
 
 
