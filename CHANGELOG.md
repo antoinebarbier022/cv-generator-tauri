@@ -1,5 +1,17 @@
 
 
+## [0.1.1-beta.11](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.10...0.1.1-beta.11) (2024-8-24)
+
+
+### Bug Fixes
+
+* **menu import:** don't display toast success if dialog is canceled ([1c1ae7a](https://github.com/antoinebarbier022/cv-generator-tauri/commit/1c1ae7a257fcde0a4c1e30f8c9769c5aff2502cb))
+
+
+### Performance Improvements
+
+* cv generation from 15s to >1s to generate a pptx ([ef53103](https://github.com/antoinebarbier022/cv-generator-tauri/commit/ef531030dad320d0587e755b1a4803a6cd99482b))
+
 ## [0.1.1-beta.10](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.9...0.1.1-beta.10) (2024-8-20)
 
 

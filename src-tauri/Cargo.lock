@@ -537,7 +537,7 @@ dependencies = [
 
 [[package]]
 name = "cv_generator"
-version = "0.1.1-beta.10"
+version = "0.1.1-beta.11"
 dependencies = [
  "command-group",
  "serde",
