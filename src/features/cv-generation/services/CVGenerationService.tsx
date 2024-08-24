@@ -48,23 +48,24 @@ export const CVGenerationService = {
       .replace(outputFolderPath, "")
       .replace(".pptx", "");
 
-    const response = await fetch(
-      "http://127.0.0.1:8008/api/v1/generate-cv-pptx",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          output_filename: outputFileName,
-          output_folder: outputFolderPath,
-          path_data: await join(appDataDirPath, "data.json"),
-          path_template: await resolveResource(
-            await join("resources", "CV_Nom_Prenom_Capability.pptx")
-          ),
-        }),
-      }
-    );
+    const baseURL = import.meta.env.DEV
+      ? "http://127.0.0.1:8008"
+      : "tauri://localhost";
+
+    const response = await fetch(`${baseURL}/api/v1/generate-cv-pptx`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        output_filename: outputFileName,
+        output_folder: outputFolderPath,
+        path_data: await join(appDataDirPath, "data.json"),
+        path_template: await resolveResource(
+          await join("resources", "CV_Nom_Prenom_Capability.pptx")
+        ),
+      }),
+    });
     const output = await response.json();
     /*
     const command = Command.sidecar("binaries/main", [
