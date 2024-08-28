@@ -23,34 +23,30 @@ window-vibrancy = "0.4" #Use version 0.4 for tauri v1
   [dependencies.tauri]
   version = "1.6.5"
   features = [
-  "fs-rename-file",
-  "fs-remove-file",
-  "updater",
-  "shell-sidecar",
-  "shell-open",
-  "protocol-asset",
-  "window-maximize",
-  "window-close",
-  "window-start-dragging",
-  "window-minimize",
-  "window-hide",
-  "window-unmaximize",
-  "window-unminimize",
-  "window-show",
-  "macos-private-api",
-  "dialog-all",
-  "http-all",
-  "fs-read-dir",
-  "fs-exists",
-  "fs-read-file",
-  "fs-create-dir",
-  "fs-write-file",
-  "path-all"
-]
-
-  [dependencies.tauri-plugin-store]
-  git = "https://github.com/tauri-apps/plugins-workspace"
-  branch = "v1"
+    "fs-rename-file",
+    "fs-remove-file",
+    "updater",
+    "shell-sidecar",
+    "shell-open",
+    "protocol-asset",
+    "window-maximize",
+    "window-close",
+    "window-start-dragging",
+    "window-minimize",
+    "window-hide",
+    "window-unmaximize",
+    "window-unminimize",
+    "window-show",
+    "macos-private-api",
+    "dialog-all",
+    "http-all",
+    "fs-read-dir",
+    "fs-exists",
+    "fs-read-file",
+    "fs-create-dir",
+    "fs-write-file",
+    "path-all"
+  ]
 
 [features]
 custom-protocol = [ "tauri/custom-protocol" ]

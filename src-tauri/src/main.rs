@@ -158,6 +158,5 @@ fn main() -> tauri::Result<()> {
             println!("[Event] App closed, shutting down API...");
             tx_kill.send(()).expect("Failed to send kill signal");
         })
-        .plugin(tauri_plugin_store::Builder::default().build())
         .run(tauri::generate_context!())
 }
