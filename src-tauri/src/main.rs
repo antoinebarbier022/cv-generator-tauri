@@ -1,34 +1,40 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use command_group::CommandGroup;
-use std::process::Command;
-use std::sync::mpsc::{sync_channel, Receiver};
+use std::sync::mpsc::{channel, RecvError, Sender};
 use std::thread;
-use tauri::api::process::Command as TCommand;
+use tauri::api::process::Command;
 use tauri::api::shell::open;
 use tauri::WindowEvent;
 use tauri::{AboutMetadata, Manager};
 use tauri::{CustomMenuItem, Menu, MenuItem, Submenu};
 use window_vibrancy::*;
 
-fn start_backend(receiver: Receiver<i32>) {
-    // `new_sidecar()` expects just the filename, NOT the whole path
-    let t = TCommand::new_sidecar("api").expect("[Error] Failed to create `api` binary command");
-    let mut group = Command::from(t)
-        .group_spawn()
-        .expect("[Error] spawning api server process.");
+/// Start the api server
+/// Returns a channel Sender used to trigger the process kill
+fn start_backend() -> Sender<()> {
+    let (tx_kill, rx_kill) = channel();
 
-    thread::spawn(move || loop {
-        let s = receiver.recv();
-        if s.unwrap() == -1 {
-            group.kill().expect("[Error] killing api server process.");
+    // `new_sidecar()` expects just the filename, NOT the whole path
+    let (_, child) = Command::new_sidecar("api")
+        .expect("[Error] Failed to create `api` binary command")
+        .spawn()
+        .expect("Failed to spawn `api` sidecar");
+
+    thread::spawn(move || {
+        match rx_kill.recv() {
+            Ok(()) => println!("Received kill signal!"),
+            Err(RecvError) => println!("Kill channel was closed!"),
         }
+        println!("Closing `api` sidecar...");
+        child.kill().expect("killing api server process.");
     });
+
+    tx_kill
 }
 
 fn create_app_menu() -> Menu {
-    return Menu::new()
+    Menu::new()
         .add_submenu(Submenu::new(
             "App",
             Menu::new()
@@ -95,12 +101,11 @@ fn create_app_menu() -> Menu {
         .add_submenu(Submenu::new(
             "Help",
             Menu::new().add_item(CustomMenuItem::new("help.open-url-slack", "Canal Slack")),
-        ));
+        ))
 }
 
-fn main() {
-    let (tx, rx) = sync_channel(1);
-    start_backend(rx);
+fn main() -> tauri::Result<()> {
+    let tx_kill = start_backend();
 
     tauri::Builder::default()
         .menu(create_app_menu())
@@ -135,10 +140,8 @@ fn main() {
                     .unwrap();
             }
         })
-        // Tell the child process to shutdown when app exits
         .setup(|app| {
             let window = app.get_window("main").unwrap();
-            // Start python API
 
             #[cfg(target_os = "macos")]
             apply_vibrancy(&window, NSVisualEffectMaterial::HudWindow, None, None)
@@ -150,14 +153,11 @@ fn main() {
 
             Ok(())
         })
-        .on_window_event(move |event| match event.event() {
-            WindowEvent::Destroyed => {
-                tx.send(-1).expect("[Error] sending msg.");
-                println!("[Event] App closed, shutting down API...");
-            }
-            _ => {}
+        // Tell the child process to shutdown when app exits
+        .on_window_event(move |event| if let WindowEvent::Destroyed = event.event() {
+            println!("[Event] App closed, shutting down API...");
+            tx_kill.send(()).expect("Failed to send kill signal");
         })
         .plugin(tauri_plugin_store::Builder::default().build())
         .run(tauri::generate_context!())
-        .expect("error while running tauri application");
 }
