@@ -141,7 +141,7 @@ fn main() -> tauri::Result<()> {
             }
         })
         .setup(|app| {
-            let window = app.get_window("main").unwrap();
+            let window = app.get_window("main").expect("No window labelled `main`");
 
             #[cfg(target_os = "macos")]
             apply_vibrancy(&window, NSVisualEffectMaterial::HudWindow, None, None)
