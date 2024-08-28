@@ -14,8 +14,7 @@ version = "1.5.2"
 features = [ ]
 
 [dependencies]
-serde_json = "1.0"
-window-vibrancy = "0.4.0"
+window-vibrancy = "0.4" #Use version 0.4 for tauri v1
 
   [dependencies.serde]
   version = "1.0"
