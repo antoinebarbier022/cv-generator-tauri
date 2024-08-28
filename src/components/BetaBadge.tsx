@@ -23,7 +23,7 @@ export const BetaBadge = () => {
           paddingX: 4,
         }}
       >
-        BETA
+        {import.meta.env.DEV ? "DEV" : "BETA"}
       </Typography>
     </Stack>
   );
