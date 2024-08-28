@@ -16,7 +16,6 @@ const ErrorToast = ({error: {title, message}}: { error: Error }) => <Stack compo
 export const useErrors = () => {
   useEffect(() => {
     const unlisten = listen("error", (event: Event<Error>) => {
-      console.log("error", event);
       toast.error(<ErrorToast error={event.payload}/>);
     })
 
