@@ -1,18 +1,19 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use std::sync::mpsc::{channel, RecvError, Sender};
+mod errors;
 mod commands;
 mod menu;
 
-use crate::commands::{open_finder, open_powerpoint};
-use crate::menu::create_app_menu;
+use std::sync::mpsc::{channel, RecvError, Sender};
 use std::thread;
 use tauri::api::process::Command;
 use tauri::api::shell::open;
 use tauri::{Manager, WindowEvent};
-
 use window_vibrancy::*;
+use crate::commands::{open_finder, open_powerpoint};
+use crate::menu::create_app_menu;
+use crate::errors::{EmitError, ErrorPayload};
 
 /// Start the api server
 /// Returns a channel Sender used to trigger the process kill
@@ -44,12 +45,16 @@ fn main() -> tauri::Result<()> {
         .menu(create_app_menu())
         .on_menu_event(|event| {
             if event.menu_item_id() == "help.open-url-slack" {
-                open(
+                if let Err(err) = open(
                     &event.window().shell_scope(),
                     "https://capgemini.enterprise.slack.com/archives/C07DCNBUT4Z",
                     None,
-                )
-                .unwrap();
+                ) {
+                    event.window().emit_error(ErrorPayload::new().with_title("Failed to open Slack channel").with_message(err.to_string())).unwrap();
+                }
+            }
+            if event.menu_item_id() == "debug.send-error" {
+                event.window().emit_error(ErrorPayload::new().with_title("Ceci est un titre").with_message("Ceci est un message")).unwrap();
             }
             if event.menu_item_id() == "debug.open-panel" {
                 event.window().emit("debug-open-panel", "").unwrap();

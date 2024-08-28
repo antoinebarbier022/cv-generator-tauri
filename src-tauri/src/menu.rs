@@ -2,7 +2,7 @@ use tauri::AboutMetadata;
 use tauri::{CustomMenuItem, Menu, MenuItem, Submenu};
 
 pub fn create_app_menu() -> Menu {
-    return Menu::new()
+    Menu::new()
         .add_submenu(Submenu::new(
             "App",
             Menu::new()
@@ -64,10 +64,12 @@ pub fn create_app_menu() -> Menu {
             Menu::new().add_item(
                 CustomMenuItem::new("debug.open-panel", "Open debug panel")
                     .accelerator("Cmd+Shift+D"),
+            ).add_item(
+                CustomMenuItem::new("debug.send-error", "Send an error")
             ),
         ))
         .add_submenu(Submenu::new(
             "Help",
             Menu::new().add_item(CustomMenuItem::new("help.open-url-slack", "Canal Slack")),
-        ));
+        ))
 }
