@@ -10,6 +10,24 @@ use tauri::{AboutMetadata, Manager};
 use tauri::{CustomMenuItem, Menu, MenuItem, Submenu};
 use window_vibrancy::*;
 
+#[tauri::command]
+fn open_finder(path: String) {
+    println!("Open finder");
+    Command::new("open").args(["-R", &path]).spawn().unwrap();
+}
+
+#[tauri::command]
+fn open_powerpoint(path: String) {
+    if cfg!(target_os = "macos") {
+        Command::new("open")
+            .args(&[&path])
+            .spawn()
+            .expect("Impossible d'ouvrir le fichier PowerPoint");
+    } else {
+        println!("Cette commande est destinée à être utilisée sur macOS.");
+    }
+}
+
 /// Start the api server
 /// Returns a channel Sender used to trigger the process kill
 fn start_backend() -> Sender<()> {
@@ -154,9 +172,12 @@ fn main() -> tauri::Result<()> {
             Ok(())
         })
         // Tell the child process to shutdown when app exits
-        .on_window_event(move |event| if let WindowEvent::Destroyed = event.event() {
-            println!("[Event] App closed, shutting down API...");
-            tx_kill.send(()).expect("Failed to send kill signal");
+        .on_window_event(move |event| {
+            if let WindowEvent::Destroyed = event.event() {
+                println!("[Event] App closed, shutting down API...");
+                tx_kill.send(()).expect("Failed to send kill signal");
+            }
         })
+        .invoke_handler(tauri::generate_handler![open_finder, open_powerpoint])
         .run(tauri::generate_context!())
 }

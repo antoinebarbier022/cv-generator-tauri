@@ -147,7 +147,7 @@ export const StorageService = {
         filters: [
           {
             name: "Image",
-            extensions: ["png", "jpeg", "jpg", "HEIC", "webp"],
+            extensions: ["png", "jpeg", "jpg"],
           },
         ],
       });
