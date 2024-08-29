@@ -1,5 +1,24 @@
 
 
+## [0.1.1-beta.15](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.14...0.1.1-beta.15) (2024-8-29)
+
+
+### Bug Fixes
+
+* **accordion card:** drag indicator always on the top of the card ([1827d62](https://github.com/antoinebarbier022/cv-generator-tauri/commit/1827d6266328561b8c28bafc69821cf5896067e5))
+* **accordion card:** switch visibility indicator is always on the top of the card ([fc20ec1](https://github.com/antoinebarbier022/cv-generator-tauri/commit/fc20ec188b30413ccbe72a05aad4bc195c850bb3))
+* **i18n:** change placeholder date 0000 by yyyy ([7f371b5](https://github.com/antoinebarbier022/cv-generator-tauri/commit/7f371b543a644db16f559e8aef1d7dbc0d3fd500))
+* remove useless log ([28cc3af](https://github.com/antoinebarbier022/cv-generator-tauri/commit/28cc3afdf99f93bd279ecaa6739b8e194d48848a))
+* **toast generation success:** change design ([3139160](https://github.com/antoinebarbier022/cv-generator-tauri/commit/3139160bef1b2f6cf7e1c4caa7d0ef9b1f886b92))
+* **view sectors:** wrong translation (fr) ([e2812b2](https://github.com/antoinebarbier022/cv-generator-tauri/commit/e2812b2f9d42b7b23b72a4ff874c33c7b8588a3d))
+
+
+### Features
+
+* add a toast on generation success to show the file in finder or open it ([b474b3b](https://github.com/antoinebarbier022/cv-generator-tauri/commit/b474b3b0d2519db34e1571277bb1b0d9904682b6))
+* add error toast ([db04ed1](https://github.com/antoinebarbier022/cv-generator-tauri/commit/db04ed1857273b0aac0e276a1350074da103afe9))
+* replace beta banner by dev when in dev env ([ff29b3c](https://github.com/antoinebarbier022/cv-generator-tauri/commit/ff29b3cbfb6ea06a8b0b61eb75cea643fb2fcbfc))
+
 ## [0.1.1-beta.14](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.13...0.1.1-beta.14) (2024-8-24)
 
 
