@@ -114,6 +114,7 @@ export const AccordionCard = forwardRef<HTMLDivElement, Props>(
           </Typography>
         )}
         <Switch
+          sx={{ alignSelf: "start", height: "3rem" }}
           checked={!isHidden}
           onChange={(event) => onChangeHidden(!event.target.checked)}
         />
