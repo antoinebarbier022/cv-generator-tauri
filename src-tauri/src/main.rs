@@ -8,36 +8,32 @@ mod commands;
 mod menu;
 
 use std::convert::identity;
-use std::sync::mpsc::{channel, RecvError, Sender};
 use std::sync::Mutex;
 use std::thread;
 use tauri::api::process::{Command, CommandChild, CommandEvent, TerminatedPayload};
 use tauri::api::shell::open;
-use tauri::{Manager, WindowEvent};
+use tauri::Manager;
 use window_vibrancy::*;
 use crate::commands::{get_backend_error, open_finder, open_powerpoint};
 use crate::menu::{create_app_menu, MyMenu};
 use crate::errors::{EmitError, ErrorPayload};
 use anyhow::Context;
+use libc::SIGTERM;
 use serde::Serialize;
+use signal_hook::iterator::Signals;
 
-/// Start the api server
-/// Returns a channel Sender used to trigger the process kill
-fn start_backend() -> anyhow::Result<Sender<()>> {
-    let (tx_kill, rx_kill) = channel();
+static mut BACKEND: Mutex<Option<CommandChild>> = Mutex::new(None);
 
-    let child = spawn_backend()?;
+fn start_backend() -> anyhow::Result<()> {
+    println!("Spawning api server...");
+    let backend = spawn_backend()?;
 
-    thread::spawn(move || {
-        match rx_kill.recv() {
-            Ok(()) => println!("Received kill signal!"),
-            Err(RecvError) => println!("Kill channel was closed!"),
-        }
-        println!("Closing `api` sidecar...");
-        child.kill().expect("killing api server process.");
-    });
+    unsafe {
+        let mut backend_mutex = BACKEND.lock().unwrap();
+        *backend_mutex = Some(backend);
+    }
 
-    Ok(tx_kill)
+    Ok(())
 }
 
 fn spawn_backend() -> anyhow::Result<CommandChild> {
@@ -82,7 +78,29 @@ struct AppState {
     pub backend_error: Mutex<Option<String>>
 }
 
-fn main() -> tauri::Result<()> {
+extern fn on_exit() {
+    let backend = unsafe {
+         BACKEND.get_mut().unwrap().take()
+    };
+    if let Some(backend) = backend {
+        println!("Application exited.\nClosing `api` sidecar...");
+        backend.kill().expect("killing api server process.");
+    }
+}
+
+fn main() -> anyhow::Result<()> {
+    unsafe {
+        libc::atexit(on_exit);
+    }
+    let mut signals = Signals::new([SIGTERM])?;
+
+    thread::spawn(move || {
+        for _sig in signals.forever() {
+            on_exit();
+        }
+    });
+
+
     tauri::Builder::default()
         .manage(AppState::default())
         .menu(create_app_menu())
@@ -122,28 +140,14 @@ fn main() -> tauri::Result<()> {
             apply_blur(&window, Some((18, 18, 18, 125)))
                 .expect("Unsupported platform! 'apply_blur' is only supported on Windows");
 
-            let tx_kill= match start_backend() {
-                Ok(tx_kill) => {
-                    *app.state::<AppState>().backend_error.lock().unwrap() = None;
-                    Some(tx_kill)
-                },
-                Err(err) => {
-                    println!("Failed to start backend: {err}");
-                    *app.state::<AppState>().backend_error.lock().unwrap() = Some(err.to_string());
-                    None
-                }
-            };
-
-            // Tell the child process to shutdown when app exits
-            window.on_window_event(move |event| {
-                if let WindowEvent::Destroyed = event && let Some(tx_kill) = &tx_kill {
-                    println!("[Event] App closed, shutting down API...");
-                    tx_kill.send(()).expect("Failed to send kill signal");
-                }
-            });
+            if let Err(err) = start_backend() {
+                println!("Failed to start backend: {err}");
+                *app.state::<AppState>().backend_error.lock().unwrap() = Some(err.to_string());
+            }
 
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![open_finder, open_powerpoint, get_backend_error])
         .run(tauri::generate_context!())
+        .context("Error while running app")
 }
