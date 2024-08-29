@@ -7,10 +7,11 @@ mod errors;
 mod commands;
 mod menu;
 
+use std::convert::identity;
 use std::sync::mpsc::{channel, RecvError, Sender};
 use std::sync::Mutex;
 use std::thread;
-use tauri::api::process::{Command, CommandChild};
+use tauri::api::process::{Command, CommandChild, CommandEvent, TerminatedPayload};
 use tauri::api::shell::open;
 use tauri::{Manager, WindowEvent};
 use window_vibrancy::*;
@@ -40,11 +41,40 @@ fn start_backend() -> Result<Sender<()>, anyhow::Error> {
 }
 
 fn spawn_backend() -> anyhow::Result<CommandChild> {
-    Command::new_sidecar("api")
+    let (mut rx, child) = Command::new_sidecar("api")
         .context("Failed to create `api` binary command")?
         .spawn()
-        .context("Failed to spawn `api` sidecar")
-        .map(|(_, child)| child)
+        .context("Failed to spawn `api` sidecar")?;
+
+    tauri::async_runtime::spawn(async move {
+        while let Some(event) = rx.recv().await {
+            match event {
+                CommandEvent::Stderr(line) => print!("[API-LOG]: {line}"),
+                CommandEvent::Stdout(line) => print!("[API]: {line}"),
+                CommandEvent::Error(err) => println!("Error listening to api {err}"),
+                CommandEvent::Terminated(TerminatedPayload { code, signal}) => {
+                    let infos = vec![
+                        code.map(|code| format!("code {code}")),
+                        signal.map(|signal| format!("signal {signal}")),
+                    ].into_iter()
+                        .filter_map(identity)
+                        .collect::<Vec<_>>()
+                        .join(" and ");
+
+                    if !infos.trim().is_empty() {
+                        println!("Api terminated.")
+                    } else {
+                        println!("Api terminated with {infos}.")
+                    }
+                }
+                event => {
+                    println!("Received unexpected event from api {event:?}")
+                }
+            }
+        }
+    });
+
+    Ok(child)
 }
 
 #[derive(Default, Debug, Serialize)]

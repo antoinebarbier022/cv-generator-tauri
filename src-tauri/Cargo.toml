@@ -52,7 +52,8 @@ window-vibrancy = "0.4"
   "fs-read-file",
   "fs-create-dir",
   "fs-write-file",
-  "path-all"
+  "path-all",
+  "process-command-api"
 ]
 
 [features]
