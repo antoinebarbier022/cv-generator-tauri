@@ -24,10 +24,7 @@
       "shell": {
         "sidecar": true,
         "open": true,
-        "scope": [
-          { "name": "binaries/main", "sidecar": true, "args": true },
-          { "name": "binaries/api", "sidecar": true, "args": true }
-        ]
+        "scope": [{ "name": "binaries/api", "sidecar": true, "args": true }]
       },
       "path": {
         "all": true
@@ -63,7 +60,7 @@
       }
     },
     "bundle": {
-      "externalBin": ["binaries/main", "binaries/api"],
+      "externalBin": ["binaries/api"],
       "resources": ["resources/*"],
       "active": true,
       "category": "productivity",
