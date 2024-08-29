@@ -23,7 +23,7 @@ use serde::Serialize;
 
 /// Start the api server
 /// Returns a channel Sender used to trigger the process kill
-fn start_backend() -> Result<Sender<()>, anyhow::Error> {
+fn start_backend() -> anyhow::Result<Sender<()>> {
     let (tx_kill, rx_kill) = channel();
 
     let child = spawn_backend()?;
@@ -134,6 +134,7 @@ fn main() -> tauri::Result<()> {
                 }
             };
 
+            // Tell the child process to shutdown when app exits
             window.on_window_event(move |event| {
                 if let WindowEvent::Destroyed = event && let Some(tx_kill) = &tx_kill {
                     println!("[Event] App closed, shutting down API...");
@@ -143,7 +144,6 @@ fn main() -> tauri::Result<()> {
 
             Ok(())
         })
-        // Tell the child process to shutdown when app exits
         .invoke_handler(tauri::generate_handler![open_finder, open_powerpoint, get_backend_error])
         .run(tauri::generate_context!())
 }
