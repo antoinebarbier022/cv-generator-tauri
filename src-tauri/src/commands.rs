@@ -1,4 +1,5 @@
 use std::process::Command;
+use crate::AppState;
 
 #[tauri::command]
 pub fn open_finder(path: String) {
@@ -16,4 +17,10 @@ pub fn open_powerpoint(path: String) {
     } else {
         println!("Cette commande est destinée à être utilisée sur macOS.");
     }
+}
+
+#[tauri::command]
+pub fn get_backend_error(state: tauri::State<AppState>) -> Option<String> {
+    let backend_error = state.backend_error.lock().unwrap();
+    backend_error.clone()
 }

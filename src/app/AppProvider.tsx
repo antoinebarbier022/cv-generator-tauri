@@ -4,13 +4,17 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { PropsWithChildren } from "react";
 import { BrowserRouter } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import {ToastContainer} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BetaBadge } from "../components/BetaBadge.tsx";
 import "../styles/index.css";
 import theme from "../themes/default-theme.ts";
+import {useErrors} from "../features/errors/hooks/useErrors.tsx";
+
 
 export const AppProvider = ({ children }: PropsWithChildren) => {
+  useErrors()
+
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {},

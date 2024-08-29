@@ -1,3 +1,5 @@
+#![feature(try_blocks)]
+#![feature(let_chains)]
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
@@ -6,25 +8,24 @@ mod commands;
 mod menu;
 
 use std::sync::mpsc::{channel, RecvError, Sender};
+use std::sync::Mutex;
 use std::thread;
-use tauri::api::process::Command;
+use tauri::api::process::{Command, CommandChild};
 use tauri::api::shell::open;
 use tauri::{Manager, WindowEvent};
 use window_vibrancy::*;
-use crate::commands::{open_finder, open_powerpoint};
+use crate::commands::{get_backend_error, open_finder, open_powerpoint};
 use crate::menu::{create_app_menu, MyMenu};
 use crate::errors::{EmitError, ErrorPayload};
+use anyhow::Context;
+use serde::Serialize;
 
 /// Start the api server
 /// Returns a channel Sender used to trigger the process kill
-fn start_backend() -> Sender<()> {
+fn start_backend() -> Result<Sender<()>, anyhow::Error> {
     let (tx_kill, rx_kill) = channel();
 
-    // `new_sidecar()` expects just the filename, NOT the whole path
-    let (_, child) = Command::new_sidecar("api")
-        .expect("[Error] Failed to create `api` binary command")
-        .spawn()
-        .expect("Failed to spawn `api` sidecar");
+    let child = spawn_backend()?;
 
     thread::spawn(move || {
         match rx_kill.recv() {
@@ -35,13 +36,25 @@ fn start_backend() -> Sender<()> {
         child.kill().expect("killing api server process.");
     });
 
-    tx_kill
+    Ok(tx_kill)
+}
+
+fn spawn_backend() -> anyhow::Result<CommandChild> {
+    Command::new_sidecar("api")
+        .context("Failed to create `api` binary command")?
+        .spawn()
+        .context("Failed to spawn `api` sidecar")
+        .map(|(_, child)| child)
+}
+
+#[derive(Default, Debug, Serialize)]
+struct AppState {
+    pub backend_error: Mutex<Option<String>>
 }
 
 fn main() -> tauri::Result<()> {
-    let tx_kill = start_backend();
-
     tauri::Builder::default()
+        .manage(AppState::default())
         .menu(create_app_menu())
         .on_menu_event(|event| {
             match MyMenu::try_from(event.menu_item_id()).ok() {
@@ -68,7 +81,7 @@ fn main() -> tauri::Result<()> {
                 None => { /* do nothing */ }
             };
         })
-        .setup(|app| {
+        .setup(move |app| {
             let window = app.get_window("main").expect("No window labelled `main`");
 
             #[cfg(target_os = "macos")]
@@ -79,15 +92,28 @@ fn main() -> tauri::Result<()> {
             apply_blur(&window, Some((18, 18, 18, 125)))
                 .expect("Unsupported platform! 'apply_blur' is only supported on Windows");
 
+            let tx_kill= match start_backend() {
+                Ok(tx_kill) => {
+                    *app.state::<AppState>().backend_error.lock().unwrap() = None;
+                    Some(tx_kill)
+                },
+                Err(err) => {
+                    println!("Failed to start backend: {err}");
+                    *app.state::<AppState>().backend_error.lock().unwrap() = Some(err.to_string());
+                    None
+                }
+            };
+
+            window.on_window_event(move |event| {
+                if let WindowEvent::Destroyed = event && let Some(tx_kill) = &tx_kill {
+                    println!("[Event] App closed, shutting down API...");
+                    tx_kill.send(()).expect("Failed to send kill signal");
+                }
+            });
+
             Ok(())
         })
         // Tell the child process to shutdown when app exits
-        .on_window_event(move |event| {
-            if let WindowEvent::Destroyed = event.event() {
-                println!("[Event] App closed, shutting down API...");
-                tx_kill.send(()).expect("Failed to send kill signal");
-            }
-        })
-        .invoke_handler(tauri::generate_handler![open_finder, open_powerpoint])
+        .invoke_handler(tauri::generate_handler![open_finder, open_powerpoint, get_backend_error])
         .run(tauri::generate_context!())
 }
