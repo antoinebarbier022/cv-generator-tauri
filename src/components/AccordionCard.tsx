@@ -146,6 +146,7 @@ export const AccordionCard = forwardRef<HTMLDivElement, Props>(
           >
             {isDragIndicator && (
               <Stack
+                alignSelf={"start"}
                 alignItems={"center"}
                 height={"var(--project-accordion-summary-height)"}
                 justifyContent={"center"}
