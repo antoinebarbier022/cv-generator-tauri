@@ -6,7 +6,6 @@
 mod commands;
 mod errors;
 mod menu;
-
 use crate::commands::{get_backend_error, open_finder, open_powerpoint};
 use crate::menu::{create_app_menu, on_menu_event};
 use anyhow::Context;

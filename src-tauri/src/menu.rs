@@ -1,10 +1,11 @@
 use crate::errors::{EmitError, ErrorPayload};
 use convert_case::{Case, Casing};
-use strum::{EnumIter, EnumString, IntoEnumIterator, IntoStaticStr};
+use strum::{EnumString, IntoStaticStr};
 use tauri::api::shell::open;
 use tauri::{AboutMetadata, Manager, WindowMenuEvent};
 use tauri::{CustomMenuItem, Menu, MenuItem, Submenu};
 use ts_rs::TS;
+use ts_const_enums::TsConstEnum;
 
 #[derive(IntoStaticStr, EnumString, PartialEq, Debug)]
 pub(crate) enum MyMenu {
@@ -29,7 +30,8 @@ impl From<MyMenu> for String {
     }
 }
 
-#[derive(IntoStaticStr, EnumIter)]
+#[derive(IntoStaticStr, TsConstEnum)]
+#[ts(export_to = "events/menu-events.ts")]
 enum MenuEvent {
     FileExport,
     FileImport,
@@ -45,39 +47,6 @@ impl MenuEvent {
         <&Self as Into<&str>>::into(self).to_case(Case::Kebab)
     }
 }
-
-impl TS for MenuEvent {
-    type WithoutGenerics = Self;
-    fn ident() -> String { "MenuEvent".to_owned() }
-    fn decl() -> String {
-        let inline = <Self as TS>::inline();
-        let generics = "";
-        format!("enum {}{generics} {inline}", "MenuEvent", generics = generics, inline = inline)
-    }
-    fn decl_concrete() -> String {
-        format!("enum {} = {}", "MenuEvent", <Self as TS>::inline())
-    }
-    fn name() -> String { "MenuEvent".to_owned() }
-    fn inline() -> String {
-        let body = Self::iter().map(|variant| {
-            let value = variant.as_event_name();
-            let name: &'static str = variant.into();
-
-            format!(r#"  {name} = "{value}","#, )
-        }).collect::<Vec<_>>().join("\n");
-
-        format!("{{\n{body}\n}}")
-    }
-    fn inline_flattened() -> String {
-        Self::inline()
-    }
-    fn output_path() -> Option<&'static std::path::Path> { Some(std::path::Path::new("events/menu-events.ts")) }
-}
-
-#[cfg(test)]
-#[test]
-fn export_bindings_menuevent() { <MenuEvent as TS>::export_all().expect("could not export type"); }
-
 
 pub fn on_menu_event(event: WindowMenuEvent) {
     match MyMenu::try_from(event.menu_item_id()).ok() {
