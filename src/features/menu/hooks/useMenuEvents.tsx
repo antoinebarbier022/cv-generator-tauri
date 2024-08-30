@@ -6,6 +6,7 @@ import { useAskOutputPath } from "../../cv-generation/hooks/useAskOutputPath";
 import { useGenerate } from "../../cv-generation/hooks/useGenerate";
 import { useImportDataContent } from "../../storage/hooks/useImportDataContent";
 import { useResetDataStorage } from "../../storage/hooks/useResetDataStorage";
+import { MenuEvent } from "../../../generated/events/menu-events";
 
 export const useMenuEvents = () => {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ export const useMenuEvents = () => {
   };
 
   useEffect(() => {
-    const unlisten = setupListener("debug-open-panel", "/debug");
+    const unlisten = setupListener(MenuEvent.DebugOpenPanel, "/debug");
 
     return () => {
       unlisten.then((dispose) => dispose());
@@ -37,21 +38,23 @@ export const useMenuEvents = () => {
   }, [history]);
 
   useEffect(() => {
-    const unlisten = listen("file-import", () => mutationImport.mutate());
+    const unlisten = listen(MenuEvent.FileImport, () => mutationImport.mutate());
     return () => {
       unlisten.then((dispose) => dispose());
     };
   }, [history]);
 
   useEffect(() => {
-    const unlisten = setupListener("file-export", "/export");
+    const unlisten = setupListener(MenuEvent.FileExport, "/export");
     return () => {
       unlisten.then((dispose) => dispose());
     };
   }, [history]);
 
   useEffect(() => {
-    const unlisten = listen("file-reset", async () => {
+    const unlisten = listen(MenuEvent.FileReset, async () => {
+      console.log("reset")
+
       const confirmed = await confirm(
         "This action cannot be reverted. Are you sure?",
         { title: "Reset all data", type: "warning" }
@@ -66,7 +69,7 @@ export const useMenuEvents = () => {
   }, [history]);
 
   useEffect(() => {
-    const unlisten = setupListener("file-generate", "/generate");
+    const unlisten = setupListener(MenuEvent.FileGenerate, "/generate");
     return () => {
       unlisten.then((dispose) => dispose());
     };
@@ -76,7 +79,7 @@ export const useMenuEvents = () => {
   const generate = useGenerate();
 
   useEffect(() => {
-    const unlisten = listen("file-generate-and-save-as", async () => {
+    const unlisten = listen(MenuEvent.FileGenerateAndSaveAs, async () => {
       askOutputPath.mutate(undefined, {
         onSettled: () => {},
         onSuccess: (data) => {

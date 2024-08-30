@@ -3,7 +3,6 @@ use tauri::{Runtime, Window, Result};
 use ts_rs::TS;
 
 #[derive(Clone, Serialize, Debug, Default, TS)]
-#[ts(export)]
 #[ts(export, rename = "ErrorContent", export_to = "features/errors/types/errors.d.ts")]
 pub struct ErrorPayload {
     pub title: Option<String>,

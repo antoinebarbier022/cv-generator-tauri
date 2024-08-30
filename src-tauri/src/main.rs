@@ -8,8 +8,7 @@ mod errors;
 mod menu;
 
 use crate::commands::{get_backend_error, open_finder, open_powerpoint};
-use crate::errors::{EmitError, ErrorPayload};
-use crate::menu::{create_app_menu, MyMenu};
+use crate::menu::{create_app_menu, on_menu_event};
 use anyhow::Context;
 use core::str;
 use libc::SIGTERM;
@@ -18,7 +17,6 @@ use signal_hook::iterator::Signals;
 use std::sync::Mutex;
 use std::thread;
 use tauri::api::process::{Command, CommandEvent, TerminatedPayload};
-use tauri::api::shell::open;
 use tauri::Manager;
 use window_vibrancy::*;
 
@@ -106,52 +104,7 @@ fn main() -> anyhow::Result<()> {
     tauri::Builder::default()
         .manage(AppState::default())
         .menu(create_app_menu())
-        .on_menu_event(|event| {
-            match MyMenu::try_from(event.menu_item_id()).ok() {
-                Some(MyMenu::FileImport) => event.window().emit("file-import", "").unwrap(),
-                Some(MyMenu::FileExport) => event.window().emit("file-export", "").unwrap(),
-                Some(MyMenu::FileReset) => event.window().emit("file-reset", "").unwrap(),
-                Some(MyMenu::FileGenerate) => event.window().emit("file-generate", "").unwrap(),
-                Some(MyMenu::FileGenerateAndSaveAs) => event
-                    .window()
-                    .emit("file-generate-and-save-as", "")
-                    .unwrap(),
-                Some(MyMenu::AppPreferences) => {
-                    todo!()
-                }
-                Some(MyMenu::AppUpdate) => {
-                    todo!()
-                }
-                Some(MyMenu::DebugOpenPanel) => {
-                    event.window().emit("debug-open-panel", "").unwrap()
-                }
-                Some(MyMenu::DebugSendError) => event
-                    .window()
-                    .emit_error(
-                        ErrorPayload::new()
-                            .with_title("Ceci est un titre")
-                            .with_message("Ceci est un message"),
-                    )
-                    .unwrap(),
-                Some(MyMenu::HelpOpenSlack) => {
-                    if let Err(err) = open(
-                        &event.window().shell_scope(),
-                        "https://capgemini.enterprise.slack.com/archives/C07DCNBUT4Z",
-                        None,
-                    ) {
-                        event
-                            .window()
-                            .emit_error(
-                                ErrorPayload::new()
-                                    .with_title("Failed to open Slack channel")
-                                    .with_message(err.to_string()),
-                            )
-                            .unwrap();
-                    }
-                }
-                None => { /* do nothing */ }
-            };
-        })
+        .on_menu_event(on_menu_event)
         .setup(move |app| {
             let window = app.get_window("main").expect("No window labelled `main`");
 
@@ -178,3 +131,4 @@ fn main() -> anyhow::Result<()> {
         .run(tauri::generate_context!())
         .context("Error while running app")
 }
+
