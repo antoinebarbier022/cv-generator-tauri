@@ -26,6 +26,7 @@ export const AppLayout = ({ sidebar }: Props) => {
           userSelect: "none",
           margin: 0,
           scrollbarGutter: "stable",
+          overscrollBehavior: "none",
           overflow: "auto",
         }}
       >
