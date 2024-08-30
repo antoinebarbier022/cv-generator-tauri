@@ -15,7 +15,6 @@ use core::str;
 use libc::SIGTERM;
 use serde::Serialize;
 use signal_hook::iterator::Signals;
-use std::convert::identity;
 use std::sync::Mutex;
 use std::thread;
 use tauri::api::process::{Command, CommandEvent, TerminatedPayload};
@@ -48,7 +47,7 @@ fn spawn_backend() -> anyhow::Result<()> {
                         signal.map(|signal| format!("signal {signal}")),
                     ]
                     .into_iter()
-                    .filter_map(identity)
+                    .flatten()
                     .collect::<Vec<_>>()
                     .join(" and ");
 

@@ -11,7 +11,7 @@ pub fn open_finder(path: String) {
 pub fn open_powerpoint(path: String) {
     if cfg!(target_os = "macos") {
         Command::new("open")
-            .args(&[&path])
+            .arg(path)
             .spawn()
             .expect("Impossible d'ouvrir le fichier PowerPoint");
     } else {

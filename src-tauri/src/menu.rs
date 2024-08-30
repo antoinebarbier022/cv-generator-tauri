@@ -19,9 +19,9 @@ pub(crate) enum MyMenu {
     HelpOpenSlack,
 }
 
-impl Into<String> for MyMenu {
-    fn into(self) -> String {
-        <&MyMenu as Into<&str>>::into(&self).to_string()
+impl From<MyMenu> for String {
+    fn from(value: MyMenu) -> Self {
+        <&MyMenu as Into<&str>>::into(&value).to_string()
     }
 }
 
