@@ -106,9 +106,9 @@
     "windows": [
       {
         "fullscreen": false,
-        "minWidth": 780,
+        "minWidth": 820,
         "minHeight": 500,
-        "width": 800,
+        "width": 820,
         "height": 600,
         "transparent": true,
         "resizable": true,
