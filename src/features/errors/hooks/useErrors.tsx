@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { listen, Event } from "@tauri-apps/api/event";
 import { toast } from "react-toastify";
 import { ErrorToast } from "../components/ErrorToast.tsx";
-import { ErrorContent } from "../types/errors";
+import { ErrorContent } from "@generated/features/errors/types/errors";
 import {useBackendError} from "./useBackendError.tsx";
 
 

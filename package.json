@@ -8,7 +8,8 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "tauri": "tauri",
-    "release": "release-it --preRelease=beta --preReleaseBase=1"
+    "release": "release-it --preRelease=beta --preReleaseBase=1",
+    "generate_types": "cd src-tauri && TS_RS_EXPORT_DIR=./../src/generated/ cargo test"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",

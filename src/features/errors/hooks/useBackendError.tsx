@@ -1,6 +1,6 @@
 import {invoke} from "@tauri-apps/api/tauri";
 import {emit} from "@tauri-apps/api/event";
-import {ErrorContent} from "../types/errors";
+import { ErrorContent } from "@generated/features/errors/types/errors";
 import {useEffect} from "react";
 
 export const useBackendError = () => {
