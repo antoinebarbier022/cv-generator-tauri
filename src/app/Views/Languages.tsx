@@ -122,11 +122,6 @@ export const Languages = () => {
                                     {lang}
                                   </Chip>
                                 }
-                                slotProps={{
-                                  input: {
-                                    maxLength: 50,
-                                  },
-                                }}
                                 value={field.content[lang as string]}
                                 onChange={formik.handleChange}
                                 placeholder={t("input.language.placeholder")}

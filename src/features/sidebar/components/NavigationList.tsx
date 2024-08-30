@@ -24,7 +24,7 @@ export const NavigationList = (props: Props) => {
                 <ListItemButton
                   tabIndex={-1}
                   selected={isActive}
-                  sx={{ borderRadius: "xs" }}
+                  sx={{ borderRadius: "sm" }}
                 >
                   <ListItemDecorator>{value.icon}</ListItemDecorator>
                   <ListItemContent>{value.label}</ListItemContent>

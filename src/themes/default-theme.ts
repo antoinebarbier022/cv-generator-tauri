@@ -75,6 +75,14 @@ export default extendTheme({
         }),
       },
     },
+    JoyModalDialog: {
+      styleOverrides: {
+        root: () => ({
+          boxShadow:
+            "0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 40px rgba(0, 0, 0, 0.3)",
+        }),
+      },
+    },
 
     JoyInput: {
       styleOverrides: {
@@ -112,7 +120,17 @@ export default extendTheme({
         },
       },
     },
-
+    JoyCard: {
+      styleOverrides: {
+        root: ({ ownerState }) => ({
+          ...(ownerState.size === "lg" && {
+            padding: "1.5rem",
+            borderRadius: "20px",
+            border: "none",
+          }),
+        }),
+      },
+    },
     JoyTextarea: {
       styleOverrides: {
         root: {

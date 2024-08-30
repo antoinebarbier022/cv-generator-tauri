@@ -1,0 +1,83 @@
+@font-face {
+  font-family: "QuartoF";
+  src: url("../assets/fonts/HCo_Quarto/OpenType/Quarto-Black.otf")
+    format("opentype");
+  font-weight: 800;
+  font-style: normal;
+}
+@font-face {
+  font-family: "QuartoF";
+  src: url("../assets/fonts/HCo_Quarto/OpenType/Quarto-BlackItalic.otf")
+    format("opentype");
+  font-weight: 800;
+  font-style: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "QuartoF";
+  src: url("../assets/fonts/HCo_Quarto/OpenType/Quarto-Bold.otf")
+    format("opentype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "QuartoF";
+  src: url("../assets/fonts/HCo_Quarto/OpenType/Quarto-BoldItalic.otf")
+    format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "QuartoF";
+  src: url("../assets/fonts/HCo_Quarto/OpenType/Quarto-Semibold.otf")
+    format("opentype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "QuartoF";
+  src: url("../assets/fonts/HCo_Quarto/OpenType/Quarto-SemiboldItalic.otf")
+    format("opentype");
+  font-weight: 600;
+  font-style: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "QuartoF";
+  src: url("../assets/fonts/HCo_Quarto/OpenType/Quarto-Medium.otf")
+    format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "QuartoF";
+  src: url("../assets/fonts/HCo_Quarto/OpenType/Quarto-MediumItalic.otf")
+    format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "QuartoF";
+  src: url("../assets/fonts/HCo_Quarto/OpenType/Quarto-Light.otf")
+    format("opentype");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "QuartoF";
+  src: url("../assets/fonts/HCo_Quarto/OpenType/Quarto-LightItalic.otf")
+    format("opentype");
+  font-weight: 300;
+  font-style: normal;
+  font-style: italic;
+}

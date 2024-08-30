@@ -4,6 +4,7 @@ import {
   HandymanRounded,
   HomeRepairServiceRounded,
   LanguageRounded,
+  PersonRounded,
   SchoolRounded,
   TimelineRounded,
 } from "@mui/icons-material";
@@ -62,6 +63,11 @@ export const SidebarContainer = ({ isLoadingGenerate }: Props) => {
   };
 
   const navigation: NavigationType[] = [
+    {
+      icon: <PersonRounded />,
+      label: t("sidebar.navigation.profile"),
+      to: "/profile",
+    },
     {
       icon: <HomeRepairServiceRounded />,
       label: t("sidebar.navigation.skills"),
@@ -129,7 +135,7 @@ export const SidebarContainer = ({ isLoadingGenerate }: Props) => {
           <CardProfileButton
             image={contentResume.data?.picture}
             fullName={Boolean(fullName) ? fullName : "Profile"}
-            linkTo={"/profile"}
+            linkTo={"/my-account"}
           />
 
           <NavigationList navigation={navigation} />

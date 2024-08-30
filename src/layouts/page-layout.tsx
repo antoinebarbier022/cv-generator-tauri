@@ -3,7 +3,7 @@ import { forwardRef, PropsWithChildren, ReactNode } from "react";
 import { ErrorBoundary, FallbackProps } from "react-error-boundary";
 
 interface Props extends PropsWithChildren {
-  title: string;
+  title?: string;
   chip?: string;
   endDecorator?: ReactNode;
 }
@@ -28,42 +28,47 @@ export const PageLayout = forwardRef<HTMLDivElement, Props>(
         gap={4}
         sx={{ flex: 1 }}
       >
-        <Stack gap={1}>
-          <Stack>
-            <Typography
-              endDecorator={
-                chip && (
-                  <Chip size="md" sx={{ marginTop: "6px", borderRadius: "lg" }}>
-                    {chip}
-                  </Chip>
-                )
-              }
-              slotProps={{
-                endDecorator: {
-                  sx: {
-                    alignSelf: "center",
+        {title && (
+          <Stack gap={1}>
+            <Stack>
+              <Typography
+                endDecorator={
+                  chip && (
+                    <Chip
+                      size="md"
+                      sx={{ marginTop: "6px", borderRadius: "lg" }}
+                    >
+                      {chip}
+                    </Chip>
+                  )
+                }
+                slotProps={{
+                  endDecorator: {
+                    sx: {
+                      alignSelf: "center",
+                    },
                   },
-                },
-              }}
-              level="h2"
-            >
-              {title}
-            </Typography>
+                }}
+                level="h2"
+              >
+                {title}
+              </Typography>
 
-            <Stack
-              sx={{
-                position: "fixed",
-                top: "2rem",
-                right: "2rem",
-                zIndex: 10,
-              }}
-            >
-              {endDecorator}
+              <Stack
+                sx={{
+                  position: "fixed",
+                  top: "2rem",
+                  right: "2rem",
+                  zIndex: 10,
+                }}
+              >
+                {endDecorator}
+              </Stack>
             </Stack>
-          </Stack>
 
-          <Divider></Divider>
-        </Stack>
+            <Divider></Divider>
+          </Stack>
+        )}
         <ErrorBoundary fallbackRender={fallbackRender}>
           <Stack sx={{ flex: 1 }} paddingBottom={4}>
             {children}

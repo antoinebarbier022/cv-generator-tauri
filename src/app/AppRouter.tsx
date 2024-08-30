@@ -16,6 +16,7 @@ import { SidebarContainer } from "../features/sidebar/containers/SidebarContaine
 import { AppLayout } from "../layouts/app-layout";
 import { EmploymentHistory } from "./Views/EmploymentHistory";
 import { Languages } from "./Views/Languages";
+import { MyAccount } from "./Views/MyAccount";
 import { Profile } from "./Views/Profile";
 import { Projects } from "./Views/Projects";
 import { Sectors } from "./Views/Sectors";
@@ -40,6 +41,7 @@ export const AppRouter = () => {
             />
           }
         >
+          <Route path="my-account" element={<MyAccount />} />
           <Route index element={<Navigate to={"/profile"} />} />
           <Route path="profile" element={<Profile />} />
           <Route path="skills" element={<Skills />} />
