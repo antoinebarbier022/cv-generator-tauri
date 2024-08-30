@@ -151,16 +151,6 @@ export const Profile = () => {
                       placeholder={t("input.linkedin.placeholder")}
                     />
                   </FormControl>
-
-                  <FormControl sx={{ flex: 1 }}>
-                    <FormLabel>{t("input.twitter.label")}</FormLabel>
-                    <Input
-                      name="twitter"
-                      value={formik.values.twitter}
-                      onChange={formik.handleChange}
-                      placeholder={t("input.twitter.placeholder")}
-                    />
-                  </FormControl>
                 </Stack>
               </Stack>
               <Stack gap={1}>
