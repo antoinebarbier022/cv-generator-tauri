@@ -85,7 +85,7 @@ extern "C" fn on_exit() {
     println!("Server shutdown : {response}");
 }
 
-fn main() -> anyhow::Result<()> {
+fn register_exit_handling() -> anyhow::Result<()> {
     unsafe {
         libc::atexit(on_exit);
     }
@@ -96,6 +96,12 @@ fn main() -> anyhow::Result<()> {
             on_exit();
         }
     });
+
+    Ok(())
+}
+
+fn main() -> anyhow::Result<()> {
+    register_exit_handling()?;
 
     tauri::Builder::default()
         .manage(AppState::default())
