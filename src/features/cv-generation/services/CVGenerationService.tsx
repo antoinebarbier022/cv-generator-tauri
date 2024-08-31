@@ -9,6 +9,8 @@ import {
 import { ChildProcess } from "@tauri-apps/api/shell";
 
 import { UserData } from "../../storage/types/storage";
+import { generateResponse } from "../types/generateResponse";
+import { generateV2Request } from "../types/generateV2Request";
 
 export const CVGenerationService = {
   askOutputPath: async (): Promise<string | null> => {
@@ -53,7 +55,7 @@ export const CVGenerationService = {
     const output = await response.json();
     return output;
   },
-  generate: async (outputFilePath: string): Promise<ChildProcess> => {
+  generate: async (outputFilePath: string): Promise<generateResponse> => {
     const appDataDirPath = await appDataDir();
     const outputFolderPath = outputFilePath.replace(outputFilePath, "");
     const outputFileName = outputFilePath
@@ -77,23 +79,35 @@ export const CVGenerationService = {
       }),
     });
     const output = await response.json();
-    /*
-    const command = Command.sidecar("binaries/main", [
-      "--path-data",
-      await join(appDataDirPath, "data.json"),
-      "--path-template",
-      await resolveResource(
-        await join("resources", "CV_Nom_Prenom_Capability.pptx")
-      ),
-      "--output-folder",
-      outputFolderPath,
-      "--output-filename",
-      outputFileName,
-    ]);
-    const output = await command.execute();
-    if (output.stderr) {
-      throw Error(output.stderr);
-    }*/
+
+    return output;
+  },
+  generateV2: async (
+    outputFilePath: string,
+    data: generateV2Request
+  ): Promise<generateResponse> => {
+    const outputFolderPath = outputFilePath.replace(outputFilePath, "");
+    const outputFileName = outputFilePath
+      .replace(outputFolderPath, "")
+      .replace(".pptx", "");
+
+    const baseURL = "http://localhost:8008";
+
+    const response = await fetch(`${baseURL}/api/v2/generate-cv-pptx`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        data: data,
+        output_filename: outputFileName,
+        output_folder: outputFolderPath,
+        path_template: await resolveResource(
+          await join("resources", "CV_Nom_Prenom_Capability.pptx")
+        ),
+      }),
+    });
+    const output = await response.json();
 
     return output;
   },
