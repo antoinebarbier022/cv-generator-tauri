@@ -27,13 +27,7 @@ export const MyAccount = () => {
       {userData.isPending && <Typography>Loading...</Typography>}
       {userData.isError && <Typography>Error.</Typography>}
       {userData.data && (
-        <Stack
-          direction={"row"}
-          flexWrap={"wrap"}
-          mt={1}
-          gap={2}
-          fontFamily={"BentonSans"}
-        >
+        <Stack direction={"row"} flexWrap={"wrap"} mt={1} gap={2}>
           <Card
             size="lg"
             sx={{
@@ -69,19 +63,22 @@ export const MyAccount = () => {
               >
                 {userData.data.firstname ?? "nom"} {userData.data.lastname}
               </Typography>
-              <Typography>
+              <Typography fontFamily={"BentonSans"}>
                 {userData.data.role.fr}
                 {userData.data.role.fr && userData.data.grade && " - "}
 
                 {userData.data.grade && `Grade ${userData.data.grade}`}
               </Typography>
             </Stack>
-            <Typography>{userData.data.description.fr}</Typography>
+            <Typography fontFamily={"BentonSans"}>
+              {userData.data.description.fr}
+            </Typography>
           </Card>
 
           <Stack gap={2} sx={{ minWidth: "280px", flex: 1 }}>
             <Card size="lg" sx={{ flex: 1 }}>
               <Typography
+                fontFamily={"BentonSans"}
                 level="title-md"
                 textTransform={"uppercase"}
                 sx={{ pb: 1, borderBottom: "1px solid" }}
@@ -93,7 +90,9 @@ export const MyAccount = () => {
                 {userData.data.skills
                   .filter((e) => !e.isHidden)
                   .map((skill) => (
-                    <Typography component={"li"}>{skill.content.fr}</Typography>
+                    <Typography fontFamily={"BentonSans"} component={"li"}>
+                      {skill.content.fr}
+                    </Typography>
                   ))}
                 {userData.data.sectors.filter((e) => !e.isHidden).length >= 1 &&
                   userData.data.skills.filter((e) => !e.isHidden).length >=
@@ -102,7 +101,7 @@ export const MyAccount = () => {
                 {userData.data.sectors
                   .filter((e) => !e.isHidden)
                   .map((sector) => (
-                    <Typography component={"li"}>
+                    <Typography fontFamily={"BentonSans"} component={"li"}>
                       {sector.content.fr}
                     </Typography>
                   ))}
@@ -111,6 +110,7 @@ export const MyAccount = () => {
 
             <Card size="lg" sx={{ minWidth: "200px", flex: 1 }}>
               <Typography
+                fontFamily={"BentonSans"}
                 level="title-md"
                 textTransform={"uppercase"}
                 sx={{ pb: 1, borderBottom: "1px solid" }}
@@ -121,7 +121,7 @@ export const MyAccount = () => {
                 {userData.data.languages
                   .filter((e) => !e.isHidden)
                   .map((language) => (
-                    <Typography component={"li"}>
+                    <Typography fontFamily={"BentonSans"} component={"li"}>
                       {language.content.fr}
                     </Typography>
                   ))}
@@ -140,6 +140,7 @@ export const MyAccount = () => {
               sx={{ minWidth: "200px", minHeight: "140px", flex: 1 }}
             >
               <Typography
+                fontFamily={"BentonSans"}
                 level="title-md"
                 textTransform={"uppercase"}
                 sx={{ pb: 1, borderBottom: "1px solid" }}
@@ -150,7 +151,9 @@ export const MyAccount = () => {
                 {userData.data.formation
                   .filter((e) => !e.isHidden)
                   .map((el) => (
-                    <Typography component={"li"}>{el.content.fr}</Typography>
+                    <Typography fontFamily={"BentonSans"} component={"li"}>
+                      {el.content.fr}
+                    </Typography>
                   ))}
               </List>
             </Card>
@@ -160,6 +163,7 @@ export const MyAccount = () => {
               sx={{ minWidth: "200px", minHeight: "140px", flex: 2 }}
             >
               <Typography
+                fontFamily={"BentonSans"}
                 level="title-md"
                 textTransform={"uppercase"}
                 sx={{ pb: 1, borderBottom: "1px solid" }}
@@ -169,7 +173,9 @@ export const MyAccount = () => {
               {userData.data.employment_history
                 .filter((e) => !e.isHidden)
                 .map((employment) => (
-                  <Typography>{employment.content.fr}</Typography>
+                  <Typography fontFamily={"BentonSans"}>
+                    {employment.content.fr}
+                  </Typography>
                 ))}
             </Card>
           </Stack>
@@ -190,6 +196,7 @@ export const MyAccount = () => {
             >
               <Typography
                 level="title-md"
+                fontFamily={"BentonSans"}
                 textTransform={"uppercase"}
                 sx={{ pb: 1, mb: 2, borderBottom: "1px solid" }}
               >
@@ -210,7 +217,7 @@ export const MyAccount = () => {
                 .filter((e) => !e.isHidden)
                 .map((project) => (
                   <Stack pb={4}>
-                    <Typography level="title-md">
+                    <Typography fontFamily={"BentonSans"} level="title-md">
                       {[
                         project.content.program,
                         project.content.client,
@@ -221,6 +228,7 @@ export const MyAccount = () => {
                       {project.content.date && `(${project.content.date})`}
                     </Typography>
                     <Typography
+                      fontFamily={"BentonSans"}
                       level="body-md"
                       fontStyle={"italic"}
                       whiteSpace={"pre-line"}
@@ -228,7 +236,11 @@ export const MyAccount = () => {
                     >
                       {project.content.context.fr}
                     </Typography>
-                    <Typography whiteSpace={"pre-line"} level="body-md">
+                    <Typography
+                      fontFamily={"BentonSans"}
+                      whiteSpace={"pre-line"}
+                      level="body-md"
+                    >
                       {project.content.contribution.fr}
                     </Typography>
                   </Stack>
