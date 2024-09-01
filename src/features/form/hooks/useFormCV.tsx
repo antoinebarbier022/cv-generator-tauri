@@ -2,6 +2,7 @@ import { useFormik } from "formik";
 import debounce from "just-debounce-it";
 import { useCallback, useEffect, useMemo } from "react";
 
+import { confirm } from "@tauri-apps/api/dialog";
 import { DropResult } from "react-beautiful-dnd";
 import { reorderListSection } from "../../../utils/drag-and-drop.utils";
 import { isEmptyObject } from "../../../utils/object.utils";
@@ -80,17 +81,34 @@ export const useFormCV = () => {
     formik.submitForm();
   };
 
-  const handleDeleteItemSection = ({
+  const isEmpty = (object: any) => isEmptyObject(object);
+
+  const handleDeleteItemSection = async ({
     fieldName,
     idSelected,
   }: {
     fieldName: ResumeSectionFieldName;
     idSelected: string;
   }) => {
-    formik.setFieldValue(fieldName, [
-      ...(formik.values[fieldName]?.filter((v) => v.id !== idSelected) ?? []),
-    ]);
-    formik.submitForm();
+    const deleteItem = () => {
+      formik.setFieldValue(fieldName, [
+        ...(formik.values[fieldName]?.filter((v) => v.id !== idSelected) ?? []),
+      ]);
+      formik.submitForm();
+    };
+
+    // TODO isEmpty is not working
+    if (isEmpty(formik.values[fieldName])) {
+      deleteItem();
+    } else {
+      const confirmed = await confirm(
+        "This action cannot be reverted. Are you sure?",
+        { title: `Delete item`, type: "warning" }
+      );
+      if (confirmed) {
+        deleteItem();
+      }
+    }
   };
 
   const debouncedSubmit = useCallback(
@@ -103,8 +121,6 @@ export const useFormCV = () => {
       debouncedSubmit();
     }
   }, [debouncedSubmit, formik.values]);
-
-  const isEmpty = (experience: any) => isEmptyObject(experience);
 
   return {
     formik,
