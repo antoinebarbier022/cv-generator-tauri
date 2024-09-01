@@ -1,16 +1,19 @@
-import { AccordionGroup, Chip, Input, Stack } from "@mui/joy";
+import { AccordionGroup, Stack } from "@mui/joy";
 
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AccordionTitle } from "../../components/AccordionTitle";
 import { EmptyState } from "../../components/EmptyState";
-import { CV_LANGUAGES } from "../../features/form/constants/cv-languages";
 import { useFormCV } from "../../features/form/hooks/useFormCV";
 import { SectionItem } from "../../features/sections/containers/SectionItem";
 import { SectionDroppableLayout } from "../../features/sections/layouts/SectionDroppableLayout";
+import { Translation } from "../../features/storage/types/storage";
 
 export const Skills = () => {
   const { t } = useTranslation();
+
+  const sectionKey = "skills";
+
   const {
     userData,
     formik,
@@ -24,9 +27,17 @@ export const Skills = () => {
   >(null);
 
   const handleChangeVisibility = (index: number, value: boolean) => {
-    const newContent = [...formik.values.skills];
+    const newContent = [...formik.values[sectionKey]];
     newContent[index].isHidden = value;
-    formik.setFieldValue("skills", newContent);
+    formik.setFieldValue(sectionKey, newContent);
+    formik.submitForm();
+  };
+
+  const handleEditContentItem = (id: string, content: Translation) => {
+    const newContent = [...formik.values[sectionKey]];
+    newContent[newContent.findIndex((e) => e.id === id)].content = content;
+
+    formik.setFieldValue(sectionKey, newContent);
     formik.submitForm();
   };
 
@@ -36,19 +47,19 @@ export const Skills = () => {
 
   const handleDelete = (id: string) =>
     handleDeleteItemSection({
-      fieldName: "skills",
+      fieldName: sectionKey,
       idSelected: id,
     });
 
-  const isEmpty = userData.data && userData.data?.skills.length === 0;
+  const isEmpty = userData.data && userData.data[sectionKey].length === 0;
 
   return (
     <SectionDroppableLayout
       title={t("resume.section.skills.title")}
-      chip={String(formik.values.skills.length)}
+      chip={String(formik.values[sectionKey].length)}
       droppableId={"droppable"}
-      onDragEnd={(result) => dragEnded(result, "skills")}
-      onAddItem={() => handleAddItemSection({ fieldName: "skills" })}
+      onDragEnd={(result) => dragEnded(result, sectionKey)}
+      onAddItem={() => handleAddItemSection({ fieldName: sectionKey })}
       isError={userData.isError}
       isEmpty={isEmpty}
       isLoading={userData.isPending}
@@ -57,15 +68,18 @@ export const Skills = () => {
           title={t("empty-state.skills.title")}
           description={t("empty-state.skills.description")}
           labelButton={t("empty-state.skills.button.label")}
-          onClickButton={() => handleAddItemSection({ fieldName: "skills" })}
+          onClickButton={() => handleAddItemSection({ fieldName: sectionKey })}
         />
       }
     >
       <form onSubmit={formik.handleSubmit}>
         <AccordionGroup disableDivider component={Stack}>
-          {formik.values.skills?.map((field, index) => (
+          {formik.values[sectionKey]?.map((field, index) => (
             <>
               <SectionItem
+                content={field.content}
+                id={field.id}
+                placeholder={""}
                 key={field.id}
                 index={index}
                 draggableId={field.id}
@@ -92,28 +106,10 @@ export const Skills = () => {
                   handleExpandedChange(field.id, expanded);
                 }}
                 onDelete={() => handleDelete(field.id)}
-              >
-                <Stack flex={1} gap={1} marginTop={1}>
-                  {CV_LANGUAGES.map((lang) => (
-                    <Input
-                      key={`skills[${index}].content.${lang}`}
-                      name={`skills[${index}].content.${lang}`}
-                      startDecorator={
-                        <Chip
-                          sx={{
-                            marginLeft: -0.75,
-                          }}
-                        >
-                          {lang}
-                        </Chip>
-                      }
-                      value={field.content[lang as string]}
-                      onChange={formik.handleChange}
-                      placeholder=""
-                    />
-                  ))}
-                </Stack>
-              </SectionItem>
+                onSubmit={(value) => {
+                  handleEditContentItem(value.id, value.content);
+                }}
+              />
             </>
           ))}
         </AccordionGroup>
