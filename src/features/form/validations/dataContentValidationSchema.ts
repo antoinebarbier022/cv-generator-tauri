@@ -30,7 +30,7 @@ export const dataContentValidationSchema = yup.object().shape({
   entity: yup.string().required(),
   team: yup.string().required(),
   description: translationSchema.required(),
-  linkedin: yup.string().required(),
+  linkedin: yup.string(),
   twitter: yup.string(),
   formation: sectionSchema(translationSchema),
   employment_history: sectionSchema(translationSchema),

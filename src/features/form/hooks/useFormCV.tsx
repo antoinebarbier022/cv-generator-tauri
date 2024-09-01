@@ -81,8 +81,6 @@ export const useFormCV = () => {
     formik.submitForm();
   };
 
-  const isEmpty = (object: any) => isEmptyObject(object);
-
   const handleDeleteItemSection = async ({
     fieldName,
     idSelected,
@@ -90,25 +88,25 @@ export const useFormCV = () => {
     fieldName: ResumeSectionFieldName;
     idSelected: string;
   }) => {
-    const deleteItem = () => {
-      formik.setFieldValue(fieldName, [
-        ...(formik.values[fieldName]?.filter((v) => v.id !== idSelected) ?? []),
-      ]);
-      formik.submitForm();
-    };
+    const section = formik.values[
+      fieldName
+    ] as unknown as ResumeContentSection<unknown>[];
 
-    // TODO isEmpty is not working
-    if (isEmpty(formik.values[fieldName])) {
-      deleteItem();
-    } else {
+    const showDialogConfirm = !isEmptyObject(
+      section[section.findIndex((e) => e.id === idSelected)].content
+    );
+
+    if (showDialogConfirm) {
       const confirmed = await confirm(
         "This action cannot be reverted. Are you sure?",
         { title: `Delete item`, type: "warning" }
       );
-      if (confirmed) {
-        deleteItem();
-      }
+      if (!confirmed) return;
     }
+    formik.setFieldValue(fieldName, [
+      ...(formik.values[fieldName]?.filter((v) => v.id !== idSelected) ?? []),
+    ]);
+    formik.submitForm();
   };
 
   const debouncedSubmit = useCallback(
@@ -128,6 +126,5 @@ export const useFormCV = () => {
     handleAddItemSection,
     handleDeleteItemSection,
     dragEnded,
-    isEmpty,
   };
 };

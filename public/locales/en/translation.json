@@ -5,11 +5,16 @@
   "languages.en": "en",
 
   "resume.section.skills.title": "Skills",
+  "resume.section.skills.item.placeholder": "Skill",
   "resume.section.sectors.title": "Sectors",
+  "resume.section.sectors.item.placeholder": "Sector",
   "resume.section.formation.title": "Formation",
+  "resume.section.formation.item.placeholder": "Formation",
   "resume.section.languages.title": "Languages",
+  "resume.section.languages.item.placeholder": "Language",
   "resume.section.projects.title": "Projects",
-  "resume.section.employment-history.title": "Employment History",
+  "resume.section.employment_history.title": "Employment History",
+  "resume.section.employment_history.item.placeholder": "Employment",
   "resume.section.profile.title": "Profile",
 
   "sidebar.navigation.profile": "Profile",
@@ -17,7 +22,7 @@
   "sidebar.navigation.sectors": "Sectors",
   "sidebar.navigation.formation": "Formation",
   "sidebar.navigation.languages": "Languages",
-  "sidebar.navigation.employment-history": "Employment History",
+  "sidebar.navigation.employment_history": "Employment History",
   "sidebar.navigation.projects": "Projects",
   "sidebar.navigation.cv-configuration": "CV Configuration",
 
@@ -50,8 +55,8 @@
   "input.formation.placeholder": "Formation (yyyy)",
   "input.description.label": "Description",
   "input.description.placeholder": "A short description about you",
-  "input.employment-history.label": "Employment",
-  "input.employment-history.placeholder": "Employment (yyyy - yyyy)",
+  "input.employment_history.label": "Employment",
+  "input.employment_history.placeholder": "Employment (yyyy - yyyy)",
   "input.skill.label": "Skill",
   "input.sector.label": "Sector",
   "input.language.label": "Language",
@@ -84,7 +89,7 @@
   "empty-state.languages.title": "No languages",
   "empty-state.languages.description": "You have not added any languages yet.",
   "empty-state.languages.button.label": "New language",
-  "empty-state.employment-history.title": "No employment history",
-  "empty-state.employment-history.description": "You have not added any employment history yet.",
-  "empty-state.employment-history.button.label": "New employment history"
+  "empty-state.employment_history.title": "No employment history",
+  "empty-state.employment_history.description": "You have not added any employment history yet.",
+  "empty-state.employment_history.button.label": "New employment history"
 }

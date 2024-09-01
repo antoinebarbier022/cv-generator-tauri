@@ -90,8 +90,8 @@ export const SidebarContainer = ({ isLoadingGenerate }: Props) => {
     },
     {
       icon: <TimelineRounded />,
-      label: t("sidebar.navigation.employment-history"),
-      to: "/employment-history",
+      label: t("sidebar.navigation.employment_history"),
+      to: "/employment_history",
     },
     {
       icon: <BusinessRounded />,

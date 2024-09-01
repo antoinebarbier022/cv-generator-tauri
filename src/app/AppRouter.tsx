@@ -21,8 +21,6 @@ import { Profile } from "./Views/Profile";
 import { Projects } from "./Views/Projects";
 import { Sectors } from "./Views/Sectors";
 import { Skills } from "./Views/Skills";
-import { Test2View } from "./Views/Test2View";
-import { TestView } from "./Views/TestView";
 
 export const AppRouter = () => {
   const navigate = useNavigate();
@@ -51,13 +49,8 @@ export const AppRouter = () => {
           <Route path="languages" element={<Languages />} />
           <Route path="projects" element={<Projects />} />
           <Route path="formation" element={<Formation />} />
-          <Route path="tests">
-            <Route index element={<TestView />} />
-            <Route path="1" element={<TestView />} />
-            <Route path="2" element={<Test2View />} />
-          </Route>
 
-          <Route path="employment-history" element={<EmploymentHistory />} />
+          <Route path="employment_history" element={<EmploymentHistory />} />
           <Route path="*" element={<Alert>Error 404.</Alert>} />
         </Route>
       </Routes>
