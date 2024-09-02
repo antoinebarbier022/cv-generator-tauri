@@ -9,10 +9,13 @@ import {
 } from "@mui/icons-material";
 import { Button, Sheet, Stack } from "@mui/joy";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAskOutputPath } from "../../cv-generation/hooks/useAskOutputPath";
 import { useGenerate } from "../../cv-generation/hooks/useGenerate";
+import { MissingFontAlert } from "../../missing-font/components/MissingFontAlert";
+import { MissingFontModal } from "../../missing-font/components/MissingFontModal";
+import { useMissingFont } from "../../missing-font/hooks/useMissingFont";
 import { useGetDataStorage } from "../../storage/hooks/useGetDataStorage";
 import { CardProfileButton } from "../components/CardProfileButton";
 import { NavigationList } from "../components/NavigationList";
@@ -27,6 +30,11 @@ export const SidebarContainer = ({ isLoadingGenerate }: Props) => {
   const askOutputPath = useAskOutputPath();
   const generate = useGenerate();
   const contentResume = useGetDataStorage();
+
+  const [isOpenModalMissingFont, setOpenModalMissingFont] = useState(false);
+
+  const handleOpenModalMissingFont = () => setOpenModalMissingFont(true);
+  const handleCloseModalMissingFont = () => setOpenModalMissingFont(false);
 
   const fullName = useMemo(() => {
     const firstname = contentResume.data?.firstname;
@@ -93,6 +101,8 @@ export const SidebarContainer = ({ isLoadingGenerate }: Props) => {
     },
   ];
 
+  const { showAlertMissingFont } = useMissingFont();
+
   return (
     <>
       <Sheet
@@ -124,7 +134,10 @@ export const SidebarContainer = ({ isLoadingGenerate }: Props) => {
 
           <NavigationList navigation={navigation} />
 
-          <Stack gap={1}>
+          <Stack gap={1} sx={{ position: "sticky", bottom: "0" }}>
+            {showAlertMissingFont && (
+              <MissingFontAlert onClick={handleOpenModalMissingFont} />
+            )}
             <Button
               color="primary"
               variant="solid"
@@ -137,6 +150,10 @@ export const SidebarContainer = ({ isLoadingGenerate }: Props) => {
           </Stack>
         </Stack>
       </Sheet>
+      <MissingFontModal
+        open={isOpenModalMissingFont}
+        onClose={handleCloseModalMissingFont}
+      />
     </>
   );
 };
