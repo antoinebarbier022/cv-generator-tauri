@@ -16,7 +16,10 @@ export const AccordionTitle = (props: Props) => {
         <Tooltip
           title={t("warning.missing-translation")}
           arrow
-          variant="outlined"
+          placement="top"
+          disableInteractive
+          color="warning"
+          variant="solid"
         >
           <WarningRounded sx={{ color: "warning.400" }} />
         </Tooltip>

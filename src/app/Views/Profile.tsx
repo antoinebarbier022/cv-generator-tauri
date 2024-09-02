@@ -275,7 +275,7 @@ export const Profile = () => {
                   size="sm"
                   variant="outlined"
                   color="neutral"
-                  sx={{ fontWeight: "500" }}
+                  sx={{ fontWeight: "400" }}
                   onClick={handleChangePicture}
                 >
                   {formik.values.picture

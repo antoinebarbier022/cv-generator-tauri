@@ -26,7 +26,7 @@ export const CardProfileButton = (props: Props) => {
     >
       <Stack direction={"row"} gap={2} alignItems={"center"}>
         <Avatar
-          variant="outlined"
+          variant="soft"
           src={
             props.image
               ? `${convertFileSrc(props.image)}?removeCache=${new Date()}`
@@ -48,7 +48,7 @@ export const CardProfileButton = (props: Props) => {
                 underline="none"
                 aria-current={isActive ? "page" : undefined}
               >
-                {props.fullName ?? "Profile"}
+                {props.fullName}
               </Link>
             )}
           </NavLink>

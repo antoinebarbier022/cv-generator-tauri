@@ -134,7 +134,7 @@ export const SidebarContainer = ({ isLoadingGenerate }: Props) => {
         >
           <CardProfileButton
             image={contentResume.data?.picture}
-            fullName={Boolean(fullName) ? fullName : "Profile"}
+            fullName={Boolean(fullName) ? fullName : ""}
             linkTo={"/my-account"}
           />
 
