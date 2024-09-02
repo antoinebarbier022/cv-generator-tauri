@@ -14,19 +14,25 @@ use libc::SIGTERM;
 use serde::Serialize;
 use signal_hook::iterator::Signals;
 use std::sync::Mutex;
-use std::thread;
+use std::{sync, thread};
 use tauri::api::process::{Command, CommandEvent, TerminatedPayload};
+use sync::mpsc::{channel, Sender};
 use tauri::Manager;
 use window_vibrancy::*;
+use crate::errors::{EmitError, ErrorPayload};
 
-fn start_backend() -> anyhow::Result<()> {
+fn start_backend(tx: Sender<BackendEvent>) -> anyhow::Result<()> {
     println!("Spawning api server...");
-    spawn_backend()?;
+    spawn_backend(tx)?;
 
     Ok(())
 }
 
-fn spawn_backend() -> anyhow::Result<()> {
+enum BackendEvent {
+    PortAlreadyInUseError
+}
+
+fn spawn_backend(tx: Sender<BackendEvent>) -> anyhow::Result<()> {
     let (mut rx, _) = Command::new_sidecar("api")
         .context("Failed to create `api` binary command")?
         .spawn()
@@ -48,10 +54,14 @@ fn spawn_backend() -> anyhow::Result<()> {
                     .collect::<Vec<_>>()
                     .join(" and ");
 
-                    if !infos.trim().is_empty() {
+                    if infos.trim().is_empty() {
                         println!("Api terminated.")
                     } else {
                         println!("Api terminated with {infos}.")
+                    }
+
+                    if let Some(48) = code {
+                        tx.send(BackendEvent::PortAlreadyInUseError).unwrap()
                     }
                 }
                 event => {
@@ -115,10 +125,20 @@ fn main() -> anyhow::Result<()> {
             apply_blur(&window, Some((18, 18, 18, 125)))
                 .expect("Unsupported platform! 'apply_blur' is only supported on Windows");
 
-            if let Err(err) = start_backend() {
+            let (tx, rx) = channel::<BackendEvent>();
+
+            if let Err(err) = start_backend(tx) {
                 println!("Failed to start backend: {err}");
                 *app.state::<AppState>().backend_error.lock().unwrap() = Some(err.to_string());
             }
+
+            tauri::async_runtime::spawn(async move {
+                while let Some(event) = rx.recv().ok() {
+                    match event {
+                        BackendEvent::PortAlreadyInUseError => window.emit_error(ErrorPayload::new().with_title("Failed to start backend").with_message("Port already in use")).unwrap()
+                    }
+                }
+            });
 
             Ok(())
         })
