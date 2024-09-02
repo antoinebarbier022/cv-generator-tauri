@@ -1,6 +1,11 @@
+use crate::errors::{EmitError, ErrorPayload};
+use convert_case::{Case, Casing};
 use strum::{EnumString, IntoStaticStr};
-use tauri::AboutMetadata;
+use tauri::api::shell::open;
+use tauri::{AboutMetadata, Manager, WindowMenuEvent};
 use tauri::{CustomMenuItem, Menu, MenuItem, Submenu};
+use ts_rs::TS;
+use ts_const_enums::TsConstEnum;
 
 #[derive(IntoStaticStr, EnumString, PartialEq, Debug)]
 pub(crate) enum MyMenu {
@@ -23,6 +28,71 @@ impl From<MyMenu> for String {
     fn from(value: MyMenu) -> Self {
         <&MyMenu as Into<&str>>::into(&value).to_string()
     }
+}
+
+#[derive(IntoStaticStr, TsConstEnum)]
+#[ts(export_to = "events/menu-events.ts")]
+enum MenuEvent {
+    FileExport,
+    FileImport,
+    FileReset,
+    FileGenerate,
+    FileGenerateAndSaveAs,
+
+    DebugOpenPanel,
+}
+
+impl MenuEvent {
+    fn as_event_name(&self) -> String {
+        <&Self as Into<&str>>::into(self).to_case(Case::Kebab)
+    }
+}
+
+pub fn on_menu_event(event: WindowMenuEvent) {
+    match MyMenu::try_from(event.menu_item_id()).ok() {
+        Some(MyMenu::FileImport) => event.window().emit(&MenuEvent::FileImport.as_event_name(), "").unwrap(),
+        Some(MyMenu::FileExport) => event.window().emit(&MenuEvent::FileExport.as_event_name(), "").unwrap(),
+        Some(MyMenu::FileReset) => event.window().emit(&MenuEvent::FileReset.as_event_name(), "").unwrap(),
+        Some(MyMenu::FileGenerate) => event.window().emit(&MenuEvent::FileGenerate.as_event_name(), "").unwrap(),
+        Some(MyMenu::FileGenerateAndSaveAs) => event
+            .window()
+            .emit(&MenuEvent::FileGenerateAndSaveAs.as_event_name(), "")
+            .unwrap(),
+        Some(MyMenu::AppPreferences) => {
+            todo!()
+        }
+        Some(MyMenu::AppUpdate) => {
+            todo!()
+        }
+        Some(MyMenu::DebugOpenPanel) => {
+            event.window().emit(&MenuEvent::DebugOpenPanel.as_event_name(), "").unwrap()
+        }
+        Some(MyMenu::DebugSendError) => event
+            .window()
+            .emit_error(
+                ErrorPayload::new()
+                    .with_title("Ceci est un titre")
+                    .with_message("Ceci est un message"),
+            )
+            .unwrap(),
+        Some(MyMenu::HelpOpenSlack) => {
+            if let Err(err) = open(
+                &event.window().shell_scope(),
+                "https://capgemini.enterprise.slack.com/archives/C07DCNBUT4Z",
+                None,
+            ) {
+                event
+                    .window()
+                    .emit_error(
+                        ErrorPayload::new()
+                            .with_title("Failed to open Slack channel")
+                            .with_message(err.to_string()),
+                    )
+                    .unwrap();
+            }
+        }
+        None => { /* do nothing */ }
+    };
 }
 
 pub fn create_app_menu() -> Menu {
