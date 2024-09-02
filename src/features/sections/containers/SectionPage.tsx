@@ -1,5 +1,4 @@
 import { AccordionGroup, Stack } from "@mui/joy";
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { EmptyState } from "../../../components/EmptyState";
 import { useFormCV } from "../../form/hooks/useFormCV";
@@ -33,10 +32,6 @@ export const SectionPage = ({
     dragEnded,
   } = useFormCV();
 
-  const [indexExpandedAccordion, setIndexExpandedAccordion] = useState<
-    string | null
-  >(null);
-
   const handleChangeVisibility = (index: number, value: boolean) => {
     const newContent = [...formik.values[sectionKey]];
     newContent[index].isHidden = value;
@@ -50,10 +45,6 @@ export const SectionPage = ({
 
     formik.setFieldValue(sectionKey, newContent);
     formik.submitForm();
-  };
-
-  const handleExpandedChange = (id: string, expanded: boolean) => {
-    setIndexExpandedAccordion(expanded ? id : null);
   };
 
   const handleDelete = (id: string) =>
@@ -87,24 +78,20 @@ export const SectionPage = ({
         {formik.values[sectionKey]?.map((field, index) => (
           <SectionItem
             key={field.id}
+            id={field.id}
+            draggableId={field.id}
             titlePlaceholder={`${t(
               `resume.section.${sectionKey}.item.placeholder`
             )} ${index + 1}`}
             inputType={options.inputType}
             content={field.content}
             maxWarningLength={options.inputMaxWarningLength}
-            id={field.id}
-            placeholder={""}
+            inputPlaceholder={""}
             index={index}
-            draggableId={field.id}
             isVisible={Boolean(field.isHidden)}
-            isExpanded={indexExpandedAccordion === field.id}
             onChangeVisibility={(value) => handleChangeVisibility(index, value)}
-            onExpandedChange={(_, expanded) => {
-              handleExpandedChange(field.id, expanded);
-            }}
             onDelete={() => handleDelete(field.id)}
-            onSubmit={(value) => {
+            onChange={(value) => {
               handleEditContentItem(value.id, value.content);
             }}
           />

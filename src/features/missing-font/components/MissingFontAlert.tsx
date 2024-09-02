@@ -9,7 +9,7 @@ export const MissingFontAlert = (props: Props) => {
     <Alert
       variant="outlined"
       startDecorator={<WarningRounded />}
-      sx={{ mx: 1, backdropFilter: "blur(16px)" }}
+      sx={{ mx: 0, backdropFilter: "blur(16px)" }}
     >
       <Typography textColor={"common.white"} fontWeight={"400"} level="body-xs">
         Police d'écriture manquante.

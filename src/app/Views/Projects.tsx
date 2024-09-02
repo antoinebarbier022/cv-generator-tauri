@@ -1,15 +1,15 @@
 import { AccordionGroup, Stack } from "@mui/joy";
 
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AccordionTitle } from "../../components/AccordionTitle";
 import { EmptyState } from "../../components/EmptyState";
 
-import { ProjectForm } from "../../components/ProjectForm";
-import { ProjectTitle } from "../../components/ProjectTitle";
 import { useFormCV } from "../../features/form/hooks/useFormCV";
+import { ProjectTitle } from "../../features/sections/components/ProjectTitle";
+import { ProjectForm } from "../../features/sections/containers/ProjectForm";
 import { SectionDroppableLayout } from "../../features/sections/layouts/SectionDroppableLayout";
 import { SectionItemLayout } from "../../features/sections/layouts/SectionItemLayout";
+import { useExpandedItemStore } from "../../features/sections/stores/useExpandedItemStore";
 import {
   ResumeContentSection,
   UserDataExperience,
@@ -17,39 +17,18 @@ import {
 
 export const Projects = () => {
   const { t } = useTranslation();
-  const { userData, formik, dragEnded, handleDeleteItemSection } = useFormCV();
+  const {
+    userData,
+    formik,
+    dragEnded,
+    handleDeleteItemSection,
+    handleAddItemSection,
+  } = useFormCV();
 
   const handleAddProject = () => {
-    formik.setFieldValue("experiences", [
-      {
-        id: crypto.randomUUID(),
-        content: {
-          client: "",
-          program: "",
-          role: {
-            en: "",
-            fr: "",
-          },
-          date: "",
-          context: {
-            en: "",
-            fr: "",
-          },
-          contribution: {
-            en: "",
-            fr: "",
-          },
-        },
-      } as ResumeContentSection<UserDataExperience>,
-      ...(formik.values.experiences ?? []),
-    ]);
-    formik.submitForm();
+    handleAddItemSection({ fieldName: "experiences" });
   };
   const isEmptyData = userData.data && userData.data?.experiences.length === 0;
-
-  const [indexExpandedAccordion, setIndexExpandedAccordion] = useState<
-    string | null
-  >(null);
 
   const isMissingField = (experience: UserDataExperience) => {
     return Boolean(
@@ -65,6 +44,18 @@ export const Projects = () => {
   const handleDeleteById = (id: string) => {
     handleDeleteItemSection({ fieldName: "experiences", idSelected: id });
   };
+
+  const handleEditContentItem = (
+    data: ResumeContentSection<UserDataExperience>
+  ) => {
+    const newContent = [...formik.values["experiences"]];
+    newContent[newContent.findIndex((e) => e.id === data.id)] = data;
+
+    formik.setFieldValue("experiences", newContent);
+    formik.submitForm();
+  };
+
+  const { expandedItem, setExpandedItem } = useExpandedItemStore();
 
   return (
     <>
@@ -105,9 +96,9 @@ export const Projects = () => {
                 />
               }
               isVisible={Boolean(field.isHidden)}
-              isExpanded={indexExpandedAccordion === field.id}
+              isExpanded={expandedItem === field.id}
               onExpandedChange={(_, expanded) => {
-                setIndexExpandedAccordion(expanded ? field.id : null);
+                setExpandedItem(expanded ? field.id : undefined);
               }}
               onChangeVisibility={(value) => {
                 const newContent = [...formik.values.experiences];
@@ -118,9 +109,8 @@ export const Projects = () => {
               onDelete={() => handleDeleteById(field.id)}
             >
               <ProjectForm
-                formik={formik}
-                field={field.content}
-                index={index}
+                data={field}
+                onChange={(value) => handleEditContentItem(value)}
               />
             </SectionItemLayout>
           ))}

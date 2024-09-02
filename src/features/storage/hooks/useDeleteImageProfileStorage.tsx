@@ -12,7 +12,6 @@ export const useDeleteImageProfileStorage = () => {
       await removeFile(formik.values.picture);
     },
     onSuccess: async () => {
-      await formik.setFieldValue("picture", "");
       await queryClient.invalidateQueries({ queryKey: ["image_profile"] });
       await queryClient.invalidateQueries({ queryKey: ["data"] });
     },

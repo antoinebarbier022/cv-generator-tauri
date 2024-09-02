@@ -1,19 +1,16 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { message } from "@tauri-apps/api/dialog";
-import { useFormCV } from "../../form/hooks/useFormCV";
 import { StorageService } from "../services/StorageService";
 
 export const useSetImageProfileStorage = () => {
-  const { formik } = useFormCV();
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ["set_image_profile"],
     mutationFn: StorageService.setImageProfile,
     onSuccess: async (data) => {
       if (data !== null) {
-        await formik.setFieldValue("picture", data);
         await queryClient.invalidateQueries({ queryKey: ["image_profile"] });
-        await queryClient.invalidateQueries({ queryKey: ["data"] });
+        //await queryClient.invalidateQueries({ queryKey: ["data"] });
       }
     },
     onError: async (error) => {

@@ -37,6 +37,7 @@
   "button.save.label": "Save",
   "button.save-as.label": "Save as",
 
+  "input.picture.label": "Picture",
   "input.firstname.label": "Firstname",
   "input.firstname.placeholder": "Firstname",
   "input.lastname.label": "Lastname",

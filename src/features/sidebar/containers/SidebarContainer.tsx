@@ -127,10 +127,10 @@ export const SidebarContainer = ({ isLoadingGenerate }: Props) => {
           }}
         />
         <Stack
-          gap={1}
           height={"100%"}
           justifyContent={"space-between"}
           paddingX={"var(--app-border-width)"}
+          position={"relative"}
         >
           <CardProfileButton
             image={contentResume.data?.picture}
@@ -147,7 +147,7 @@ export const SidebarContainer = ({ isLoadingGenerate }: Props) => {
             <Button
               color="primary"
               variant="solid"
-              sx={{ marginX: 1 }}
+              //sx={{ marginX: 1 }}
               loading={generate.isPending || isLoadingGenerate}
               onClick={handleGenerateCV}
             >

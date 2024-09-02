@@ -21,6 +21,6 @@ const isFontInstalled = (fontName: string) => {
 
 export const useMissingFont = () => {
   return {
-    showAlertMissingFont: !isFontInstalled("BentoenSansF"),
+    showAlertMissingFont: !isFontInstalled("BentonSansF"),
   };
 };

@@ -27,7 +27,7 @@ export const SectionItemLayout = (props: SectionItemProps) => {
           indexCount={props.index}
           isDragIndicator
           title={props.title}
-          expanded={props.isExpanded}
+          isExpanded={props.isExpanded}
           onChangeHidden={props.onChangeVisibility}
           onExpandedChange={props.onExpandedChange}
           onDelete={props.onDelete}

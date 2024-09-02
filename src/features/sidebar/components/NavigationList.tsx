@@ -15,7 +15,18 @@ interface Props {
 }
 export const NavigationList = (props: Props) => {
   return (
-    <List>
+    <List
+      sx={{
+        paddingTop: 1,
+        scrollbarGutter: "stable",
+        overscrollBehavior: "none",
+        scrollbarWidth: "0",
+        overflow: "auto",
+        "::-webkit-scrollbar": {
+          display: "none",
+        },
+      }}
+    >
       {props.navigation.map((value, index) => (
         <Fragment key={`nav-${index}-${value.to}`}>
           <ListItem sx={{ visibility: value.hide ? "hidden" : "visible" }}>

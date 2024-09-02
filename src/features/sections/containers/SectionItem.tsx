@@ -10,15 +10,17 @@ import {
   SectionItemLayout,
   SectionItemProps,
 } from "../layouts/SectionItemLayout";
+import { useExpandedItemStore } from "../stores/useExpandedItemStore";
 
-interface Props extends Omit<SectionItemProps, "title"> {
+interface Props
+  extends Omit<SectionItemProps, "title" | "isExpanded" | "onExpandedChange"> {
   id: UUID;
   maxWarningLength?: number;
   titlePlaceholder?: string;
   content: Translation;
-  placeholder: string;
+  inputPlaceholder: string;
   inputType?: "input" | "textarea";
-  onSubmit: (values: ResumeContentSection<Translation>) => void;
+  onChange: (values: ResumeContentSection<Translation>) => void;
 }
 
 export const SectionItem = ({
@@ -27,8 +29,8 @@ export const SectionItem = ({
   titlePlaceholder,
   maxWarningLength,
   content,
-  placeholder,
-  onSubmit,
+  inputPlaceholder,
+  onChange,
   ...rest
 }: Props) => {
   const formik = useFormik<ResumeContentSection<Translation>>({
@@ -38,9 +40,11 @@ export const SectionItem = ({
       isHidden: rest.isVisible,
     },
     onSubmit: (values) => {
-      onSubmit(values);
+      onChange(values);
     },
   });
+
+  const { expandedItem, setExpandedItem } = useExpandedItemStore();
 
   const debouncedSubmit = useCallback(
     debounce(() => formik.submitForm(), 500),
@@ -63,9 +67,13 @@ export const SectionItem = ({
           placeholder={titlePlaceholder}
         />
       }
+      isExpanded={id === expandedItem}
+      onExpandedChange={(_, expanded) => {
+        setExpandedItem(expanded ? formik.values.id : undefined);
+      }}
       {...rest}
     >
-      <Stack flex={1} gap={1} marginTop={1}>
+      <Stack flex={1} gap={1} marginTop={1} paddingBottom={1}>
         {CV_LANGUAGES.map((lang) => (
           <Fragment key={`content.${lang}`}>
             {inputType === "input" && (
@@ -85,49 +93,53 @@ export const SectionItem = ({
                   formik.handleChange(e);
                   debouncedSubmit();
                 }}
-                placeholder={placeholder}
+                placeholder={inputPlaceholder}
               />
             )}
             {inputType === "textarea" && (
-              <Textarea
-                name={`content.${lang}`}
-                startDecorator={<Chip>{lang}</Chip>}
-                value={formik.values.content[lang]}
-                minRows={2}
-                maxRows={2}
-                onChange={(e) => {
-                  formik.handleChange(e);
-                  debouncedSubmit();
-                }}
-                placeholder={placeholder}
-                slotProps={{
-                  endDecorator: {
-                    sx: {
-                      alignSelf: "flex-end",
+              <Stack>
+                <Textarea
+                  name={`content.${lang}`}
+                  startDecorator={<Chip>{lang}</Chip>}
+                  value={formik.values.content[lang]}
+                  minRows={2}
+                  maxRows={5}
+                  onChange={(e) => {
+                    formik.handleChange(e);
+                    debouncedSubmit();
+                  }}
+                  placeholder={inputPlaceholder}
+                  slotProps={{
+                    endDecorator: {
+                      sx: {
+                        alignSelf: "flex-end",
+                      },
                     },
-                  },
-                }}
-                endDecorator={
-                  maxWarningLength && (
-                    <Typography
-                      level="body-xs"
-                      textColor={"neutral.500"}
-                      sx={{ ml: "auto" }}
-                    >
+                  }}
+                  endDecorator={
+                    maxWarningLength && (
                       <Typography
-                        textColor={
-                          content[lang].length > maxWarningLength
-                            ? "danger.400"
-                            : "neutral.400"
-                        }
+                        level="body-xs"
+                        textColor={"neutral.500"}
+                        sx={{
+                          ml: "auto",
+                        }}
                       >
-                        {content[lang].length}
-                      </Typography>{" "}
-                      / {maxWarningLength}
-                    </Typography>
-                  )
-                }
-              />
+                        <Typography
+                          textColor={
+                            content[lang].length > maxWarningLength
+                              ? "danger.400"
+                              : "neutral.400"
+                          }
+                        >
+                          {content[lang].length}
+                        </Typography>{" "}
+                        / {maxWarningLength}
+                      </Typography>
+                    )
+                  }
+                />
+              </Stack>
             )}
           </Fragment>
         ))}

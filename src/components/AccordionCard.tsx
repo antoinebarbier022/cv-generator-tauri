@@ -9,13 +9,7 @@ import {
   Switch,
   Typography,
 } from "@mui/joy";
-import {
-  forwardRef,
-  PropsWithChildren,
-  ReactNode,
-  useRef,
-  useState,
-} from "react";
+import { forwardRef, PropsWithChildren, ReactNode, useState } from "react";
 import {
   DraggableProvidedDragHandleProps,
   DraggableStateSnapshot,
@@ -24,7 +18,7 @@ import {
 interface Props extends PropsWithChildren {
   indexCount: number;
   title: ReactNode;
-  expanded?: boolean;
+  isExpanded?: boolean;
   isEmpty?: boolean;
   isHidden?: boolean;
   isNew?: boolean;
@@ -42,7 +36,7 @@ export const AccordionCard = forwardRef<HTMLDivElement, Props>(
     {
       indexCount,
       title,
-      expanded,
+      isExpanded,
       isEmpty,
       isNew,
       isHidden,
@@ -58,20 +52,17 @@ export const AccordionCard = forwardRef<HTMLDivElement, Props>(
     },
     ref
   ) => {
-    const [displayChildren, setDisplayChildren] = useState(expanded);
-    const timerRef = useRef<number | null>(null);
+    const [displayChildren, setDisplayChildren] = useState(isExpanded);
+
     const handleExpandedChange = (
       event: React.SyntheticEvent,
       expanded: boolean
     ) => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-        timerRef.current = null;
-      }
       if (onExpandedChange) {
         onExpandedChange(event, expanded);
+
         if (!expanded) {
-          timerRef.current = window.setTimeout(() => {
+          setTimeout(() => {
             setDisplayChildren(false);
           }, 500);
         } else {
@@ -99,11 +90,18 @@ export const AccordionCard = forwardRef<HTMLDivElement, Props>(
             {String(indexCount + 1).padStart(2, "0")}
           </Typography>
         )}
-        <Switch
-          sx={{ alignSelf: "start", height: "3rem" }}
-          checked={!isHidden}
-          onChange={(event) => onChangeHidden(!event.target.checked)}
-        />
+
+        {isDragIndicator && (
+          <Stack
+            alignSelf={"start"}
+            alignItems={"center"}
+            height={"var(--project-accordion-summary-height)"}
+            justifyContent={"center"}
+            //paddingLeft={0.5}
+          >
+            <DragIndicatorRounded />
+          </Stack>
+        )}
 
         <Card
           color={isNew ? "primary" : undefined}
@@ -111,8 +109,9 @@ export const AccordionCard = forwardRef<HTMLDivElement, Props>(
             padding: 0,
             overflow: "hidden",
             flex: 1,
-
-            background: isHidden
+            backgroundPosition: "top",
+            backgroundRepeat: "repeat",
+            backgroundImage: isHidden
               ? `repeating-linear-gradient(
               -45deg,
               #f3f3f3,
@@ -121,31 +120,31 @@ export const AccordionCard = forwardRef<HTMLDivElement, Props>(
               #ececec 20px
             )`
               : undefined,
+            border: "none",
           }}
+          className="has-[.AccordionSummary:hover]:bg-[--joy-palette-neutral-100]"
         >
           <Stack
             direction={"row"}
             alignItems={"center"}
             justifyContent={"space-between"}
             flex={1}
-            paddingLeft={0.5}
-            gap={0.5}
+            paddingLeft={1}
+            gap={1}
           >
-            {isDragIndicator && (
-              <Stack
-                alignSelf={"start"}
-                alignItems={"center"}
-                height={"var(--project-accordion-summary-height)"}
-                justifyContent={"center"}
-                paddingLeft={0.5}
-              >
-                <DragIndicatorRounded />
-              </Stack>
-            )}
+            <Stack
+              justifyContent={"center"}
+              sx={{ alignSelf: "start", height: "3rem" }}
+            >
+              <Switch
+                checked={!isHidden}
+                onChange={(event) => onChangeHidden(!event.target.checked)}
+              />
+            </Stack>
 
             <Accordion
               sx={{ flex: 1 }}
-              expanded={expanded}
+              expanded={isExpanded}
               onChange={handleExpandedChange}
             >
               <AccordionSummary
@@ -156,6 +155,7 @@ export const AccordionCard = forwardRef<HTMLDivElement, Props>(
                     },
                   },
                 }}
+                className="AccordionSummary"
                 sx={{
                   opacity: isHidden ? 0.55 : 1,
                   height: "var(--project-accordion-summary-height)",
@@ -164,7 +164,9 @@ export const AccordionCard = forwardRef<HTMLDivElement, Props>(
               >
                 {title}
               </AccordionSummary>
-              <AccordionDetails>{displayChildren && children}</AccordionDetails>
+              <AccordionDetails>
+                {(displayChildren || isExpanded) && children}
+              </AccordionDetails>
             </Accordion>
             <Stack
               direction={"row"}

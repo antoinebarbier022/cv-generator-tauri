@@ -85,13 +85,18 @@ export default extendTheme({
     },
 
     JoyInput: {
+      defaultProps: {
+        variant: "outlined",
+      },
       styleOverrides: {
-        root: {
-          backgroundColor: "white",
+        root: ({ ownerState }) => ({
+          ...(ownerState.variant === "outlined" && {
+            backgroundColor: "white",
+          }),
           boxShadow: "none",
           borderWidth: 0.5,
           flex: 1,
-        },
+        }),
       },
     },
     JoyFormLabel: {
@@ -103,12 +108,17 @@ export default extendTheme({
       },
     },
     JoySelect: {
+      defaultProps: {
+        variant: "outlined",
+      },
       styleOverrides: {
-        root: {
-          backgroundColor: "white",
+        root: ({ ownerState }) => ({
+          ...(ownerState.variant === "outlined" && {
+            backgroundColor: "white",
+          }),
           boxShadow: "none",
           borderWidth: 0.5,
-        },
+        }),
       },
     },
     JoyChip: {
@@ -132,9 +142,15 @@ export default extendTheme({
       },
     },
     JoyTextarea: {
+      defaultProps: {
+        variant: "outlined",
+      },
       styleOverrides: {
-        root: {
-          backgroundColor: "white",
+        root: ({ ownerState }) => ({
+          ...(ownerState.variant === "outlined" && {
+            backgroundColor: "white",
+          }),
+
           boxShadow: "none",
           borderWidth: 0.5,
           flex: 1,
@@ -142,7 +158,7 @@ export default extendTheme({
           flexDirection: "row",
           alignItems: "start",
           gap: 1,
-        },
+        }),
       },
     },
   },

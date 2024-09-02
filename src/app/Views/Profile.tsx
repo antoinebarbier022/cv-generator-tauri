@@ -5,7 +5,7 @@ import {
   Card,
   CardOverflow,
   Chip,
-  Divider,
+  CircularProgress,
   FormControl,
   FormLabel,
   Input,
@@ -69,6 +69,7 @@ export const Profile = () => {
     enableReinitialize: true,
     onSubmit: (values) => {
       queryClient.setQueryData(["profile"], values);
+      queryClient.invalidateQueries({ queryKey: ["data"] });
       finalFormik.setValues((oldValues) => {
         const result = { ...oldValues, ...values };
         return result;
@@ -86,13 +87,21 @@ export const Profile = () => {
 
   const handleChangePicture = () => {
     mutationReplacePicture.mutate(undefined, {
-      onSuccess: () => formik.submitForm(),
+      onSuccess: async (data) => {
+        if (data !== null) {
+          await finalFormik.setFieldValue("picture", data);
+          await formik.setFieldValue("picture", data);
+        }
+      },
     });
   };
 
   const handleDeletePicture = () => {
     mutationDeletePicture.mutate(undefined, {
-      onSuccess: () => formik.submitForm(),
+      onSuccess: async () => {
+        await finalFormik.setFieldValue("picture", "");
+        await formik.setFieldValue("picture", "");
+      },
     });
   };
 
@@ -105,12 +114,14 @@ export const Profile = () => {
     ["CD", "Creative & Design"],
   ]);
 
+  const variantInputStyle = "plain";
+
   return (
     <PageLayout title={t("resume.section.profile.title")}>
       {userData.isPending && <Typography>Loading...</Typography>}
       {userData.isError && <Typography>Error.</Typography>}
       {userData.data && (
-        <Stack gap={1}>
+        <Stack gap={2}>
           <Stack direction={"row"} gap={2}>
             <Stack direction={"column"} gap={"1rem"} flex={1}>
               <Stack direction={"row"} gap={2} flexWrap={"wrap"}>
@@ -125,6 +136,7 @@ export const Profile = () => {
                       debouncedSubmit();
                     }}
                     placeholder={t("input.firstname.placeholder")}
+                    variant={variantInputStyle}
                   />
                 </FormControl>
 
@@ -139,6 +151,7 @@ export const Profile = () => {
                       debouncedSubmit();
                     }}
                     placeholder={t("input.lastname.placeholder")}
+                    variant={variantInputStyle}
                   />
                 </FormControl>
               </Stack>
@@ -156,6 +169,7 @@ export const Profile = () => {
                       debouncedSubmit();
                     }}
                     placeholder={t("input.grade.placeholder")}
+                    variant={variantInputStyle}
                     sx={{ width: "7ch" }}
                   >
                     {gradeOptions.map((value) => (
@@ -184,12 +198,13 @@ export const Profile = () => {
                       );
                       debouncedSubmit();
                     }}
+                    variant={variantInputStyle}
                     placeholder={t("input.entity.placeholder")}
                   >
                     {Array.from(entityOptions).map(([key, value]) => (
                       <Option value={key} label={value} key={`entity-${key}`}>
                         {value}
-                        <span className="w-[5ch] text-neutral-500">
+                        <span className="w-[4.5ch] text-neutral-500">
                           [{key}]
                         </span>
                       </Option>
@@ -208,35 +223,53 @@ export const Profile = () => {
                       formik.handleChange(e);
                       debouncedSubmit();
                     }}
+                    variant={variantInputStyle}
                     placeholder={t("input.linkedin.placeholder")}
                   />
                 </FormControl>
               </Stack>
             </Stack>
-            <Stack gap={1}>
-              <Card>
-                <CardOverflow>
-                  <AspectRatio
-                    ratio={1}
-                    sx={{ width: "160px", height: "160px" }}
-                  >
-                    <Avatar
-                      sx={{
-                        borderRadius: 0,
-                        backgroundColor: "neutral.50",
-                        width: "100%",
-                      }}
-                      src={
-                        formik.values.picture
-                          ? `${convertFileSrc(
-                              formik.values.picture
-                            )}?removeCache=${new Date()}`
-                          : ""
-                      }
-                    />
-                  </AspectRatio>
-                </CardOverflow>
-              </Card>
+            <Stack ml={2} gap={1}>
+              <Stack>
+                <FormLabel>{t("input.picture.label")}</FormLabel>
+                <Card sx={{ border: "none", position: "relative" }}>
+                  <CardOverflow>
+                    <AspectRatio
+                      ratio={1}
+                      sx={{ width: "160px", height: "160px" }}
+                    >
+                      <Avatar
+                        sx={{
+                          borderRadius: 0,
+                          backgroundColor: "neutral.50",
+                          width: "100%",
+                        }}
+                        src={
+                          formik.values.picture
+                            ? `${convertFileSrc(
+                                formik.values.picture
+                              )}?removeCache=${new Date()}`
+                            : ""
+                        }
+                      />
+                      {mutationReplacePicture.isPending && (
+                        <Stack
+                          position={"absolute"}
+                          justifyContent={"center"}
+                          alignItems={"center"}
+                          sx={{
+                            width: "100%",
+                            height: "100%",
+                            backgroundColor: "#0007",
+                          }}
+                        >
+                          <CircularProgress variant="plain" color="neutral" />
+                        </Stack>
+                      )}
+                    </AspectRatio>
+                  </CardOverflow>
+                </Card>
+              </Stack>
               <Stack gap={1}>
                 <Button
                   size="sm"
@@ -250,10 +283,12 @@ export const Profile = () => {
                     : t("button.upload-profile-image.label")}
                 </Button>
                 <Typography
-                  level="body-xs"
+                  level="body-sm"
+                  fontWeight={400}
                   visibility={
                     Boolean(formik.values.picture) ? "visible" : "hidden"
                   }
+                  textColor={"primary.500"}
                   component={Link}
                   onClick={handleDeletePicture}
                   textAlign={"center"}
@@ -264,17 +299,17 @@ export const Profile = () => {
             </Stack>
           </Stack>
 
-          <Divider sx={{ marginY: "1rem" }} />
           <Stack gap={2}>
             <Stack>
               <FormLabel>{t("input.role.label")}</FormLabel>
-              <Stack direction={"row"} flexWrap={"wrap"} gap={1}>
+              <Stack direction={"row"} flexWrap={"wrap"} gap={2}>
                 {CV_LANGUAGES.map((lang) => (
                   <Input
                     key={`role.${lang}`}
                     name={`role.${lang}`}
                     startDecorator={
                       <Chip
+                        variant="plain"
                         sx={{
                           marginLeft: -0.75,
                         }}
@@ -287,6 +322,7 @@ export const Profile = () => {
                       formik.handleChange(e);
                       debouncedSubmit();
                     }}
+                    variant={variantInputStyle}
                     placeholder={`${t("input.role.placeholder")}`}
                   />
                 ))}
@@ -295,17 +331,18 @@ export const Profile = () => {
 
             <Stack>
               <FormLabel>{t("input.description.label")}</FormLabel>
-              <Stack direction={"row"} flexWrap={"wrap"} gap={1}>
+              <Stack direction={"row"} flexWrap={"wrap"} gap={2}>
                 {CV_LANGUAGES.map((lang) => (
                   <Textarea
                     key={`description.${lang}`}
                     name={`description.${lang}`}
-                    startDecorator={<Chip>{lang}</Chip>}
+                    startDecorator={<Chip variant="plain">{lang}</Chip>}
                     value={formik.values.description[lang]}
                     onChange={(e) => {
                       formik.handleChange(e);
                       debouncedSubmit();
                     }}
+                    variant={variantInputStyle}
                     placeholder={t("input.description.placeholder")}
                     minRows={4}
                   />

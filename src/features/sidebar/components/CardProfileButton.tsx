@@ -12,6 +12,8 @@ export const CardProfileButton = (props: Props) => {
     <Card
       role="navigation"
       sx={(theme) => ({
+        position: "sticky",
+        top: 0,
         paddingY: 1.5,
         paddingX: 2,
         "&:hover": {

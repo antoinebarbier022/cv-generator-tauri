@@ -32,6 +32,8 @@
   "button.generate.label": "Générer",
   "button.save.label": "Enregistrer",
   "button.save-as.label": "Enregistrer sous",
+
+  "input.picture.label": "Photo de profil",
   "input.firstname.label": "Prénom",
   "input.firstname.placeholder": "Prénom",
   "input.lastname.label": "Nom",

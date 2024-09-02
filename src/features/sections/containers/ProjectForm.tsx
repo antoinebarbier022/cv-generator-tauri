@@ -7,69 +7,82 @@ import {
   Textarea,
   Typography,
 } from "@mui/joy";
-import { FormikProps } from "formik";
-import { useMemo } from "react";
+import { useFormik } from "formik";
+import debounce from "just-debounce-it";
+import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { CV_LANGUAGES } from "../features/form/constants/cv-languages";
+import { CV_LANGUAGES } from "../../form/constants/cv-languages";
 import {
-  UserData,
+  ResumeContentSection,
   UserDataExperience,
-} from "../features/storage/types/storage";
+} from "../../storage/types/storage";
 
 interface Props {
-  formik: FormikProps<UserData>;
-  field: UserDataExperience;
-  index: number;
+  data: ResumeContentSection<UserDataExperience>;
+  onChange: (values: ResumeContentSection<UserDataExperience>) => void;
 }
 
-export const ProjectForm = ({ formik, field, index }: Props) => {
+export const ProjectForm = ({ data, onChange }: Props) => {
   const { t } = useTranslation();
+
+  const formik = useFormik<ResumeContentSection<UserDataExperience>>({
+    initialValues: data,
+    onSubmit: (values) => {
+      onChange(values);
+    },
+  });
+
   const elementsHeaderForm = useMemo(
     () => [
       {
-        name: "program",
-        value: field.program,
+        name: "content.program",
+        value: formik.values.content.program,
         label: t("input.project.program.label"),
         placeholder: t("input.project.program.placeholder"),
       },
       {
-        name: "client",
-        value: field.client,
+        name: "content.client",
+        value: formik.values.content.client,
         label: t("input.project.client.label"),
         placeholder: t("input.project.client.placeholder"),
       },
       {
-        name: "date",
-        value: field.date,
+        name: "content.date",
+        value: formik.values.content.date,
         label: t("input.project.date.label"),
         placeholder: t("input.project.date.placeholder"),
       },
     ],
-    [field]
+    [formik.values.content]
   );
 
   const elementsBodyForm = useMemo(
     () => [
       {
         label: t("input.project.context.label"),
-        name: "context",
+        name: "content.context",
         placeholder: t("input.project.context.placeholder"),
         minRows: 2,
         maxRows: 4,
         maxLength: 50,
-        getValue: (lang: string) => field.context[lang],
+        getValue: (lang: string) => formik.values.content.context[lang],
       },
       {
         label: t("input.project.contribution.label"),
-        name: "contribution",
+        name: "content.contribution",
         placeholder: t("input.project.contribution.placeholder"),
         minRows: 3,
         maxRows: 6,
         maxLength: 255,
-        getValue: (lang: string) => field.contribution[lang],
+        getValue: (lang: string) => formik.values.content.contribution[lang],
       },
     ],
-    [field.context, field.contribution]
+    [formik.values.content.context, formik.values.content.contribution]
+  );
+
+  const debouncedSubmit = useCallback(
+    debounce(() => formik.submitForm(), 500),
+    [2000, formik.submitForm]
   );
 
   return (
@@ -80,22 +93,18 @@ export const ProjectForm = ({ formik, field, index }: Props) => {
     >
       <Stack direction={"row"} gap={2} flexWrap={"wrap"}>
         {elementsHeaderForm.map((item) => (
-          <FormControl
-            key={`experiences[${index}].${item.name}`}
-            sx={{ flex: 1 }}
-          >
+          <FormControl key={item.name} sx={{ flex: 1 }}>
             <FormLabel>{item.label}</FormLabel>
             <Input
               size="sm"
-              name={`experiences[${index}].content.${item.name}`}
+              name={item.name}
               placeholder={item.placeholder}
               value={item.value}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
+              onChange={(e) => {
+                formik.handleChange(e);
+                debouncedSubmit();
+              }}
               autoComplete="off"
-              error={
-                formik.touched.experiences && Boolean(formik.errors.experiences)
-              }
             />
           </FormControl>
         ))}
@@ -106,18 +115,17 @@ export const ProjectForm = ({ formik, field, index }: Props) => {
         <Stack direction={"row"} gap={1} flexWrap={"wrap"}>
           {CV_LANGUAGES.map((lang) => (
             <Input
-              key={`experiences[${index}].content.role.${lang}`}
-              name={`experiences[${index}].content.role.${lang}`}
+              key={`content.role.${lang}`}
+              name={`content.role.${lang}`}
               size="sm"
               startDecorator={<Chip size="sm">{lang}</Chip>}
               placeholder={t("input.project.role.placeholder")}
-              value={field.role[lang]}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
+              value={formik.values.content.role[lang]}
+              onChange={(e) => {
+                formik.handleChange(e);
+                debouncedSubmit();
+              }}
               autoComplete="off"
-              error={
-                formik.touched.experiences && Boolean(formik.errors.experiences)
-              }
               slotProps={{
                 endDecorator: {
                   sx: {
@@ -131,26 +139,24 @@ export const ProjectForm = ({ formik, field, index }: Props) => {
       </Stack>
 
       {elementsBodyForm.map((item) => (
-        <Stack key={`experiences[${index}].content.${item.name}`}>
+        <Stack key={item.name}>
           <FormLabel>{item.label}</FormLabel>
           <Stack direction={"row"} gap={1} flexWrap={"wrap"}>
             {CV_LANGUAGES.map((lang) => (
               <Textarea
-                key={`experiences[${index}].content.${item.name}.${lang}`}
-                name={`experiences[${index}].content.${item.name}.${lang}`}
+                key={`${item.name}.${lang}`}
+                name={`${item.name}.${lang}`}
                 size="sm"
                 startDecorator={<Chip size="sm">{lang}</Chip>}
                 placeholder={item.placeholder}
                 value={item.getValue(lang)}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
+                onChange={(e) => {
+                  formik.handleChange(e);
+                  debouncedSubmit();
+                }}
                 autoComplete="off"
                 minRows={item.minRows}
                 maxRows={item.maxRows}
-                error={
-                  formik.touched.experiences &&
-                  Boolean(formik.errors.experiences)
-                }
                 slotProps={{
                   endDecorator: {
                     sx: {
