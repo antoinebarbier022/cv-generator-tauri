@@ -1,9 +1,13 @@
 use serde::Serialize;
-use tauri::{Runtime, Window, Result};
+use tauri::{Result, Runtime, Window};
 use ts_rs::TS;
 
 #[derive(Clone, Serialize, Debug, Default, TS)]
-#[ts(export, rename = "ErrorContent", export_to = "features/errors/types/errors.d.ts")]
+#[ts(
+    export,
+    rename = "ErrorContent",
+    export_to = "errors/types/errors.d.ts"
+)]
 pub struct ErrorPayload {
     pub title: Option<String>,
     pub message: Option<String>,
@@ -26,17 +30,11 @@ impl ErrorPayload {
 }
 
 pub(crate) trait EmitError {
-    fn emit_error(
-        &self,
-        error: ErrorPayload
-    ) -> Result<()>;
+    fn emit_error(&self, error: ErrorPayload) -> Result<()>;
 }
 
 impl<R: Runtime> EmitError for Window<R> {
-    fn emit_error(&self, error: ErrorPayload) -> Result<()>{
-        self.emit(
-            "error",
-            error
-        )
+    fn emit_error(&self, error: ErrorPayload) -> Result<()> {
+        self.emit("error", error)
     }
 }
