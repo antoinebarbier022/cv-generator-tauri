@@ -1,5 +1,7 @@
 use std::process::Command;
-use crate::AppState;
+use std::sync::Mutex;
+use tauri::Window;
+use crate::errors::{ErrorsState};
 
 #[tauri::command]
 pub fn open_finder(path: String) {
@@ -20,7 +22,8 @@ pub fn open_powerpoint(path: String) {
 }
 
 #[tauri::command]
-pub fn get_backend_error(state: tauri::State<AppState>) -> Option<String> {
-    let backend_error = state.backend_error.lock().unwrap();
-    backend_error.clone()
+pub fn ready_to_receive_errors(window: Window, state: tauri::State<Mutex<ErrorsState>>) {
+    let mut state = state.lock().unwrap();
+    state.ready_to_send_errors = true;
+    state.pop_errors(&window);
 }

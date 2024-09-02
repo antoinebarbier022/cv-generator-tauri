@@ -6,20 +6,19 @@
 mod commands;
 mod errors;
 mod menu;
-use crate::commands::{get_backend_error, open_finder, open_powerpoint};
+use crate::commands::{ready_to_receive_errors, open_finder, open_powerpoint};
 use crate::menu::{create_app_menu, on_menu_event};
-use anyhow::Context;
+use anyhow::{Context};
 use core::str;
 use libc::SIGTERM;
-use serde::Serialize;
 use signal_hook::iterator::Signals;
 use std::sync::Mutex;
 use std::{sync, thread};
 use tauri::api::process::{Command, CommandEvent, TerminatedPayload};
 use sync::mpsc::{channel, Sender};
-use tauri::Manager;
+use tauri::{Manager};
 use window_vibrancy::*;
-use crate::errors::{EmitError, ErrorPayload};
+use crate::errors::{EmitError, ErrorPayload, ErrorsState};
 
 fn start_backend(tx: Sender<BackendEvent>) -> anyhow::Result<()> {
     println!("Spawning api server...");
@@ -74,10 +73,6 @@ fn spawn_backend(tx: Sender<BackendEvent>) -> anyhow::Result<()> {
     Ok(())
 }
 
-#[derive(Default, Debug, Serialize)]
-struct AppState {
-    pub backend_error: Mutex<Option<String>>,
-}
 
 extern "C" fn on_exit() {
     println!("Application exited.\nClosing `api` sidecar...");
@@ -111,9 +106,9 @@ fn main() -> anyhow::Result<()> {
     register_exit_handling()?;
 
     tauri::Builder::default()
-        .manage(AppState::default())
         .menu(create_app_menu())
         .on_menu_event(on_menu_event)
+        .manage(Mutex::new(ErrorsState::default()))
         .setup(move |app| {
             let window = app.get_window("main").expect("No window labelled `main`");
 
@@ -129,7 +124,7 @@ fn main() -> anyhow::Result<()> {
 
             if let Err(err) = start_backend(tx) {
                 println!("Failed to start backend: {err}");
-                *app.state::<AppState>().backend_error.lock().unwrap() = Some(err.to_string());
+                window.emit_error(ErrorPayload::new().with_title("Failed to start backend").with_message(err.to_string()))?;
             }
 
             tauri::async_runtime::spawn(async move {
@@ -145,7 +140,7 @@ fn main() -> anyhow::Result<()> {
         .invoke_handler(tauri::generate_handler![
             open_finder,
             open_powerpoint,
-            get_backend_error
+            ready_to_receive_errors
         ])
         .run(tauri::generate_context!())
         .context("Error while running app")

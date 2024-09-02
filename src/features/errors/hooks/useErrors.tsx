@@ -3,15 +3,19 @@ import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { ErrorContent } from "../../../generated/errors/types/errors";
 import { ErrorToast } from "../components/ErrorToast.tsx";
-import { useBackendError } from "./useBackendError.tsx";
+import {invoke} from "@tauri-apps/api/tauri";
 
 export const useErrors = () => {
-  useBackendError();
-
   useEffect(() => {
-    const unlisten = listen("error", (event: Event<ErrorContent>) => {
-      toast.error(<ErrorToast error={event.payload} />);
-    });
+
+    const unlisten = async function() {
+      const unlisten = await listen("error", (event: Event<ErrorContent>) => {
+        toast.error(<ErrorToast error={event.payload} />);
+      })
+      invoke("ready_to_receive_errors");
+
+      return unlisten
+    }();
 
     return () => {
       unlisten.then((dispose) => dispose());

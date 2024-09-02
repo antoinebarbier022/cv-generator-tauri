@@ -1,6 +1,9 @@
+use std::sync::Mutex;
 use serde::Serialize;
-use tauri::{Result, Runtime, Window};
+use tauri::{Manager, Window};
 use ts_rs::TS;
+
+const ERROR_EVENT: &'static str = "error";
 
 #[derive(Clone, Serialize, Debug, Default, TS)]
 #[ts(
@@ -29,12 +32,37 @@ impl ErrorPayload {
     }
 }
 
-pub(crate) trait EmitError {
-    fn emit_error(&self, error: ErrorPayload) -> Result<()>;
+#[derive(Default, Debug, Serialize)]
+pub struct ErrorsState {
+    pub buffered_errors: Vec<ErrorPayload>,
+    pub ready_to_send_errors: bool
 }
 
-impl<R: Runtime> EmitError for Window<R> {
-    fn emit_error(&self, error: ErrorPayload) -> Result<()> {
-        self.emit("error", error)
+impl ErrorsState {
+    fn push_error(&mut self, window: &Window, error: ErrorPayload) -> anyhow::Result<()> {
+        if self.ready_to_send_errors {
+            window.emit(ERROR_EVENT, error)?;
+        } else {
+            self.buffered_errors.push(error);
+        }
+
+        Ok(())
+    }
+
+    pub(crate) fn pop_errors(&mut self, window: &Window) {
+        while let Some(err) = self.buffered_errors.pop() {
+            println!("test");
+            window.emit(ERROR_EVENT, err).unwrap();
+        }
+    }
+}
+
+pub(crate) trait EmitError {
+    fn emit_error(&self, error: ErrorPayload) -> anyhow::Result<()>;
+}
+
+impl EmitError for Window {
+    fn emit_error(&self, error: ErrorPayload) -> anyhow::Result<()> {
+        self.state::<Mutex<ErrorsState>>().lock().unwrap().push_error(self, error)
     }
 }
