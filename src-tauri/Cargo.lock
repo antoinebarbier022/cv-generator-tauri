@@ -574,6 +574,7 @@ dependencies = [
  "strum",
  "tauri",
  "tauri-build",
+ "thiserror",
  "ts-const-enums",
  "ts-rs",
  "window-vibrancy",

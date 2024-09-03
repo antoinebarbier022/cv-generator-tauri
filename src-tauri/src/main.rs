@@ -6,6 +6,9 @@
 mod commands;
 mod errors;
 mod menu;
+mod variants;
+mod model;
+
 use crate::commands::{ready_to_receive_errors, open_finder, open_powerpoint};
 use crate::menu::{create_app_menu, on_menu_event};
 use anyhow::{Context};

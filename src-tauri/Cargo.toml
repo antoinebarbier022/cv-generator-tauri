@@ -22,6 +22,7 @@ window-vibrancy = "0.4"
 ts-rs = { version = "9.0.1" }
 convert_case = "0.6.0"
 ts-const-enums = { path = "ts-const-enums" }
+thiserror = "1.0.63"
 
 [dependencies.strum]
 version = "0.26.3"
