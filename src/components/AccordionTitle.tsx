@@ -1,20 +1,19 @@
 import { WarningRounded } from "@mui/icons-material";
 import { Stack, Tooltip, Typography } from "@mui/joy";
 import { ReactNode } from "react";
-import { useTranslation } from "react-i18next";
 
 interface Props {
   content: string | ReactNode;
   placeholder?: string;
   isWarningIcon?: boolean;
+  warningTitle?: string;
 }
 export const AccordionTitle = (props: Props) => {
-  const { t } = useTranslation();
   return (
     <Stack direction={"row"} alignItems={"center"} gap={1}>
       {props.isWarningIcon && (
         <Tooltip
-          title={t("warning.missing-translation")}
+          title={props.warningTitle}
           arrow
           placement="top"
           disableInteractive

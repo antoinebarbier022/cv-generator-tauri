@@ -4,13 +4,16 @@ import { useFormik } from "formik";
 import debounce from "just-debounce-it";
 import { Fragment, useCallback } from "react";
 import { AccordionTitle } from "../../../components/AccordionTitle";
-import { CV_LANGUAGES } from "../../form/constants/cv-languages";
+import { CV_LANGUAGES } from "../../settings/constants/cv-languages";
 import { ResumeContentSection, Translation } from "../../storage/types/storage";
 import {
   SectionItemLayout,
   SectionItemProps,
 } from "../layouts/SectionItemLayout";
 import { useExpandedItemStore } from "../stores/useExpandedItemStore";
+
+import * as yup from "yup";
+import { translationSchema } from "../../form/validations/dataContentValidationSchema";
 
 interface Props
   extends Omit<SectionItemProps, "title" | "isExpanded" | "onExpandedChange"> {
@@ -39,6 +42,12 @@ export const SectionItem = ({
       content: content,
       isHidden: rest.isVisible,
     },
+    validationSchema: yup.object().shape({
+      id: yup.string().required(),
+      content: translationSchema,
+      isHidden: yup.boolean(),
+    }),
+
     onSubmit: (values) => {
       onChange(values);
     },
@@ -55,10 +64,8 @@ export const SectionItem = ({
     <SectionItemLayout
       title={
         <AccordionTitle
-          isWarningIcon={Boolean(
-            (formik.values.content.fr && !formik.values.content.en) ||
-              (!formik.values.content.fr && formik.values.content.en)
-          )}
+          isWarningIcon={Boolean(formik.errors.content)}
+          warningTitle={String(formik.errors.content)}
           content={
             Boolean(formik.values.content.fr)
               ? formik.values.content.fr

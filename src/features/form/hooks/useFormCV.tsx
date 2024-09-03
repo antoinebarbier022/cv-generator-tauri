@@ -16,6 +16,7 @@ import {
   UserDataExperience,
 } from "../../storage/types/storage";
 import { emptyInitialContentResume } from "../constants/emptyInitialContentResume";
+import { finalFormValidationSchema } from "../validations/dataContentValidationSchema";
 
 export const useFormCV = () => {
   const userData = useGetDataStorage();
@@ -25,10 +26,8 @@ export const useFormCV = () => {
 
   const formik = useFormik<UserData>({
     initialValues: initialValues ?? emptyInitialContentResume,
+    validationSchema: finalFormValidationSchema,
     enableReinitialize: true,
-    validateOnBlur: false,
-    validateOnMount: false,
-    validateOnChange: false,
     onSubmit: async (values) => {
       dataMutation.mutate({ values });
     },
