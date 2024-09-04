@@ -10,12 +10,12 @@ import {
 
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 import { useMemo } from "react";
-import { useGetDataStorage } from "../../features/storage/hooks/useGetDataStorage";
+import { useGetDataStorage } from "../../features/cv-resume/hooks/useGetDataStorage";
 import {
   ResumeContentSection,
   Translation,
   UserDataExperience,
-} from "../../features/storage/types/storage";
+} from "../../features/cv-resume/types/storage";
 import { PageLayout } from "../../layouts/page-layout";
 import { isEmptyObject } from "../../utils/object.utils";
 

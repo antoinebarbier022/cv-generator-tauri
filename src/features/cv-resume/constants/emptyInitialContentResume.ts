@@ -1,4 +1,4 @@
-import { UserData } from "../../storage/types/storage";
+import { UserData } from "../types/storage";
 
 export const emptyInitialContentResume: UserData = {
   firstname: "",

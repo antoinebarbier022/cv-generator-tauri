@@ -2,11 +2,11 @@ import { confirm } from "@tauri-apps/api/dialog";
 import { listen } from "@tauri-apps/api/event";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { MenuEvent } from "../../../generated/events/menu-events";
 import { useAskOutputPath } from "../../cv-generation/hooks/useAskOutputPath";
 import { useGenerate } from "../../cv-generation/hooks/useGenerate";
-import { useImportDataContent } from "../../storage/hooks/useImportDataContent";
-import { useResetDataStorage } from "../../storage/hooks/useResetDataStorage";
-import { MenuEvent } from "../../../generated/events/menu-events";
+import { useImportDataContent } from "../../cv-resume/hooks/useImportDataContent";
+import { useResetDataStorage } from "../../cv-resume/hooks/useResetDataStorage";
 
 export const useMenuEvents = () => {
   const navigate = useNavigate();
@@ -38,7 +38,9 @@ export const useMenuEvents = () => {
   }, [history]);
 
   useEffect(() => {
-    const unlisten = listen(MenuEvent.FileImport, () => mutationImport.mutate());
+    const unlisten = listen(MenuEvent.FileImport, () =>
+      mutationImport.mutate()
+    );
     return () => {
       unlisten.then((dispose) => dispose());
     };
@@ -53,7 +55,7 @@ export const useMenuEvents = () => {
 
   useEffect(() => {
     const unlisten = listen(MenuEvent.FileReset, async () => {
-      console.log("reset")
+      console.log("reset");
 
       const confirmed = await confirm(
         "This action cannot be reverted. Are you sure?",

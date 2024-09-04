@@ -1,9 +1,9 @@
 import { AccordionGroup, Stack } from "@mui/joy";
 import { useTranslation } from "react-i18next";
 import { EmptyState } from "../../../components/EmptyState";
-import { useFormCV } from "../../form/hooks/useFormCV";
-import { Translation } from "../../storage/types/storage";
+import { useFormCV } from "../hooks/useFormCV";
 import { SectionDroppableLayout } from "../layouts/SectionDroppableLayout";
+import { Translation } from "../types/storage";
 import { SectionItem } from "./SectionItem";
 
 interface Props {

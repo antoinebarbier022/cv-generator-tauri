@@ -1,4 +1,4 @@
-export const useItemSection = (sectionKey: string, itemId: string) => {
+export const useSectionItem = (sectionKey: string, itemId: string) => {
   // Récupérer le contenu d'un item ici
 
   const handleDelete = (): void => {

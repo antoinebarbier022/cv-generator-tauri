@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
-import { useFormCV } from "../../features/form/hooks/useFormCV";
+import { useFormCV } from "../../features/cv-resume/hooks/useFormCV";
 
 export const WelcomeView = () => {
   const navigate = useNavigate();

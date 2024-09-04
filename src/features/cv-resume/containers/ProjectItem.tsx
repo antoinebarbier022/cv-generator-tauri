@@ -5,16 +5,13 @@ import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { AccordionTitle } from "../../../components/AccordionTitle";
 import { CV_LANGUAGES } from "../../settings/constants/cv-languages";
-import {
-  ResumeContentSection,
-  UserDataExperience,
-} from "../../storage/types/storage";
 import { ProjectTitle } from "../components/ProjectTitle";
 import {
   SectionItemLayout,
   SectionItemProps,
 } from "../layouts/SectionItemLayout";
 import { useExpandedItemStore } from "../stores/useExpandedItemStore";
+import { ResumeContentSection, UserDataExperience } from "../types/storage";
 
 interface Props
   extends Omit<SectionItemProps, "title" | "isExpanded" | "onExpandedChange"> {

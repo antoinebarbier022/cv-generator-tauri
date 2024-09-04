@@ -3,13 +3,13 @@ import { AccordionGroup, Stack } from "@mui/joy";
 import { useTranslation } from "react-i18next";
 import { EmptyState } from "../../components/EmptyState";
 
-import { useFormCV } from "../../features/form/hooks/useFormCV";
-import { ProjectItem } from "../../features/sections/containers/ProjectItem";
-import { SectionDroppableLayout } from "../../features/sections/layouts/SectionDroppableLayout";
+import { ProjectItem } from "../../features/cv-resume/containers/ProjectItem";
+import { useFormCV } from "../../features/cv-resume/hooks/useFormCV";
+import { SectionDroppableLayout } from "../../features/cv-resume/layouts/SectionDroppableLayout";
 import {
   ResumeContentSection,
   UserDataExperience,
-} from "../../features/storage/types/storage";
+} from "../../features/cv-resume/types/storage";
 
 export const Projects = () => {
   const { t } = useTranslation();

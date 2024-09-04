@@ -2,7 +2,7 @@ import {
   ResumeContentSection,
   Translation,
   UserDataExperience,
-} from "../features/storage/types/storage";
+} from "../features/cv-resume/types/storage";
 
 export const reorderListSection = (
   list: ResumeContentSection<Translation | UserDataExperience>[],

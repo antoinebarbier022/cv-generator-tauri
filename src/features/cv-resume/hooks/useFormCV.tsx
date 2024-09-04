@@ -5,19 +5,19 @@ import { confirm } from "@tauri-apps/api/dialog";
 import { DropResult } from "react-beautiful-dnd";
 import { reorderListSection } from "../../../utils/drag-and-drop.utils";
 import { isEmptyObject } from "../../../utils/object.utils";
-import { useExpandedItemStore } from "../../sections/stores/useExpandedItemStore";
-import { useGetDataStorage } from "../../storage/hooks/useGetDataStorage";
-import { useSetDataStorage } from "../../storage/hooks/useSetDataStorage";
+import { emptyInitialContentResume } from "../constants/emptyInitialContentResume";
+import { useExpandedItemStore } from "../stores/useExpandedItemStore";
+import { useWarningsStore } from "../stores/useWarningsStore";
 import {
   ResumeContentSection,
   Translation,
   UserData,
   UserDataExperience,
-} from "../../storage/types/storage";
-import { emptyInitialContentResume } from "../constants/emptyInitialContentResume";
-import { useWarningsStore } from "../stores/useWarningsStore";
+} from "../types/storage";
 import { countWarnings } from "../utils/warnings.utils";
 import { finalFormValidationSchema } from "../validations/dataContentValidationSchema";
+import { useGetDataStorage } from "./useGetDataStorage";
+import { useSetDataStorage } from "./useSetDataStorage";
 
 export const useFormCV = () => {
   const userData = useGetDataStorage();

@@ -24,11 +24,11 @@ import debounce from "just-debounce-it";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
-import { useFormCV } from "../../features/form/hooks/useFormCV";
+import { useDeleteImageProfileStorage } from "../../features/cv-resume/hooks/useDeleteImageProfileStorage";
+import { useFormCV } from "../../features/cv-resume/hooks/useFormCV";
+import { useSetImageProfileStorage } from "../../features/cv-resume/hooks/useSetImageProfileStorage";
+import { Translation } from "../../features/cv-resume/types/storage";
 import { CV_LANGUAGES } from "../../features/settings/constants/cv-languages";
-import { useDeleteImageProfileStorage } from "../../features/storage/hooks/useDeleteImageProfileStorage";
-import { useSetImageProfileStorage } from "../../features/storage/hooks/useSetImageProfileStorage";
-import { Translation } from "../../features/storage/types/storage";
 import { PageLayout } from "../../layouts/page-layout";
 
 interface ProfileData {

@@ -1,5 +1,5 @@
 import { Divider, Sheet, Stack, Typography } from "@mui/joy";
-import { useWarningsStore } from "../../form/stores/useWarningsStore";
+import { useWarningsStore } from "../../cv-resume/stores/useWarningsStore";
 import { CurrentPowerpointPath } from "../components/CurrentPowerpointPath";
 import { LastUpdate } from "../components/LastUpdate";
 import { WarningsCounter } from "../components/WarningsCounter";

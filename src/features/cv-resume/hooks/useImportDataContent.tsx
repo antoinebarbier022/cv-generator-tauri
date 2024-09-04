@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { message } from "@tauri-apps/api/dialog";
 import { toast } from "react-toastify";
-import { useFormCV } from "../../form/hooks/useFormCV";
 import { StorageService } from "../services/StorageService";
+import { useFormCV } from "./useFormCV";
 
 export const useImportDataContent = () => {
   const { formik } = useFormCV();

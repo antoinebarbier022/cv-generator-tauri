@@ -8,7 +8,7 @@ import {
 } from "@tauri-apps/api/path";
 import { ChildProcess } from "@tauri-apps/api/shell";
 
-import { UserData } from "../../storage/types/storage";
+import { UserData } from "../../cv-resume/types/storage";
 import { generateResponse } from "../types/generateResponse";
 import { generateV2Request } from "../types/generateV2Request";
 

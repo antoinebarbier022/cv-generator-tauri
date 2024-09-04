@@ -5,15 +5,15 @@ import debounce from "just-debounce-it";
 import { Fragment, useCallback } from "react";
 import { AccordionTitle } from "../../../components/AccordionTitle";
 import { CV_LANGUAGES } from "../../settings/constants/cv-languages";
-import { ResumeContentSection, Translation } from "../../storage/types/storage";
 import {
   SectionItemLayout,
   SectionItemProps,
 } from "../layouts/SectionItemLayout";
 import { useExpandedItemStore } from "../stores/useExpandedItemStore";
+import { ResumeContentSection, Translation } from "../types/storage";
 
 import * as yup from "yup";
-import { translationSchemaWithValidation } from "../../form/validations/dataContentValidationSchema";
+import { translationSchemaWithValidation } from "../validations/dataContentValidationSchema";
 
 interface Props
   extends Omit<SectionItemProps, "title" | "isExpanded" | "onExpandedChange"> {
