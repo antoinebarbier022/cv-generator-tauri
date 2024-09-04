@@ -77,6 +77,7 @@ export const SectionPage = ({
       <AccordionGroup disableDivider component={Stack}>
         {formik.values[sectionKey]?.map((field, index) => (
           <SectionItem
+            index={index}
             key={field.id}
             id={field.id}
             draggableId={field.id}
@@ -87,7 +88,6 @@ export const SectionPage = ({
             content={field.content}
             maxWarningLength={options.inputMaxWarningLength}
             inputPlaceholder={""}
-            index={index}
             isVisible={Boolean(field.isHidden)}
             onChangeVisibility={(value) => handleChangeVisibility(index, value)}
             onDelete={() => handleDelete(field.id)}

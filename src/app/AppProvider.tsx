@@ -39,7 +39,7 @@ export const AppProvider = ({ children }: PropsWithChildren) => {
         <BrowserRouter>{children}</BrowserRouter>
         <ReactQueryDevtools
           initialIsOpen={false}
-          buttonPosition="bottom-right"
+          buttonPosition="bottom-left"
         />
       </QueryClientProvider>
     </CssVarsProvider>

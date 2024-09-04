@@ -46,9 +46,16 @@ export const WelcomeView = () => {
   if (isForm) {
     return (
       <Stack gap={4} component={"form"} onSubmit={formik.handleSubmit}>
-        <Typography level="body-lg">
-          Pour débuter, veuillez entrer votre nom et prénom.
-        </Typography>
+        <Stack>
+          <Typography level="title-lg">
+            C'est parti pour la création de ton CV !
+          </Typography>
+          <Typography level="body-lg" fontWeight={300}>
+            Renseigne quelques informations avant d'accéder à l'interface
+            d'administration.
+          </Typography>
+        </Stack>
+
         <Stack gap={2}>
           <Input
             name="firstname"

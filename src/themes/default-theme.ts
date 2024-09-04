@@ -83,7 +83,6 @@ export default extendTheme({
         }),
       },
     },
-
     JoyInput: {
       defaultProps: {
         variant: "outlined",

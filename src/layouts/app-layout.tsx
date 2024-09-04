@@ -5,8 +5,9 @@ import { ScrollToTop } from "../components/ScrollToTop";
 
 interface Props {
   sidebar: ReactNode;
+  footerBar: ReactNode;
 }
-export const AppLayout = ({ sidebar }: Props) => {
+export const AppLayout = ({ sidebar, footerBar }: Props) => {
   const appHeight = "calc(100dvh - var(--titlebar-height))";
 
   return (
@@ -18,8 +19,9 @@ export const AppLayout = ({ sidebar }: Props) => {
         minHeight={appHeight}
         maxHeight={appHeight}
         sx={{
+          position: "relative",
           display: "grid",
-          gridTemplateColumns: "260px auto",
+          gridTemplateColumns: "var(--app-sidebar-width) auto",
           paddingRight: "var(--app-border-width)",
           paddingBottom:
             "calc(var(--app-border-width) + var(--app-footer-height)) ",
@@ -56,6 +58,7 @@ export const AppLayout = ({ sidebar }: Props) => {
             <Outlet />
           </Stack>
         </Stack>
+        {footerBar}
       </Box>
     </>
   );

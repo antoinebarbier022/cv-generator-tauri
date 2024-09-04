@@ -8,7 +8,8 @@
 
 :root {
   --app-border-width: 10px;
-  --app-footer-height: 4px;
+  --app-footer-height: 20px;
+  --app-sidebar-width: 260px;
   --titlebar-height: var(--app-border-width);
 
   --app-background: rgba(105, 6, 224, 0.598);

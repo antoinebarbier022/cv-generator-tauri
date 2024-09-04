@@ -14,7 +14,7 @@ import { format, fromUnixTime } from "date-fns";
 
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { dataContentValidationSchema } from "../../../form/validations/dataContentValidationSchema";
+import { ResumeValidationSchemaForImportation } from "../../../form/validations/dataContentValidationSchema";
 import { useGetDataStorage } from "../../../storage/hooks/useGetDataStorage";
 import { useSetDataStorage } from "../../../storage/hooks/useSetDataStorage";
 import { UserData } from "../../../storage/types/storage";
@@ -42,8 +42,7 @@ export const MenuModalDebug = (props: Props) => {
     if (selected) {
       const text = JSON.parse(await readTextFile(selected as string));
 
-      dataContentValidationSchema
-        .validate(text as UserData)
+      ResumeValidationSchemaForImportation.validate(text as UserData)
         .then(() => mutationDataToStorage.mutate({ values: text }))
         .catch((e) => alert(`DEBUG Validation Schema: ${e}`));
     }

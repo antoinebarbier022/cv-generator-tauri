@@ -14,7 +14,7 @@ import { appDataDir, extname, join, pictureDir } from "@tauri-apps/api/path";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 import { format } from "date-fns";
 import { emptyInitialContentResume } from "../../form/constants/emptyInitialContentResume";
-import { dataContentValidationSchema } from "../../form/validations/dataContentValidationSchema";
+import { ResumeValidationSchemaForImportation } from "../../form/validations/dataContentValidationSchema";
 import { UserData } from "../types/storage";
 
 const CONTENT_DATA_FILE = `data.json`;
@@ -32,7 +32,7 @@ export const StorageService = {
     });
     if (selected) {
       const text = JSON.parse(await readTextFile(selected as string));
-      await dataContentValidationSchema.validate(text as UserData);
+      await ResumeValidationSchemaForImportation.validate(text as UserData);
       await StorageService.resetContentData();
       await StorageService.setContentData({ values: text });
       return text;
@@ -118,6 +118,7 @@ export const StorageService = {
   }: {
     values: UserData;
   }): Promise<UserData> => {
+    console.log({ values });
     const isExistAppDataDirPath = await StorageService.isAppDataDir();
     if (isExistAppDataDirPath) {
       await StorageService.createAppDataDir();

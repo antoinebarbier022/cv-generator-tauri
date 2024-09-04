@@ -1,6 +1,5 @@
 import { useFormik } from "formik";
-import debounce from "just-debounce-it";
-import { useCallback, useEffect, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 import { confirm } from "@tauri-apps/api/dialog";
 import { DropResult } from "react-beautiful-dnd";
@@ -16,24 +15,54 @@ import {
   UserDataExperience,
 } from "../../storage/types/storage";
 import { emptyInitialContentResume } from "../constants/emptyInitialContentResume";
+import { useWarningsStore } from "../stores/useWarningsStore";
+import { countWarnings } from "../utils/warnings.utils";
 import { finalFormValidationSchema } from "../validations/dataContentValidationSchema";
 
 export const useFormCV = () => {
   const userData = useGetDataStorage();
   const dataMutation = useSetDataStorage();
 
+  const { setCountWarnings } = useWarningsStore();
+  const { setExpandedItem } = useExpandedItemStore();
+
   const initialValues = useMemo(() => userData.data, [userData.data]);
 
   const formik = useFormik<UserData>({
     initialValues: initialValues ?? emptyInitialContentResume,
-    validationSchema: finalFormValidationSchema,
     enableReinitialize: true,
+
     onSubmit: async (values) => {
+      await formikOnlyForWarnings.setValues(values);
+      await formikOnlyForWarnings.validateForm(values);
+
       dataMutation.mutate({ values });
     },
   });
 
-  const { setExpandedItem } = useExpandedItemStore();
+  const formikOnlyForWarnings = useFormik<UserData>({
+    initialValues: initialValues ?? emptyInitialContentResume,
+    validationSchema: finalFormValidationSchema,
+    validateOnMount: true,
+    validateOnChange: true,
+    enableReinitialize: true,
+
+    onSubmit: () => {},
+  });
+
+  useEffect(() => {
+    if (
+      !formikOnlyForWarnings.isValidating &&
+      formikOnlyForWarnings.touched &&
+      formikOnlyForWarnings.errors
+    ) {
+      setCountWarnings(countWarnings(formikOnlyForWarnings.errors));
+    }
+  }, [
+    formikOnlyForWarnings.isValidating,
+    formikOnlyForWarnings.touched,
+    formikOnlyForWarnings.errors,
+  ]);
 
   type ResumeSectionFieldName =
     | "employment_history"
@@ -125,9 +154,9 @@ export const useFormCV = () => {
       fieldName
     ] as unknown as ResumeContentSection<unknown>[];
 
-    const showDialogConfirm = !isEmptyObject(
-      section[section.findIndex((e) => e.id === idSelected)].content
-    );
+    const indexSelectedItem = section.findIndex((e) => e.id === idSelected);
+    const showDialogConfirm =
+      indexSelectedItem && !isEmptyObject(section[indexSelectedItem].content);
 
     if (showDialogConfirm) {
       const confirmed = await confirm(
@@ -136,24 +165,14 @@ export const useFormCV = () => {
       );
       if (!confirmed) return;
     }
-    formik.setFieldValue(fieldName, [
+    await formik.setFieldValue(fieldName, [
       ...(formik.values[fieldName]?.filter((v) => v.id !== idSelected) ?? []),
     ]);
-    formik.submitForm();
+    await formik.submitForm();
   };
 
-  const debouncedSubmit = useCallback(
-    debounce(() => formik.submitForm(), 0),
-    [2000, formik.submitForm]
-  );
-
-  useEffect(() => {
-    if (userData.data !== undefined && formik.values !== userData.data) {
-      debouncedSubmit();
-    }
-  }, [debouncedSubmit, formik.values]);
-
   return {
+    formikWarnings: formikOnlyForWarnings.errors,
     formik,
     userData,
     handleAddItemSection,

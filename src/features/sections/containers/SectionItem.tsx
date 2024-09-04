@@ -13,7 +13,7 @@ import {
 import { useExpandedItemStore } from "../stores/useExpandedItemStore";
 
 import * as yup from "yup";
-import { translationSchema } from "../../form/validations/dataContentValidationSchema";
+import { translationSchemaWithValidation } from "../../form/validations/dataContentValidationSchema";
 
 interface Props
   extends Omit<SectionItemProps, "title" | "isExpanded" | "onExpandedChange"> {
@@ -36,36 +36,49 @@ export const SectionItem = ({
   onChange,
   ...rest
 }: Props) => {
-  const formik = useFormik<ResumeContentSection<Translation>>({
-    initialValues: {
-      id,
-      content: content,
-      isHidden: rest.isVisible,
-    },
-    validationSchema: yup.object().shape({
-      id: yup.string().required(),
-      content: translationSchema,
-      isHidden: yup.boolean(),
-    }),
+  const initialValues = {
+    id,
+    content: content,
+    isHidden: rest.isVisible,
+  };
 
+  const validationSchema = yup.object().shape({
+    id: yup.string().required(),
+    content: translationSchemaWithValidation,
+    isHidden: yup.boolean(),
+  });
+
+  const formik = useFormik<ResumeContentSection<Translation>>({
+    initialValues: initialValues,
     onSubmit: (values) => {
+      formikOnlyWarning.setValues(values);
       onChange(values);
     },
+  });
+
+  // this formik is just to have the validations errors
+  // It's not possible to submit a formik form with errors, so to have warning
+  // we need this form
+  const formikOnlyWarning = useFormik<ResumeContentSection<Translation>>({
+    initialValues: initialValues,
+    validationSchema,
+    validateOnMount: true,
+    onSubmit: () => {},
   });
 
   const { expandedItem, setExpandedItem } = useExpandedItemStore();
 
   const debouncedSubmit = useCallback(
     debounce(() => formik.submitForm(), 500),
-    [2000, formik.submitForm]
+    [formik.submitForm]
   );
 
   return (
     <SectionItemLayout
       title={
         <AccordionTitle
-          isWarningIcon={Boolean(formik.errors.content)}
-          warningTitle={String(formik.errors.content)}
+          isWarningIcon={Boolean(formikOnlyWarning.errors.content)}
+          warningTitle={String(formikOnlyWarning.errors.content)}
           content={
             Boolean(formik.values.content.fr)
               ? formik.values.content.fr

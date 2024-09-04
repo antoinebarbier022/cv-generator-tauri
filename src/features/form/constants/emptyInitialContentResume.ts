@@ -23,22 +23,7 @@ export const emptyInitialContentResume: UserData = {
   employment_history: [],
   articles_and_others: [],
   sectors: [],
-  skills: [
-    {
-      id: crypto.randomUUID(),
-      content: {
-        en: "",
-        fr: "",
-      },
-    },
-    {
-      id: crypto.randomUUID(),
-      content: {
-        en: "",
-        fr: "",
-      },
-    },
-  ],
+  skills: [],
   languages: [],
   experiences: [],
 };

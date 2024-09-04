@@ -23,8 +23,9 @@ import { useFormik } from "formik";
 import debounce from "just-debounce-it";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { CV_LANGUAGES } from "../../features/form/constants/cv-languages";
+
 import { useFormCV } from "../../features/form/hooks/useFormCV";
+import { CV_LANGUAGES } from "../../features/settings/constants/cv-languages";
 import { useDeleteImageProfileStorage } from "../../features/storage/hooks/useDeleteImageProfileStorage";
 import { useSetImageProfileStorage } from "../../features/storage/hooks/useSetImageProfileStorage";
 import { Translation } from "../../features/storage/types/storage";

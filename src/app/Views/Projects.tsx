@@ -1,15 +1,11 @@
 import { AccordionGroup, Stack } from "@mui/joy";
 
 import { useTranslation } from "react-i18next";
-import { AccordionTitle } from "../../components/AccordionTitle";
 import { EmptyState } from "../../components/EmptyState";
 
 import { useFormCV } from "../../features/form/hooks/useFormCV";
-import { ProjectTitle } from "../../features/sections/components/ProjectTitle";
-import { ProjectForm } from "../../features/sections/containers/ProjectForm";
+import { ProjectItem } from "../../features/sections/containers/ProjectItem";
 import { SectionDroppableLayout } from "../../features/sections/layouts/SectionDroppableLayout";
-import { SectionItemLayout } from "../../features/sections/layouts/SectionItemLayout";
-import { useExpandedItemStore } from "../../features/sections/stores/useExpandedItemStore";
 import {
   ResumeContentSection,
   UserDataExperience,
@@ -30,17 +26,6 @@ export const Projects = () => {
   };
   const isEmptyData = userData.data && userData.data?.experiences.length === 0;
 
-  const isMissingField = (experience: UserDataExperience) => {
-    return Boolean(
-      (!experience.context.fr && experience.context.en) ||
-        (experience.context.fr && !experience.context.en) ||
-        (experience.role.fr && !experience.role.en) ||
-        (!experience.role.fr && experience.role.en) ||
-        (!experience.contribution.fr && experience.contribution.en) ||
-        (experience.contribution.fr && !experience.contribution.en)
-    );
-  };
-
   const handleDeleteById = (id: string) => {
     handleDeleteItemSection({ fieldName: "experiences", idSelected: id });
   };
@@ -49,13 +34,19 @@ export const Projects = () => {
     data: ResumeContentSection<UserDataExperience>
   ) => {
     const newContent = [...formik.values["experiences"]];
-    newContent[newContent.findIndex((e) => e.id === data.id)] = data;
+    const indexNewContent = newContent.findIndex((e) => e.id === data.id);
+    newContent[indexNewContent] = { ...data };
 
     formik.setFieldValue("experiences", newContent);
     formik.submitForm();
   };
 
-  const { expandedItem, setExpandedItem } = useExpandedItemStore();
+  const handleChangeVisibility = (index: number, value: boolean) => {
+    const newContent = [...formik.values["experiences"]];
+    newContent[index].isHidden = value;
+    formik.setFieldValue("experiences", newContent);
+    formik.submitForm();
+  };
 
   return (
     <>
@@ -79,40 +70,20 @@ export const Projects = () => {
       >
         <AccordionGroup component={Stack} disableDivider>
           {formik.values.experiences?.map((field, index) => (
-            <SectionItemLayout
+            <ProjectItem
               index={index}
+              key={field.id}
+              data={field}
               draggableId={field.id}
-              title={
-                <AccordionTitle
-                  content={
-                    <ProjectTitle
-                      program={field.content.program}
-                      client={field.content.client}
-                      role={field.content.role.fr || field.content.role.en}
-                      date={field.content.date}
-                    />
-                  }
-                  isWarningIcon={isMissingField(field.content)}
-                />
-              }
               isVisible={Boolean(field.isHidden)}
-              isExpanded={expandedItem === field.id}
-              onExpandedChange={(_, expanded) => {
-                setExpandedItem(expanded ? field.id : undefined);
-              }}
-              onChangeVisibility={(value) => {
-                const newContent = [...formik.values.experiences];
-                newContent[index].isHidden = value;
-                formik.setFieldValue("experiences", newContent);
-                formik.submitForm();
-              }}
+              onChangeVisibility={(value) =>
+                handleChangeVisibility(index, value)
+              }
               onDelete={() => handleDeleteById(field.id)}
-            >
-              <ProjectForm
-                data={field}
-                onChange={(value) => handleEditContentItem(value)}
-              />
-            </SectionItemLayout>
+              onChange={(value) => {
+                handleEditContentItem(value);
+              }}
+            />
           ))}
         </AccordionGroup>
       </SectionDroppableLayout>

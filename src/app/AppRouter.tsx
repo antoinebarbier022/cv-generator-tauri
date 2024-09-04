@@ -15,6 +15,7 @@ import { useMenuEvents } from "../features/menu/hooks/useMenuEvents";
 import { SidebarContainer } from "../features/sidebar/containers/SidebarContainer";
 
 import { useEffect } from "react";
+import { FooterBar } from "../features/footer-bar/containers/FooterBar";
 import { StorageService } from "../features/storage/services/StorageService";
 import { AppLayout } from "../layouts/app-layout";
 import { WelcomeLayout } from "../layouts/welcome-layout";
@@ -59,6 +60,7 @@ export const AppRouter = () => {
               sidebar={
                 <SidebarContainer isLoadingGenerate={isLoadingGenerate} />
               }
+              footerBar={<FooterBar />}
             />
           }
         >
