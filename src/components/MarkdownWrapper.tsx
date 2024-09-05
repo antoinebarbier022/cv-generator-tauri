@@ -1,27 +1,20 @@
-import {
-  Link,
-  List,
-  ListItem,
-  Table,
-  Typography,
-  TypographySystem,
-} from "@mui/joy";
-import Markdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import { Link, List, ListItem, Table, Typography, TypographySystem } from '@mui/joy'
+import Markdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 interface MarkdownWrapperProps {
-  textColor?: string;
-  titleColor?: string;
-  level?: keyof TypographySystem | "inherit" | undefined;
-  paragraphSpace?: number | string;
-  content: string;
+  textColor?: string
+  titleColor?: string
+  level?: keyof TypographySystem | 'inherit' | undefined
+  paragraphSpace?: number | string
+  content: string
 }
 export const MarkdownWrapper = ({
-  textColor = "currentColor",
-  titleColor = "currentColor",
-  level = "inherit",
+  textColor = 'currentColor',
+  titleColor = 'currentColor',
+  level = 'inherit',
   paragraphSpace: paragraphSpace = 2,
-  content,
+  content
 }: MarkdownWrapperProps) => {
   return (
     <Markdown
@@ -32,11 +25,11 @@ export const MarkdownWrapper = ({
             level={level}
             color="primary"
             href={href}
-            underline={"always"}
+            underline={'always'}
             slotProps={{
               root: {
-                target: "_blank",
-              },
+                target: '_blank'
+              }
             }}
           >
             {children}
@@ -46,82 +39,66 @@ export const MarkdownWrapper = ({
           <Typography
             level={level}
             textColor={textColor}
-            whiteSpace={"pre-line"}
+            whiteSpace={'pre-line'}
             paddingBottom={paragraphSpace}
           >
             {children}
           </Typography>
         ),
         del: ({ children }) => (
-          <Typography
-            level={level}
-            textColor={textColor}
-            sx={{ textDecoration: "line-through" }}
-          >
+          <Typography level={level} textColor={textColor} sx={{ textDecoration: 'line-through' }}>
             {children}
           </Typography>
         ),
         em: ({ children }) => (
-          <Typography level={level} textColor={textColor} fontStyle={"italic"}>
+          <Typography level={level} textColor={textColor} fontStyle={'italic'}>
             {children}
           </Typography>
         ),
         i: ({ children }) => (
-          <Typography level={level} textColor={textColor} fontStyle={"italic"}>
+          <Typography level={level} textColor={textColor} fontStyle={'italic'}>
             {children}
           </Typography>
         ),
         strong: ({ children }) => (
-          <Typography level={level} textColor={textColor} fontWeight={"500"}>
+          <Typography level={level} textColor={textColor} fontWeight={'500'}>
             {children}
           </Typography>
         ),
         b: ({ children }) => (
-          <Typography level={level} textColor={textColor} fontWeight={"bold"}>
+          <Typography level={level} textColor={textColor} fontWeight={'bold'}>
             {children}
           </Typography>
         ),
         h1: ({ children }) => (
-          <Typography
-            level={"title-lg"}
-            textColor={titleColor || textColor}
-            fontWeight={"600"}
-          >
+          <Typography level={'title-lg'} textColor={titleColor || textColor} fontWeight={'600'}>
             {children}
           </Typography>
         ),
         h2: ({ children }) => (
-          <Typography
-            level={"title-md"}
-            textColor={titleColor || textColor}
-            fontWeight={"600"}
-          >
+          <Typography level={'title-md'} textColor={titleColor || textColor} fontWeight={'600'}>
             {children}
           </Typography>
         ),
         h3: ({ children }) => (
-          <Typography
-            level={"title-sm"}
-            textColor={titleColor || textColor}
-            fontWeight={"600"}
-          >
+          <Typography level={'title-sm'} textColor={titleColor || textColor} fontWeight={'600'}>
             {children}
           </Typography>
         ),
-        h4: "h3",
-        h5: "h3",
-        h6: "h3",
+        h4: 'h3',
+        h5: 'h3',
+        h6: 'h3',
         table: ({ children }) => <Table size="sm">{children}</Table>,
         ol: ({ children }) => (
           <List
             sx={{
-              width: "100%",
+              width: '100%',
               ml: 2,
-              listStyleType: "decimal",
-              "& .MuiListItem-root": {
-                display: "list-item",
+              listStyleType: 'decimal',
+              '& .MuiListItem-root': {
+                display: 'list-item'
               },
-              paddingBottom: 1,
+              paddingBottom: 1
             }}
           >
             {children}
@@ -130,32 +107,28 @@ export const MarkdownWrapper = ({
         ul: ({ children }) => (
           <List
             sx={{
-              width: "100%",
-              listStyleType: "disc",
+              width: '100%',
+              listStyleType: 'disc',
               ml: 2,
               p: 0,
-              "& .MuiListItem-root": {
-                display: "list-item",
-                "--ListItem-minHeight": 0,
+              '& .MuiListItem-root': {
+                display: 'list-item',
+                '--ListItem-minHeight': 0
               },
-              paddingBottom: 1,
+              paddingBottom: 1
             }}
           >
             {children}
           </List>
         ),
         li: ({ children }) => (
-          <ListItem
-            component={Typography}
-            level={level}
-            sx={{ m: 0, p: 0, ml: 2 }}
-          >
+          <ListItem component={Typography} level={level} sx={{ m: 0, p: 0, ml: 2 }}>
             <Typography textColor={textColor}>{children}</Typography>
           </ListItem>
-        ),
+        )
       }}
     >
       {content}
     </Markdown>
-  );
-};
+  )
+}

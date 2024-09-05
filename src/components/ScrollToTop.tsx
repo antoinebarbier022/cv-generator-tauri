@@ -1,21 +1,21 @@
-import { useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
+import { useEffect, useRef } from 'react'
+import { useLocation } from 'react-router-dom'
 
 interface ScrollToTopProps {
-  selector: string;
+  selector: string
 }
 
 export const ScrollToTop: React.FC<ScrollToTopProps> = ({ selector }) => {
-  const { pathname } = useLocation();
-  const scrollRef = useRef<HTMLElement | null>(null);
+  const { pathname } = useLocation()
+  const scrollRef = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
-    scrollRef.current = document.querySelector(selector);
+    scrollRef.current = document.querySelector(selector)
 
     if (scrollRef.current) {
-      scrollRef.current.scrollTo(0, 0);
+      scrollRef.current.scrollTo(0, 0)
     }
-  }, [pathname, selector]);
+  }, [pathname, selector])
 
-  return null;
-};
+  return null
+}

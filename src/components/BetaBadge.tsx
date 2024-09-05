@@ -1,17 +1,17 @@
-import { Stack, Typography } from "@mui/joy";
+import { Stack, Typography } from '@mui/joy'
 
 export const BetaBadge = () => {
   return (
     <Stack
       sx={{
-        width: "100px",
-        height: "100px",
-        position: "fixed",
+        width: '100px',
+        height: '100px',
+        position: 'fixed',
         top: 0,
         right: 0,
         zIndex: 10,
-        rotate: "45deg",
-        userSelect: "none",
+        rotate: '45deg',
+        userSelect: 'none'
       }}
     >
       <Typography
@@ -19,12 +19,12 @@ export const BetaBadge = () => {
         textColor="common.white"
         fontWeight="bold"
         sx={{
-          backgroundColor: "warning.500",
-          paddingX: 4,
+          backgroundColor: 'warning.500',
+          paddingX: 4
         }}
       >
-        {import.meta.env.DEV ? "DEV" : "BETA"}
+        {import.meta.env.DEV ? 'DEV' : 'BETA'}
       </Typography>
     </Stack>
-  );
-};
+  )
+}

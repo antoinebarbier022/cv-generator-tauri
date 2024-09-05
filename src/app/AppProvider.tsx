@@ -1,30 +1,28 @@
-import "@/configs/i18n.config";
-import { CssBaseline, CssVarsProvider } from "@mui/joy";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { PropsWithChildren } from "react";
-import { BrowserRouter } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { BetaBadge } from "../components/BetaBadge.tsx";
-import { useErrors } from "../features/errors/hooks/useErrors.tsx";
-import "../styles/index.css";
-import theme from "../themes/default-theme.ts";
+import { BetaBadge } from '@/components/BetaBadge'
+import '@/configs/i18n.config'
+import { useErrors } from '@/errors/hooks/useErrors'
+
+import '@/styles/index.css'
+import theme from '@/themes/default-theme.ts'
+import { CssBaseline, CssVarsProvider } from '@mui/joy'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { PropsWithChildren } from 'react'
+import { BrowserRouter } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+
+import 'react-toastify/dist/ReactToastify.css'
 
 export const AppProvider = ({ children }: PropsWithChildren) => {
-  useErrors();
+  useErrors()
 
   const queryClient = new QueryClient({
     defaultOptions: {
-      queries: {},
-    },
-  });
+      queries: {}
+    }
+  })
   return (
-    <CssVarsProvider
-      theme={theme}
-      defaultMode="light"
-      modeStorageKey="joy-mode-scheme-light"
-    >
+    <CssVarsProvider theme={theme} defaultMode="light" modeStorageKey="joy-mode-scheme-light">
       <CssBaseline />
       <QueryClientProvider client={queryClient}>
         <BetaBadge />
@@ -37,11 +35,8 @@ export const AppProvider = ({ children }: PropsWithChildren) => {
           closeOnClick
         />
         <BrowserRouter>{children}</BrowserRouter>
-        <ReactQueryDevtools
-          initialIsOpen={false}
-          buttonPosition="bottom-left"
-        />
+        <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
       </QueryClientProvider>
     </CssVarsProvider>
-  );
-};
+  )
+}

@@ -1,6 +1,6 @@
-import { Stack } from "@mui/joy";
-import { AppProvider } from "./AppProvider";
-import { AppRouter } from "./AppRouter";
+import { Stack } from '@mui/joy'
+import { AppProvider } from './AppProvider'
+import { AppRouter } from './AppRouter'
 
 const App = () => {
   return (
@@ -8,13 +8,13 @@ const App = () => {
       <Stack
         data-tauri-drag-region
         sx={{
-          height: "var(--titlebar-height)",
-          userSelect: "none",
+          height: 'var(--titlebar-height)',
+          userSelect: 'none'
         }}
       />
       <AppRouter />
     </AppProvider>
-  );
-};
+  )
+}
 
-export default App;
+export default App
