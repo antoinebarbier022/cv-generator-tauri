@@ -1,4 +1,4 @@
-import { ScrollToTop } from '@/components/ScrollToTop'
+import { ScrollToTop } from '@/components/scroll-to-top'
 import { Box, Stack } from '@mui/joy'
 import { ReactNode } from 'react'
 import { Outlet } from 'react-router-dom'

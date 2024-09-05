@@ -1,4 +1,4 @@
-import { BetaBadge } from '@/components/BetaBadge'
+import { BetaBadge } from '@/components/beta-badge'
 import '@/configs/i18n.config'
 import { useErrors } from '@/errors/hooks/useErrors'
 

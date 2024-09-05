@@ -14,9 +14,9 @@ import { useRedirectToWelcomePage } from '@/hooks/useRedirectToWelcomePage'
 import { AppLayout } from '@/layouts/app-layout'
 import { WelcomeLayout } from '@/layouts/welcome-layout'
 import { Alert } from '@mui/joy'
-import { DebugModal } from './Routes/debug/debug-modal'
-import { SummaryPage } from './Routes/summary-page'
-import { WelcomePage } from './Routes/welcome-page'
+import { DebugModal } from './routes/debug/debug-modal'
+import { SummaryPage } from './routes/summary-page'
+import { WelcomePage } from './routes/welcome-page'
 
 export const AppRouter = () => {
   const { isLoadingGenerate } = useMenuEvents()

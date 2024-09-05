@@ -1,6 +1,6 @@
 import { Stack } from '@mui/joy'
-import { AppProvider } from './AppProvider'
-import { AppRouter } from './AppRouter'
+import { AppProvider } from './app-provider'
+import { AppRouter } from './app-router'
 
 const App = () => {
   return (

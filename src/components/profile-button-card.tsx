@@ -7,7 +7,7 @@ interface Props {
   linkTo: string
   image: string | undefined
 }
-export const CardProfileButton = (props: Props) => {
+export const ProfileButtonCard = (props: Props) => {
   return (
     <Card
       role="navigation"

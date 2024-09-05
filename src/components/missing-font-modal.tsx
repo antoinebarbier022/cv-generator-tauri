@@ -1,5 +1,5 @@
 import { Alert, Divider, Modal, ModalClose, ModalDialog, Stack, Typography } from '@mui/joy'
-import { MarkdownWrapper } from './MarkdownWrapper'
+import { MarkdownWrapper } from './markdown-wrapper'
 
 interface Props {
   open: boolean

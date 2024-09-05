@@ -1,9 +1,9 @@
-import { Stack, Typography } from '@mui/joy'
+import { IconButton, Stack, Typography } from '@mui/joy'
 import { PropsWithChildren, ReactNode } from 'react'
 import { DragDropContext, Droppable, OnDragEndResponder } from 'react-beautiful-dnd'
 
-import { IconButtonAdd } from '@/components/IconButtonAdd'
 import { PageLayout } from '@/layouts/page-layout'
+import { AddRounded } from '@mui/icons-material'
 
 interface Props extends PropsWithChildren {
   title: string | undefined
@@ -26,7 +26,11 @@ export const SectionDroppableLayout = (props: Props) => {
             {...provided.droppableProps}
             title={props.title}
             chip={props.chip}
-            endDecorator={<IconButtonAdd onClick={props.onAddItem} />}
+            endDecorator={
+              <IconButton size="sm" variant="solid" color="primary" onClick={props.onAddItem}>
+                <AddRounded />
+              </IconButton>
+            }
           >
             <Stack gap={2}>
               {props.isLoading && <Typography>Loading...</Typography>}

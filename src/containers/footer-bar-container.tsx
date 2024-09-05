@@ -1,7 +1,7 @@
 import { Divider, Sheet, Stack, Typography } from '@mui/joy'
-import { CurrentPowerpointPath } from '../components/CurrentPowerpointPath'
-import { LastUpdate } from '../components/LastUpdate'
-import { WarningsCounter } from '../components/WarningsCounter'
+import { FooterItemLastUpdated } from '../components/footer-item-last-updated'
+import { FooterItemOutputPath } from '../components/footer-item-output-path'
+import { WarningsCounter } from '../components/warning-counter'
 import { useWarningsStore } from '../stores/useWarningsStore'
 
 const configFooterOptions = {
@@ -42,7 +42,7 @@ export const FooterBarContainer = () => {
       >
         {configFooterOptions.showOutputPathGeneratedFile && (
           <>
-            <CurrentPowerpointPath path="/Users/antoinebarbier/Downloads/CV_Barbier_Antoine_CDT.pptx" />
+            <FooterItemOutputPath path="/Users/antoinebarbier/Downloads/CV_Barbier_Antoine_CDT.pptx" />
             <Divider orientation="vertical" />
           </>
         )}
@@ -50,7 +50,7 @@ export const FooterBarContainer = () => {
         {configFooterOptions.showLastUpdate && (
           <>
             {' '}
-            <LastUpdate date={new Date()} />
+            <FooterItemLastUpdated date={new Date()} />
             <Divider orientation="vertical" />
           </>
         )}

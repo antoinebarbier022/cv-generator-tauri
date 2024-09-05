@@ -15,10 +15,10 @@ import { useGenerate } from '@/features/generation/hooks/useGenerate'
 import { useGetDataStorage } from '@/hooks/useGetDataStorage'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { CardProfileButton } from '../components/CardProfileButton'
-import { MissingFontAlert } from '../components/MissingFontAlert'
-import { MissingFontModal } from '../components/MissingFontModal'
-import { NavigationList } from '../components/NavigationList'
+import { MissingFontAlert } from '../components/missing-font-alert'
+import { MissingFontModal } from '../components/missing-font-modal'
+import { NavigationList } from '../components/navigation-list'
+import { ProfileButtonCard } from '../components/profile-button-card'
 import { useMissingFont } from '../hooks/useMissingFont'
 import { NavigationType } from '../types/sidebar'
 
@@ -132,7 +132,7 @@ export const SidebarContainer = ({ isLoadingGenerate }: Props) => {
           paddingX={'var(--app-border-width)'}
           position={'relative'}
         >
-          <CardProfileButton
+          <ProfileButtonCard
             image={contentResume.data?.picture}
             fullName={Boolean(fullName) ? fullName : ''}
             linkTo={'/my-account'}
