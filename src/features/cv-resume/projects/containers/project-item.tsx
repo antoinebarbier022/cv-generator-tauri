@@ -3,11 +3,14 @@ import { CV_LANGUAGES } from '@/constants/cv-languages'
 import { SectionItemLayout, SectionItemProps } from '@/layouts/section-item-layout'
 import { useExpandedItemStore } from '@/stores/useExpandedItemStore'
 import { ResumeContentSection, UserDataExperience } from '@/types/storage'
+import { countWarnings } from '@/utils/warnings.utils'
+import { experienceSchemaWithValidation } from '@/validations/dataContentValidationSchema'
 import { Chip, FormLabel, Input, Stack, Textarea, Typography } from '@mui/joy'
 import { useFormik } from 'formik'
 import debounce from 'just-debounce-it'
 import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
+import * as yup from 'yup'
 import { ProjectTitle } from '../components/project-title'
 
 interface Props extends Omit<SectionItemProps, 'title' | 'isExpanded' | 'onExpandedChange'> {
@@ -22,8 +25,22 @@ export const ProjectItem = ({ data, index, onChange, ...rest }: Props) => {
   const formik = useFormik<ResumeContentSection<UserDataExperience>>({
     initialValues: data,
     onSubmit: (values) => {
+      formikOnlyWarning.setValues(values)
       onChange(values)
     }
+  })
+
+  // this formik is just to have the validations errors
+  // It's not possible to submit a formik form with errors, so to have warnings
+  // we need this form
+  const formikOnlyWarning = useFormik<ResumeContentSection<UserDataExperience>>({
+    initialValues: data,
+    validationSchema: yup.object().shape({
+      id: yup.string(),
+      content: experienceSchemaWithValidation
+    }),
+    validateOnMount: true,
+    onSubmit: () => {}
   })
 
   const elementsHeaderForm: {
@@ -79,6 +96,8 @@ export const ProjectItem = ({ data, index, onChange, ...rest }: Props) => {
     [formik.submitForm]
   )
 
+  const countWarns = countWarnings(Object(formikOnlyWarning.errors.content))
+
   return (
     <SectionItemLayout
       index={0}
@@ -92,11 +111,13 @@ export const ProjectItem = ({ data, index, onChange, ...rest }: Props) => {
               date={formik.values.content.date}
             />
           }
-          isWarningIcon
+          isWarningIcon={Boolean(formikOnlyWarning.errors.content)}
+          warningTitle={t('warning.count-missing-translation', {
+            count: countWarns
+          })}
         />
       }
       {...rest}
-      isVisible={Boolean(formik.values.isHidden)}
       isExpanded={expandedItem === formik.values.id}
       onExpandedChange={(_, expanded) => {
         setExpandedItem(expanded ? formik.values.id : undefined)

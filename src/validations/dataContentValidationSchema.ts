@@ -1,46 +1,46 @@
-import { t } from "i18next";
-import * as yup from "yup";
+import { t } from 'i18next'
+import * as yup from 'yup'
 
 export const translationSchemaWithValidation = yup
   .object()
   .shape({
     en: yup.string(),
-    fr: yup.string(),
+    fr: yup.string()
   })
-  .test("translations-check", "Traduction manquante", function (value) {
-    const { en, fr } = value || {};
+  .test('translations-check', 'Traduction manquante', function (value) {
+    const { en, fr } = value || {}
 
     if ((en && !fr) || (!en && fr)) {
-      const missingLang = en ? "fr" : "en";
+      const missingLang = en ? 'fr' : 'en'
       return this.createError({
-        message: `${t("warning.missing-translation")} → [${missingLang}]`,
-      });
+        message: `${t('warning.missing-translation')} → [${missingLang}]`
+      })
     }
 
-    return true;
-  });
+    return true
+  })
 
 export const translationSchema = yup.object().shape({
   en: yup.string(),
-  fr: yup.string(),
-});
+  fr: yup.string()
+})
 
 export const sectionSchema = (content: yup.AnyObjectSchema) =>
   yup.array().of(
     yup.object().shape({
       id: yup.string(),
-      content,
+      content
     })
-  );
+  )
 
 export const experienceSchemaWithValidation = yup.object().shape({
-  program: yup.string(),
+  program: yup.string().required('kdd,d'),
   client: yup.string(),
   date: yup.string(),
   role: translationSchemaWithValidation,
   context: translationSchemaWithValidation,
-  contribution: translationSchemaWithValidation,
-});
+  contribution: translationSchemaWithValidation
+})
 
 export const experienceSchema = yup.object().shape({
   program: yup.string(),
@@ -48,8 +48,8 @@ export const experienceSchema = yup.object().shape({
   date: yup.string(),
   role: translationSchema,
   context: translationSchema,
-  contribution: translationSchema,
-});
+  contribution: translationSchema
+})
 
 export const finalFormValidationSchema = yup.object().shape({
   firstname: yup.string(),
@@ -67,8 +67,8 @@ export const finalFormValidationSchema = yup.object().shape({
   sectors: sectionSchema(translationSchemaWithValidation),
   skills: sectionSchema(translationSchemaWithValidation),
   languages: sectionSchema(translationSchemaWithValidation),
-  experiences: sectionSchema(experienceSchemaWithValidation),
-});
+  experiences: sectionSchema(experienceSchemaWithValidation)
+})
 
 export const ResumeValidationSchemaForImportation = yup.object().shape({
   firstname: yup.string().required(),
@@ -86,5 +86,5 @@ export const ResumeValidationSchemaForImportation = yup.object().shape({
   sectors: sectionSchema(translationSchema),
   skills: sectionSchema(translationSchema),
   languages: sectionSchema(translationSchema),
-  experiences: sectionSchema(experienceSchema),
-});
+  experiences: sectionSchema(experienceSchema)
+})

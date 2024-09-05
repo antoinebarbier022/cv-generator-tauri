@@ -1,6 +1,9 @@
 {
   "app.title": "CV Generator",
   "warning.missing-translation": "Missing translation",
+  "warning.count-missing-translation_one": "{{count}} missing translation",
+  "warning.count-missing-translation_other": "{{count}} missing translations",
+
   "languages.fr": "fr",
   "languages.en": "en",
 

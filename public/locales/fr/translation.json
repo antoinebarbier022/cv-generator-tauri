@@ -1,6 +1,8 @@
 {
   "app.title": "CV Generator",
   "warning.missing-translation": "Traduction manquante",
+  "warning.count-missing-translation_one": "{{count}} traduction manquante",
+  "warning.count-missing-translation_other": "{{count}} traductions manquantes",
   "languages.fr": "fr",
   "languages.en": "en",
   "resume.section.skills.title": "Compétences",
