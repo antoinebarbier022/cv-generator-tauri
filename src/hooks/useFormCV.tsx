@@ -7,44 +7,15 @@ import { emptyInitialResume } from '../constants/empty-initial-resume'
 import { reorderListSection } from '../utils/drag-and-drop.utils'
 import { isEmptyObject } from '../utils/object.utils'
 
-import { StorageService } from '@/services/StorageService'
 import { useWarningsStore } from '@/stores/useWarningsStore'
 import { ResumeContentSection, Translation, UserData, UserDataExperience } from '@/types/storage'
 import { countWarnings } from '@/utils/warnings.utils'
 import { finalFormValidationSchema } from '@/validations/dataContentValidationSchema'
 
 import { useExpandedItemStore } from '@/stores/useExpandedItemStore'
-import deepEqual from 'deep-equal'
+import { useFormStore } from '@/stores/useFormStore'
 import { useEffect } from 'react'
-import { create } from 'zustand'
 import { useGetDataStorage } from './useGetDataStorage'
-
-interface FormState {
-  formValues: UserData
-  setFormValues: (values: Partial<UserData>) => void
-}
-
-export const useFormStore = create<FormState>((set, get) => ({
-  formValues: emptyInitialResume,
-  setFormValues: async (values) => {
-    const oldValues = get().formValues
-    const newValues = {
-      ...oldValues,
-      ...values
-    } as UserData
-    if (!deepEqual(oldValues, newValues)) {
-      StorageService.setContentData({
-        values: {
-          ...get().formValues,
-          ...values
-        }
-      })
-    }
-    set(() => ({
-      formValues: newValues
-    }))
-  }
-}))
 
 export const useFormCV = () => {
   const userData = useGetDataStorage()
@@ -60,6 +31,17 @@ export const useFormCV = () => {
     validateOnChange: true,
     onSubmit: () => {}
   })
+
+  /*const getDataFromStorage =  useMutation({
+    mutationKey: ['GET data.json'],
+    mutationFn: StorageService.getContentData,
+    onSuccess: (data) => {
+      setFormValues(data)
+    },
+    onError: () => {
+      setFormValues(emptyInitialResume)
+    }
+  })*/
 
   useEffect(() => {
     if (userData.data) {

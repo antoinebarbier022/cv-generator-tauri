@@ -1,7 +1,8 @@
 import { StorageService } from '@/services/StorageService'
+import { useFormStore } from '@/stores/useFormStore'
 import { useWarningsStore } from '@/stores/useWarningsStore'
 import { Divider, Sheet, Stack, Typography } from '@mui/joy'
-import { useQuery } from '@tanstack/react-query'
+import { useEffect } from 'react'
 import { FooterItemLastUpdated } from '../components/footer-item-last-updated'
 import { FooterItemOutputPath } from '../components/footer-item-output-path'
 import { FooterItemWarningsCounter } from '../components/footer-item-warning-counter'
@@ -13,14 +14,14 @@ const configFooterOptions = {
 }
 
 export const FooterBarContainer = () => {
+  const { lastUpdated, setLastUpdated } = useFormStore()
   const { countWarnings } = useWarningsStore()
 
-  const lastModifiedDateFile = useQuery({
-    queryKey: ['lastModifiedAt'],
-    queryFn: () => StorageService.getLastModified()
-  })
-
-  console.log(lastModifiedDateFile)
+  useEffect(() => {
+    StorageService.getLastModified().then((data) => {
+      setLastUpdated(data)
+    })
+  }, [])
 
   return (
     <Stack
@@ -56,10 +57,10 @@ export const FooterBarContainer = () => {
           </>
         )}
 
-        {lastModifiedDateFile.data && (
+        {lastUpdated && (
           <>
             {' '}
-            <FooterItemLastUpdated date={lastModifiedDateFile.data} />
+            <FooterItemLastUpdated date={lastUpdated} />
             <Divider orientation="vertical" />
           </>
         )}
