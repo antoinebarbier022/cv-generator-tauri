@@ -1,5 +1,4 @@
 import { useFormik } from 'formik'
-import { useEffect, useMemo } from 'react'
 
 import { confirm } from '@tauri-apps/api/dialog'
 import { DropResult } from 'react-beautiful-dnd'
@@ -13,6 +12,7 @@ import { useWarningsStore } from '@/stores/useWarningsStore'
 import { ResumeContentSection, Translation, UserData, UserDataExperience } from '@/types/storage'
 import { countWarnings } from '@/utils/warnings.utils'
 import { finalFormValidationSchema } from '@/validations/dataContentValidationSchema'
+import { useEffect } from 'react'
 import { useGetDataStorage } from './useGetDataStorage'
 import { useSetDataStorage } from './useSetDataStorage'
 
@@ -23,13 +23,14 @@ export const useFormCV = () => {
   const { setCountWarnings } = useWarningsStore()
   const { setExpandedItem } = useExpandedItemStore()
 
-  const initialValues = useMemo(() => userData.data, [userData.data])
+  const initialValues = userData.data
 
   const formik = useFormik<UserData>({
     initialValues: initialValues ?? emptyInitialResume,
     enableReinitialize: true,
 
     onSubmit: async (values) => {
+      //alert(JSON.stringify(values))
       await formikOnlyForWarnings.setValues(values)
       await formikOnlyForWarnings.validateForm(values)
 
@@ -43,7 +44,6 @@ export const useFormCV = () => {
     validateOnMount: true,
     validateOnChange: true,
     enableReinitialize: true,
-
     onSubmit: () => {}
   })
 

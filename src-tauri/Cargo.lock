@@ -574,6 +574,7 @@ dependencies = [
  "strum",
  "tauri",
  "tauri-build",
+ "tauri-plugin-fs-extra",
  "ts-const-enums",
  "ts-rs",
  "window-vibrancy",
@@ -3326,6 +3327,18 @@ dependencies = [
  "syn 1.0.109",
  "tauri-codegen",
  "tauri-utils",
+]
+
+[[package]]
+name = "tauri-plugin-fs-extra"
+version = "0.0.0"
+source = "git+https://github.com/tauri-apps/plugins-workspace?branch=v1#5c249a1a1076ac78cfc0ed4c2857cf7e2540b1cc"
+dependencies = [
+ "log",
+ "serde",
+ "serde_json",
+ "tauri",
+ "thiserror",
 ]
 
 [[package]]

@@ -7,6 +7,7 @@ mod commands;
 mod errors;
 mod menu;
 use crate::commands::{get_backend_error, open_finder, open_powerpoint};
+use crate::errors::{EmitError, ErrorPayload};
 use crate::menu::{create_app_menu, on_menu_event};
 use anyhow::Context;
 use core::str;
@@ -15,11 +16,10 @@ use serde::Serialize;
 use signal_hook::iterator::Signals;
 use std::sync::Mutex;
 use std::{sync, thread};
-use tauri::api::process::{Command, CommandEvent, TerminatedPayload};
 use sync::mpsc::{channel, Sender};
+use tauri::api::process::{Command, CommandEvent, TerminatedPayload};
 use tauri::Manager;
 use window_vibrancy::*;
-use crate::errors::{EmitError, ErrorPayload};
 
 fn start_backend(tx: Sender<BackendEvent>) -> anyhow::Result<()> {
     println!("Spawning api server...");
@@ -29,7 +29,7 @@ fn start_backend(tx: Sender<BackendEvent>) -> anyhow::Result<()> {
 }
 
 enum BackendEvent {
-    PortAlreadyInUseError
+    PortAlreadyInUseError,
 }
 
 fn spawn_backend(tx: Sender<BackendEvent>) -> anyhow::Result<()> {
@@ -135,7 +135,13 @@ fn main() -> anyhow::Result<()> {
             tauri::async_runtime::spawn(async move {
                 while let Some(event) = rx.recv().ok() {
                     match event {
-                        BackendEvent::PortAlreadyInUseError => window.emit_error(ErrorPayload::new().with_title("Failed to start backend").with_message("Port already in use")).unwrap()
+                        BackendEvent::PortAlreadyInUseError => window
+                            .emit_error(
+                                ErrorPayload::new()
+                                    .with_title("Failed to start backend")
+                                    .with_message("Port already in use"),
+                            )
+                            .unwrap(),
                     }
                 }
             });
@@ -147,7 +153,7 @@ fn main() -> anyhow::Result<()> {
             open_powerpoint,
             get_backend_error
         ])
+        .plugin(tauri_plugin_fs_extra::init())
         .run(tauri::generate_context!())
         .context("Error while running app")
 }
-

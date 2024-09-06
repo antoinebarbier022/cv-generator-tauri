@@ -1,6 +1,7 @@
 import { emptyInitialResume } from '@/constants/empty-initial-resume'
 import { UserData } from '@/types/storage'
 import { ResumeValidationSchemaForImportation } from '@/validations/dataContentValidationSchema'
+
 import { getVersion } from '@tauri-apps/api/app'
 import { open } from '@tauri-apps/api/dialog'
 import {
@@ -16,7 +17,7 @@ import {
 import { appDataDir, extname, join, pictureDir } from '@tauri-apps/api/path'
 import { convertFileSrc } from '@tauri-apps/api/tauri'
 import { format } from 'date-fns'
-
+import { metadata } from 'tauri-plugin-fs-extra-api'
 const CONTENT_DATA_FILE = `data.json`
 
 export const StorageService = {
@@ -105,6 +106,12 @@ export const StorageService = {
       console.error('Failed to parse JSON data:', jsonError)
       throw Error(`Failed to parse JSON data:${jsonError}`)
     }
+  },
+
+  getLastModified: async (): Promise<Date> => {
+    const meta_properties = await metadata(await join(await appDataDir(), CONTENT_DATA_FILE))
+    console.log(meta_properties)
+    return meta_properties.modifiedAt
   },
 
   setContentData: async ({ values }: { values: UserData }): Promise<UserData> => {

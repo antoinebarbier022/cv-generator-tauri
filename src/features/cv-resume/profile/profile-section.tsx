@@ -67,19 +67,19 @@ export const ProfileSection = () => {
       }
     },
     enableReinitialize: true,
-    onSubmit: (values) => {
-      queryClient.setQueryData(['profile'], values)
-      queryClient.invalidateQueries({ queryKey: ['data'] })
-      finalFormik.setValues((oldValues) => {
-        const result = { ...oldValues, ...values }
-        return result
-      })
+    onSubmit: async (values) => {
+      //alert(JSON.stringify(values))
+      //queryClient.setQueryData(['profile'], values)
+      //queryClient.invalidateQueries({ queryKey: ['data'] })
+
+      await finalFormik.setValues((oldValues) => ({ ...oldValues, ...values }))
+      await finalFormik.submitForm()
     }
   })
 
   const debouncedSubmit = useCallback(
     debounce(() => formik.submitForm(), 500),
-    [2000, formik.submitForm]
+    [formik.submitForm]
   )
 
   const mutationReplacePicture = useSetImageProfileStorage()

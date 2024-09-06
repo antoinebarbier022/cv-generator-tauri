@@ -100,7 +100,7 @@ export const ProjectItem = ({ data, index, onChange, ...rest }: Props) => {
 
   return (
     <SectionItemLayout
-      index={0}
+      index={index}
       title={
         <AccordionCardTitle
           content={
@@ -117,11 +117,11 @@ export const ProjectItem = ({ data, index, onChange, ...rest }: Props) => {
           })}
         />
       }
-      {...rest}
-      isExpanded={expandedItem === formik.values.id}
+      isExpanded={expandedItem === data.id}
       onExpandedChange={(_, expanded) => {
         setExpandedItem(expanded ? formik.values.id : undefined)
       }}
+      {...rest}
     >
       <Stack component={'fieldset'} gap={1} sx={{ position: 'relative', flex: 1, border: 'none' }}>
         <Stack direction={'row'} gap={2} flexWrap={'wrap'}>

@@ -1,4 +1,6 @@
+import { StorageService } from '@/services/StorageService'
 import { Divider, Sheet, Stack, Typography } from '@mui/joy'
+import { useQuery } from '@tanstack/react-query'
 import { FooterItemLastUpdated } from '../components/footer-item-last-updated'
 import { FooterItemOutputPath } from '../components/footer-item-output-path'
 import { WarningsCounter } from '../components/warning-counter'
@@ -12,6 +14,13 @@ const configFooterOptions = {
 
 export const FooterBarContainer = () => {
   const { countWarnings } = useWarningsStore()
+
+  const lastModifiedDateFile = useQuery({
+    queryKey: ['lastModifiedAt'],
+    queryFn: () => StorageService.getLastModified()
+  })
+
+  console.log(lastModifiedDateFile)
 
   return (
     <Stack
@@ -47,10 +56,10 @@ export const FooterBarContainer = () => {
           </>
         )}
 
-        {configFooterOptions.showLastUpdate && (
+        {lastModifiedDateFile.data && (
           <>
             {' '}
-            <FooterItemLastUpdated date={new Date()} />
+            <FooterItemLastUpdated date={lastModifiedDateFile.data} />
             <Divider orientation="vertical" />
           </>
         )}

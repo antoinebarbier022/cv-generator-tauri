@@ -1,14 +1,14 @@
-@import url("./_font-benton-sans.css");
-@import url("./_font-quarto.css");
-@import url("./_font-ubuntu.css");
-@import url("./_toastify.css");
+@import url('./_font-benton-sans.css');
+@import url('./_font-quarto.css');
+@import url('./_font-ubuntu.css');
+@import url('./_toastify.css');
 
 @tailwind components;
 @tailwind utilities;
 
 :root {
   --app-border-width: 10px;
-  --app-footer-height: 20px;
+  --app-footer-height: 18px;
   --app-sidebar-width: 260px;
   --titlebar-height: var(--app-border-width);
 

@@ -33,6 +33,7 @@
     "react-router-dom": "^6.24.0",
     "react-toastify": "^10.0.5",
     "remark-gfm": "^4.0.0",
+    "tauri-plugin-fs-extra-api": "github:tauri-apps/tauri-plugin-fs-extra#v1",
     "yup": "^1.4.0",
     "zustand": "^4.5.5"
   },
