@@ -12,15 +12,15 @@ import { Button, Sheet, Stack } from '@mui/joy'
 
 import { useAskOutputPath } from '@/features/generation/hooks/useAskOutputPath'
 import { useGenerate } from '@/features/generation/hooks/useGenerate'
-import { useGetDataStorage } from '@/hooks/useGetDataStorage'
+import { useFormCV } from '@/hooks/useFormCV'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { MissingFontAlert } from '../components/missing-font-alert'
-import { MissingFontModal } from '../components/missing-font-modal'
+import { NavigationType } from '../../../types/sidebar'
+import { MissingFontAlert } from '../../missing-font/components/missing-font-alert'
+import { MissingFontModal } from '../../missing-font/components/missing-font-modal'
+import { useMissingFont } from '../../missing-font/hooks/useMissingFont'
 import { NavigationList } from '../components/navigation-list'
 import { ProfileButtonCard } from '../components/profile-button-card'
-import { useMissingFont } from '../hooks/useMissingFont'
-import { NavigationType } from '../types/sidebar'
 
 interface Props {
   isLoadingGenerate?: boolean
@@ -30,7 +30,8 @@ export const SidebarContainer = ({ isLoadingGenerate }: Props) => {
 
   const askOutputPath = useAskOutputPath()
   const generate = useGenerate()
-  const contentResume = useGetDataStorage()
+
+  const { formValues } = useFormCV()
 
   const [isOpenModalMissingFont, setOpenModalMissingFont] = useState(false)
 
@@ -38,18 +39,18 @@ export const SidebarContainer = ({ isLoadingGenerate }: Props) => {
   const handleCloseModalMissingFont = () => setOpenModalMissingFont(false)
 
   const fullName = useMemo(() => {
-    const firstname = contentResume.data?.firstname
-    const lastname = contentResume.data?.lastname
+    const firstname = formValues.firstname
+    const lastname = formValues.lastname
     if (Boolean(firstname) && Boolean(lastname)) {
-      return `${contentResume.data?.firstname} ${contentResume.data?.lastname}`
+      return `${firstname} ${lastname}`
     } else if (Boolean(firstname)) {
-      return `${contentResume.data?.firstname}`
+      return `${firstname}`
     } else if (Boolean(lastname)) {
-      return `${contentResume.data?.lastname}`
+      return `${lastname}`
     } else {
       return ''
     }
-  }, [contentResume.data?.firstname, contentResume.data?.lastname])
+  }, [formValues.firstname, formValues.lastname])
 
   const handleGenerateCV = () => {
     askOutputPath.mutate(undefined, {
@@ -133,7 +134,7 @@ export const SidebarContainer = ({ isLoadingGenerate }: Props) => {
           position={'relative'}
         >
           <ProfileButtonCard
-            image={contentResume.data?.picture}
+            image={formValues.picture}
             fullName={Boolean(fullName) ? fullName : ''}
             linkTo={'/my-account'}
           />

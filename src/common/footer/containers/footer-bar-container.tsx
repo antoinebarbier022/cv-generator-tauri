@@ -1,10 +1,10 @@
 import { StorageService } from '@/services/StorageService'
+import { useWarningsStore } from '@/stores/useWarningsStore'
 import { Divider, Sheet, Stack, Typography } from '@mui/joy'
 import { useQuery } from '@tanstack/react-query'
 import { FooterItemLastUpdated } from '../components/footer-item-last-updated'
 import { FooterItemOutputPath } from '../components/footer-item-output-path'
-import { WarningsCounter } from '../components/warning-counter'
-import { useWarningsStore } from '../stores/useWarningsStore'
+import { FooterItemWarningsCounter } from '../components/footer-item-warning-counter'
 
 const configFooterOptions = {
   showErrors: true,
@@ -64,7 +64,7 @@ export const FooterBarContainer = () => {
           </>
         )}
 
-        {configFooterOptions.showErrors && <WarningsCounter count={countWarnings} />}
+        {configFooterOptions.showErrors && <FooterItemWarningsCounter count={countWarnings} />}
       </Stack>
     </Stack>
   )

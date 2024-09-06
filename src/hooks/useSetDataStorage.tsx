@@ -8,7 +8,8 @@ export const useSetDataStorage = () => {
     mutationKey: ['setData'],
     mutationFn: StorageService.setContentData,
     onSuccess: () => {
-      //queryClient.invalidateQueries({ queryKey: ['data'] })
+      alert('mutation')
+      queryClient.invalidateQueries({ queryKey: ['data'] })
       queryClient.invalidateQueries({ queryKey: ['lastModifiedAt'] })
     },
     onError: async (error) => {

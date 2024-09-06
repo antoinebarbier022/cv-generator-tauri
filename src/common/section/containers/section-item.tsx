@@ -4,15 +4,15 @@ import { useFormik } from 'formik'
 import debounce from 'just-debounce-it'
 import { Fragment, useCallback } from 'react'
 
-import { ResumeContentSection, Translation } from '../types/storage'
+import { ResumeContentSection, Translation } from '../../../types/storage'
 
 import * as yup from 'yup'
-import { AccordionCardTitle } from '../components/accordion-card-title'
-import { CV_LANGUAGES } from '../constants/cv-languages'
+import { AccordionCardTitle } from '../../../components/accordion-card-title'
+import { CV_LANGUAGES } from '../../../constants/cv-languages'
 
+import { useExpandedItemStore } from '../../../stores/useExpandedItemStore'
+import { translationSchemaWithValidation } from '../../../validations/dataContentValidationSchema'
 import { SectionItemLayout, SectionItemProps } from '../layouts/section-item-layout'
-import { useExpandedItemStore } from '../stores/useExpandedItemStore'
-import { translationSchemaWithValidation } from '../validations/dataContentValidationSchema'
 
 interface Props extends Omit<SectionItemProps, 'title' | 'isExpanded' | 'onExpandedChange'> {
   id: UUID

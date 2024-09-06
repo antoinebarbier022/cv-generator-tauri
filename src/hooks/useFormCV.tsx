@@ -7,59 +7,71 @@ import { emptyInitialResume } from '../constants/empty-initial-resume'
 import { reorderListSection } from '../utils/drag-and-drop.utils'
 import { isEmptyObject } from '../utils/object.utils'
 
-import { useExpandedItemStore } from '@/stores/useExpandedItemStore'
+import { StorageService } from '@/services/StorageService'
 import { useWarningsStore } from '@/stores/useWarningsStore'
 import { ResumeContentSection, Translation, UserData, UserDataExperience } from '@/types/storage'
 import { countWarnings } from '@/utils/warnings.utils'
 import { finalFormValidationSchema } from '@/validations/dataContentValidationSchema'
+
+import { useExpandedItemStore } from '@/stores/useExpandedItemStore'
+import deepEqual from 'deep-equal'
 import { useEffect } from 'react'
+import { create } from 'zustand'
 import { useGetDataStorage } from './useGetDataStorage'
-import { useSetDataStorage } from './useSetDataStorage'
+
+interface FormState {
+  formValues: UserData
+  setFormValues: (values: Partial<UserData>) => void
+}
+
+export const useFormStore = create<FormState>((set, get) => ({
+  formValues: emptyInitialResume,
+  setFormValues: async (values) => {
+    const oldValues = get().formValues
+    const newValues = {
+      ...oldValues,
+      ...values
+    } as UserData
+    if (!deepEqual(oldValues, newValues)) {
+      StorageService.setContentData({
+        values: {
+          ...get().formValues,
+          ...values
+        }
+      })
+    }
+    set(() => ({
+      formValues: newValues
+    }))
+  }
+}))
 
 export const useFormCV = () => {
   const userData = useGetDataStorage()
-  const dataMutation = useSetDataStorage()
+  const { formValues, setFormValues } = useFormStore()
 
   const { setCountWarnings } = useWarningsStore()
   const { setExpandedItem } = useExpandedItemStore()
 
-  const initialValues = userData.data
-
-  const formik = useFormik<UserData>({
-    initialValues: initialValues ?? emptyInitialResume,
-    enableReinitialize: true,
-
-    onSubmit: async (values) => {
-      //alert(JSON.stringify(values))
-      await formikOnlyForWarnings.setValues(values)
-      await formikOnlyForWarnings.validateForm(values)
-
-      dataMutation.mutate({ values })
-    }
-  })
-
   const formikOnlyForWarnings = useFormik<UserData>({
-    initialValues: initialValues ?? emptyInitialResume,
+    initialValues: emptyInitialResume,
     validationSchema: finalFormValidationSchema,
     validateOnMount: true,
     validateOnChange: true,
-    enableReinitialize: true,
     onSubmit: () => {}
   })
 
   useEffect(() => {
-    if (
-      !formikOnlyForWarnings.isValidating &&
-      formikOnlyForWarnings.touched &&
-      formikOnlyForWarnings.errors
-    ) {
-      setCountWarnings(countWarnings(formikOnlyForWarnings.errors))
+    if (userData.data) {
+      setFormValues(userData.data)
+      formikOnlyForWarnings.setValues(userData.data)
     }
-  }, [
-    formikOnlyForWarnings.isValidating,
-    formikOnlyForWarnings.touched,
-    formikOnlyForWarnings.errors
-  ])
+  }, [userData.data])
+
+  const handleCheckWarnings = async () => {
+    await formikOnlyForWarnings.setValues(formValues)
+    setCountWarnings(countWarnings(formikOnlyForWarnings.errors))
+  }
 
   type ResumeSectionFieldName =
     | 'employment_history'
@@ -70,11 +82,8 @@ export const useFormCV = () => {
     | 'experiences'
 
   const handleAddItemSection = ({ fieldName }: { fieldName: ResumeSectionFieldName }) => {
-    if (
-      formik.values[fieldName].length >= 1 &&
-      isEmptyObject(formik.values[fieldName][0].content)
-    ) {
-      setExpandedItem(formik.values[fieldName][0].id)
+    if (formValues[fieldName].length >= 1 && isEmptyObject(formValues[fieldName][0].content)) {
+      setExpandedItem(formValues[fieldName][0].id)
       return
     }
     const newId = crypto.randomUUID()
@@ -113,8 +122,10 @@ export const useFormCV = () => {
       }
     }
 
-    formik.setFieldValue(fieldName, [fieldValue(), ...(formik.values[fieldName] ?? [])])
-    formik.submitForm()
+    setFormValues({
+      [fieldName]: [fieldValue(), ...(formValues[fieldName] ?? [])]
+    })
+    handleCheckWarnings()
     setExpandedItem(newId)
   }
 
@@ -123,14 +134,14 @@ export const useFormCV = () => {
       return
     }
 
-    const items = reorderListSection(
-      formik.values[fieldName],
-      result.source.index,
-      result.destination.index
-    )
-
-    formik.setFieldValue(fieldName, items)
-    formik.submitForm()
+    setFormValues({
+      [fieldName]: reorderListSection(
+        formValues[fieldName],
+        result.source.index,
+        result.destination.index
+      )
+    })
+    handleCheckWarnings()
   }
 
   const handleDeleteItemSection = async ({
@@ -140,7 +151,7 @@ export const useFormCV = () => {
     fieldName: ResumeSectionFieldName
     idSelected: string
   }) => {
-    const section = formik.values[fieldName] as unknown as ResumeContentSection<unknown>[]
+    const section = formValues[fieldName] as unknown as ResumeContentSection<unknown>[]
 
     const indexSelectedItem = section.findIndex((e) => e.id === idSelected)
     const showDialogConfirm =
@@ -153,16 +164,17 @@ export const useFormCV = () => {
       })
       if (!confirmed) return
     }
-    await formik.setFieldValue(fieldName, [
-      ...(formik.values[fieldName]?.filter((v) => v.id !== idSelected) ?? [])
-    ])
-    await formik.submitForm()
+    setFormValues({
+      [fieldName]: [...(formValues[fieldName]?.filter((v) => v.id !== idSelected) ?? [])]
+    })
+    handleCheckWarnings()
   }
 
   return {
-    formikWarnings: formikOnlyForWarnings.errors,
-    formik,
-    userData,
+    formValues,
+    setFormValues,
+    formWarningsData: formikOnlyForWarnings.errors,
+    handleCheckWarnings,
     handleAddItemSection,
     handleDeleteItemSection,
     dragEnded

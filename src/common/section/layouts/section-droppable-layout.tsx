@@ -10,8 +10,8 @@ interface Props extends PropsWithChildren {
   chip: string | undefined
   droppableId: string
   isEmpty?: boolean
-  isError: boolean
-  isLoading: boolean
+  isError?: boolean
+  isLoading?: boolean
   emptyContent?: ReactNode
   onDragEnd: OnDragEndResponder
   onAddItem: () => void

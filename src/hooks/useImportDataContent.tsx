@@ -5,14 +5,16 @@ import { toast } from 'react-toastify'
 import { useFormCV } from './useFormCV'
 
 export const useImportDataContent = () => {
-  const { formik } = useFormCV()
+  const { setFormValues } = useFormCV()
   const queryClient = useQueryClient()
   return useMutation({
     mutationKey: ['import-data-content'],
     mutationFn: StorageService.importContentData,
     onSuccess: async (data) => {
       if (data !== null) {
-        await formik.setFieldValue('picture', '')
+        setFormValues({
+          picture: ''
+        })
         await queryClient.invalidateQueries({ queryKey: ['image_profile'] })
         await queryClient.invalidateQueries({ queryKey: ['data'] })
         toast.success('JSON is imported')

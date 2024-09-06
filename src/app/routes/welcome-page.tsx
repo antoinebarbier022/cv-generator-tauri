@@ -14,7 +14,7 @@ export const WelcomePage = () => {
   const [isLoading, setLoading] = useState(false)
   const [isForm, setIsForm] = useState(false)
 
-  const { formik: finalFormik } = useFormCV()
+  const { setFormValues } = useFormCV()
 
   const formik = useFormik<{ firstname: string; lastname: string }>({
     initialValues: {
@@ -27,8 +27,10 @@ export const WelcomePage = () => {
     }),
     validateOnMount: true,
     onSubmit: (values) => {
-      finalFormik.setFieldValue('firstname', values.firstname)
-      finalFormik.setFieldValue('lastname', values.lastname)
+      setFormValues({
+        firstname: values.firstname,
+        lastname: values.lastname
+      })
       setLoading(true)
       setTimeout(() => {
         navigate('/profile')

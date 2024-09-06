@@ -8,7 +8,7 @@ import {
 } from '@mui/joy'
 import { NavLink } from 'react-router-dom'
 import { Fragment } from 'react/jsx-runtime'
-import { NavigationType } from '../types/sidebar'
+import { NavigationType } from '../../../types/sidebar'
 
 interface Props {
   navigation: NavigationType[]

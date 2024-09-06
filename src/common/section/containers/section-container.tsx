@@ -3,9 +3,10 @@ import { useTranslation } from 'react-i18next'
 
 import { useFormCV } from '@/hooks/useFormCV'
 
-import { SectionDroppableLayout } from '@/layouts/section-droppable-layout'
-import { EmptyState } from '../components/empty-state'
-import { Translation } from '../types/storage'
+import { SectionDroppableLayout } from '@/common/section/layouts/section-droppable-layout'
+import { SectionEmptyState } from '../components/section-empty-state'
+
+import { Translation } from '../../../types/storage'
 import { SectionItem } from './section-item'
 
 interface Props {
@@ -21,21 +22,31 @@ export const SectionPage = ({
 }: Props) => {
   const { t } = useTranslation()
 
-  const { userData, formik, handleAddItemSection, handleDeleteItemSection, dragEnded } = useFormCV()
+  const {
+    formValues,
+    setFormValues,
+    handleAddItemSection,
+    handleDeleteItemSection,
+    handleCheckWarnings: handleSaveToLocalStorage,
+    dragEnded
+  } = useFormCV()
 
   const handleChangeVisibility = (index: number, value: boolean) => {
-    const newContent = [...formik.values[sectionKey]]
+    const newContent = [...formValues[sectionKey]]
     newContent[index].isHidden = value
-    formik.setFieldValue(sectionKey, newContent)
-    formik.submitForm()
+    setFormValues({
+      [sectionKey]: newContent
+    })
   }
 
   const handleEditContentItem = (id: string, content: Translation) => {
-    const newContent = [...formik.values[sectionKey]]
+    const newContent = [...formValues[sectionKey]]
     newContent[newContent.findIndex((e) => e.id === id)].content = content
 
-    formik.setFieldValue(sectionKey, newContent)
-    formik.submitForm()
+    setFormValues({
+      [sectionKey]: newContent
+    })
+    handleSaveToLocalStorage()
   }
 
   const handleDelete = (id: string) =>
@@ -44,20 +55,18 @@ export const SectionPage = ({
       idSelected: id
     })
 
-  const isEmpty = userData.data && userData.data[sectionKey].length === 0
+  const isEmpty = formValues[sectionKey].length === 0
 
   return (
     <SectionDroppableLayout
       title={t(`resume.section.${sectionKey}.title`)}
-      chip={String(formik.values[sectionKey].length)}
+      chip={String(formValues[sectionKey].length)}
       droppableId={'droppable'}
       onDragEnd={(result) => dragEnded(result, sectionKey)}
       onAddItem={() => handleAddItemSection({ fieldName: sectionKey })}
-      isError={userData.isError}
       isEmpty={isEmpty}
-      isLoading={userData.isPending}
       emptyContent={
-        <EmptyState
+        <SectionEmptyState
           title={t(`empty-state.${sectionKey}.title`)}
           description={t(`empty-state.${sectionKey}.description`)}
           labelButton={t(`empty-state.${sectionKey}.button.label`)}
@@ -66,7 +75,7 @@ export const SectionPage = ({
       }
     >
       <AccordionGroup disableDivider component={Stack}>
-        {formik.values[sectionKey]?.map((field, index) => (
+        {formValues[sectionKey]?.map((field, index) => (
           <SectionItem
             index={index}
             key={field.id}

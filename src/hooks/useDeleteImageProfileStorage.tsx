@@ -4,12 +4,12 @@ import { message } from '@tauri-apps/api/dialog'
 import { removeFile } from '@tauri-apps/api/fs'
 
 export const useDeleteImageProfileStorage = () => {
-  const { formik } = useFormCV()
+  const { formValues } = useFormCV()
   const queryClient = useQueryClient()
   return useMutation({
     mutationKey: ['delete_image_profile'],
     mutationFn: async () => {
-      await removeFile(formik.values.picture)
+      await removeFile(formValues.picture)
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['image_profile'] })

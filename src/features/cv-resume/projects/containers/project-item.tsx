@@ -1,6 +1,6 @@
+import { SectionItemLayout, SectionItemProps } from '@/common/section/layouts/section-item-layout'
 import { AccordionCardTitle } from '@/components/accordion-card-title'
 import { CV_LANGUAGES } from '@/constants/cv-languages'
-import { SectionItemLayout, SectionItemProps } from '@/layouts/section-item-layout'
 import { useExpandedItemStore } from '@/stores/useExpandedItemStore'
 import { ResumeContentSection, UserDataExperience } from '@/types/storage'
 import { countWarnings } from '@/utils/warnings.utils'

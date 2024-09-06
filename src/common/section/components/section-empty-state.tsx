@@ -7,7 +7,7 @@ interface Props {
   labelButton: string
   onClickButton: () => void
 }
-export const EmptyState = (props: Props) => {
+export const SectionEmptyState = (props: Props) => {
   return (
     <Stack component={Container} maxWidth={'sm'} textAlign={'center'} marginTop={2}>
       <Typography level="title-md" textColor={'text.secondary'}>

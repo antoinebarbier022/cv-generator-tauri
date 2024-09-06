@@ -1,15 +1,15 @@
-import { WarningRounded } from "@mui/icons-material";
-import { Stack, Tooltip, Typography } from "@mui/joy";
+import { WarningRounded } from '@mui/icons-material'
+import { Stack, Tooltip, Typography } from '@mui/joy'
 
 interface Props {
-  count: number;
+  count: number
 }
-export const WarningsCounter = ({ count }: Props) => {
+export const FooterItemWarningsCounter = ({ count }: Props) => {
   return (
     <Tooltip open color="warning" title="" size="sm" variant="solid" arrow>
       <Typography
         endDecorator={
-          <Stack fontSize={"1rem"}>
+          <Stack fontSize={'1rem'}>
             <WarningRounded fontSize="inherit" />
           </Stack>
         }
@@ -17,5 +17,5 @@ export const WarningsCounter = ({ count }: Props) => {
         {count}
       </Typography>
     </Tooltip>
-  );
-};
+  )
+}

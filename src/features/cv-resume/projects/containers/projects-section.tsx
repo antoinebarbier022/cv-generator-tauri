@@ -2,54 +2,66 @@ import { AccordionGroup, Stack } from '@mui/joy'
 
 import { useTranslation } from 'react-i18next'
 
-import { EmptyState } from '@/components/empty-state'
+import { SectionDroppableLayout } from '@/common/section/layouts/section-droppable-layout'
+
+import { SectionEmptyState } from '@/common/section/components/section-empty-state'
 import { useFormCV } from '@/hooks/useFormCV'
-import { SectionDroppableLayout } from '@/layouts/section-droppable-layout'
+import { useExpandedItemStore } from '@/stores/useExpandedItemStore'
 import { ResumeContentSection, UserDataExperience } from '@/types/storage'
 import { ProjectItem } from './project-item'
 
 export const ProjectsSection = () => {
   const { t } = useTranslation()
-  const { userData, formik, dragEnded, handleDeleteItemSection, handleAddItemSection } = useFormCV()
+  const {
+    formValues,
+    setFormValues,
+    dragEnded,
+    handleDeleteItemSection,
+    handleAddItemSection,
+    handleCheckWarnings: handleSaveToLocalStorage
+  } = useFormCV()
 
-  const handleAddProject = () => {
+  const { setExpandedItem } = useExpandedItemStore()
+
+  const handleAddProject = async () => {
     handleAddItemSection({ fieldName: 'experiences' })
+    if (formValues['experiences'].length >= 1) {
+      setExpandedItem(formValues['experiences'][0].id)
+    }
   }
-  const isEmptyData = userData.data && userData.data?.experiences.length === 0
+  const isEmptyData = formValues.experiences.length === 0
 
   const handleDeleteById = (id: string) => {
     handleDeleteItemSection({ fieldName: 'experiences', idSelected: id })
   }
 
   const handleEditContentItem = (data: ResumeContentSection<UserDataExperience>) => {
-    const newContent = [...formik.values['experiences']]
+    const newContent = [...formValues['experiences']]
     const indexNewContent = newContent.findIndex((e) => e.id === data.id)
     newContent[indexNewContent] = { ...data }
 
-    formik.setFieldValue('experiences', newContent)
-    formik.submitForm()
+    setFormValues({ experiences: newContent })
+    handleSaveToLocalStorage()
   }
 
   const handleChangeVisibility = (index: number, value: boolean) => {
-    const newContent = [...formik.values['experiences']]
+    const newContent = [...formValues['experiences']]
     newContent[index].isHidden = value
-    formik.setFieldValue('experiences', newContent)
-    formik.submitForm()
+    setFormValues({ experiences: newContent })
+    handleSaveToLocalStorage()
   }
 
   return (
     <>
       <SectionDroppableLayout
         title={t('resume.section.projects.title')}
-        chip={String(formik.values['experiences'].length)}
+        chip={String(formValues['experiences'].length)}
         droppableId={'droppable'}
         onDragEnd={(result) => dragEnded(result, 'experiences')}
         onAddItem={handleAddProject}
-        isError={userData.isError}
         isEmpty={isEmptyData}
-        isLoading={userData.isPending}
         emptyContent={
-          <EmptyState
+          <SectionEmptyState
             title={t('empty-state.project.title')}
             description={t('empty-state.project.description')}
             labelButton={t('empty-state.project.button.label')}
@@ -58,7 +70,7 @@ export const ProjectsSection = () => {
         }
       >
         <AccordionGroup component={Stack} disableDivider>
-          {formik.values.experiences?.map((field, index) => (
+          {formValues.experiences?.map((field, index) => (
             <ProjectItem
               index={index}
               key={field.id}

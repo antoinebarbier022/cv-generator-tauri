@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 
-import { FooterBarContainer } from '@/containers/footer-bar-container'
-import { SidebarContainer } from '@/containers/sidebar-container'
+import { FooterBarContainer } from '@/common/footer/containers/footer-bar-container'
+import { SidebarContainer } from '@/common/sidebar/containers/sidebar-container'
 import { EmploymentHistorySection } from '@/features/cv-resume/employment-history/employment-history-section'
 import { FormationSection } from '@/features/cv-resume/formation/formation-section'
 import { LanguagesSection } from '@/features/cv-resume/languages/languages-section'
