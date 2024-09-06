@@ -19,9 +19,6 @@ export const ProjectsSection = () => {
 
   const handleAddProject = async () => {
     handleAddItemSection({ fieldName: 'experiences' })
-    if (formValues['experiences'].length >= 1) {
-      setExpandedItem(formValues['experiences'][0].id)
-    }
   }
   const isEmptyData = formValues.experiences.length === 0
 
