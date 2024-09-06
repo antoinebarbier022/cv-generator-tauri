@@ -12,14 +12,8 @@ import { ProjectItem } from './project-item'
 
 export const ProjectsSection = () => {
   const { t } = useTranslation()
-  const {
-    formValues,
-    setFormValues,
-    dragEnded,
-    handleDeleteItemSection,
-    handleAddItemSection,
-    handleCheckWarnings: handleSaveToLocalStorage
-  } = useFormCV()
+  const { formValues, setFormValues, dragEnded, handleDeleteItemSection, handleAddItemSection } =
+    useFormCV()
 
   const { setExpandedItem } = useExpandedItemStore()
 
@@ -41,14 +35,12 @@ export const ProjectsSection = () => {
     newContent[indexNewContent] = { ...data }
 
     setFormValues({ experiences: newContent })
-    handleSaveToLocalStorage()
   }
 
   const handleChangeVisibility = (index: number, value: boolean) => {
     const newContent = [...formValues['experiences']]
     newContent[index].isHidden = value
     setFormValues({ experiences: newContent })
-    handleSaveToLocalStorage()
   }
 
   return (

@@ -1,20 +1,30 @@
 import { WarningRounded } from '@mui/icons-material'
-import { Stack, Tooltip, Typography } from '@mui/joy'
+import { CircularProgress, Stack, Tooltip, Typography } from '@mui/joy'
 
 interface Props {
   count: number
+  loading?: boolean
 }
-export const FooterItemWarningsCounter = ({ count }: Props) => {
+export const FooterItemWarningsCounter = ({ count, loading }: Props) => {
   return (
     <Tooltip open color="warning" title="" size="sm" variant="solid" arrow>
       <Typography
-        endDecorator={
+        paddingRight={0.25}
+        startDecorator={
           <Stack fontSize={'1rem'}>
             <WarningRounded fontSize="inherit" />
           </Stack>
         }
       >
-        {count}
+        <span className="text-end w-[2ch]">
+          {loading ? (
+            <Stack>
+              <CircularProgress size="sm" sx={{ scale: '0.5' }} />
+            </Stack>
+          ) : (
+            count
+          )}
+        </span>
       </Typography>
     </Tooltip>
   )

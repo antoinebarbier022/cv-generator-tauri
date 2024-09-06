@@ -27,7 +27,7 @@ export const SectionPage = ({
     setFormValues,
     handleAddItemSection,
     handleDeleteItemSection,
-    handleCheckWarnings: handleSaveToLocalStorage,
+
     dragEnded
   } = useFormCV()
 
@@ -46,7 +46,6 @@ export const SectionPage = ({
     setFormValues({
       [sectionKey]: newContent
     })
-    handleSaveToLocalStorage()
   }
 
   const handleDelete = (id: string) =>

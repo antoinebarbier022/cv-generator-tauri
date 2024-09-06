@@ -7,9 +7,7 @@ import { emptyInitialResume } from '../constants/empty-initial-resume'
 import { reorderListSection } from '../utils/drag-and-drop.utils'
 import { isEmptyObject } from '../utils/object.utils'
 
-import { useWarningsStore } from '@/stores/useWarningsStore'
 import { ResumeContentSection, Translation, UserData, UserDataExperience } from '@/types/storage'
-import { countWarnings } from '@/utils/warnings.utils'
 import { finalFormValidationSchema } from '@/validations/dataContentValidationSchema'
 
 import { useExpandedItemStore } from '@/stores/useExpandedItemStore'
@@ -21,7 +19,6 @@ export const useFormCV = () => {
   const userData = useGetDataStorage()
   const { formValues, setFormValues } = useFormStore()
 
-  const { setCountWarnings } = useWarningsStore()
   const { setExpandedItem } = useExpandedItemStore()
 
   const formikOnlyForWarnings = useFormik<UserData>({
@@ -32,28 +29,12 @@ export const useFormCV = () => {
     onSubmit: () => {}
   })
 
-  /*const getDataFromStorage =  useMutation({
-    mutationKey: ['GET data.json'],
-    mutationFn: StorageService.getContentData,
-    onSuccess: (data) => {
-      setFormValues(data)
-    },
-    onError: () => {
-      setFormValues(emptyInitialResume)
-    }
-  })*/
-
   useEffect(() => {
     if (userData.data) {
       setFormValues(userData.data)
       formikOnlyForWarnings.setValues(userData.data)
     }
   }, [userData.data])
-
-  const handleCheckWarnings = async () => {
-    await formikOnlyForWarnings.setValues(formValues)
-    setCountWarnings(countWarnings(formikOnlyForWarnings.errors))
-  }
 
   type ResumeSectionFieldName =
     | 'employment_history'
@@ -107,7 +88,7 @@ export const useFormCV = () => {
     setFormValues({
       [fieldName]: [fieldValue(), ...(formValues[fieldName] ?? [])]
     })
-    handleCheckWarnings()
+
     setExpandedItem(newId)
   }
 
@@ -123,7 +104,6 @@ export const useFormCV = () => {
         result.destination.index
       )
     })
-    handleCheckWarnings()
   }
 
   const handleDeleteItemSection = async ({
@@ -149,14 +129,12 @@ export const useFormCV = () => {
     setFormValues({
       [fieldName]: [...(formValues[fieldName]?.filter((v) => v.id !== idSelected) ?? [])]
     })
-    handleCheckWarnings()
   }
 
   return {
     formValues,
     setFormValues,
     formWarningsData: formikOnlyForWarnings.errors,
-    handleCheckWarnings,
     handleAddItemSection,
     handleDeleteItemSection,
     dragEnded

@@ -1,11 +1,14 @@
 import { emptyInitialResume } from '@/constants/empty-initial-resume'
 import { StorageService } from '@/services/StorageService'
 import { UserData } from '@/types/storage'
+import { finalFormValidationSchema } from '@/validations/dataContentValidationSchema'
 import deepEqual from 'deep-equal'
+import { ValidationError } from 'yup'
 import { create } from 'zustand'
 
 interface FormState {
   lastUpdated: Date | null
+  formWarnings: ValidationError | null
   formValues: UserData
   setLastUpdated: (value: Date) => void
   setFormValues: (values: Partial<UserData>) => void
@@ -13,6 +16,7 @@ interface FormState {
 
 export const useFormStore = create<FormState>((set) => ({
   lastUpdated: null,
+  formWarnings: null,
   formValues: emptyInitialResume,
   setLastUpdated: (value) => {
     set(() => ({
@@ -38,9 +42,25 @@ export const useFormStore = create<FormState>((set) => ({
         })
         console.log('[INFO] : change form value', { values })
       }
+
+      let formWarnings = null
+
+      // check warnings
+      finalFormValidationSchema
+        .validate(newValues, {
+          abortEarly: false
+        })
+        .then(() => {
+          console.log("Pas d'erreurs")
+        })
+        .catch((warnings: ValidationError) => {
+          formWarnings = warnings
+        })
+
       return {
         lastUpdated: saveValueInsideStorage ? new Date() : state.lastUpdated,
-        formValues: newValues
+        formValues: newValues,
+        formWarnings: formWarnings
       }
     })
   }

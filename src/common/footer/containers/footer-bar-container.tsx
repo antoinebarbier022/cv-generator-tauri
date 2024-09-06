@@ -1,6 +1,7 @@
 import { StorageService } from '@/services/StorageService'
 import { useFormStore } from '@/stores/useFormStore'
-import { useWarningsStore } from '@/stores/useWarningsStore'
+
+import { useFormWarnings } from '@/hooks/useFormWarnings'
 import { Divider, Sheet, Stack, Typography } from '@mui/joy'
 import { useEffect } from 'react'
 import { FooterItemLastUpdated } from '../components/footer-item-last-updated'
@@ -15,7 +16,8 @@ const configFooterOptions = {
 
 export const FooterBarContainer = () => {
   const { lastUpdated, setLastUpdated } = useFormStore()
-  const { countWarnings } = useWarningsStore()
+
+  const { countWarnings } = useFormWarnings()
 
   useEffect(() => {
     StorageService.getLastModified().then((data) => {
@@ -32,12 +34,12 @@ export const FooterBarContainer = () => {
       justifyContent={'end'}
       sx={{
         width: 'calc(100%)',
+        background: 'transparent',
         position: 'absolute',
         bottom: 0,
-        //left: "calc(var(--app-sidebar-width))",
-        paddingRight: 'calc(0.5rem + var(--app-border-width)) ',
-        py: 0.5,
-        background: 'transparent'
+        height: 'calc(var(--app-footer-height) + var(--app-border-width))',
+        paddingRight: 'calc(0.5rem + var(--app-border-width))',
+        py: 0.5
       }}
       invertedColors
     >
@@ -47,6 +49,7 @@ export const FooterBarContainer = () => {
         fontWeight={400}
         textColor={'text.secondary'}
         direction={'row'}
+        alignItems={'center'}
         sx={{ cursor: 'default' }}
         gap={1.5}
       >
@@ -59,13 +62,14 @@ export const FooterBarContainer = () => {
 
         {lastUpdated && (
           <>
-            {' '}
             <FooterItemLastUpdated date={lastUpdated} />
-            <Divider orientation="vertical" />
+            <Divider orientation="vertical" sx={{ height: '70%', alignSelf: 'center' }} />
           </>
         )}
 
-        {configFooterOptions.showErrors && <FooterItemWarningsCounter count={countWarnings} />}
+        {configFooterOptions.showErrors && (
+          <FooterItemWarningsCounter loading={countWarnings === null} count={countWarnings ?? 0} />
+        )}
       </Stack>
     </Stack>
   )
