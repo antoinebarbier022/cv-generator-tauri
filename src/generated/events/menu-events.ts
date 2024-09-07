@@ -7,4 +7,5 @@ export enum MenuEvent {
   FileGenerate = "file-generate",
   FileGenerateAndSaveAs = "file-generate-and-save-as",
   DebugOpenPanel = "debug-open-panel",
+  AppPreferences = "app-preferences",
 }

@@ -3,11 +3,11 @@ import { listen } from '@tauri-apps/api/event'
 import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
+import { useAskOutputPath } from '@/features/generation/hooks/useAskOutputPath'
+import { useGenerate } from '@/features/generation/hooks/useGenerate'
+import { MenuEvent } from '@/generated/events/menu-events'
 import { useImportDataContent } from '@/hooks/useImportDataContent'
 import { useResetDataStorage } from '@/hooks/useResetDataStorage'
-import { useAskOutputPath } from '../features/generation/hooks/useAskOutputPath'
-import { useGenerate } from '../features/generation/hooks/useGenerate'
-import { MenuEvent } from '../generated/events/menu-events'
 
 export const useMenuEvents = () => {
   const navigate = useNavigate()
@@ -32,6 +32,14 @@ export const useMenuEvents = () => {
 
   useEffect(() => {
     const unlisten = setupListener(MenuEvent.DebugOpenPanel, '/debug')
+
+    return () => {
+      unlisten.then((dispose) => dispose())
+    }
+  }, [history])
+
+  useEffect(() => {
+    const unlisten = setupListener(MenuEvent.AppPreferences, '/settings')
 
     return () => {
       unlisten.then((dispose) => dispose())

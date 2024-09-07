@@ -1,4 +1,4 @@
-import { Chip, Input, Stack, Textarea, Typography } from '@mui/joy'
+import { Button, Chip, Input, Stack, Textarea, Typography } from '@mui/joy'
 import { UUID } from 'crypto'
 import { useFormik } from 'formik'
 import debounce from 'just-debounce-it'
@@ -10,6 +10,7 @@ import * as yup from 'yup'
 import { AccordionCardTitle } from '../../../components/accordion-card-title'
 import { CV_LANGUAGES } from '../../../constants/cv-languages'
 
+import { TranslateRounded } from '@mui/icons-material'
 import { useExpandedItemStore } from '../../../stores/useExpandedItemStore'
 import { translationSchemaWithValidation } from '../../../validations/dataContentValidationSchema'
 import { SectionItemLayout, SectionItemProps } from '../layouts/section-item-layout'
@@ -90,11 +91,12 @@ export const SectionItem = ({
       {...rest}
     >
       <Stack flex={1} gap={1} marginTop={1} paddingBottom={1}>
-        {CV_LANGUAGES.map((lang) => (
+        {CV_LANGUAGES.map((lang, index) => (
           <Fragment key={`content.${lang}`}>
             {inputType === 'input' && (
               <Input
                 name={`content.${lang}`}
+                className="group"
                 startDecorator={
                   <Chip
                     sx={{
@@ -103,6 +105,22 @@ export const SectionItem = ({
                   >
                     {lang}
                   </Chip>
+                }
+                endDecorator={
+                  <Stack
+                    sx={{ display: index >= 1 ? 'inline-block' : 'none' }}
+                    className="invisible group-focus-within:visible hover:visible"
+                  >
+                    <Button
+                      size="sm"
+                      color="neutral"
+                      variant="soft"
+                      sx={{ '--IconButton-size': '1.5rem', fontSize: '0.75rem', px: 1.5 }}
+                    >
+                      Traduire
+                      <TranslateRounded sx={{ display: 'none', fontSize: '0.85rem' }} />
+                    </Button>
+                  </Stack>
                 }
                 value={formik.values.content[lang]}
                 onChange={(e) => {

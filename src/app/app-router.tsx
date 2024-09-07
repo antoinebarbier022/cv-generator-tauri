@@ -15,6 +15,7 @@ import { AppLayout } from '@/layouts/app-layout'
 import { WelcomeLayout } from '@/layouts/welcome-layout'
 import { Alert } from '@mui/joy'
 import { DebugModal } from './routes/debug/debug-modal'
+import { SettingsModal } from './routes/settings/settings-modal'
 import { SummaryPage } from './routes/summary-page'
 import { WelcomePage } from './routes/welcome-page'
 
@@ -58,6 +59,7 @@ export const AppRouter = () => {
       {background && (
         <Routes>
           <Route path="debug" element={<DebugModal open onClose={() => navigate(-1)} />} />
+          <Route path="settings" element={<SettingsModal open onClose={() => navigate(-1)} />} />
         </Routes>
       )}
     </>

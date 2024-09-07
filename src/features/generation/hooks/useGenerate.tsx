@@ -35,7 +35,6 @@ export const useGenerate = () => {
           autoClose: 30000,
           hideProgressBar: false,
           pauseOnHover: true,
-          pauseOnFocusLoss: true,
           progress: undefined,
           closeButton: false,
           theme: 'light',
