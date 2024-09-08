@@ -1,5 +1,38 @@
 
 
+## [0.1.1-beta.16](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.15...0.1.1-beta.16) (2024-9-8)
+
+
+### Bug Fixes
+
+* display dialog before delete an item that doesn't have empty content ([7ddb454](https://github.com/antoinebarbier022/cv-generator-tauri/commit/7ddb45475c5ae28a911bf31c22afa864937bcefc))
+* **expanded-item:** on project wrong expanded item on new ([05bb92e](https://github.com/antoinebarbier022/cv-generator-tauri/commit/05bb92e5a6e70f7ebc8cd9ca205c7abddc7e80a8))
+* **footer:** last updated ([f9cb515](https://github.com/antoinebarbier022/cv-generator-tauri/commit/f9cb515c2369679af2a76e9074c2d555d4e20713))
+* **generation:** wrong outputFolderPath ([42584ef](https://github.com/antoinebarbier022/cv-generator-tauri/commit/42584ef0539b472e0f8359cb8064828d514831e6))
+* **my-account:** replace font by  BentonSans ([b3b1668](https://github.com/antoinebarbier022/cv-generator-tauri/commit/b3b166819719da5ff86b4e1139bd229b8e1b810b))
+* **projects:** warning and change visibility ([b71bce8](https://github.com/antoinebarbier022/cv-generator-tauri/commit/b71bce8b91490fcac73c9f2d241fdbf47c818ae5))
+* rework save data with a zustand store ([7d35a23](https://github.com/antoinebarbier022/cv-generator-tauri/commit/7d35a23fb3bc50173ae2e30747ef98cb7815785b))
+* sections bug with form ([11c141d](https://github.com/antoinebarbier022/cv-generator-tauri/commit/11c141d0def742cb0e063339d28b0856a1e28a12))
+* shutdown server on quit, kill, termination ([97db6d2](https://github.com/antoinebarbier022/cv-generator-tauri/commit/97db6d2350abe512ad70b61217b70523d1f7ab86))
+* **template:** remove circles shapes from cv invent (because there is no image yet) ([b0f31fa](https://github.com/antoinebarbier022/cv-generator-tauri/commit/b0f31fa628b2ac4a2df8951f3b3b942aa4c7c9d4))
+* upgrade the app, better performances, bug fixe, design updates ([a3070e2](https://github.com/antoinebarbier022/cv-generator-tauri/commit/a3070e25e34c722017f5d42941a5c33d08ef1e58))
+* **window:** change window size to avoid some responsive ([7444a67](https://github.com/antoinebarbier022/cv-generator-tauri/commit/7444a671ef348872727b84b013cdb883facd19a3))
+
+
+### Features
+
+* add last update and fix draggable projects ([32c7519](https://github.com/antoinebarbier022/cv-generator-tauri/commit/32c751961b0be91c683f3085690f48e63275e3fd))
+* **cv-generation:** add new version of the request (data inside the body) ([9ce9636](https://github.com/antoinebarbier022/cv-generator-tauri/commit/9ce9636975861b1a48e64e2dfa379e5e3ead5b18))
+* display an error if the port is already used ([e44e6d4](https://github.com/antoinebarbier022/cv-generator-tauri/commit/e44e6d4802e598cfce1d7becc50bfd32c46526bd))
+* **footer:** loading on counterError ([6c4d8f7](https://github.com/antoinebarbier022/cv-generator-tauri/commit/6c4d8f7004ee7581774d121d20869b126d085655))
+* **missing-font:** add alert missing font inside sidebar ([7b97108](https://github.com/antoinebarbier022/cv-generator-tauri/commit/7b97108299a2268f3fb6ef746e86ae8de15bff84))
+* **my-account:** new page -> display data CV informations ([aec7691](https://github.com/antoinebarbier022/cv-generator-tauri/commit/aec7691083209312ceed179f21060f2f69035c01))
+* print api server stdout and stderr to tauri app stdout ([0ff6feb](https://github.com/antoinebarbier022/cv-generator-tauri/commit/0ff6feb86841b3d9acbe3e533357240d51f09257))
+* show error toast when backend start command failed ([9826d09](https://github.com/antoinebarbier022/cv-generator-tauri/commit/9826d092720d1991106668d6c00df7f8cb8567b9))
+* **twitter:** remove twitter field, and remove it from generated .PPTX ([933fd67](https://github.com/antoinebarbier022/cv-generator-tauri/commit/933fd67aa0a2e7bed56c98d7c6aaf2315fa9bf75))
+* **warning:** add lang detail on the message "missing translation" ([397adda](https://github.com/antoinebarbier022/cv-generator-tauri/commit/397adda3b21c69cc0ca48bb4952180bbd27a5fca))
+* **welcome page:** If the user has no firstname and lastname is redirected on the welcome page ([927b39e](https://github.com/antoinebarbier022/cv-generator-tauri/commit/927b39e9a0b7166ae09d611fc31f4ab778220b63))
+
 ## [0.1.1-beta.15](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.14...0.1.1-beta.15) (2024-8-29)
 
 
