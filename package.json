@@ -20,6 +20,7 @@
     "@tanstack/react-query": "^5.48.0",
     "@tauri-apps/api": "^1",
     "@types/deep-equal": "^1.0.4",
+    "axios": "^1.7.7",
     "deep-equal": "^2.2.3",
     "formik": "^2.4.6",
     "i18next": "^23.12.1",

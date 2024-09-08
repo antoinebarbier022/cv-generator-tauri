@@ -1,15 +1,20 @@
+import { DeepLService } from '@/features/translators/deepl/deepl.service'
 import {
   BrushRounded,
+  ErrorRounded,
   LaptopChromebookRounded,
   PublicRounded,
   SettingsRounded,
   TuneRounded
 } from '@mui/icons-material'
 import {
+  Alert,
+  Button,
   Card,
   Divider,
   Input,
   LinearProgress,
+  Link,
   List,
   ListItem,
   ListItemButton,
@@ -22,6 +27,8 @@ import {
   Switch,
   Typography
 } from '@mui/joy'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMemo, useState } from 'react'
 
 interface Props {
   open: boolean
@@ -29,7 +36,55 @@ interface Props {
 }
 
 export const SettingsModal = (props: Props) => {
-  //const searchParams = useSearchParams()
+  const [option_translation, setOption_translation] = useState(
+    localStorage.getItem('option-translation') === 'true' ?? false
+  )
+  const [input_deepl_key, setInputDeeplKey] = useState('')
+  const [deepl_key, setDeeplKey] = useState(sessionStorage.getItem('deepl-api-key') ?? '')
+
+  const usage = useQuery({
+    queryKey: ['translators', 'deepl', 'usage'],
+    queryFn: () => DeepLService.usage(deepl_key),
+    retry: 0,
+    enabled: !!deepl_key
+  })
+
+  const mutation = useMutation({
+    mutationKey: ['translators', 'deepl', 'usage'],
+    mutationFn: DeepLService.usage
+  })
+
+  const free_character_left_count = useMemo(() => {
+    return (usage.data?.character_limit ?? 0) - (usage.data?.character_count ?? 0)
+  }, [usage.data])
+
+  const usageProgression = useMemo(() => {
+    if (!usage.data || !usage.data?.character_limit) {
+      return 0
+    }
+
+    return usage.data.character_count / usage.data.character_limit
+  }, [usage.data, mutation])
+
+  const handleSaveDeeplKey = async (value: string) => {
+    mutation.mutate(value, {
+      onSuccess: () => {
+        setDeeplKey(value)
+        setInputDeeplKey('')
+        window.sessionStorage.setItem('deepl-api-key', value)
+      }
+    })
+  }
+
+  const handleRemoveDeeplKey = () => {
+    setDeeplKey('')
+    setInputDeeplKey('')
+    window.sessionStorage.setItem('deepl-api-key', '')
+    mutation.reset()
+  }
+
+  const displayAPIKey =
+    deepl_key.length > 8 ? `${deepl_key.slice(0, 4)}****${deepl_key.slice(-4)}` : '******'
   const menu = [
     { label: 'Général', to: 'general', icon: <SettingsRounded />, disabled: false },
 
@@ -89,38 +144,134 @@ export const SettingsModal = (props: Props) => {
             </List>
           </Stack>
 
-          <Stack mt={5} px={5} gap={2}>
-            <Typography level="title-md">Traduction</Typography>
+          <Stack mt={5} px={5} gap={2} sx={{ overflow: 'auto' }}>
+            <Typography level="title-md">Option de traduction</Typography>
             <Stack direction={'row'} justifyContent={'space-between'} gap={2}>
-              <Stack>
-                <Typography>Activer la super feature de traduction payée par Pazu</Typography>
-                <Typography level="body-xs" fontWeight={400} textColor={'text.tertiary'}>
-                  Activer la super feature de traduction payée par Pazu
+              <Stack gap={0.5}>
+                <Typography>Activer la traduction automatique avec DeepL</Typography>
+                <Typography level="body-xs" fontWeight={300} textColor={'text.tertiary'}>
+                  Activez cette option pour permettre la traduction automatique de vos informations
+                  via DeepL.
+                  <br /> Un bouton "Traduire" apparaîtra à côté des champs d'entrée.
                 </Typography>
               </Stack>
 
-              <Switch size="lg"></Switch>
+              <Switch
+                checked={option_translation}
+                onChange={(e) => {
+                  localStorage.setItem('option-translation', String(e.target.checked))
+                  setOption_translation(e.target.checked)
+                }}
+                size="lg"
+              ></Switch>
             </Stack>
 
-            <Divider />
+            {option_translation && (
+              <>
+                <Divider />
+                <Stack gap={2}>
+                  <Stack gap={0.5}>
+                    <Typography>Clé d'API DeepL</Typography>
+                    <Typography level="body-xs" fontWeight={300} textColor={'text.tertiary'}>
+                      Une clé API est nécessaire pour utiliser la fonctionnalité de traduction
+                      automatique. Vous pouvez souscrire à différents plans en fonction de vos
+                      besoins sur le site de DeepL. <br />
+                      Si vous avez déjà une clé API, vous pouvez la retrouver sur votre{' '}
+                      <Link
+                        level="body-xs"
+                        fontWeight={400}
+                        href="https://www.deepl.com/en/your-account/keys"
+                        slotProps={{
+                          root: {
+                            target: '_blank'
+                          }
+                        }}
+                      >
+                        compte DeepL
+                      </Link>
+                      .
+                    </Typography>
+                  </Stack>
 
-            <Stack direction={'row'} justifyContent={'space-between'} gap={2}>
-              <Typography flex={2}>API KEY</Typography>
-              <Input size="sm" placeholder="Deepl API KEY" sx={{ width: '100px' }}></Input>
-            </Stack>
+                  <Stack direction={'row'} justifyContent={'space-between'} gap={2}>
+                    {deepl_key ? (
+                      <Stack
+                        direction={'row'}
+                        gap={4}
+                        flex={1}
+                        justifyContent={'space-between'}
+                        alignItems={'center'}
+                      >
+                        <Typography sx={{ textAlign: 'end', outline: 'none', border: 'none' }}>
+                          {displayAPIKey}
+                        </Typography>
+                        <Button size="sm" color="danger" onClick={() => handleRemoveDeeplKey()}>
+                          Supprimer
+                        </Button>
+                      </Stack>
+                    ) : (
+                      <Input
+                        size="sm"
+                        color={mutation.isError ? 'danger' : 'neutral'}
+                        placeholder="API KEY"
+                        value={input_deepl_key}
+                        onChange={(e) => setInputDeeplKey(e.target.value)}
+                        endDecorator={
+                          <Button
+                            color={mutation.isError ? 'danger' : 'neutral'}
+                            loading={mutation.isPending}
+                            variant="soft"
+                            onClick={() => handleSaveDeeplKey(input_deepl_key)}
+                          >
+                            OK
+                          </Button>
+                        }
+                      />
+                    )}
+                  </Stack>
+                </Stack>
 
-            <Card variant="outlined">
-              <Typography>Limitation de l'usage de l'API DeepL (free)</Typography>
-              <Stack gap={1} mb={1}>
-                <Typography level="body-xs" color="primary" sx={{ alignSelf: 'end' }}>
-                  1% utilisé
-                </Typography>
-                <LinearProgress determinate value={25} />
-                <Typography level="body-xs" fontWeight={400} textColor={'text.tertiary'}>
-                  499,855 free characters left
-                </Typography>
-              </Stack>
-            </Card>
+                <Stack mt={1}>
+                  {mutation.isError && (
+                    <Alert
+                      color="danger"
+                      sx={{ fontFamily: 'monospace' }}
+                      startDecorator={<ErrorRounded />}
+                    >
+                      {mutation.error.message}
+                    </Alert>
+                  )}
+                  {usage.data && deepl_key && !mutation.isError && (
+                    <Card variant="soft" sx={{ backgroundColor: 'neutral.50' }}>
+                      <Typography>Suivi de l'usage</Typography>
+
+                      <Stack gap={1} mb={1}>
+                        <Typography level="body-xs" color="primary" sx={{ alignSelf: 'end' }}>
+                          {usageProgression.toFixed(4)}% utilisé
+                        </Typography>
+                        <LinearProgress
+                          variant="soft"
+                          sx={{
+                            '--LinearProgress-thickness': '16px',
+                            '--LinearProgress-progressThickness': '12px',
+                            '--LinearProgress-radius': '4px',
+                            backgroundColor: 'common.white',
+                            border: '1px solid',
+                            borderColor: 'neutral.100'
+                          }}
+                          size="lg"
+                          determinate
+                          value={Math.ceil(usageProgression) + 1}
+                        />
+                        <Typography level="body-xs" fontWeight={300} textColor={'primary.500'}>
+                          {free_character_left_count.toLocaleString('fr')} free characters left
+                        </Typography>
+                      </Stack>
+                    </Card>
+                  )}
+                </Stack>
+              </>
+            )}
           </Stack>
         </Stack>
       </ModalDialog>

@@ -78,6 +78,7 @@ export default extendTheme({
     JoyModalDialog: {
       styleOverrides: {
         root: () => ({
+          background: 'white',
           boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 40px rgba(0, 0, 0, 0.3)'
         })
       }
