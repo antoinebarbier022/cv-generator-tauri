@@ -1,8 +1,8 @@
 [package]
 name = "cv_generator"
-version = "0.1.1-beta.15"
+version = "0.1.1-beta.16"
 description = ""
-authors = ["Antoine Barbier <antoine.c.barbier@frog.co>"]
+authors = [ "Antoine Barbier <antoine.c.barbier@frog.co>" ]
 license = ""
 repository = ""
 default-run = "cv_generator"
@@ -11,7 +11,7 @@ rust-version = "1.60"
 
 [build-dependencies.tauri-build]
 version = "1.5.2"
-features = []
+features = [ ]
 
 [dependencies]
 anyhow = "1.0"
@@ -19,23 +19,29 @@ libc = "0.2.158"
 serde_json = "1.0"
 signal-hook = "0.3.17"
 window-vibrancy = "0.4"
-ts-rs = { version = "9.0.1" }
 convert_case = "0.6.0"
-ts-const-enums = { path = "ts-const-enums" }
-tauri-plugin-fs-extra = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 
+  [dependencies.ts-rs]
+  version = "9.0.1"
 
-[dependencies.strum]
-version = "0.26.3"
-features = ["derive"]
+  [dependencies.ts-const-enums]
+  path = "ts-const-enums"
 
-[dependencies.serde]
-version = "1.0"
-features = ["derive"]
+  [dependencies.tauri-plugin-fs-extra]
+  git = "https://github.com/tauri-apps/plugins-workspace"
+  branch = "v1"
 
-[dependencies.tauri]
-version = "1.6.5"
-features = [
+  [dependencies.strum]
+  version = "0.26.3"
+  features = [ "derive" ]
+
+  [dependencies.serde]
+  version = "1.0"
+  features = [ "derive" ]
+
+  [dependencies.tauri]
+  version = "1.6.5"
+  features = [
   "fs-rename-file",
   "fs-remove-file",
   "updater",
@@ -59,8 +65,8 @@ features = [
   "fs-create-dir",
   "fs-write-file",
   "path-all",
-  "process-command-api",
+  "process-command-api"
 ]
 
 [features]
-custom-protocol = ["tauri/custom-protocol"]
+custom-protocol = [ "tauri/custom-protocol" ]
