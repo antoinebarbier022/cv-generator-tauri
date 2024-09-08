@@ -51,7 +51,8 @@ export const useGenerate = () => {
         })
       }
     },
-    onError: (e) => {
+    onError: (e, variables) => {
+      console.log(variables)
       alert(`Generate [error] : ${e}`)
     }
   })

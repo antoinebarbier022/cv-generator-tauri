@@ -51,11 +51,13 @@ export const CVGenerationService = {
   },
   generate: async (outputFilePath: string): Promise<generateResponse> => {
     const appDataDirPath = await appDataDir()
-    const outputFolderPath = outputFilePath.replace(outputFilePath, '')
+    const fileName = outputFilePath.split('/').slice(-1).join('')
+    const outputFolderPath = outputFilePath.replace(fileName, '')
     const outputFileName = outputFilePath.replace(outputFolderPath, '').replace('.pptx', '')
 
     const baseURL = 'http://localhost:8008'
 
+    console.log({ outputFolderPath })
     const response = await fetch(`${baseURL}/api/v1/generate-cv-pptx`, {
       method: 'POST',
       headers: {
@@ -78,7 +80,8 @@ export const CVGenerationService = {
     outputFilePath: string,
     data: generateV2Request
   ): Promise<generateResponse> => {
-    const outputFolderPath = outputFilePath.replace(outputFilePath, '')
+    const fileName = outputFilePath.split('/').slice(-1).join('')
+    const outputFolderPath = outputFilePath.replace(fileName, '')
     const outputFileName = outputFilePath.replace(outputFolderPath, '').replace('.pptx', '')
 
     const baseURL = 'http://localhost:8008'
