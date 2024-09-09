@@ -84,8 +84,9 @@ export const SettingsModal = (props: Props) => {
               })}
             </List>
           </Stack>
-
-          <TranslatorSettings />
+          <Stack sx={{ height: '100%', overflowY: 'scroll' }}>
+            <TranslatorSettings />
+          </Stack>
         </Stack>
       </ModalDialog>
     </Modal>
