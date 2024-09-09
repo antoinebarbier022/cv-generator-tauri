@@ -15,14 +15,20 @@ import debounce from 'just-debounce-it'
 import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
-import { ProjectTitle } from '../components/project-title'
+import { SectionProjectItemTitle } from './section-project-item-title'
 
 interface Props extends Omit<SectionItemProps, 'title' | 'isExpanded' | 'onExpandedChange'> {
   data: ResumeContentSection<UserDataExperience>
   isOptionTranslate?: boolean
   onChange: (values: ResumeContentSection<UserDataExperience>) => void
 }
-export const ProjectItem = ({ data, isOptionTranslate, index, onChange, ...rest }: Props) => {
+export const SectionProjectItem = ({
+  data,
+  isOptionTranslate,
+  index,
+  onChange,
+  ...rest
+}: Props) => {
   const { t } = useTranslation()
 
   const { expandedItem, setExpandedItem } = useExpandedItemStore()
@@ -116,7 +122,7 @@ export const ProjectItem = ({ data, isOptionTranslate, index, onChange, ...rest 
       title={
         <AccordionCardTitle
           content={
-            <ProjectTitle
+            <SectionProjectItemTitle
               program={formik.values.content.program}
               client={formik.values.content.client}
               role={formik.values.content.role.fr || formik.values.content.role.en}

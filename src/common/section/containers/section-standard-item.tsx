@@ -1,4 +1,4 @@
-import { Chip, Input, Stack, Textarea, Typography } from '@mui/joy'
+import { Stack } from '@mui/joy'
 import { UUID } from 'crypto'
 import { useFormik } from 'formik'
 import debounce from 'just-debounce-it'
@@ -10,13 +10,14 @@ import * as yup from 'yup'
 import { AccordionCardTitle } from '../../../components/accordion-card-title'
 import { CV_LANGUAGES } from '../../../constants/cv-languages'
 
-import { TranslateButton } from '@/features/translators/components/translate-button'
 import { DeepLService } from '@/features/translators/deepl.service'
 import { useTranslatorApiKey } from '@/features/translators/hooks/useTranslatorApiKey'
 import { useMutation } from '@tanstack/react-query'
 import { useExpandedItemStore } from '../../../stores/useExpandedItemStore'
 import { translationSchemaWithValidation } from '../../../validations/dataContentValidationSchema'
 import { SectionItemLayout, SectionItemProps } from '../layouts/section-item-layout'
+import { SectionTextarea } from './section-textarea'
+import { SectionTextfield } from './section-textfield'
 
 interface Props extends Omit<SectionItemProps, 'title' | 'isExpanded' | 'onExpandedChange'> {
   id: UUID
@@ -30,7 +31,7 @@ interface Props extends Omit<SectionItemProps, 'title' | 'isExpanded' | 'onExpan
   onChange: (values: ResumeContentSection<Translation>) => void
 }
 
-export const SectionItem = ({
+export const SectionStandardItem = ({
   id,
   inputType = 'input',
   titlePlaceholder,
@@ -58,7 +59,6 @@ export const SectionItem = ({
     onSubmit: (values) => {
       formikOnlyWarning.setValues(values)
       onChange(values)
-      alert(JSON.stringify(values))
     }
   })
 
@@ -124,95 +124,36 @@ export const SectionItem = ({
       {...rest}
     >
       <Stack flex={1} gap={1} marginTop={1} paddingBottom={1}>
-        {CV_LANGUAGES.map((lang, index) => (
+        {CV_LANGUAGES.map((lang) => (
           <Fragment key={`content.${lang}`}>
             {inputType === 'input' && (
-              <Input
+              <SectionTextfield
                 name={`content.${lang}`}
-                className="group"
-                startDecorator={
-                  <Chip
-                    sx={{
-                      marginLeft: -0.75
-                    }}
-                  >
-                    {lang}
-                  </Chip>
-                }
-                endDecorator={
-                  <>
-                    <Stack
-                      sx={{ display: isOptionTranslate && index >= 1 ? 'inline-block' : 'none' }}
-                      className="invisible group-focus-within:visible hover:visible"
-                    >
-                      <TranslateButton onClick={() => handleTranslate(lang)} />
-                    </Stack>
-                  </>
-                }
+                lang={lang}
+                placeholder={inputPlaceholder}
+                isTranslateOption={lang !== 'fr'}
                 value={formik.values.content[lang]}
+                onTranslate={() => handleTranslate(lang)}
                 onChange={(e) => {
                   formik.handleChange(e)
                   debouncedSubmit()
                 }}
-                placeholder={inputPlaceholder}
               />
             )}
             {inputType === 'textarea' && (
               <Stack>
-                <Textarea
-                  className="group"
+                <SectionTextarea
                   name={`content.${lang}`}
-                  startDecorator={<Chip>{lang}</Chip>}
+                  lang={lang}
                   value={formik.values.content[lang]}
-                  minRows={3}
-                  maxRows={5}
+                  placeholder={inputPlaceholder}
+                  isTranslateOption={lang !== 'fr'}
+                  maxWarningLength={maxWarningLength}
+                  onTranslate={() => handleTranslate(lang)}
                   onChange={(e) => {
                     formik.handleChange(e)
                     debouncedSubmit()
                   }}
-                  placeholder={inputPlaceholder}
-                  slotProps={{
-                    endDecorator: {
-                      sx: {
-                        height: '100%',
-                        alignSelf: 'flex-end'
-                      }
-                    }
-                  }}
-                  endDecorator={
-                    <Stack
-                      direction={'column-reverse'}
-                      justifyContent={'space-between'}
-                      alignItems={'flex-end'}
-                      gap={1}
-                      alignContent={'space-between'}
-                    >
-                      {maxWarningLength && (
-                        <Typography
-                          level="body-xs"
-                          textColor={'neutral.500'}
-                          sx={{
-                            ml: 'auto'
-                          }}
-                        >
-                          <Typography
-                            textColor={
-                              content[lang].length > maxWarningLength ? 'danger.400' : 'neutral.400'
-                            }
-                          >
-                            {content[lang].length}
-                          </Typography>{' '}
-                          / {maxWarningLength}
-                        </Typography>
-                      )}
-                      <Stack
-                        sx={{ display: isOptionTranslate && index >= 1 ? 'inline-block' : 'none' }}
-                        className="invisible group-focus-within:visible hover:visible"
-                      >
-                        <TranslateButton onClick={() => handleTranslate(lang)} />
-                      </Stack>
-                    </Stack>
-                  }
                 />
               </Stack>
             )}

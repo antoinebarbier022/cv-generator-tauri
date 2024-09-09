@@ -41,7 +41,7 @@ interface ProfileData {
   description: Translation
 }
 
-export const ProfileSection = () => {
+export const ProfilePage = () => {
   const { t } = useTranslation()
 
   const { formValues, setFormValues } = useFormCV()

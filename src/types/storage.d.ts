@@ -31,6 +31,7 @@ export interface UserData {
   skills: ResumeContentSection<Translation>[]
   languages: ResumeContentSection<Translation>[]
   experiences: ResumeContentSection<UserDataExperience>[]
+  [key as string]: any
 }
 
 export interface UserDataExperience {

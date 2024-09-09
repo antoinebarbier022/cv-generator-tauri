@@ -6,8 +6,9 @@ import { useFormCV } from '@/hooks/useFormCV'
 import { SectionDroppableLayout } from '@/common/section/layouts/section-droppable-layout'
 import { SectionEmptyState } from '../components/section-empty-state'
 
+import { useTranslatorApiKey } from '@/features/translators/hooks/useTranslatorApiKey'
 import { Translation, UserData } from '../../../types/storage'
-import { SectionItem } from './section-item'
+import { SectionStandardItem } from './section-standard-item'
 
 interface Props {
   sectionKey: 'skills' | 'sectors' | 'languages' | 'formation' | 'employment_history'
@@ -17,7 +18,7 @@ interface Props {
     inputMaxWarningLength?: number
   }
 }
-export const SectionPage = ({
+export const SectionStandardContainer = ({
   sectionKey,
   options = { isOptionTranslation: false, inputType: 'input', inputMaxWarningLength: undefined }
 }: Props) => {
@@ -26,11 +27,13 @@ export const SectionPage = ({
   const { formValues, setFormValues, handleAddItemSection, handleDeleteItemSection, dragEnded } =
     useFormCV()
 
+  const { apiKey } = useTranslatorApiKey()
+
   const handleChangeVisibility = (index: number, value: boolean) => {
     const newContent = [...formValues[sectionKey]]
     newContent[index].isHidden = value
     setFormValues({
-      sectionKey: newContent
+      [sectionKey]: newContent
     } as Partial<UserData>)
   }
 
@@ -39,7 +42,7 @@ export const SectionPage = ({
     newContent[newContent.findIndex((e) => e.id === id)].content = content
 
     setFormValues({
-      sectionKey: newContent
+      [sectionKey]: newContent
     } as Partial<UserData>)
   }
 
@@ -50,6 +53,8 @@ export const SectionPage = ({
     })
 
   const isEmpty = formValues[sectionKey].length === 0
+
+  const isOptionTranslate = localStorage.getItem('option-translation') === 'true' && Boolean(apiKey)
 
   return (
     <SectionDroppableLayout
@@ -70,7 +75,7 @@ export const SectionPage = ({
     >
       <AccordionGroup disableDivider component={Stack}>
         {formValues[sectionKey]?.map((field, index) => (
-          <SectionItem
+          <SectionStandardItem
             index={index}
             key={field.id}
             id={field.id}
@@ -81,7 +86,7 @@ export const SectionPage = ({
             maxWarningLength={options.inputMaxWarningLength}
             inputPlaceholder={''}
             isVisible={Boolean(field.isHidden)}
-            isOptionTranslate={localStorage.getItem('option-translation') === 'true'}
+            isOptionTranslate={isOptionTranslate}
             onChangeVisibility={(value) => handleChangeVisibility(index, value)}
             onDelete={() => handleDelete(field.id)}
             onChange={(value) => {

@@ -1,9 +1,23 @@
 import { useMutation } from '@tanstack/react-query'
-import { useState } from 'react'
 import { DeepLService } from '../deepl.service'
 
+import { create } from 'zustand'
+
+interface State {
+  apiKey: string
+  setApiKey: (value: string) => void
+}
+
+const useApiKeyStore = create<State>((set) => ({
+  apiKey: localStorage.getItem('deepl-api-key') ?? '',
+  setApiKey: (value: string) => {
+    localStorage.setItem('deepl-api-key', value)
+    set(() => ({ apiKey: value }))
+  }
+}))
+
 export const useTranslatorApiKey = () => {
-  const [apiKey, setApiKey] = useState(localStorage.getItem('deepl-api-key') ?? '')
+  const { apiKey, setApiKey } = useApiKeyStore()
 
   const mutation = useMutation({
     mutationKey: ['translators', 'deepl', 'usage'],
@@ -15,13 +29,17 @@ export const useTranslatorApiKey = () => {
       onSuccess: () => {
         setApiKey(value)
         localStorage.setItem('deepl-api-key', value)
+      },
+      onError: () => {
+        setApiKey('')
+        localStorage.setItem('deepl-api-key', '')
       }
     })
   }
 
   const handleRemoveApiKey = () => {
     setApiKey('')
-    window.sessionStorage.setItem('deepl-api-key', '')
+    localStorage.setItem('deepl-api-key', '')
     mutation.reset()
   }
 

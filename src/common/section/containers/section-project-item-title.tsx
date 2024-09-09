@@ -7,7 +7,7 @@ interface Props {
   role: string
   date: string
 }
-export const ProjectTitle = (props: Props) => {
+export const SectionProjectItemTitle = (props: Props) => {
   const { t } = useTranslation()
   return (
     <Typography

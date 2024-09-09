@@ -5,15 +5,17 @@ import { useTranslation } from 'react-i18next'
 import { SectionDroppableLayout } from '@/common/section/layouts/section-droppable-layout'
 
 import { SectionEmptyState } from '@/common/section/components/section-empty-state'
+import { useTranslatorApiKey } from '@/features/translators/hooks/useTranslatorApiKey'
 import { useFormCV } from '@/hooks/useFormCV'
 import { ResumeContentSection, UserDataExperience } from '@/types/storage'
-import { ProjectItem } from './project-item'
+import { SectionProjectItem } from './section-project-item'
 
-export const ProjectsSection = () => {
+export const SectionProjectsContainer = () => {
   const { t } = useTranslation()
   const { formValues, setFormValues, dragEnded, handleDeleteItemSection, handleAddItemSection } =
     useFormCV()
 
+  const { apiKey } = useTranslatorApiKey()
   const handleAddProject = async () => {
     handleAddItemSection({ fieldName: 'experiences' })
   }
@@ -37,6 +39,8 @@ export const ProjectsSection = () => {
     setFormValues({ experiences: newContent })
   }
 
+  const isOptionTranslate = localStorage.getItem('option-translation') === 'true' && Boolean(apiKey)
+
   return (
     <>
       <SectionDroppableLayout
@@ -57,13 +61,13 @@ export const ProjectsSection = () => {
       >
         <AccordionGroup component={Stack} disableDivider>
           {formValues.experiences?.map((field, index) => (
-            <ProjectItem
+            <SectionProjectItem
               index={index}
               key={field.id}
               data={field}
               draggableId={field.id}
               isVisible={Boolean(field.isHidden)}
-              isOptionTranslate={localStorage.getItem('option-translation') === 'true'}
+              isOptionTranslate={isOptionTranslate}
               onChangeVisibility={(value) => handleChangeVisibility(index, value)}
               onDelete={() => handleDeleteById(field.id)}
               onChange={(value) => {
