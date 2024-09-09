@@ -9,6 +9,10 @@ export const FooterItemWarningsCounter = ({ count, loading }: Props) => {
   return (
     <Tooltip open color="warning" title="" size="sm" variant="solid" arrow>
       <Typography
+        sx={{
+          py: 0.5,
+          px: 1
+        }}
         paddingRight={0.25}
         startDecorator={
           <Stack fontSize={'1rem'}>

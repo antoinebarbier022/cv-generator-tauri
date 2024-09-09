@@ -27,7 +27,13 @@ export const SectionDroppableLayout = (props: Props) => {
             title={props.title}
             chip={props.chip}
             endDecorator={
-              <IconButton size="sm" variant="solid" color="primary" onClick={props.onAddItem}>
+              <IconButton
+                size="sm"
+                variant="solid"
+                color="primary"
+                sx={{ borderRadius: '100%' }}
+                onClick={props.onAddItem}
+              >
                 <AddRounded />
               </IconButton>
             }

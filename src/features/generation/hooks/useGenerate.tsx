@@ -35,7 +35,6 @@ export const useGenerate = () => {
           autoClose: 30000,
           hideProgressBar: false,
           pauseOnHover: true,
-          pauseOnFocusLoss: true,
           progress: undefined,
           closeButton: false,
           theme: 'light',
@@ -52,7 +51,8 @@ export const useGenerate = () => {
         })
       }
     },
-    onError: (e) => {
+    onError: (e, variables) => {
+      console.log(variables)
       alert(`Generate [error] : ${e}`)
     }
   })

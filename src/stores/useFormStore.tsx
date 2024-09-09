@@ -33,9 +33,12 @@ export const useFormStore = create<FormState>((set) => ({
 
       const isOldValuesEmpty = deepEqual(oldValues, emptyInitialResume)
       const isNewValuesEmpty = deepEqual(newValues, emptyInitialResume)
-      const hasChanged = !deepEqual(oldValues, newValues)
-
-      const saveValueInsideStorage = hasChanged && !isNewValuesEmpty && !isOldValuesEmpty
+      const hasChanged = !deepEqual(oldValues, newValues) // this code is wrong
+      console.log({ oldValues })
+      console.log({ newValues })
+      console.log(hasChanged)
+      const saveValueInsideStorage = !isNewValuesEmpty && !isOldValuesEmpty
+      console.log({ saveValueInsideStorage })
       if (saveValueInsideStorage) {
         StorageService.setContentData({
           values: newValues

@@ -1,10 +1,12 @@
 import { StorageService } from '@/services/StorageService'
 import { useFormStore } from '@/stores/useFormStore'
 
+import { useTranslatorOption } from '@/features/translators/hooks/useTranslatorOption'
 import { useFormWarnings } from '@/hooks/useFormWarnings'
-import { Divider, Sheet, Stack, Typography } from '@mui/joy'
+import { Sheet, Stack, Typography } from '@mui/joy'
 import { useEffect } from 'react'
 import { FooterItemLastUpdated } from '../components/footer-item-last-updated'
+import { FooterItemOptionTranslate } from '../components/footer-item-option-translate'
 import { FooterItemOutputPath } from '../components/footer-item-output-path'
 import { FooterItemWarningsCounter } from '../components/footer-item-warning-counter'
 
@@ -18,6 +20,8 @@ export const FooterBarContainer = () => {
   const { lastUpdated, setLastUpdated } = useFormStore()
 
   const { countWarnings } = useFormWarnings()
+
+  const { isActiveOptionValid } = useTranslatorOption()
 
   useEffect(() => {
     StorageService.getLastModified().then((data) => {
@@ -36,7 +40,7 @@ export const FooterBarContainer = () => {
         width: 'calc(100%)',
         background: 'transparent',
         position: 'absolute',
-        bottom: 0,
+        bottom: -1,
         height: 'calc(var(--app-footer-height) + var(--app-border-width))',
         paddingRight: 'calc(0.5rem + var(--app-border-width))',
         py: 0.5
@@ -51,24 +55,28 @@ export const FooterBarContainer = () => {
         direction={'row'}
         alignItems={'center'}
         sx={{ cursor: 'default' }}
-        gap={1.5}
+        gap={0.5}
       >
+        <FooterItemOptionTranslate isActive={isActiveOptionValid} />
         {configFooterOptions.showOutputPathGeneratedFile && (
           <>
             <FooterItemOutputPath path="/Users/antoinebarbier/Downloads/CV_Barbier_Antoine_CDT.pptx" />
-            <Divider orientation="vertical" />
           </>
         )}
 
         {lastUpdated && (
           <>
             <FooterItemLastUpdated date={lastUpdated} />
-            <Divider orientation="vertical" sx={{ height: '70%', alignSelf: 'center' }} />
           </>
         )}
 
         {configFooterOptions.showErrors && (
-          <FooterItemWarningsCounter loading={countWarnings === null} count={countWarnings ?? 0} />
+          <>
+            <FooterItemWarningsCounter
+              loading={countWarnings === null}
+              count={countWarnings ?? 0}
+            />
+          </>
         )}
       </Stack>
     </Stack>

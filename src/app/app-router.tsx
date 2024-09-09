@@ -1,20 +1,23 @@
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 
+import { EmploymentHistoryPage } from '@/app/routes/cv-forms/employment-history-page'
+import { LanguagesPage } from '@/app/routes/cv-forms/languages-page'
+import { SkillsPage } from '@/app/routes/cv-forms/skills-page'
 import { FooterBarContainer } from '@/common/footer/containers/footer-bar-container'
 import { SidebarContainer } from '@/common/sidebar/containers/sidebar-container'
-import { EmploymentHistorySection } from '@/features/cv-resume/employment-history/employment-history-section'
-import { FormationSection } from '@/features/cv-resume/formation/formation-section'
-import { LanguagesSection } from '@/features/cv-resume/languages/languages-section'
-import { ProfileSection } from '@/features/cv-resume/profile/profile-section'
-import { ProjectsSection } from '@/features/cv-resume/projects/containers/projects-section'
-import { SectorsSection } from '@/features/cv-resume/sectors/sectors-section'
-import { SkillsSection } from '@/features/cv-resume/skills/skills-section'
+
+import { ProfilePage } from '@/app/routes/cv-forms/profile-page'
+
 import { useMenuEvents } from '@/hooks/useMenuEvents'
 import { useRedirectToWelcomePage } from '@/hooks/useRedirectToWelcomePage'
 import { AppLayout } from '@/layouts/app-layout'
 import { WelcomeLayout } from '@/layouts/welcome-layout'
 import { Alert } from '@mui/joy'
+import { FormationPage } from './routes/cv-forms/formation-page'
+import { ProjectsPage } from './routes/cv-forms/projects-page'
+import { SectorsPage } from './routes/cv-forms/sectors-page'
 import { DebugModal } from './routes/debug/debug-modal'
+import { SettingsModal } from './routes/settings/settings-modal'
 import { SummaryPage } from './routes/summary-page'
 import { WelcomePage } from './routes/welcome-page'
 
@@ -44,13 +47,13 @@ export const AppRouter = () => {
         >
           <Route index element={<Navigate to={'/profile'} />} />
           <Route path="my-account" element={<SummaryPage />} />
-          <Route path="profile" element={<ProfileSection />} />
-          <Route path="skills" element={<SkillsSection />} />
-          <Route path="sectors" element={<SectorsSection />} />
-          <Route path="languages" element={<LanguagesSection />} />
-          <Route path="projects" element={<ProjectsSection />} />
-          <Route path="formation" element={<FormationSection />} />
-          <Route path="employment_history" element={<EmploymentHistorySection />} />
+          <Route path="profile" element={<ProfilePage />} />
+          <Route path="skills" element={<SkillsPage />} />
+          <Route path="sectors" element={<SectorsPage />} />
+          <Route path="languages" element={<LanguagesPage />} />
+          <Route path="projects" element={<ProjectsPage />} />
+          <Route path="formation" element={<FormationPage />} />
+          <Route path="employment_history" element={<EmploymentHistoryPage />} />
           <Route path="*" element={<Alert>Error 404.</Alert>} />
         </Route>
       </Routes>
@@ -58,6 +61,7 @@ export const AppRouter = () => {
       {background && (
         <Routes>
           <Route path="debug" element={<DebugModal open onClose={() => navigate(-1)} />} />
+          <Route path="settings" element={<SettingsModal open onClose={() => navigate(-1)} />} />
         </Routes>
       )}
     </>

@@ -4,5 +4,14 @@ interface Props {
   path: string
 }
 export const FooterItemOutputPath = ({ path }: Props) => {
-  return <Typography>{path}</Typography>
+  return (
+    <Typography
+      sx={{
+        py: 0.5,
+        px: 1
+      }}
+    >
+      {path}
+    </Typography>
+  )
 }
