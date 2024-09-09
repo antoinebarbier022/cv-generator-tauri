@@ -4,6 +4,9 @@ import { ChangeEventHandler } from 'react'
 import { SectionTextfieldProps } from './section-textfield'
 
 interface Props extends Omit<SectionTextfieldProps, 'onChange'> {
+  minRows?: number
+  maxRows?: number
+  variant?: 'outlined' | 'solid' | 'plain' | 'soft'
   maxWarningLength?: number | undefined
   onChange?: ChangeEventHandler<HTMLTextAreaElement> | undefined
 }
@@ -11,11 +14,12 @@ export const SectionTextarea = (props: Props) => {
   return (
     <Textarea
       name={props.name}
+      variant={props.variant}
       className="group"
       startDecorator={<Chip>{props.lang}</Chip>}
       value={props.value}
-      minRows={3}
-      maxRows={5}
+      minRows={props.minRows ?? 3}
+      maxRows={props.maxRows ?? 5}
       onChange={props.onChange}
       placeholder={props.placeholder}
       slotProps={{
@@ -57,6 +61,6 @@ export const SectionTextarea = (props: Props) => {
           )}
         </Stack>
       }
-    />
+    ></Textarea>
   )
 }

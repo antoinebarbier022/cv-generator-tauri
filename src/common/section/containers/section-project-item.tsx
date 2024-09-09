@@ -240,7 +240,9 @@ export const SectionProjectItem = ({
                         / {item.maxLength}
                       </Typography>
                       <Stack
-                        sx={{ display: isOptionTranslate && index >= 1 ? 'inline-block' : 'none' }}
+                        sx={{
+                          display: lang !== 'fr' && isOptionTranslate ? 'inline-block' : 'none'
+                        }}
                         className="invisible group-focus-within:visible hover:visible"
                       >
                         <TranslateButton

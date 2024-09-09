@@ -6,7 +6,7 @@ import { useFormCV } from '@/hooks/useFormCV'
 import { SectionDroppableLayout } from '@/common/section/layouts/section-droppable-layout'
 import { SectionEmptyState } from '../components/section-empty-state'
 
-import { useTranslatorApiKey } from '@/features/translators/hooks/useTranslatorApiKey'
+import { useTranslatorOption } from '@/features/translators/hooks/useTranslatorOption'
 import { Translation, UserData } from '../../../types/storage'
 import { SectionStandardItem } from './section-standard-item'
 
@@ -26,8 +26,6 @@ export const SectionStandardContainer = ({
 
   const { formValues, setFormValues, handleAddItemSection, handleDeleteItemSection, dragEnded } =
     useFormCV()
-
-  const { apiKey } = useTranslatorApiKey()
 
   const handleChangeVisibility = (index: number, value: boolean) => {
     const newContent = [...formValues[sectionKey]]
@@ -54,7 +52,7 @@ export const SectionStandardContainer = ({
 
   const isEmpty = formValues[sectionKey].length === 0
 
-  const isOptionTranslate = localStorage.getItem('option-translation') === 'true' && Boolean(apiKey)
+  const { isActiveOptionValid } = useTranslatorOption()
 
   return (
     <SectionDroppableLayout
@@ -86,7 +84,7 @@ export const SectionStandardContainer = ({
             maxWarningLength={options.inputMaxWarningLength}
             inputPlaceholder={''}
             isVisible={Boolean(field.isHidden)}
-            isOptionTranslate={isOptionTranslate}
+            isOptionTranslate={isActiveOptionValid}
             onChangeVisibility={(value) => handleChangeVisibility(index, value)}
             onDelete={() => handleDelete(field.id)}
             onChange={(value) => {

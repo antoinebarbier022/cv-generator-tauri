@@ -4,6 +4,7 @@ import { ChangeEventHandler } from 'react'
 
 export interface SectionTextfieldProps {
   name?: string
+  variant?: 'outlined' | 'solid' | 'plain' | 'soft'
   value?: string | readonly string[] | undefined
   lang?: string
   isTranslateOption?: boolean
@@ -14,6 +15,7 @@ export interface SectionTextfieldProps {
 export const SectionTextfield = (props: SectionTextfieldProps) => {
   return (
     <Input
+      variant={props.variant}
       name={props.name}
       className="group"
       placeholder={props.placeholder}

@@ -131,7 +131,7 @@ export const SectionStandardItem = ({
                 name={`content.${lang}`}
                 lang={lang}
                 placeholder={inputPlaceholder}
-                isTranslateOption={lang !== 'fr'}
+                isTranslateOption={lang !== 'fr' && isOptionTranslate}
                 value={formik.values.content[lang]}
                 onTranslate={() => handleTranslate(lang)}
                 onChange={(e) => {
@@ -147,7 +147,7 @@ export const SectionStandardItem = ({
                   lang={lang}
                   value={formik.values.content[lang]}
                   placeholder={inputPlaceholder}
-                  isTranslateOption={lang !== 'fr'}
+                  isTranslateOption={lang !== 'fr' && isOptionTranslate}
                   maxWarningLength={maxWarningLength}
                   onTranslate={() => handleTranslate(lang)}
                   onChange={(e) => {

@@ -5,7 +5,6 @@ import {
   Button,
   Card,
   CardOverflow,
-  Chip,
   CircularProgress,
   FormControl,
   FormLabel,
@@ -14,11 +13,13 @@ import {
   Option,
   Select,
   Stack,
-  Textarea,
   Typography
 } from '@mui/joy'
 
+import { SectionTextarea } from '@/common/section/containers/section-textarea'
+import { SectionTextfield } from '@/common/section/containers/section-textfield'
 import { CV_LANGUAGES } from '@/constants/cv-languages'
+import { useTranslatorOption } from '@/features/translators/hooks/useTranslatorOption'
 import { useDeleteImageProfileStorage } from '@/hooks/useDeleteImageProfileStorage'
 import { useFormCV } from '@/hooks/useFormCV'
 import { useSetImageProfileStorage } from '@/hooks/useSetImageProfileStorage'
@@ -96,6 +97,8 @@ export const ProfilePage = () => {
   ])
 
   const variantInputStyle = 'plain'
+
+  const { isActiveOptionValid: isOptionTranslate } = useTranslatorOption()
 
   return (
     <PageLayout title={t('resume.section.profile.title')}>
@@ -264,26 +267,18 @@ export const ProfilePage = () => {
             <FormLabel>{t('input.role.label')}</FormLabel>
             <Stack direction={'row'} flexWrap={'wrap'} gap={2}>
               {CV_LANGUAGES.map((lang) => (
-                <Input
+                <SectionTextfield
                   key={`role.${lang}`}
                   name={`role.${lang}`}
-                  startDecorator={
-                    <Chip
-                      variant="plain"
-                      sx={{
-                        marginLeft: -0.75
-                      }}
-                    >
-                      {lang}
-                    </Chip>
-                  }
+                  lang={lang}
                   value={formik.values.role[lang]}
                   onChange={(e) => {
                     formik.handleChange(e)
                     debouncedSubmit()
                   }}
-                  variant={variantInputStyle}
+                  isTranslateOption={lang !== 'fr' && isOptionTranslate}
                   placeholder={`${t('input.role.placeholder')}`}
+                  variant={variantInputStyle}
                 />
               ))}
             </Stack>
@@ -293,10 +288,11 @@ export const ProfilePage = () => {
             <FormLabel>{t('input.description.label')}</FormLabel>
             <Stack direction={'row'} flexWrap={'wrap'} gap={2}>
               {CV_LANGUAGES.map((lang) => (
-                <Textarea
+                <SectionTextarea
+                  isTranslateOption={lang !== 'fr' && isOptionTranslate}
                   key={`description.${lang}`}
                   name={`description.${lang}`}
-                  startDecorator={<Chip variant="plain">{lang}</Chip>}
+                  lang={lang}
                   value={formik.values.description[lang]}
                   onChange={(e) => {
                     formik.handleChange(e)
@@ -305,7 +301,7 @@ export const ProfilePage = () => {
                   variant={variantInputStyle}
                   placeholder={t('input.description.placeholder')}
                   minRows={4}
-                />
+                ></SectionTextarea>
               ))}
             </Stack>
           </Stack>
