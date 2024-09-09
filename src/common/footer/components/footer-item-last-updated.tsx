@@ -8,6 +8,10 @@ interface Props {
 export const FooterItemLastUpdated = ({ date }: Props) => {
   return (
     <Typography
+      sx={{
+        py: 0.5,
+        px: 1
+      }}
       startDecorator={
         <Stack fontSize={'16px'}>
           <UpdateRounded fontSize="inherit" />

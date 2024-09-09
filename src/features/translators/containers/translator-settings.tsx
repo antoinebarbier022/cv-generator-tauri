@@ -3,21 +3,23 @@ import { SettingsSection } from '@/common/settings/settings-section'
 import { SettingsTitle } from '@/common/settings/settings-title'
 import { ErrorRounded } from '@mui/icons-material'
 import { Alert, Divider, Link, Stack, Switch, Typography } from '@mui/joy'
-import { useState } from 'react'
 
+import { ChangeEventHandler } from 'react'
 import { TranslatorApiKey } from '../components/translator-api-key'
 import { TranslatorUsage } from '../components/translator-usage'
 import { useTranslatorApiKey } from '../hooks/useTranslatorApiKey'
+import { useTranslatorOption } from '../hooks/useTranslatorOption'
 import { useTranslatorUsage } from '../hooks/useTranslatorUsage'
 
 export const TranslatorSettings = () => {
-  const [option_translation, setOption_translation] = useState(
-    localStorage.getItem('option-translation') === 'true'
-  )
+  const { isActiveOption, setOptionActivation } = useTranslatorOption()
 
   const { apiKey, displayAPIKey, mutation, handleRemoveApiKey, handleSaveApiKey } =
     useTranslatorApiKey()
   const { usage, free_character_left_count, usageProgression } = useTranslatorUsage({ apiKey })
+
+  const handleChangeOptionActivation: ChangeEventHandler<HTMLInputElement> | undefined = (e) =>
+    setOptionActivation(e.target.checked)
 
   return (
     <SettingsSection>
@@ -32,17 +34,14 @@ export const TranslatorSettings = () => {
         }
         endAction={
           <Switch
-            checked={option_translation}
-            onChange={(e) => {
-              localStorage.setItem('option-translation', String(e.target.checked))
-              setOption_translation(e.target.checked)
-            }}
             size="lg"
+            checked={isActiveOption}
+            onChange={handleChangeOptionActivation}
           ></Switch>
         }
       />
 
-      {option_translation && (
+      {isActiveOption && (
         <>
           <Divider />
           <Stack gap={2}>
