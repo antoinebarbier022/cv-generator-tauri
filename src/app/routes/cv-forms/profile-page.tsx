@@ -19,11 +19,14 @@ import {
 import { SectionTextarea } from '@/common/section/containers/section-textarea'
 import { SectionTextfield } from '@/common/section/containers/section-textfield'
 import { CV_LANGUAGES } from '@/constants/cv-languages'
+import { DeepLService } from '@/features/translators/deepl.service'
+import { useTranslatorApiKey } from '@/features/translators/hooks/useTranslatorApiKey'
 import { useTranslatorOption } from '@/features/translators/hooks/useTranslatorOption'
 import { useDeleteImageProfileStorage } from '@/hooks/useDeleteImageProfileStorage'
 import { useFormCV } from '@/hooks/useFormCV'
 import { useSetImageProfileStorage } from '@/hooks/useSetImageProfileStorage'
 import { Translation } from '@/types/storage'
+import { useMutation } from '@tanstack/react-query'
 import { convertFileSrc } from '@tauri-apps/api/tauri'
 import { useFormik } from 'formik'
 import debounce from 'just-debounce-it'
@@ -99,6 +102,13 @@ export const ProfilePage = () => {
   const variantInputStyle = 'plain'
 
   const { isActiveOptionValid: isOptionTranslate } = useTranslatorOption()
+
+  const mutation = useMutation({
+    mutationKey: ['translators', 'deepl', 'usage'],
+    mutationFn: DeepLService.translate
+  })
+
+  const { apiKey: translatorApiKey } = useTranslatorApiKey()
 
   return (
     <PageLayout title={t('resume.section.profile.title')}>
@@ -276,6 +286,24 @@ export const ProfilePage = () => {
                     formik.handleChange(e)
                     debouncedSubmit()
                   }}
+                  onTranslate={() =>
+                    mutation.mutate(
+                      {
+                        api_key: translatorApiKey,
+                        text: formik.values.role.fr,
+                        target_lang: lang
+                      },
+                      {
+                        onSuccess: (data) => {
+                          formik.setFieldValue(`role.${lang}`, data.translated_text)
+                          debouncedSubmit()
+                        },
+                        onError: () => {
+                          alert('translation error')
+                        }
+                      }
+                    )
+                  }
                   isTranslateOption={lang !== 'fr' && isOptionTranslate}
                   placeholder={`${t('input.role.placeholder')}`}
                   variant={variantInputStyle}
@@ -298,6 +326,24 @@ export const ProfilePage = () => {
                     formik.handleChange(e)
                     debouncedSubmit()
                   }}
+                  onTranslate={() =>
+                    mutation.mutate(
+                      {
+                        api_key: translatorApiKey,
+                        text: formik.values.description.fr,
+                        target_lang: lang
+                      },
+                      {
+                        onSuccess: (data) => {
+                          formik.setFieldValue(`description.${lang}`, data.translated_text)
+                          debouncedSubmit()
+                        },
+                        onError: () => {
+                          alert('translation error')
+                        }
+                      }
+                    )
+                  }
                   variant={variantInputStyle}
                   placeholder={t('input.description.placeholder')}
                   minRows={4}

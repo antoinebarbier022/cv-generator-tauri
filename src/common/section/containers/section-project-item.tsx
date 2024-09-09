@@ -195,7 +195,7 @@ export const SectionProjectItem = ({
           <Stack key={item.name}>
             <FormLabel>{item.label}</FormLabel>
             <Stack direction={'row'} gap={1} flexWrap={'wrap'}>
-              {CV_LANGUAGES.map((lang, index) => (
+              {CV_LANGUAGES.map((lang) => (
                 <Textarea
                   key={`content.${item.name}.${lang}`}
                   name={`content.${item.name}.${lang}`}
