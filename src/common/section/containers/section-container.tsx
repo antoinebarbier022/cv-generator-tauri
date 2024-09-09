@@ -6,37 +6,32 @@ import { useFormCV } from '@/hooks/useFormCV'
 import { SectionDroppableLayout } from '@/common/section/layouts/section-droppable-layout'
 import { SectionEmptyState } from '../components/section-empty-state'
 
-import { Translation } from '../../../types/storage'
+import { Translation, UserData } from '../../../types/storage'
 import { SectionItem } from './section-item'
 
 interface Props {
   sectionKey: 'skills' | 'sectors' | 'languages' | 'formation' | 'employment_history'
   options?: {
+    isOptionTranslation?: boolean
     inputType?: 'input' | 'textarea'
     inputMaxWarningLength?: number
   }
 }
 export const SectionPage = ({
   sectionKey,
-  options = { inputType: 'input', inputMaxWarningLength: undefined }
+  options = { isOptionTranslation: false, inputType: 'input', inputMaxWarningLength: undefined }
 }: Props) => {
   const { t } = useTranslation()
 
-  const {
-    formValues,
-    setFormValues,
-    handleAddItemSection,
-    handleDeleteItemSection,
-
-    dragEnded
-  } = useFormCV()
+  const { formValues, setFormValues, handleAddItemSection, handleDeleteItemSection, dragEnded } =
+    useFormCV()
 
   const handleChangeVisibility = (index: number, value: boolean) => {
     const newContent = [...formValues[sectionKey]]
     newContent[index].isHidden = value
     setFormValues({
-      [sectionKey]: newContent
-    })
+      sectionKey: newContent
+    } as Partial<UserData>)
   }
 
   const handleEditContentItem = (id: string, content: Translation) => {
@@ -44,8 +39,8 @@ export const SectionPage = ({
     newContent[newContent.findIndex((e) => e.id === id)].content = content
 
     setFormValues({
-      [sectionKey]: newContent
-    })
+      sectionKey: newContent
+    } as Partial<UserData>)
   }
 
   const handleDelete = (id: string) =>
@@ -86,6 +81,7 @@ export const SectionPage = ({
             maxWarningLength={options.inputMaxWarningLength}
             inputPlaceholder={''}
             isVisible={Boolean(field.isHidden)}
+            isOptionTranslate={localStorage.getItem('option-translation') === 'true'}
             onChangeVisibility={(value) => handleChangeVisibility(index, value)}
             onDelete={() => handleDelete(field.id)}
             onChange={(value) => {

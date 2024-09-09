@@ -1,11 +1,15 @@
 import { SectionItemLayout, SectionItemProps } from '@/common/section/layouts/section-item-layout'
 import { AccordionCardTitle } from '@/components/accordion-card-title'
 import { CV_LANGUAGES } from '@/constants/cv-languages'
+import { TranslateButton } from '@/features/translators/components/translate-button'
+import { DeepLService } from '@/features/translators/deepl.service'
+import { useTranslatorApiKey } from '@/features/translators/hooks/useTranslatorApiKey'
 import { useExpandedItemStore } from '@/stores/useExpandedItemStore'
 import { ResumeContentSection, UserDataExperience } from '@/types/storage'
 import { countWarnings } from '@/utils/warnings.utils'
 import { experienceSchemaWithValidation } from '@/validations/dataContentValidationSchema'
 import { Chip, FormLabel, Input, Stack, Textarea, Typography } from '@mui/joy'
+import { useMutation } from '@tanstack/react-query'
 import { useFormik } from 'formik'
 import debounce from 'just-debounce-it'
 import { useCallback } from 'react'
@@ -15,9 +19,10 @@ import { ProjectTitle } from '../components/project-title'
 
 interface Props extends Omit<SectionItemProps, 'title' | 'isExpanded' | 'onExpandedChange'> {
   data: ResumeContentSection<UserDataExperience>
+  isOptionTranslate?: boolean
   onChange: (values: ResumeContentSection<UserDataExperience>) => void
 }
-export const ProjectItem = ({ data, index, onChange, ...rest }: Props) => {
+export const ProjectItem = ({ data, isOptionTranslate, index, onChange, ...rest }: Props) => {
   const { t } = useTranslation()
 
   const { expandedItem, setExpandedItem } = useExpandedItemStore()
@@ -95,6 +100,13 @@ export const ProjectItem = ({ data, index, onChange, ...rest }: Props) => {
     debounce(() => formik.submitForm(), 500),
     [formik.submitForm]
   )
+
+  const { apiKey: translatorApiKey } = useTranslatorApiKey()
+
+  const mutation = useMutation({
+    mutationKey: ['translators', 'deepl', 'usage'],
+    mutationFn: DeepLService.translate
+  })
 
   const countWarns = countWarnings(Object(formikOnlyWarning.errors.content))
 
@@ -177,11 +189,12 @@ export const ProjectItem = ({ data, index, onChange, ...rest }: Props) => {
           <Stack key={item.name}>
             <FormLabel>{item.label}</FormLabel>
             <Stack direction={'row'} gap={1} flexWrap={'wrap'}>
-              {CV_LANGUAGES.map((lang) => (
+              {CV_LANGUAGES.map((lang, index) => (
                 <Textarea
                   key={`content.${item.name}.${lang}`}
                   name={`content.${item.name}.${lang}`}
                   size="sm"
+                  className="group"
                   startDecorator={<Chip size="sm">{lang}</Chip>}
                   placeholder={item.placeholder}
                   value={formik.values.content[item.name][lang]}
@@ -195,23 +208,60 @@ export const ProjectItem = ({ data, index, onChange, ...rest }: Props) => {
                   slotProps={{
                     endDecorator: {
                       sx: {
+                        height: '100%',
                         alignSelf: 'flex-end'
                       }
                     }
                   }}
                   endDecorator={
-                    <Typography level="body-xs" textColor={'neutral.500'} sx={{ ml: 'auto' }}>
-                      <Typography
-                        textColor={
-                          formik.values.content[item.name][lang].length > item.maxLength
-                            ? 'danger.400'
-                            : 'neutral.400'
-                        }
+                    <Stack
+                      direction={'column-reverse'}
+                      justifyContent={'space-between'}
+                      alignItems={'flex-end'}
+                      gap={1}
+                      alignContent={'space-between'}
+                    >
+                      <Typography level="body-xs" textColor={'neutral.500'} sx={{ ml: 'auto' }}>
+                        <Typography
+                          textColor={
+                            formik.values.content[item.name][lang].length > item.maxLength
+                              ? 'danger.400'
+                              : 'neutral.400'
+                          }
+                        >
+                          {formik.values.content[item.name][lang].length}
+                        </Typography>{' '}
+                        / {item.maxLength}
+                      </Typography>
+                      <Stack
+                        sx={{ display: isOptionTranslate && index >= 1 ? 'inline-block' : 'none' }}
+                        className="invisible group-focus-within:visible hover:visible"
                       >
-                        {formik.values.content[item.name][lang].length}
-                      </Typography>{' '}
-                      / {item.maxLength}
-                    </Typography>
+                        <TranslateButton
+                          onClick={() => {
+                            mutation.mutate(
+                              {
+                                api_key: translatorApiKey,
+                                text: formik.values.content[item.name].fr,
+                                target_lang: lang
+                              },
+                              {
+                                onSuccess: (data) => {
+                                  formik.setFieldValue(
+                                    `content.${item.name}.${lang}`,
+                                    data.translated_text
+                                  )
+                                  debouncedSubmit()
+                                },
+                                onError: () => {
+                                  alert('translation error')
+                                }
+                              }
+                            )
+                          }}
+                        />
+                      </Stack>
+                    </Stack>
                   }
                 />
               ))}

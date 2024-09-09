@@ -63,6 +63,7 @@ export const ProjectsSection = () => {
               data={field}
               draggableId={field.id}
               isVisible={Boolean(field.isHidden)}
+              isOptionTranslate={localStorage.getItem('option-translation') === 'true'}
               onChangeVisibility={(value) => handleChangeVisibility(index, value)}
               onDelete={() => handleDeleteById(field.id)}
               onChange={(value) => {

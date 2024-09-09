@@ -1,4 +1,4 @@
-import { Button, Chip, Input, Stack, Textarea, Typography } from '@mui/joy'
+import { Chip, Input, Stack, Textarea, Typography } from '@mui/joy'
 import { UUID } from 'crypto'
 import { useFormik } from 'formik'
 import debounce from 'just-debounce-it'
@@ -10,18 +10,23 @@ import * as yup from 'yup'
 import { AccordionCardTitle } from '../../../components/accordion-card-title'
 import { CV_LANGUAGES } from '../../../constants/cv-languages'
 
-import { TranslateRounded } from '@mui/icons-material'
+import { TranslateButton } from '@/features/translators/components/translate-button'
+import { DeepLService } from '@/features/translators/deepl.service'
+import { useTranslatorApiKey } from '@/features/translators/hooks/useTranslatorApiKey'
+import { useMutation } from '@tanstack/react-query'
 import { useExpandedItemStore } from '../../../stores/useExpandedItemStore'
 import { translationSchemaWithValidation } from '../../../validations/dataContentValidationSchema'
 import { SectionItemLayout, SectionItemProps } from '../layouts/section-item-layout'
 
 interface Props extends Omit<SectionItemProps, 'title' | 'isExpanded' | 'onExpandedChange'> {
   id: UUID
+  isOptionTranslate?: boolean
   maxWarningLength?: number
   titlePlaceholder?: string
   content: Translation
   inputPlaceholder: string
   inputType?: 'input' | 'textarea'
+
   onChange: (values: ResumeContentSection<Translation>) => void
 }
 
@@ -30,6 +35,7 @@ export const SectionItem = ({
   inputType = 'input',
   titlePlaceholder,
   maxWarningLength,
+  isOptionTranslate,
   content,
   inputPlaceholder,
   onChange,
@@ -52,6 +58,7 @@ export const SectionItem = ({
     onSubmit: (values) => {
       formikOnlyWarning.setValues(values)
       onChange(values)
+      alert(JSON.stringify(values))
     }
   })
 
@@ -65,12 +72,38 @@ export const SectionItem = ({
     onSubmit: () => {}
   })
 
+  const { apiKey: translatorApiKey } = useTranslatorApiKey()
+
+  const mutation = useMutation({
+    mutationKey: ['translators', 'deepl', 'usage'],
+    mutationFn: DeepLService.translate
+  })
+
   const { expandedItem, setExpandedItem } = useExpandedItemStore()
 
   const debouncedSubmit = useCallback(
     debounce(() => formik.submitForm(), 500),
     [formik.submitForm]
   )
+
+  const handleTranslate = (lang: string) => {
+    mutation.mutate(
+      {
+        api_key: translatorApiKey,
+        text: formik.values.content.fr,
+        target_lang: lang
+      },
+      {
+        onSuccess: (data) => {
+          formik.setFieldValue(`content.${lang}`, data.translated_text)
+          debouncedSubmit()
+        },
+        onError: () => {
+          alert('translation error')
+        }
+      }
+    )
+  }
 
   return (
     <SectionItemLayout
@@ -107,20 +140,14 @@ export const SectionItem = ({
                   </Chip>
                 }
                 endDecorator={
-                  <Stack
-                    sx={{ display: index >= 1 ? 'inline-block' : 'none' }}
-                    className="invisible group-focus-within:visible hover:visible"
-                  >
-                    <Button
-                      size="sm"
-                      color="neutral"
-                      variant="soft"
-                      sx={{ '--IconButton-size': '1.5rem', fontSize: '0.75rem', px: 1.5 }}
+                  <>
+                    <Stack
+                      sx={{ display: isOptionTranslate && index >= 1 ? 'inline-block' : 'none' }}
+                      className="invisible group-focus-within:visible hover:visible"
                     >
-                      Traduire
-                      <TranslateRounded sx={{ display: 'none', fontSize: '0.85rem' }} />
-                    </Button>
-                  </Stack>
+                      <TranslateButton onClick={() => handleTranslate(lang)} />
+                    </Stack>
+                  </>
                 }
                 value={formik.values.content[lang]}
                 onChange={(e) => {
@@ -133,10 +160,11 @@ export const SectionItem = ({
             {inputType === 'textarea' && (
               <Stack>
                 <Textarea
+                  className="group"
                   name={`content.${lang}`}
                   startDecorator={<Chip>{lang}</Chip>}
                   value={formik.values.content[lang]}
-                  minRows={2}
+                  minRows={3}
                   maxRows={5}
                   onChange={(e) => {
                     formik.handleChange(e)
@@ -146,29 +174,44 @@ export const SectionItem = ({
                   slotProps={{
                     endDecorator: {
                       sx: {
+                        height: '100%',
                         alignSelf: 'flex-end'
                       }
                     }
                   }}
                   endDecorator={
-                    maxWarningLength && (
-                      <Typography
-                        level="body-xs"
-                        textColor={'neutral.500'}
-                        sx={{
-                          ml: 'auto'
-                        }}
-                      >
+                    <Stack
+                      direction={'column-reverse'}
+                      justifyContent={'space-between'}
+                      alignItems={'flex-end'}
+                      gap={1}
+                      alignContent={'space-between'}
+                    >
+                      {maxWarningLength && (
                         <Typography
-                          textColor={
-                            content[lang].length > maxWarningLength ? 'danger.400' : 'neutral.400'
-                          }
+                          level="body-xs"
+                          textColor={'neutral.500'}
+                          sx={{
+                            ml: 'auto'
+                          }}
                         >
-                          {content[lang].length}
-                        </Typography>{' '}
-                        / {maxWarningLength}
-                      </Typography>
-                    )
+                          <Typography
+                            textColor={
+                              content[lang].length > maxWarningLength ? 'danger.400' : 'neutral.400'
+                            }
+                          >
+                            {content[lang].length}
+                          </Typography>{' '}
+                          / {maxWarningLength}
+                        </Typography>
+                      )}
+                      <Stack
+                        sx={{ display: isOptionTranslate && index >= 1 ? 'inline-block' : 'none' }}
+                        className="invisible group-focus-within:visible hover:visible"
+                      >
+                        <TranslateButton onClick={() => handleTranslate(lang)} />
+                      </Stack>
+                    </Stack>
                   }
                 />
               </Stack>
