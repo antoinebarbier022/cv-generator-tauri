@@ -117,7 +117,9 @@ export const useFormCV = () => {
 
     const indexSelectedItem = section.findIndex((e) => e.id === idSelected)
     const showDialogConfirm =
-      indexSelectedItem && !isEmptyObject(section[indexSelectedItem].content)
+      indexSelectedItem !== -1 && !isEmptyObject(section[indexSelectedItem].content)
+
+    console.log({ indexSelectedItem }, !isEmptyObject(section[indexSelectedItem].content))
 
     if (showDialogConfirm) {
       const confirmed = await confirm('This action cannot be reverted. Are you sure?', {

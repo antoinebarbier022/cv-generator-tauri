@@ -6,7 +6,6 @@ import { SectionDroppableLayout } from '@/common/section/layouts/section-droppab
 
 import { SectionEmptyState } from '@/common/section/components/section-empty-state'
 import { useFormCV } from '@/hooks/useFormCV'
-import { useExpandedItemStore } from '@/stores/useExpandedItemStore'
 import { ResumeContentSection, UserDataExperience } from '@/types/storage'
 import { ProjectItem } from './project-item'
 
@@ -14,8 +13,6 @@ export const ProjectsSection = () => {
   const { t } = useTranslation()
   const { formValues, setFormValues, dragEnded, handleDeleteItemSection, handleAddItemSection } =
     useFormCV()
-
-  const { setExpandedItem } = useExpandedItemStore()
 
   const handleAddProject = async () => {
     handleAddItemSection({ fieldName: 'experiences' })
