@@ -1,5 +1,17 @@
 
 
+## [0.1.1-beta.18](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.17...0.1.1-beta.18) (2024-9-9)
+
+
+### Bug Fixes
+
+* **translation:** deactivate translate buttons if the option is deactivate ([7682519](https://github.com/antoinebarbier022/cv-generator-tauri/commit/7682519525694489e2c6094472004606401a2b33))
+
+
+### Features
+
+* **generation script:** add algo to distribute projects per columns ([1ec690c](https://github.com/antoinebarbier022/cv-generator-tauri/commit/1ec690c2a76c398b0fe33f85a47afef5e90a51ef))
+
 ## [0.1.1-beta.17](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.15...0.1.1-beta.17) (2024-9-9)
 
 
