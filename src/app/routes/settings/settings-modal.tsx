@@ -37,7 +37,7 @@ interface Props {
 
 export const SettingsModal = (props: Props) => {
   const [option_translation, setOption_translation] = useState(
-    localStorage.getItem('option-translation') === 'true' ?? false
+    localStorage.getItem('option-translation') === 'true'
   )
   const [input_deepl_key, setInputDeeplKey] = useState('')
   const [deepl_key, setDeeplKey] = useState(sessionStorage.getItem('deepl-api-key') ?? '')
@@ -104,7 +104,8 @@ export const SettingsModal = (props: Props) => {
           p: 0,
           minWidth: { sm: '80vw', lg: '80vw', overflow: 'hidden' },
           maxWidth: { sm: '80vw' },
-          minHeight: '80vh'
+          minHeight: '80vh',
+          maxHeight: '80vh'
         }}
       >
         <ModalClose />
@@ -144,15 +145,25 @@ export const SettingsModal = (props: Props) => {
             </List>
           </Stack>
 
-          <Stack mt={5} px={5} gap={2} sx={{ overflow: 'auto' }}>
+          <Stack
+            pt={5}
+            pb={5}
+            px={5}
+            gap={2}
+            sx={{ height: '100%', overflow: 'scroll', scrollbarGutter: 'stable' }}
+          >
             <Typography level="title-md">Option de traduction</Typography>
             <Stack direction={'row'} justifyContent={'space-between'} gap={2}>
               <Stack gap={0.5}>
-                <Typography>Activer la traduction automatique avec DeepL</Typography>
-                <Typography level="body-xs" fontWeight={300} textColor={'text.tertiary'}>
-                  Activez cette option pour permettre la traduction automatique de vos informations
-                  via DeepL.
-                  <br /> Un bouton "Traduire" apparaîtra à côté des champs d'entrée.
+                <Typography>Traduction automatique avec DeepL</Typography>
+                <Typography
+                  level="body-xs"
+                  fontWeight={300}
+                  textColor={'text.tertiary'}
+                  width={'80%'}
+                >
+                  Activez cette option pour permettre la traduction automatique via DeepL. Un bouton
+                  "Traduire" apparaîtra à côté des champs à traduire.
                 </Typography>
               </Stack>
 
@@ -172,11 +183,18 @@ export const SettingsModal = (props: Props) => {
                 <Stack gap={2}>
                   <Stack gap={0.5}>
                     <Typography>Clé d'API DeepL</Typography>
-                    <Typography level="body-xs" fontWeight={300} textColor={'text.tertiary'}>
+                    <Typography
+                      level="body-xs"
+                      fontWeight={300}
+                      textColor={'text.tertiary'}
+                      width={'80%'}
+                    >
                       Une clé API est nécessaire pour utiliser la fonctionnalité de traduction
                       automatique. Vous pouvez souscrire à différents plans en fonction de vos
-                      besoins sur le site de DeepL. <br />
-                      Si vous avez déjà une clé API, vous pouvez la retrouver sur votre{' '}
+                      besoins sur le site de DeepL. Un plan gratuit vous offre jusqu'à 500 000
+                      caractères à traduire par mois.
+                      <br />
+                      Si vous possédez déjà une clé API, vous pouvez la retrouver sur votre{' '}
                       <Link
                         level="body-xs"
                         fontWeight={400}
@@ -242,32 +260,46 @@ export const SettingsModal = (props: Props) => {
                     </Alert>
                   )}
                   {usage.data && deepl_key && !mutation.isError && (
-                    <Card variant="soft" sx={{ backgroundColor: 'neutral.50' }}>
-                      <Typography>Suivi de l'usage</Typography>
+                    <Stack gap={2}>
+                      <Alert color="primary">
+                        Pour des raisons de sécurité, nous ne sauvegardons pas votre clé d'API après
+                        la fermeture de l'application.
+                      </Alert>
 
-                      <Stack gap={1} mb={1}>
-                        <Typography level="body-xs" color="primary" sx={{ alignSelf: 'end' }}>
-                          {usageProgression.toFixed(4)}% utilisé
-                        </Typography>
-                        <LinearProgress
-                          variant="soft"
-                          sx={{
-                            '--LinearProgress-thickness': '16px',
-                            '--LinearProgress-progressThickness': '12px',
-                            '--LinearProgress-radius': '4px',
-                            backgroundColor: 'common.white',
-                            border: '1px solid',
-                            borderColor: 'neutral.100'
-                          }}
-                          size="lg"
-                          determinate
-                          value={Math.ceil(usageProgression) + 1}
-                        />
-                        <Typography level="body-xs" fontWeight={300} textColor={'primary.500'}>
-                          {free_character_left_count.toLocaleString('fr')} free characters left
-                        </Typography>
-                      </Stack>
-                    </Card>
+                      <Card variant="soft" sx={{ backgroundColor: 'neutral.50' }}>
+                        <Stack gap={0.5}>
+                          <Typography>Suivi de l'usage</Typography>
+                          <Typography level="body-xs" fontWeight={300}>
+                            Limitation à {usage.data.character_limit.toLocaleString('fr')}{' '}
+                            caractères par mois
+                          </Typography>
+                        </Stack>
+
+                        <Stack gap={1} mb={1}>
+                          <Typography level="body-xs" color="primary" sx={{ alignSelf: 'end' }}>
+                            {usageProgression.toFixed(4)}%
+                          </Typography>
+                          <LinearProgress
+                            variant="soft"
+                            sx={{
+                              '--LinearProgress-thickness': '16px',
+                              '--LinearProgress-progressThickness': '12px',
+                              '--LinearProgress-radius': '4px',
+                              backgroundColor: 'common.white',
+                              border: '1px solid',
+                              borderColor: 'neutral.100'
+                            }}
+                            size="lg"
+                            determinate
+                            value={Math.ceil(usageProgression)}
+                          />
+                          <Typography level="body-xs" fontWeight={300} textColor={'primary.500'}>
+                            Il vous reste {free_character_left_count.toLocaleString('fr')}{' '}
+                            caractères pouvant être traduits.
+                          </Typography>
+                        </Stack>
+                      </Card>
+                    </Stack>
                   )}
                 </Stack>
               </>
