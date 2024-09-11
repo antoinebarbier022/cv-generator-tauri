@@ -14,12 +14,18 @@ use core::str;
 use libc::SIGTERM;
 use serde::Serialize;
 use signal_hook::iterator::Signals;
+use std::net::TcpListener;
 use std::sync::Mutex;
 use std::{sync, thread};
 use sync::mpsc::{channel, Sender};
 use tauri::api::process::{Command, CommandEvent, TerminatedPayload};
 use tauri::Manager;
 use window_vibrancy::*;
+
+fn find_free_port() -> Option<u16> {
+    let listener = TcpListener::bind("127.0.0.1:0").ok()?;
+    Some(listener.local_addr().ok()?.port())
+}
 
 fn start_backend(tx: Sender<BackendEvent>) -> anyhow::Result<()> {
     println!("Spawning api server...");
@@ -35,6 +41,13 @@ enum BackendEvent {
 fn spawn_backend(tx: Sender<BackendEvent>) -> anyhow::Result<()> {
     let (mut rx, _) = Command::new_sidecar("api")
         .context("Failed to create `api` binary command")?
+        .args([
+            "--port",
+            find_free_port()
+                .unwrap_or_else(|| 8008)
+                .to_string()
+                .as_str(),
+        ])
         .spawn()
         .context("Failed to spawn `api` sidecar")?;
 
