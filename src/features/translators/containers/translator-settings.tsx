@@ -24,12 +24,13 @@ export const TranslatorSettings = () => {
   return (
     <SettingsSection>
       <SettingsTitle>Option de traduction</SettingsTitle>
+
       <SettingsItem
-        title="Traduction automatique avec DeepL"
+        title="Traduction avec DeepL"
         description={
           <>
-            Activez cette option pour permettre la traduction automatique via DeepL. Un bouton
-            "Traduire" apparaîtra à côté des champs à traduire.
+            Activez cette option pour permettre la traduction via DeepL. Un bouton "Traduire"
+            apparaîtra à côté des champs à traduire.
           </>
         }
         endAction={
@@ -49,10 +50,9 @@ export const TranslatorSettings = () => {
               title={"Clé d'API DeepL"}
               description={
                 <Typography>
-                  Une clé API est nécessaire pour utiliser la fonctionnalité de traduction
-                  automatique. Vous pouvez souscrire à différents plans en fonction de vos besoins
-                  sur le site de DeepL. Un plan gratuit vous offre jusqu'à 500 000 caractères à
-                  traduire par mois.
+                  Une clé API est nécessaire pour utiliser la fonctionnalité de traduction. Vous
+                  pouvez souscrire à différents plans en fonction de vos besoins sur le site de
+                  DeepL. Un plan gratuit vous offre jusqu'à 500 000 caractères à traduire par mois.
                   <br />
                   Si vous possédez déjà une clé API, vous pouvez la retrouver sur votre{' '}
                   <Link
