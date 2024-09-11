@@ -12,8 +12,10 @@ export const useResetDataStorage = () => {
     mutationFn: StorageService.resetContentData,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['data'] })
-      toast.success('All data has been successfully reset.', {
-        toastId: 'resetData.success'
+      toast('All data has been successfully reset.', {
+        toastId: 'resetData.success',
+        autoClose: 3000,
+        closeButton: true
       })
       navigate('/welcome')
     },

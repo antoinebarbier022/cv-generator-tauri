@@ -250,7 +250,7 @@ export const ProfilePage = () => {
                 size="sm"
                 variant="outlined"
                 color="neutral"
-                sx={{ fontWeight: '400' }}
+                sx={{ fontWeight: '500' }}
                 onClick={handleChangePicture}
               >
                 {formik.values.picture
