@@ -1,4 +1,5 @@
-import { Button, Input, Stack, Typography } from '@mui/joy'
+import { VisibilityOffRounded, VisibilityRounded } from '@mui/icons-material'
+import { Button, IconButton, Input, Stack, Typography } from '@mui/joy'
 import { useState } from 'react'
 
 interface Props {
@@ -18,6 +19,7 @@ export const TranslatorApiKey = ({
   onDelete
 }: Props) => {
   const [value, setValue] = useState('')
+  const [isVisible, setInputVisibility] = useState(false)
   return (
     <Stack direction={'row'} justifyContent={'space-between'} gap={2}>
       {isActive ? (
@@ -38,21 +40,37 @@ export const TranslatorApiKey = ({
       ) : (
         <Input
           size="sm"
+          type={isVisible ? 'text' : 'password'}
           color={isError ? 'danger' : 'neutral'}
           placeholder="API KEY"
           value={value}
           onChange={(e) => setValue(e.target.value)}
           endDecorator={
-            <Button
-              color={isError ? 'danger' : 'neutral'}
-              loading={isLoading}
-              variant="soft"
-              onClick={() => {
-                onSubmit(value)
-              }}
-            >
-              OK
-            </Button>
+            <Stack direction={'row'} gap={2}>
+              <IconButton
+                variant="plain"
+                color={'neutral'}
+                sx={{ borderRadius: '100px' }}
+                onMouseDown={() => {
+                  setInputVisibility(true)
+                }}
+                onMouseUp={() => {
+                  setInputVisibility(false)
+                }}
+              >
+                {isVisible ? <VisibilityRounded /> : <VisibilityOffRounded />}
+              </IconButton>
+              <Button
+                color={isError ? 'danger' : 'neutral'}
+                loading={isLoading}
+                variant="soft"
+                onClick={() => {
+                  onSubmit(value)
+                }}
+              >
+                OK
+              </Button>
+            </Stack>
           }
         />
       )}
