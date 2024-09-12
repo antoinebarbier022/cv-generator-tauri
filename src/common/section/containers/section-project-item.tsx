@@ -144,143 +144,149 @@ export const SectionProjectItem = ({
       }}
       {...rest}
     >
-      <Stack component={'fieldset'} gap={1} sx={{ position: 'relative', flex: 1, border: 'none' }}>
-        <Stack direction={'row'} gap={2} flexWrap={'wrap'}>
-          {elementsHeaderForm.map((item) => (
-            <Stack key={item.name} sx={{ flex: 1 }}>
-              <FormLabel>{item.label}</FormLabel>
+      {expandedItem === data.id && (
+        <Stack
+          component={'fieldset'}
+          gap={1}
+          sx={{ position: 'relative', flex: 1, border: 'none' }}
+        >
+          <Stack direction={'row'} gap={2} flexWrap={'wrap'}>
+            {elementsHeaderForm.map((item) => (
+              <Stack key={item.name} sx={{ flex: 1 }}>
+                <FormLabel>{item.label}</FormLabel>
 
-              <Input
-                size="sm"
-                id={`content.${item.name}`}
-                name={`content.${item.name}`}
-                placeholder={item.placeholder}
-                value={formik.values.content[item.name]}
-                onChange={(e) => {
-                  formik.handleChange(e)
-                  debouncedSubmit()
-                }}
-                autoComplete="off"
-              />
-            </Stack>
-          ))}
-        </Stack>
-
-        <Stack>
-          <FormLabel>{t('input.project.role.label')}</FormLabel>
-          <Stack direction={'row'} gap={1} flexWrap={'wrap'}>
-            {CV_LANGUAGES.map((lang) => (
-              <Input
-                key={`content.role.${lang}`}
-                name={`content.role.${lang}`}
-                size="sm"
-                startDecorator={<Chip size="sm">{lang}</Chip>}
-                placeholder={t('input.project.role.placeholder')}
-                value={formik.values.content.role[lang]}
-                onChange={(e) => {
-                  formik.handleChange(e)
-                  debouncedSubmit()
-                }}
-                autoComplete="off"
-                slotProps={{
-                  endDecorator: {
-                    sx: {
-                      alignSelf: 'flex-end'
-                    }
-                  }
-                }}
-              />
-            ))}
-          </Stack>
-        </Stack>
-
-        {elementsBodyForm.map((item) => (
-          <Stack key={item.name}>
-            <FormLabel>{item.label}</FormLabel>
-            <Stack direction={'row'} gap={1} flexWrap={'wrap'}>
-              {CV_LANGUAGES.map((lang) => (
-                <Textarea
-                  key={`content.${item.name}.${lang}`}
-                  name={`content.${item.name}.${lang}`}
+                <Input
                   size="sm"
-                  className="group"
-                  startDecorator={<Chip size="sm">{lang}</Chip>}
+                  id={`content.${item.name}`}
+                  name={`content.${item.name}`}
                   placeholder={item.placeholder}
-                  value={formik.values.content[item.name][lang]}
+                  value={formik.values.content[item.name]}
                   onChange={(e) => {
                     formik.handleChange(e)
                     debouncedSubmit()
                   }}
                   autoComplete="off"
-                  minRows={item.minRows}
-                  maxRows={item.maxRows}
+                />
+              </Stack>
+            ))}
+          </Stack>
+
+          <Stack>
+            <FormLabel>{t('input.project.role.label')}</FormLabel>
+            <Stack direction={'row'} gap={1} flexWrap={'wrap'}>
+              {CV_LANGUAGES.map((lang) => (
+                <Input
+                  key={`content.role.${lang}`}
+                  name={`content.role.${lang}`}
+                  size="sm"
+                  startDecorator={<Chip size="sm">{lang}</Chip>}
+                  placeholder={t('input.project.role.placeholder')}
+                  value={formik.values.content.role[lang]}
+                  onChange={(e) => {
+                    formik.handleChange(e)
+                    debouncedSubmit()
+                  }}
+                  autoComplete="off"
                   slotProps={{
                     endDecorator: {
                       sx: {
-                        height: '100%',
                         alignSelf: 'flex-end'
                       }
                     }
                   }}
-                  endDecorator={
-                    <Stack
-                      direction={'column-reverse'}
-                      justifyContent={'space-between'}
-                      alignItems={'flex-end'}
-                      gap={1}
-                      alignContent={'space-between'}
-                    >
-                      <Typography level="body-xs" textColor={'neutral.500'} sx={{ ml: 'auto' }}>
-                        <Typography
-                          textColor={
-                            formik.values.content[item.name][lang].length > item.maxLength
-                              ? 'danger.400'
-                              : 'neutral.400'
-                          }
-                        >
-                          {formik.values.content[item.name][lang].length}
-                        </Typography>{' '}
-                        / {item.maxLength}
-                      </Typography>
-                      <Stack
-                        sx={{
-                          display: lang !== 'fr' && isOptionTranslate ? 'inline-block' : 'none'
-                        }}
-                        className="invisible group-focus-within:visible hover:visible"
-                      >
-                        <TranslateButton
-                          onClick={() => {
-                            mutation.mutate(
-                              {
-                                api_key: translatorApiKey,
-                                api_port,
-                                text: formik.values.content[item.name].fr,
-                                target_lang: lang
-                              },
-                              {
-                                onSuccess: (data) => {
-                                  formik.setFieldValue(
-                                    `content.${item.name}.${lang}`,
-                                    data.translated_text
-                                  )
-                                  debouncedSubmit()
-                                },
-                                onError: () => {
-                                  alert('translation error')
-                                }
-                              }
-                            )
-                          }}
-                        />
-                      </Stack>
-                    </Stack>
-                  }
                 />
               ))}
             </Stack>
           </Stack>
-        ))}
-      </Stack>
+
+          {elementsBodyForm.map((item) => (
+            <Stack key={item.name}>
+              <FormLabel>{item.label}</FormLabel>
+              <Stack direction={'row'} gap={1} flexWrap={'wrap'}>
+                {CV_LANGUAGES.map((lang) => (
+                  <Textarea
+                    key={`content.${item.name}.${lang}`}
+                    name={`content.${item.name}.${lang}`}
+                    size="sm"
+                    className="group"
+                    startDecorator={<Chip size="sm">{lang}</Chip>}
+                    placeholder={item.placeholder}
+                    value={formik.values.content[item.name][lang]}
+                    onChange={(e) => {
+                      formik.handleChange(e)
+                      debouncedSubmit()
+                    }}
+                    autoComplete="off"
+                    minRows={item.minRows}
+                    maxRows={item.maxRows}
+                    slotProps={{
+                      endDecorator: {
+                        sx: {
+                          height: '100%',
+                          alignSelf: 'flex-end'
+                        }
+                      }
+                    }}
+                    endDecorator={
+                      <Stack
+                        direction={'column-reverse'}
+                        justifyContent={'space-between'}
+                        alignItems={'flex-end'}
+                        gap={1}
+                        alignContent={'space-between'}
+                      >
+                        <Typography level="body-xs" textColor={'neutral.500'} sx={{ ml: 'auto' }}>
+                          <Typography
+                            textColor={
+                              formik.values.content[item.name][lang].length > item.maxLength
+                                ? 'danger.400'
+                                : 'neutral.400'
+                            }
+                          >
+                            {formik.values.content[item.name][lang].length}
+                          </Typography>{' '}
+                          / {item.maxLength}
+                        </Typography>
+                        <Stack
+                          sx={{
+                            display: lang !== 'fr' && isOptionTranslate ? 'inline-block' : 'none'
+                          }}
+                          className="invisible group-focus-within:visible hover:visible"
+                        >
+                          <TranslateButton
+                            onClick={() => {
+                              mutation.mutate(
+                                {
+                                  api_key: translatorApiKey,
+                                  api_port,
+                                  text: formik.values.content[item.name].fr,
+                                  target_lang: lang
+                                },
+                                {
+                                  onSuccess: (data) => {
+                                    formik.setFieldValue(
+                                      `content.${item.name}.${lang}`,
+                                      data.translated_text
+                                    )
+                                    debouncedSubmit()
+                                  },
+                                  onError: () => {
+                                    alert('translation error')
+                                  }
+                                }
+                              )
+                            }}
+                          />
+                        </Stack>
+                      </Stack>
+                    }
+                  />
+                ))}
+              </Stack>
+            </Stack>
+          ))}
+        </Stack>
+      )}
     </SectionItemLayout>
   )
 }

@@ -17,7 +17,8 @@ export const NavigationList = (props: Props) => {
   return (
     <List
       sx={{
-        paddingTop: 1,
+        my: 0,
+        py: 0,
         scrollbarGutter: 'stable',
         overscrollBehavior: 'none',
         scrollbarWidth: '0',

@@ -8,7 +8,7 @@ import {
   SchoolRounded,
   TimelineRounded
 } from '@mui/icons-material'
-import { Button, Sheet, Stack } from '@mui/joy'
+import { Button, Divider, Sheet, Stack } from '@mui/joy'
 
 import { useAskOutputPath } from '@/features/generation/hooks/useAskOutputPath'
 import { useGenerate } from '@/features/generation/hooks/useGenerate'
@@ -54,6 +54,8 @@ export const SidebarContainer = ({ isLoadingGenerate }: Props) => {
       return ''
     }
   }, [formValues.firstname, formValues.lastname])
+
+  const role = formValues.role
 
   const handleGenerateCV = () => {
     askOutputPath.mutate(undefined, {
@@ -136,11 +138,15 @@ export const SidebarContainer = ({ isLoadingGenerate }: Props) => {
           paddingX={'var(--app-border-width)'}
           position={'relative'}
         >
-          <ProfileButtonCard
-            image={formValues.picture}
-            fullName={Boolean(fullName) ? fullName : ''}
-            linkTo={'/my-account'}
-          />
+          <Stack>
+            <ProfileButtonCard
+              image={formValues.picture}
+              subtile={role.fr}
+              fullName={Boolean(fullName) ? fullName : ''}
+              linkTo={'/my-account'}
+            />
+            <Divider sx={{ mt: 1.5, mb: 1, mx: 1 }} />
+          </Stack>
           <Stack>
             <NavigationList navigation={navigation} />
           </Stack>
