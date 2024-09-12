@@ -567,6 +567,7 @@ version = "0.1.1-beta.19"
 dependencies = [
  "anyhow",
  "convert_case 0.6.0",
+ "lazy_static",
  "libc",
  "serde",
  "serde_json",

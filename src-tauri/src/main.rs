@@ -17,14 +17,19 @@ use signal_hook::iterator::Signals;
 use std::net::TcpListener;
 use std::sync::Mutex;
 use std::{sync, thread};
+use std::ops::Deref;
 use sync::mpsc::{channel, Sender};
+use lazy_static::lazy_static;
 use tauri::api::process::{Command, CommandEvent, TerminatedPayload};
 use tauri::Manager;
 use window_vibrancy::*;
 
-fn find_free_port() -> Option<u16> {
-    let listener = TcpListener::bind("127.0.0.1:0").ok()?;
-    Some(listener.local_addr().ok()?.port())
+const DEFAULT_BACKEND_PORT: u16 = 8008;
+
+fn find_free_port() -> String {
+    let listener = TcpListener::bind("127.0.0.1:0").ok();
+    let port = listener.and_then(|listener| listener.local_addr().ok()).map(|addr| addr.port()).unwrap_or(DEFAULT_BACKEND_PORT);
+    port.to_string()
 }
 
 fn start_backend(tx: Sender<BackendEvent>) -> anyhow::Result<()> {
@@ -38,15 +43,21 @@ enum BackendEvent {
     PortAlreadyInUseError,
 }
 
+lazy_static! {
+    static ref BACKEND_PORT: String = find_free_port();
+}
+
+#[tauri::command]
+fn get_backend_port() -> &'static str {
+    &BACKEND_PORT
+}
+
 fn spawn_backend(tx: Sender<BackendEvent>) -> anyhow::Result<()> {
     let (mut rx, _) = Command::new_sidecar("api")
         .context("Failed to create `api` binary command")?
         .args([
             "--port",
-            find_free_port()
-                .unwrap_or_else(|| 8008)
-                .to_string()
-                .as_str(),
+            &BACKEND_PORT,
         ])
         .spawn()
         .context("Failed to spawn `api` sidecar")?;
@@ -96,7 +107,7 @@ extern "C" fn on_exit() {
     println!("Application exited.\nClosing `api` sidecar...");
 
     let response = std::process::Command::new("curl")
-        .args(vec!["-X", "POST", "http://localhost:8008/api/v1/shutdown"])
+        .args(vec!["-X", "POST", &format!("http://localhost:{}/api/v1/shutdown", BACKEND_PORT.deref())])
         .output()
         .unwrap()
         .stdout;
@@ -164,7 +175,8 @@ fn main() -> anyhow::Result<()> {
         .invoke_handler(tauri::generate_handler![
             open_finder,
             open_powerpoint,
-            get_backend_error
+            get_backend_error,
+            get_backend_port
         ])
         .plugin(tauri_plugin_fs_extra::init())
         .run(tauri::generate_context!())
