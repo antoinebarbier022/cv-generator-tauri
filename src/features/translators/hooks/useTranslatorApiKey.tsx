@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 import { DeepLService } from '../deepl.service'
 
+import { useServerPort } from '@/hooks/userServerPort'
 import { create } from 'zustand'
 
 interface State {
@@ -19,22 +20,27 @@ const useApiKeyStore = create<State>((set) => ({
 export const useTranslatorApiKey = () => {
   const { apiKey, setApiKey } = useApiKeyStore()
 
+  const { port: api_port } = useServerPort()
+
   const mutation = useMutation({
     mutationKey: ['translators', 'deepl', 'usage'],
     mutationFn: DeepLService.usage
   })
 
   const handleSaveApiKey = async (value: string) => {
-    mutation.mutate(value, {
-      onSuccess: () => {
-        setApiKey(value)
-        localStorage.setItem('deepl-api-key', value)
-      },
-      onError: () => {
-        setApiKey('')
-        localStorage.setItem('deepl-api-key', '')
+    mutation.mutate(
+      { api_key: value, api_port },
+      {
+        onSuccess: () => {
+          setApiKey(value)
+          localStorage.setItem('deepl-api-key', value)
+        },
+        onError: () => {
+          setApiKey('')
+          localStorage.setItem('deepl-api-key', '')
+        }
       }
-    })
+    )
   }
 
   const handleRemoveApiKey = () => {

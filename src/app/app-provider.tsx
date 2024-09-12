@@ -11,6 +11,7 @@ import themeCapgemini from '@/themes/capgemini-theme.ts'
 import themeFrog from '@/themes/default-theme.ts'
 
 import { useAppTheme } from '@/features/themes/hooks/useAppTheme'
+import { useServerPort } from '@/hooks/userServerPort'
 import { CssBaseline, CssVarsProvider } from '@mui/joy'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
@@ -29,6 +30,9 @@ export const AppProvider = ({ children }: PropsWithChildren) => {
   console.log({ themeFrog })
   console.log({ themeCapgemini })
   const { appThemeConfig } = useAppTheme()
+
+  useServerPort()
+
   return (
     <CssVarsProvider
       theme={appThemeConfig}

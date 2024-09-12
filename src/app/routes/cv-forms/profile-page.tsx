@@ -24,6 +24,7 @@ import { useTranslatorApiKey } from '@/features/translators/hooks/useTranslatorA
 import { useTranslatorOption } from '@/features/translators/hooks/useTranslatorOption'
 import { useDeleteImageProfileStorage } from '@/hooks/useDeleteImageProfileStorage'
 import { useFormCV } from '@/hooks/useFormCV'
+import { useServerPort } from '@/hooks/userServerPort'
 import { useSetImageProfileStorage } from '@/hooks/useSetImageProfileStorage'
 import { Translation } from '@/types/storage'
 import { useMutation } from '@tanstack/react-query'
@@ -102,6 +103,8 @@ export const ProfilePage = () => {
   const variantInputStyle = 'plain'
 
   const { isActiveOptionValid: isOptionTranslate } = useTranslatorOption()
+
+  const { port: api_port } = useServerPort()
 
   const mutation = useMutation({
     mutationKey: ['translators', 'deepl', 'usage'],
@@ -290,6 +293,7 @@ export const ProfilePage = () => {
                     mutation.mutate(
                       {
                         api_key: translatorApiKey,
+                        api_port,
                         text: formik.values.role.fr,
                         target_lang: lang
                       },
@@ -330,6 +334,7 @@ export const ProfilePage = () => {
                     mutation.mutate(
                       {
                         api_key: translatorApiKey,
+                        api_port,
                         text: formik.values.description.fr,
                         target_lang: lang
                       },

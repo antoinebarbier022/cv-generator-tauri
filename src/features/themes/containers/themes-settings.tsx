@@ -8,7 +8,7 @@ export const ThemesSettings = () => {
   return (
     <SettingsSection>
       <SettingsItem
-        title="Thèmes"
+        title="Thème"
         description={<>Choisissez un thème pour personnaliser l'apparence de l'application.</>}
         endAction={
           <Select

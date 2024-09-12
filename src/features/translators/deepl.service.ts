@@ -1,10 +1,16 @@
 import axios from 'axios'
 import { DeepLUsage } from './deepl.types'
 
-const BASE_URL = 'http://localhost:8008'
-
 export const DeepLService = {
-  usage: async (api_key: string): Promise<DeepLUsage> => {
+  usage: async ({
+    api_key,
+    api_port
+  }: {
+    api_key: string
+    api_port: string | null
+  }): Promise<DeepLUsage> => {
+    const BASE_URL = `http://localhost:${api_port}`
+
     try {
       const response = await axios.get(`${BASE_URL}/api/v1/translation/usage`, {
         headers: {
@@ -26,16 +32,17 @@ export const DeepLService = {
 
   translate: async ({
     api_key,
-    text,
-    target_lang
+    api_port,
+    text
   }: {
     api_key: string
+    api_port: string | null
     text: string
     target_lang: string
   }): Promise<{
     translated_text: 'string'
   }> => {
-    console.log(target_lang)
+    const BASE_URL = `http://localhost:${api_port}`
     try {
       const response = await axios.post(
         `${BASE_URL}/api/v1/translation/translate`,

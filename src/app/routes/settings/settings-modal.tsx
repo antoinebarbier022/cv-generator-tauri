@@ -38,7 +38,7 @@ export const SettingsModal = (props: Props) => {
       disabled: true,
       hide: true
     },
-    { label: 'Thèmes', to: '/settings/themes', icon: <BrushRounded />, disabled: false },
+    { label: 'Apparence', to: '/settings/themes', icon: <BrushRounded />, disabled: false },
 
     { divider: true, hide: true },
     { label: 'CV Configuration', icon: <LaptopChromebookRounded />, disabled: true, hide: true },

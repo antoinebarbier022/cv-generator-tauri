@@ -1,16 +1,19 @@
+import { useServerPort } from '@/hooks/userServerPort'
 import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 import { DeepLService } from '../deepl.service'
 
 interface Props {
-  apiKey: string
+  api_key: string
 }
-export const useTranslatorUsage = ({ apiKey }: Props) => {
+export const useTranslatorUsage = ({ api_key }: Props) => {
+  const { port: api_port } = useServerPort()
+
   const usage = useQuery({
     queryKey: ['translators', 'deepl', 'usage'],
-    queryFn: () => DeepLService.usage(apiKey),
+    queryFn: () => DeepLService.usage({ api_key, api_port }),
     retry: 0,
-    enabled: !!apiKey
+    enabled: !!Boolean(api_key && api_port)
   })
 
   const free_character_left_count = useMemo(() => {
@@ -23,7 +26,7 @@ export const useTranslatorUsage = ({ apiKey }: Props) => {
     }
 
     return usage.data.character_count / usage.data.character_limit
-  }, [usage.data, apiKey])
+  }, [usage.data, api_key])
 
   return {
     usageProgression,

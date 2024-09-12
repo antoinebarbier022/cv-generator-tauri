@@ -8,7 +8,7 @@ export const useGenerate = () => {
   return useMutation({
     mutationKey: ['generate'],
     mutationFn: CVGenerationService.generate,
-    onSuccess: async (data, outputFilePath) => {
+    onSuccess: async (data, { outputFilePath }) => {
       if (data) {
         const outputList = outputFilePath.split('/')
         const fileName = outputList[outputList.length - 1]

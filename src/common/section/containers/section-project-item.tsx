@@ -4,6 +4,7 @@ import { CV_LANGUAGES } from '@/constants/cv-languages'
 import { TranslateButton } from '@/features/translators/components/translate-button'
 import { DeepLService } from '@/features/translators/deepl.service'
 import { useTranslatorApiKey } from '@/features/translators/hooks/useTranslatorApiKey'
+import { useServerPort } from '@/hooks/userServerPort'
 import { useExpandedItemStore } from '@/stores/useExpandedItemStore'
 import { ResumeContentSection, UserDataExperience } from '@/types/storage'
 import { countWarnings } from '@/utils/warnings.utils'
@@ -108,6 +109,8 @@ export const SectionProjectItem = ({
   )
 
   const { apiKey: translatorApiKey } = useTranslatorApiKey()
+
+  const { port: api_port } = useServerPort()
 
   const mutation = useMutation({
     mutationKey: ['translators', 'deepl', 'usage'],
@@ -250,6 +253,7 @@ export const SectionProjectItem = ({
                             mutation.mutate(
                               {
                                 api_key: translatorApiKey,
+                                api_port,
                                 text: formik.values.content[item.name].fr,
                                 target_lang: lang
                               },

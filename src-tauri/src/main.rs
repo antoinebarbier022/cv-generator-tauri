@@ -11,15 +11,15 @@ use crate::errors::{EmitError, ErrorPayload};
 use crate::menu::{create_app_menu, on_menu_event};
 use anyhow::Context;
 use core::str;
+use lazy_static::lazy_static;
 use libc::SIGTERM;
 use serde::Serialize;
 use signal_hook::iterator::Signals;
 use std::net::TcpListener;
+use std::ops::Deref;
 use std::sync::Mutex;
 use std::{sync, thread};
-use std::ops::Deref;
 use sync::mpsc::{channel, Sender};
-use lazy_static::lazy_static;
 use tauri::api::process::{Command, CommandEvent, TerminatedPayload};
 use tauri::Manager;
 use window_vibrancy::*;
@@ -28,7 +28,10 @@ const DEFAULT_BACKEND_PORT: u16 = 8008;
 
 fn find_free_port() -> String {
     let listener = TcpListener::bind("127.0.0.1:0").ok();
-    let port = listener.and_then(|listener| listener.local_addr().ok()).map(|addr| addr.port()).unwrap_or(DEFAULT_BACKEND_PORT);
+    let port = listener
+        .and_then(|listener| listener.local_addr().ok())
+        .map(|addr| addr.port())
+        .unwrap_or(DEFAULT_BACKEND_PORT);
     port.to_string()
 }
 
@@ -55,10 +58,7 @@ fn get_backend_port() -> &'static str {
 fn spawn_backend(tx: Sender<BackendEvent>) -> anyhow::Result<()> {
     let (mut rx, _) = Command::new_sidecar("api")
         .context("Failed to create `api` binary command")?
-        .args([
-            "--port",
-            &BACKEND_PORT,
-        ])
+        .args(["--port", &BACKEND_PORT])
         .spawn()
         .context("Failed to spawn `api` sidecar")?;
 
@@ -107,7 +107,11 @@ extern "C" fn on_exit() {
     println!("Application exited.\nClosing `api` sidecar...");
 
     let response = std::process::Command::new("curl")
-        .args(vec!["-X", "POST", &format!("http://localhost:{}/api/v1/shutdown", BACKEND_PORT.deref())])
+        .args(vec![
+            "-X",
+            "POST",
+            &format!("http://localhost:{}/api/v1/shutdown", BACKEND_PORT.deref()),
+        ])
         .output()
         .unwrap()
         .stdout;

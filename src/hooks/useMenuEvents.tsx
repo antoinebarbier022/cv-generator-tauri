@@ -8,6 +8,7 @@ import { useGenerate } from '@/features/generation/hooks/useGenerate'
 import { MenuEvent } from '@/generated/events/menu-events'
 import { useImportDataContent } from '@/hooks/useImportDataContent'
 import { useResetDataStorage } from '@/hooks/useResetDataStorage'
+import { useServerPort } from './userServerPort'
 
 export const useMenuEvents = () => {
   const navigate = useNavigate()
@@ -86,14 +87,15 @@ export const useMenuEvents = () => {
 
   const askOutputPath = useAskOutputPath()
   const generate = useGenerate()
+  const { port: api_port } = useServerPort()
 
   useEffect(() => {
     const unlisten = listen(MenuEvent.FileGenerateAndSaveAs, async () => {
       askOutputPath.mutate(undefined, {
         onSettled: () => {},
-        onSuccess: (data) => {
-          if (data) {
-            generate.mutate(data)
+        onSuccess: (outputFilePath) => {
+          if (outputFilePath) {
+            generate.mutate({ outputFilePath, api_port })
           }
         }
       })

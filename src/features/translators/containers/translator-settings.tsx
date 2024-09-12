@@ -15,7 +15,9 @@ export const TranslatorSettings = () => {
 
   const { apiKey, displayAPIKey, mutation, handleRemoveApiKey, handleSaveApiKey } =
     useTranslatorApiKey()
-  const { usage, free_character_left_count, usageProgression } = useTranslatorUsage({ apiKey })
+  const { usage, free_character_left_count, usageProgression } = useTranslatorUsage({
+    api_key: apiKey
+  })
 
   const handleChangeOptionActivation: ChangeEventHandler<HTMLInputElement> | undefined = (e) =>
     setOptionActivation(e.target.checked)
