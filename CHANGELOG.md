@@ -1,5 +1,17 @@
 
 
+## [0.1.1-beta.20](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.19...0.1.1-beta.20) (2024-9-12)
+
+
+### Bug Fixes
+
+* **server-port:** wrong server port on the frontend ([6948355](https://github.com/antoinebarbier022/cv-generator-tauri/commit/69483550acfe3680a3e8b26b7a33f8ddf90cde54))
+
+
+### Features
+
+* **translation-api-key:** input api key -> add a button to show the api key inside the input ([847b868](https://github.com/antoinebarbier022/cv-generator-tauri/commit/847b868b6cdae81f99a71e268129e9d8a9227d13))
+
 ## [0.1.1-beta.19](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.17...0.1.1-beta.19) (2024-9-12)
 
 
