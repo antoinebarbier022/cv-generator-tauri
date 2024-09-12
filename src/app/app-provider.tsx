@@ -7,7 +7,10 @@ import 'react-toastify/dist/ReactToastify.css'
 /* eslint-enable import/order */
 
 import '@/styles/index.css'
-import theme from '@/themes/default-theme.ts'
+import themeCapgemini from '@/themes/capgemini-theme.ts'
+import themeFrog from '@/themes/default-theme.ts'
+
+import { useAppTheme } from '@/features/themes/hooks/useAppTheme'
 import { CssBaseline, CssVarsProvider } from '@mui/joy'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
@@ -23,8 +26,15 @@ export const AppProvider = ({ children }: PropsWithChildren) => {
       queries: {}
     }
   })
+  console.log({ themeFrog })
+  console.log({ themeCapgemini })
+  const { appThemeConfig } = useAppTheme()
   return (
-    <CssVarsProvider theme={theme} defaultMode="light" modeStorageKey="joy-mode-scheme-light">
+    <CssVarsProvider
+      theme={appThemeConfig}
+      defaultMode="light"
+      modeStorageKey="joy-mode-scheme-light"
+    >
       <CssBaseline />
       <QueryClientProvider client={queryClient}>
         <BetaBadge />

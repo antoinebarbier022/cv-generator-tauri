@@ -138,8 +138,11 @@ export const SidebarContainer = ({ isLoadingGenerate }: Props) => {
             fullName={Boolean(fullName) ? fullName : ''}
             linkTo={'/my-account'}
           />
+          <Stack>
+            <NavigationList navigation={navigation} />
+          </Stack>
 
-          <NavigationList navigation={navigation} />
+          <Stack data-tauri-drag-region sx={{ flex: 1 }}></Stack>
 
           <Stack gap={1} sx={{ position: 'sticky', bottom: '0' }}>
             {showAlertMissingFont && <MissingFontAlert onClick={handleOpenModalMissingFont} />}

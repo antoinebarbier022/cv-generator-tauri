@@ -20,7 +20,7 @@ export const FooterItemWarningsCounter = ({ count, loading }: Props) => {
           </Stack>
         }
       >
-        <span className="text-end w-[2ch]">
+        <span className="text-center w-[2ch]">
           {loading ? (
             <Stack>
               <CircularProgress size="sm" sx={{ scale: '0.5' }} />

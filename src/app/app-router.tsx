@@ -8,6 +8,8 @@ import { SidebarContainer } from '@/common/sidebar/containers/sidebar-container'
 
 import { ProfilePage } from '@/app/routes/cv-forms/profile-page'
 
+import { ThemesSettings } from '@/features/themes/containers/themes-settings'
+import { TranslatorSettings } from '@/features/translators/containers/translator-settings'
 import { useMenuEvents } from '@/hooks/useMenuEvents'
 import { useRedirectToWelcomePage } from '@/hooks/useRedirectToWelcomePage'
 import { AppLayout } from '@/layouts/app-layout'
@@ -61,7 +63,24 @@ export const AppRouter = () => {
       {background && (
         <Routes>
           <Route path="debug" element={<DebugModal open onClose={() => navigate(-1)} />} />
-          <Route path="settings" element={<SettingsModal open onClose={() => navigate(-1)} />} />
+          <Route
+            path="/settings"
+            element={<SettingsModal open onClose={() => navigate(background)} />}
+          >
+            <Route
+              index
+              element={
+                <Navigate
+                  to={'general'}
+                  state={{
+                    background
+                  }}
+                />
+              }
+            />
+            <Route path="general" element={<TranslatorSettings />} />
+            <Route path="themes" element={<ThemesSettings />} />
+          </Route>
         </Routes>
       )}
     </>

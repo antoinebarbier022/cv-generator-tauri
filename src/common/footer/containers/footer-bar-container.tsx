@@ -8,6 +8,7 @@ import { useEffect } from 'react'
 import { FooterItemLastUpdated } from '../components/footer-item-last-updated'
 import { FooterItemOptionTranslate } from '../components/footer-item-option-translate'
 import { FooterItemOutputPath } from '../components/footer-item-output-path'
+import { FooterItemTheme } from '../components/footer-item-theme'
 import { FooterItemWarningsCounter } from '../components/footer-item-warning-counter'
 
 const configFooterOptions = {
@@ -47,6 +48,7 @@ export const FooterBarContainer = () => {
       }}
       invertedColors
     >
+      <Stack data-tauri-drag-region sx={{ flex: 1 }}></Stack>
       <Stack
         component={Typography}
         level="body-xs"
@@ -57,16 +59,11 @@ export const FooterBarContainer = () => {
         sx={{ cursor: 'default' }}
         gap={0.5}
       >
+        <FooterItemTheme />
         <FooterItemOptionTranslate isActive={isActiveOptionValid} />
         {configFooterOptions.showOutputPathGeneratedFile && (
           <>
             <FooterItemOutputPath path="/Users/antoinebarbier/Downloads/CV_Barbier_Antoine_CDT.pptx" />
-          </>
-        )}
-
-        {lastUpdated && (
-          <>
-            <FooterItemLastUpdated date={lastUpdated} />
           </>
         )}
 
@@ -76,6 +73,12 @@ export const FooterBarContainer = () => {
               loading={countWarnings === null}
               count={countWarnings ?? 0}
             />
+          </>
+        )}
+
+        {lastUpdated && (
+          <>
+            <FooterItemLastUpdated date={lastUpdated} />
           </>
         )}
       </Stack>
