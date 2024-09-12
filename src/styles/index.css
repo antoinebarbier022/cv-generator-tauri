@@ -12,7 +12,7 @@
   --app-sidebar-width: 260px;
   --titlebar-height: var(--app-border-width);
 
-  --app-background: rgba(105, 6, 224, 0.598);
+  --app-background: var(--joy-palette-background-app, rgba(105, 6, 224, 0.598));
 
   --scrollbar-color: rgba(var(--joy-palette-neutral-mainChannel) / 0.3);
 }
