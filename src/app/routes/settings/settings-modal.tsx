@@ -30,13 +30,19 @@ export const SettingsModal = (props: Props) => {
   const menu = [
     { label: 'Général', to: '/settings/general', icon: <SettingsRounded />, disabled: false },
 
-    { divider: true },
-    { label: 'Langue', to: '/settings/language', icon: <PublicRounded />, disabled: true },
+    { divider: true, hide: true },
+    {
+      label: 'Langue',
+      to: '/settings/language',
+      icon: <PublicRounded />,
+      disabled: true,
+      hide: true
+    },
     { label: 'Thèmes', to: '/settings/themes', icon: <BrushRounded />, disabled: false },
 
-    { divider: true },
-    { label: 'CV Configuration', icon: <LaptopChromebookRounded />, disabled: true },
-    { label: 'Avancé', to: '/settings/advanced', icon: <TuneRounded />, disabled: true }
+    { divider: true, hide: true },
+    { label: 'CV Configuration', icon: <LaptopChromebookRounded />, disabled: true, hide: true },
+    { label: 'Avancé', to: '/settings/advanced', icon: <TuneRounded />, disabled: true, hide: true }
   ]
 
   const background = routerLocation.state && routerLocation.state.background
@@ -65,6 +71,9 @@ export const SettingsModal = (props: Props) => {
           >
             <List size="sm" sx={{ height: '100%', gap: 0.25 }}>
               {menu.map((value) => {
+                if (value.hide) {
+                  return
+                }
                 if (value.divider) {
                   return <Divider sx={{ my: 1 }} />
                 }

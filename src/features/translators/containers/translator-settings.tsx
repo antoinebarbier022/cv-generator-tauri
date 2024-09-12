@@ -1,6 +1,5 @@
 import { SettingsItem } from '@/common/settings/settings-item'
 import { SettingsSection } from '@/common/settings/settings-section'
-import { SettingsTitle } from '@/common/settings/settings-title'
 import { ErrorRounded } from '@mui/icons-material'
 import { Alert, Divider, Link, Stack, Switch, Typography } from '@mui/joy'
 
@@ -23,7 +22,7 @@ export const TranslatorSettings = () => {
 
   return (
     <SettingsSection>
-      <SettingsTitle>Option de traduction</SettingsTitle>
+      {/*<SettingsTitle>Option de traduction</SettingsTitle>*/}
 
       <SettingsItem
         title="Traduction avec DeepL"
