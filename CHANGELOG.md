@@ -1,5 +1,21 @@
 
 
+## [0.1.1-beta.19](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.17...0.1.1-beta.19) (2024-9-12)
+
+
+### Bug Fixes
+
+* **server:** found a free port to launch the API ([3d49226](https://github.com/antoinebarbier022/cv-generator-tauri/commit/3d492262302127b727cd246e9abe303ca77754ab))
+* **settings-translate:** change wordings ([1cb40c6](https://github.com/antoinebarbier022/cv-generator-tauri/commit/1cb40c6d3ca4efa285d3b7f672662984332f8a93))
+* **toasts:** design was override ([40f3535](https://github.com/antoinebarbier022/cv-generator-tauri/commit/40f35355bf14f2645f486d99af718a434f525f0b))
+* **translation:** deactivate translate buttons if the option is deactivate ([7682519](https://github.com/antoinebarbier022/cv-generator-tauri/commit/7682519525694489e2c6094472004606401a2b33))
+
+
+### Features
+
+* **generation script:** add algo to distribute projects per columns ([1ec690c](https://github.com/antoinebarbier022/cv-generator-tauri/commit/1ec690c2a76c398b0fe33f85a47afef5e90a51ef))
+* **settings:** change app theme ([#7](https://github.com/antoinebarbier022/cv-generator-tauri/issues/7)) ([1ad2463](https://github.com/antoinebarbier022/cv-generator-tauri/commit/1ad24634a45348682e5329f0e3e9b52a7e9d297e))
+
 ## [0.1.1-beta.18](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.17...0.1.1-beta.18) (2024-9-9)
 
 
