@@ -24,7 +24,7 @@
       "shell": {
         "sidecar": true,
         "open": true,
-        "scope": [{ "name": "binaries/api", "sidecar": true, "args": true }]
+        "scope": [{ "name": "binaries/cv-generator-api", "sidecar": true, "args": true }]
       },
       "path": {
         "all": true
@@ -60,7 +60,7 @@
       }
     },
     "bundle": {
-      "externalBin": ["binaries/api"],
+      "externalBin": ["binaries/cv-generator-api"],
       "resources": ["resources/*"],
       "active": true,
       "category": "productivity",

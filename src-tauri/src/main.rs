@@ -56,7 +56,7 @@ fn get_backend_port() -> &'static str {
 }
 
 fn spawn_backend(tx: Sender<BackendEvent>) -> anyhow::Result<()> {
-    let (mut rx, _) = Command::new_sidecar("api")
+    let (mut rx, _) = Command::new_sidecar("cv-generator-api")
         .context("Failed to create `api` binary command")?
         .args(["--port", &BACKEND_PORT])
         .spawn()
