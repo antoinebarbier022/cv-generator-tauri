@@ -1,5 +1,19 @@
 
 
+## [0.1.1-beta.21](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.20...0.1.1-beta.21) (2024-9-13)
+
+
+### Bug Fixes
+
+* **sidebar:** rework profile button inside the sidebar ([01ef4a5](https://github.com/antoinebarbier022/cv-generator-tauri/commit/01ef4a59b84775105effb40e0fcd68effd1d3130))
+* **sidecar api:** rename sidecar api to cv-generator-api ([99f3b03](https://github.com/antoinebarbier022/cv-generator-tauri/commit/99f3b03103f61ceba00fbff6e5b1930aae30d802))
+
+
+### Performance Improvements
+
+* add zustand stores to localStorage ([708fb6b](https://github.com/antoinebarbier022/cv-generator-tauri/commit/708fb6ba07d66f18dc14c521d77e17c296cc53d1))
+* **api-port:** upgrade performance ([934e1ba](https://github.com/antoinebarbier022/cv-generator-tauri/commit/934e1ba9ffad5c91151d0017554525b96016eab5))
+
 ## [0.1.1-beta.20](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.19...0.1.1-beta.20) (2024-9-12)
 
 
