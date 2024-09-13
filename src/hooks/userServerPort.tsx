@@ -24,9 +24,11 @@ export const useServerPort = () => {
   const { apiPort, setApiPort } = useApiPortStore()
 
   useEffect(() => {
-    invoke('get_backend_port')
-      .then((result) => setApiPort(result as string))
-      .catch(() => setApiPort(null))
+    if (!apiPort) {
+      invoke('get_backend_port')
+        .then((result) => setApiPort(result as string))
+        .catch(() => setApiPort(null))
+    }
   }, [])
 
   return {
