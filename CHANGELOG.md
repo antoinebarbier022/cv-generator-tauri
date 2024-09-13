@@ -1,5 +1,12 @@
 
 
+## [0.1.1-beta.22](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.21...0.1.1-beta.22) (2024-9-13)
+
+
+### Bug Fixes
+
+* **storage:** init data storage ([d348ee3](https://github.com/antoinebarbier022/cv-generator-tauri/commit/d348ee339379c803343810fc1ebc5134a85b0d42))
+
 ## [0.1.1-beta.21](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.20...0.1.1-beta.21) (2024-9-13)
 
 
