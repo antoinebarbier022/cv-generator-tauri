@@ -4,13 +4,11 @@ import { DropResult } from 'react-beautiful-dnd'
 import { reorderListSection } from '../utils/drag-and-drop.utils'
 import { isEmptyObject } from '../utils/object.utils'
 
-import { ResumeContentSection, Translation, UserData, UserDataExperience } from '@/types/storage'
+import { ResumeContentSection, Translation, UserDataExperience } from '@/types/storage'
 
-import { emptyInitialResume } from '@/constants/empty-initial-resume'
 import { useExpandedItemStore } from '@/stores/useExpandedItemStore'
 import { useFormStore } from '@/stores/useFormStore'
 
-import deepEqual from 'deep-equal'
 import { useEffect } from 'react'
 import { useGetDataStorage } from './useGetDataStorage'
 
@@ -23,7 +21,8 @@ export const useFormCV = () => {
   useEffect(() => {
     const oldFormContent = localStorage.getItem('form-data-cv')
     if (!oldFormContent) return
-    if (userData.data && deepEqual(JSON.parse(oldFormContent) as UserData, emptyInitialResume)) {
+    // deepEqual(JSON.parse(oldFormContent) as UserData, emptyInitialResume)
+    if (userData.data) {
       setFormValues(userData.data)
     }
   }, [userData.data])
