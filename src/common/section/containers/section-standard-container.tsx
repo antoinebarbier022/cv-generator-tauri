@@ -7,6 +7,7 @@ import { SectionDroppableLayout } from '@/common/section/layouts/section-droppab
 import { SectionEmptyState } from '../components/section-empty-state'
 
 import { useTranslatorOption } from '@/features/translators/hooks/useTranslatorOption'
+import { useExpandedItemStore } from '@/stores/useExpandedItemStore'
 import { Translation, UserData } from '../../../types/storage'
 import { SectionStandardItem } from './section-standard-item'
 
@@ -34,6 +35,8 @@ export const SectionStandardContainer = ({
       [sectionKey]: newContent
     } as Partial<UserData>)
   }
+
+  const { expandedItem, setExpandedItem } = useExpandedItemStore()
 
   const handleEditContentItem = (id: string, content: Translation) => {
     const newContent = [...formValues[sectionKey]]
@@ -87,6 +90,10 @@ export const SectionStandardContainer = ({
             isOptionTranslate={isActiveOptionValid}
             onChangeVisibility={(value) => handleChangeVisibility(index, value)}
             onDelete={() => handleDelete(field.id)}
+            isExpanded={field.id === expandedItem}
+            onExpandedChange={(_, expanded) => {
+              setExpandedItem(expanded ? field.id : undefined)
+            }}
             onChange={(value) => {
               handleEditContentItem(value.id, value.content)
             }}

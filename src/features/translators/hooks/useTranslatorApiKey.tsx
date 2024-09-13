@@ -3,19 +3,27 @@ import { DeepLService } from '../deepl.service'
 
 import { useServerPort } from '@/hooks/userServerPort'
 import { create } from 'zustand'
+import { createJSONStorage, persist } from 'zustand/middleware'
 
 interface State {
   apiKey: string
   setApiKey: (value: string) => void
 }
 
-const useApiKeyStore = create<State>((set) => ({
-  apiKey: localStorage.getItem('deepl-api-key') ?? '',
-  setApiKey: (value: string) => {
-    localStorage.setItem('deepl-api-key', value)
-    set(() => ({ apiKey: value }))
-  }
-}))
+const useApiKeyStore = create(
+  persist<State>(
+    (set) => ({
+      apiKey: '',
+      setApiKey: (value: string) => {
+        set(() => ({ apiKey: value }))
+      }
+    }),
+    {
+      name: 'deepl-api-key',
+      storage: createJSONStorage(() => localStorage)
+    }
+  )
+)
 
 export const useTranslatorApiKey = () => {
   const { apiKey, setApiKey } = useApiKeyStore()
@@ -33,11 +41,11 @@ export const useTranslatorApiKey = () => {
       {
         onSuccess: () => {
           setApiKey(value)
-          localStorage.setItem('deepl-api-key', value)
+          //localStorage.setItem('deepl-api-key', value)
         },
         onError: () => {
           setApiKey('')
-          localStorage.setItem('deepl-api-key', '')
+          //localStorage.setItem('deepl-api-key', '')
         }
       }
     )

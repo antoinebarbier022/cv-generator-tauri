@@ -1,17 +1,16 @@
-import { useFormik } from 'formik'
-
 import { confirm } from '@tauri-apps/api/dialog'
 import { DropResult } from 'react-beautiful-dnd'
-import { emptyInitialResume } from '../constants/empty-initial-resume'
 
 import { reorderListSection } from '../utils/drag-and-drop.utils'
 import { isEmptyObject } from '../utils/object.utils'
 
 import { ResumeContentSection, Translation, UserData, UserDataExperience } from '@/types/storage'
-import { finalFormValidationSchema } from '@/validations/dataContentValidationSchema'
 
+import { emptyInitialResume } from '@/constants/empty-initial-resume'
 import { useExpandedItemStore } from '@/stores/useExpandedItemStore'
 import { useFormStore } from '@/stores/useFormStore'
+
+import deepEqual from 'deep-equal'
 import { useEffect } from 'react'
 import { useGetDataStorage } from './useGetDataStorage'
 
@@ -21,18 +20,11 @@ export const useFormCV = () => {
 
   const { setExpandedItem } = useExpandedItemStore()
 
-  const formikOnlyForWarnings = useFormik<UserData>({
-    initialValues: emptyInitialResume,
-    validationSchema: finalFormValidationSchema,
-    validateOnMount: true,
-    validateOnChange: true,
-    onSubmit: () => {}
-  })
-
   useEffect(() => {
-    if (userData.data) {
+    const oldFormContent = localStorage.getItem('form-data-cv')
+    if (!oldFormContent) return
+    if (userData.data && deepEqual(JSON.parse(oldFormContent) as UserData, emptyInitialResume)) {
       setFormValues(userData.data)
-      formikOnlyForWarnings.setValues(userData.data)
     }
   }, [userData.data])
 
@@ -136,7 +128,6 @@ export const useFormCV = () => {
   return {
     formValues,
     setFormValues,
-    formWarningsData: formikOnlyForWarnings.errors,
     handleAddItemSection,
     handleDeleteItemSection,
     dragEnded

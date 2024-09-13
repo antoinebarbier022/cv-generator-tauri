@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { createJSONStorage, persist } from 'zustand/middleware'
 import { useTranslatorApiKey } from './useTranslatorApiKey'
 
 interface State {
@@ -6,13 +7,20 @@ interface State {
   setIsActive: (value: boolean) => void
 }
 
-const useTranslatorOptionStore = create<State>((set) => ({
-  isActive: localStorage.getItem('option-translation') === 'true',
-  setIsActive: (value: boolean) => {
-    localStorage.setItem('option-translation', String(value))
-    set(() => ({ isActive: value }))
-  }
-}))
+const useTranslatorOptionStore = create(
+  persist<State>(
+    (set) => ({
+      isActive: false,
+      setIsActive: (value: boolean) => {
+        set(() => ({ isActive: value }))
+      }
+    }),
+    {
+      name: 'option-translation',
+      storage: createJSONStorage(() => localStorage)
+    }
+  )
+)
 
 export const useTranslatorOption = () => {
   const { apiKey } = useTranslatorApiKey()

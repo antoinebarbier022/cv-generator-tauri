@@ -1,6 +1,5 @@
 import { BetaBadge } from '@/components/beta-badge'
 import '@/configs/i18n.config'
-import { useErrors } from '@/errors/hooks/useErrors'
 
 /* eslint-disable import/order */
 import 'react-toastify/dist/ReactToastify.css'
@@ -10,6 +9,7 @@ import '@/styles/index.css'
 import themeCapgemini from '@/themes/capgemini-theme.ts'
 import themeFrog from '@/themes/default-theme.ts'
 
+import { useErrors } from '@/errors/hooks/useErrors'
 import { useAppTheme } from '@/features/themes/hooks/useAppTheme'
 import { useServerPort } from '@/hooks/userServerPort'
 import { CssBaseline, CssVarsProvider } from '@mui/joy'

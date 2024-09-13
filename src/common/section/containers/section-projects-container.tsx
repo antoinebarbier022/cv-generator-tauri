@@ -7,6 +7,7 @@ import { SectionDroppableLayout } from '@/common/section/layouts/section-droppab
 import { SectionEmptyState } from '@/common/section/components/section-empty-state'
 import { useTranslatorApiKey } from '@/features/translators/hooks/useTranslatorApiKey'
 import { useFormCV } from '@/hooks/useFormCV'
+import { useExpandedItemStore } from '@/stores/useExpandedItemStore'
 import { ResumeContentSection, UserDataExperience } from '@/types/storage'
 import { SectionProjectItem } from './section-project-item'
 
@@ -38,6 +39,8 @@ export const SectionProjectsContainer = () => {
     newContent[index].isHidden = value
     setFormValues({ experiences: newContent })
   }
+
+  const { expandedItem, setExpandedItem } = useExpandedItemStore()
 
   const isOptionTranslate = localStorage.getItem('option-translation') === 'true' && Boolean(apiKey)
 
@@ -72,6 +75,10 @@ export const SectionProjectsContainer = () => {
               onDelete={() => handleDeleteById(field.id)}
               onChange={(value) => {
                 handleEditContentItem(value)
+              }}
+              isExpanded={expandedItem === field.id}
+              onExpandedChange={(_, expanded) => {
+                setExpandedItem(expanded ? field.id : undefined)
               }}
             />
           ))}
