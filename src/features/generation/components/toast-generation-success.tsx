@@ -1,6 +1,7 @@
 import { CloseRounded } from '@mui/icons-material'
 import { IconButton, Link, Stack, Typography } from '@mui/joy'
 import { MouseEventHandler } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   filename: string
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export const ToastGenerationSuccess = ({ filename, onOpenFinder, onClose }: Props) => {
+  const { t } = useTranslation()
   return (
     <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
       <Stack>
@@ -21,7 +23,7 @@ export const ToastGenerationSuccess = ({ filename, onOpenFinder, onClose }: Prop
             fontSize={'0.75rem'}
             onClick={onOpenFinder}
           >
-            Afficher dans le finder
+            {t('display-inside-finder')}
           </Link>
           <Typography
             className="group-hover:hidden peer-hover:flex group-has-[.close:hover]:flex"
@@ -36,7 +38,7 @@ export const ToastGenerationSuccess = ({ filename, onOpenFinder, onClose }: Prop
             className="group-hover:flex peer-hover:hidden group-has-[.close:hover]:hidden"
             fontSize={'0.75rem'}
           >
-            Ouvrir dans Microsoft PowerPoint
+            {t('open-inside-powerpoint')}
           </Typography>
         </Stack>
       </Stack>

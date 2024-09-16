@@ -1,15 +1,17 @@
 import { SettingsItem } from '@/common/settings/settings-item'
 import { SettingsSection } from '@/common/settings/settings-section'
 import { Option, Select } from '@mui/joy'
-import { AppTheme, useAppTheme } from '../hooks/useAppTheme'
+import { useTranslation } from 'react-i18next'
+import { AppTheme, useAppTheme } from '../../../hooks/useAppTheme'
 
 export const ThemesSettings = () => {
+  const { t } = useTranslation()
   const { appTheme, setAppTheme } = useAppTheme()
   return (
     <SettingsSection>
       <SettingsItem
-        title="Thème"
-        description={<>Choisissez un thème pour personnaliser l'apparence de l'application.</>}
+        title={t('settings.theme.title')}
+        description={<>{t('settings.theme.description')}</>}
         endAction={
           <Select
             size="sm"

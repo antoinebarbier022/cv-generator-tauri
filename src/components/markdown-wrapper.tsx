@@ -5,6 +5,7 @@ import remarkGfm from 'remark-gfm'
 interface MarkdownWrapperProps {
   textColor?: string
   titleColor?: string
+  fontWeight?: string
   level?: keyof TypographySystem | 'inherit' | undefined
   paragraphSpace?: number | string
   content: string
@@ -12,6 +13,7 @@ interface MarkdownWrapperProps {
 export const MarkdownWrapper = ({
   textColor = 'currentColor',
   titleColor = 'currentColor',
+  fontWeight = 'inherit',
   level = 'inherit',
   paragraphSpace: paragraphSpace = 2,
   content
@@ -39,6 +41,7 @@ export const MarkdownWrapper = ({
           <Typography
             level={level}
             textColor={textColor}
+            fontWeight={fontWeight}
             whiteSpace={'pre-line'}
             paddingBottom={paragraphSpace}
           >

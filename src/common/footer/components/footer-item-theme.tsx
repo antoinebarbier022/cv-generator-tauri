@@ -1,5 +1,6 @@
-import { useAppTheme } from '@/features/themes/hooks/useAppTheme'
+import { useAppTheme } from '@/hooks/useAppTheme'
 import { BrushRounded } from '@mui/icons-material'
+import { t } from 'i18next'
 import { FooterItem } from './footer-item'
 
 interface Props {}
@@ -12,7 +13,7 @@ export const FooterItemTheme = ({}: Props) => {
       isOpenModalRouter
       to={'/settings/themes'}
     >
-      Thème: {appTheme}
+      {t('footer.theme', { state: appTheme })}
     </FooterItem>
   )
 }

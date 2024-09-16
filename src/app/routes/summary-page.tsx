@@ -6,9 +6,11 @@ import { useMemo } from 'react'
 import { useFormCV } from '@/hooks/useFormCV'
 import { PageLayout } from '@/layouts/page-layout'
 import { ResumeContentSection, Translation, UserDataExperience } from '@/types/storage'
+import { useTranslation } from 'react-i18next'
 import { isEmptyObject } from '../../utils/object.utils'
 
 export const SummaryPage = () => {
+  const { t } = useTranslation()
   const { formValues } = useFormCV()
 
   const imageProfile = formValues.picture
@@ -122,7 +124,7 @@ export const SummaryPage = () => {
                   textTransform={'uppercase'}
                   sx={{ pb: 1, borderBottom: '1px solid' }}
                 >
-                  Expertises clés / secteurs
+                  {t('summary-page.skills-and-sectors.title')}
                 </Typography>
 
                 <List sx={{ p: 0, gap: 0.5 }}>
@@ -150,7 +152,7 @@ export const SummaryPage = () => {
                   textTransform={'uppercase'}
                   sx={{ pb: 1, borderBottom: '1px solid' }}
                 >
-                  Languages
+                  {t('summary-page.languages.title')}
                 </Typography>
                 <List sx={{ p: 0 }}>
                   {languages.map((language) => (
@@ -174,7 +176,7 @@ export const SummaryPage = () => {
                   textTransform={'uppercase'}
                   sx={{ pb: 1, borderBottom: '1px solid' }}
                 >
-                  Formation
+                  {t('summary-page.formation.title')}
                 </Typography>
                 <List sx={{ p: 0 }}>
                   {formation.map((el) => (
@@ -194,7 +196,7 @@ export const SummaryPage = () => {
                   textTransform={'uppercase'}
                   sx={{ pb: 1, borderBottom: '1px solid' }}
                 >
-                  Emplois antérieur à frog
+                  {t('summary-page.employment-history.title')}
                 </Typography>
                 {employmentHistory.map((employment) => (
                   <Typography fontFamily={'BentonSans'}>{employment.content.fr}</Typography>
@@ -219,7 +221,7 @@ export const SummaryPage = () => {
                 textTransform={'uppercase'}
                 sx={{ pb: 1, mb: 2, borderBottom: '1px solid' }}
               >
-                Expérience @ frog
+                {t('summary-page.experiences.title')}
               </Typography>
             </Box>
             <Box

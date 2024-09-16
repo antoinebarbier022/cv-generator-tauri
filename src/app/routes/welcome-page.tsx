@@ -93,11 +93,9 @@ export const WelcomePage = () => {
     <Stack>
       <Stack mb={4}>
         <Typography level="h1" fontFamily={'BentonSans'} fontWeight={500}>
-          Bienvenue sur CV Generator
+          {t('welcome-page.title')}
         </Typography>
-        <Typography level="body-lg">
-          L'application qui facilite la mise à jour de ton CV d'entreprise.
-        </Typography>
+        <Typography level="body-lg">{t('welcome-page.description')}</Typography>
       </Stack>
 
       <Stack direction={'row'} alignItems={'end'} justifyContent={'space-between'} gap={2}>
@@ -109,7 +107,7 @@ export const WelcomePage = () => {
           color="primary"
           endDecorator={<ArrowForwardRounded />}
         >
-          Commencer
+          {t('welcome-page.cta.start')}
         </Button>
       </Stack>
     </Stack>

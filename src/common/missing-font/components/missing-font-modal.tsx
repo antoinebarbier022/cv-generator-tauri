@@ -1,4 +1,5 @@
 import { Alert, Divider, Modal, ModalClose, ModalDialog, Stack, Typography } from '@mui/joy'
+import { useTranslation } from 'react-i18next'
 import { MarkdownWrapper } from '../../../components/markdown-wrapper'
 
 interface Props {
@@ -6,33 +7,27 @@ interface Props {
   onClose: () => void
 }
 export const MissingFontModal = (props: Props) => {
+  const { t } = useTranslation()
   return (
     <Modal open={props.open} onClose={props.onClose}>
-      <ModalDialog sx={{ minWidth: { sm: '640px', lg: '60vw' }, maxWidth: { sm: '80vw' } }}>
+      <ModalDialog
+        sx={{ minWidth: { sm: '80vw', lg: '800px' }, maxWidth: { sm: '80vw', lg: '800px' } }}
+      >
         <ModalClose />
-        <Typography level="title-lg">Police d'écriture manquante</Typography>
+
+        <Typography level="title-lg">{t('missing-font.modal.title')}</Typography>
         <Divider />
 
         <Stack gap={2}>
           <Alert>
-            <Typography level="body-sm" fontWeight={'400'}>
-              Pour générer votre CV au format PowerPoint, la police{' '}
-              <Typography fontWeight={'bold'}>BentonSansF</Typography> est requise.
-            </Typography>
+            <MarkdownWrapper
+              level="body-sm"
+              paragraphSpace={0}
+              content={t('missing-font.modal.description', { font: 'BentonSansF' })}
+            />
           </Alert>
           <Stack mx={2} gap={0.5} sx={{ mr: 4 }}>
-            <MarkdownWrapper
-              content={`
-
-## Etape 1 : Téléchargement
-
-Pour obtenir la police d'écriture, rendez-vous sur [https://visualidentity.capgemini.com/](https://visualidentity.capgemini.com/frog-brand/brand-foundation/resources-downloads/) et téléchargez-la.
-
-## Etape 2 : Installation
-
-- Ouvrez l'application **"Livre des polices"** sur votre Mac.
-- Glisser et déposez le dossier de la police d'écriture dans la fenêtre de l'application **"Livre des polices"**.`}
-            ></MarkdownWrapper>
+            <MarkdownWrapper content={t('missing-font.modal.content')}></MarkdownWrapper>
           </Stack>
         </Stack>
       </ModalDialog>

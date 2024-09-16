@@ -1,16 +1,19 @@
 import { SettingsItem } from '@/common/settings/settings-item'
 import { SettingsSection } from '@/common/settings/settings-section'
 import { ErrorRounded } from '@mui/icons-material'
-import { Alert, Divider, Link, Stack, Switch, Typography } from '@mui/joy'
+import { Alert, Divider, Stack, Switch } from '@mui/joy'
 
+import { MarkdownWrapper } from '@/components/markdown-wrapper'
+import { TranslatorApiKey } from '@/features/translators/components/translator-api-key'
+import { TranslatorUsage } from '@/features/translators/components/translator-usage'
+import { useTranslatorApiKey } from '@/features/translators/hooks/useTranslatorApiKey'
+import { useTranslatorOption } from '@/features/translators/hooks/useTranslatorOption'
+import { useTranslatorUsage } from '@/features/translators/hooks/useTranslatorUsage'
 import { ChangeEventHandler } from 'react'
-import { TranslatorApiKey } from '../components/translator-api-key'
-import { TranslatorUsage } from '../components/translator-usage'
-import { useTranslatorApiKey } from '../hooks/useTranslatorApiKey'
-import { useTranslatorOption } from '../hooks/useTranslatorOption'
-import { useTranslatorUsage } from '../hooks/useTranslatorUsage'
+import { useTranslation } from 'react-i18next'
 
 export const TranslatorSettings = () => {
+  const { t } = useTranslation()
   const { isActiveOption, setOptionActivation } = useTranslatorOption()
 
   const { apiKey, displayAPIKey, mutation, handleRemoveApiKey, handleSaveApiKey } =
@@ -24,16 +27,9 @@ export const TranslatorSettings = () => {
 
   return (
     <SettingsSection>
-      {/*<SettingsTitle>Option de traduction</SettingsTitle>*/}
-
       <SettingsItem
-        title="Traduction avec DeepL"
-        description={
-          <>
-            Activez cette option pour permettre la traduction via DeepL. Un bouton "Traduire"
-            apparaîtra à côté des champs à traduire.
-          </>
-        }
+        title={t('settings.option-translate.deepl.title')}
+        description={<>{t('settings.option-translate.deepl.description')}</>}
         endAction={
           <Switch
             size="lg"
@@ -48,28 +44,11 @@ export const TranslatorSettings = () => {
           <Divider />
           <Stack gap={2}>
             <SettingsItem
-              title={"Clé d'API DeepL"}
+              title={t('settings.option-translate.deepl.api-key.title')}
               description={
-                <Typography>
-                  Une clé API est nécessaire pour utiliser la fonctionnalité de traduction. Vous
-                  pouvez souscrire à différents plans en fonction de vos besoins sur le site de
-                  DeepL. Un plan gratuit vous offre jusqu'à 500 000 caractères à traduire par mois.
-                  <br />
-                  Si vous possédez déjà une clé API, vous pouvez la retrouver sur votre{' '}
-                  <Link
-                    level="body-xs"
-                    fontWeight={400}
-                    href="https://www.deepl.com/en/your-account/keys"
-                    slotProps={{
-                      root: {
-                        target: '_blank'
-                      }
-                    }}
-                  >
-                    compte DeepL
-                  </Link>
-                  .
-                </Typography>
+                <MarkdownWrapper
+                  content={t('settings.option-translate.deepl.api-key.description')}
+                />
               }
               endAction={undefined}
             />
@@ -97,11 +76,10 @@ export const TranslatorSettings = () => {
             {usage.data && apiKey && !mutation.isError && (
               <Stack gap={2}>
                 <TranslatorUsage
-                  title={"Suivi de l'usage"}
-                  description={`Limitation à ${usage.data.character_limit.toLocaleString(
-                    'fr'
-                  )} caractères par
-                      mois`}
+                  title={t('settings.option-translate.deepl.api-usage.title')}
+                  description={t('settings.option-translate.deepl.api-usage.description', {
+                    limit: usage.data.character_limit.toLocaleString('fr')
+                  })}
                   valueProgression={usageProgression}
                   free_character_left_count={free_character_left_count}
                 />

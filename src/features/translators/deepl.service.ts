@@ -22,11 +22,11 @@ export const DeepLService = {
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         // Extracting error message from server response
-        const errorMessage = error.response.data.detail || 'Une erreur est survenue...'
+        const errorMessage = error.response.data.detail || 'An error has occurred…'
         console.log(error.response.data.detail)
         throw new Error(errorMessage)
       }
-      throw new Error('Une erreur est survenue...')
+      throw new Error('An error has occurred…')
     }
   },
 
@@ -59,7 +59,7 @@ export const DeepLService = {
       )
       return response.data
     } catch (error) {
-      throw new Error(`Une erreur est survenue... ${error}`)
+      throw new Error(`An error has occurred… ${error}`)
     }
   }
 }

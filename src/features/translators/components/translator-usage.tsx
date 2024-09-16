@@ -1,4 +1,5 @@
 import { Card, LinearProgress, Stack, Typography } from '@mui/joy'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   title: string
@@ -7,6 +8,7 @@ interface Props {
   free_character_left_count: number
 }
 export const TranslatorUsage = (props: Props) => {
+  const { t } = useTranslation()
   return (
     <Card variant="soft" sx={{ backgroundColor: 'neutral.50' }}>
       <Stack gap={0.5}>
@@ -35,8 +37,9 @@ export const TranslatorUsage = (props: Props) => {
           value={Math.ceil(props.valueProgression)}
         />
         <Typography level="body-xs" fontWeight={300} textColor={'primary.500'}>
-          Il vous reste {props.free_character_left_count.toLocaleString('fr')} caractères pouvant
-          être traduits.
+          {t('settings.option-translate.deepl.api-usage.char-count-left', {
+            value: props.free_character_left_count.toLocaleString('fr')
+          })}
         </Typography>
       </Stack>
     </Card>

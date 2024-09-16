@@ -8,18 +8,19 @@ import { SidebarContainer } from '@/common/sidebar/containers/sidebar-container'
 
 import { ProfilePage } from '@/app/routes/cv-forms/profile-page'
 
-import { ThemesSettings } from '@/features/themes/containers/themes-settings'
-import { TranslatorSettings } from '@/features/translators/containers/translator-settings'
 import { useMenuEvents } from '@/hooks/useMenuEvents'
 import { useRedirectToWelcomePage } from '@/hooks/useRedirectToWelcomePage'
 import { AppLayout } from '@/layouts/app-layout'
 import { WelcomeLayout } from '@/layouts/welcome-layout'
 import { Alert } from '@mui/joy'
+import { SettingsModal } from '../layouts/settings-layout'
 import { FormationPage } from './routes/cv-forms/formation-page'
 import { ProjectsPage } from './routes/cv-forms/projects-page'
 import { SectorsPage } from './routes/cv-forms/sectors-page'
 import { DebugModal } from './routes/debug/debug-modal'
-import { SettingsModal } from './routes/settings/settings-modal'
+import { LanguageSettings } from './routes/settings/language-settings'
+import { ThemesSettings } from './routes/settings/themes-settings'
+import { TranslatorSettings } from './routes/settings/translator-settings'
 import { SummaryPage } from './routes/summary-page'
 import { WelcomePage } from './routes/welcome-page'
 
@@ -80,6 +81,7 @@ export const AppRouter = () => {
             />
             <Route path="general" element={<TranslatorSettings />} />
             <Route path="themes" element={<ThemesSettings />} />
+            <Route path="language" element={<LanguageSettings />} />
           </Route>
         </Routes>
       )}

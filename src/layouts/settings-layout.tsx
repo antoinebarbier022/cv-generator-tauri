@@ -1,5 +1,6 @@
 import {
   BrushRounded,
+  InfoRounded,
   LaptopChromebookRounded,
   PublicRounded,
   SettingsRounded,
@@ -17,6 +18,7 @@ import {
   ModalDialog,
   Stack
 } from '@mui/joy'
+import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 interface Props {
@@ -26,23 +28,49 @@ interface Props {
 
 export const SettingsModal = (props: Props) => {
   const routerLocation = useLocation()
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const menu = [
-    { label: 'Général', to: '/settings/general', icon: <SettingsRounded />, disabled: false },
-
+    {
+      label: t('settings.navigation.general'),
+      to: '/settings/general',
+      icon: <SettingsRounded />,
+      disabled: false
+    },
     { divider: true, hide: true },
     {
-      label: 'Langue',
+      label: t('settings.navigation.language'),
       to: '/settings/language',
-      icon: <PublicRounded />,
+      icon: <PublicRounded />
+    },
+    {
+      label: t('settings.navigation.theme'),
+      to: '/settings/themes',
+      icon: <BrushRounded />,
+      disabled: false
+    },
+    { divider: true, hide: true },
+    {
+      label: t('settings.navigation.cv-configuration'),
+      icon: <LaptopChromebookRounded />,
       disabled: true,
       hide: true
     },
-    { label: 'Apparence', to: '/settings/themes', icon: <BrushRounded />, disabled: false },
-
+    {
+      label: t('settings.navigation.advanced'),
+      to: '/settings/advanced',
+      icon: <TuneRounded />,
+      disabled: true,
+      hide: true
+    },
     { divider: true, hide: true },
-    { label: 'CV Configuration', icon: <LaptopChromebookRounded />, disabled: true, hide: true },
-    { label: 'Avancé', to: '/settings/advanced', icon: <TuneRounded />, disabled: true, hide: true }
+    {
+      label: t('settings.navigation.about'),
+      to: '/settings/about',
+      icon: <InfoRounded />,
+      disabled: true,
+      hide: true
+    }
   ]
 
   const background = routerLocation.state && routerLocation.state.background

@@ -9,7 +9,7 @@ i18n
   .use(Backend)
 
   .init({
-    fallbackLng: 'fr',
+    fallbackLng: 'en',
     load: 'languageOnly',
     debug: false,
 
