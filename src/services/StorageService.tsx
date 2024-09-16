@@ -18,7 +18,7 @@ import { appDataDir, extname, join, pictureDir } from '@tauri-apps/api/path'
 import { convertFileSrc } from '@tauri-apps/api/tauri'
 import { format } from 'date-fns'
 import { metadata } from 'tauri-plugin-fs-extra-api'
-const CONTENT_DATA_FILE = `data.json`
+const CONTENT_DATA_FILE = import.meta.env.DEV ? `[DEBUG]-data.json` : `data.json`
 
 export const StorageService = {
   importContentData: async (): Promise<any | null> => {
