@@ -1,5 +1,12 @@
 
 
+## [0.1.1-beta.23](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.22...0.1.1-beta.23) (2024-9-16)
+
+
+### Bug Fixes
+
+* **i18n:** remove "en" language (temp) ([028c77a](https://github.com/antoinebarbier022/cv-generator-tauri/commit/028c77a04faddf7dae8a165ece193981dadf89f0))
+
 ## [0.1.1-beta.22](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.21...0.1.1-beta.22) (2024-9-13)
 
 
