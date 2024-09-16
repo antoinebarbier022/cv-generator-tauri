@@ -1,5 +1,19 @@
 
 
+## [0.1.1-beta.24](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.23...0.1.1-beta.24) (2024-9-16)
+
+
+### Bug Fixes
+
+* **i18n:** add missing keys (fr) ([74ddb74](https://github.com/antoinebarbier022/cv-generator-tauri/commit/74ddb740a19a7e57e31b9411d6b8b4de94f08276))
+* **i18n:** english wording ([aaed454](https://github.com/antoinebarbier022/cv-generator-tauri/commit/aaed4543cfd6362bf36db3b96e32ce4a4391a813))
+* **warnings:** remove warnings indicator inside the footer if there is no warning ([2d6b396](https://github.com/antoinebarbier022/cv-generator-tauri/commit/2d6b396d67a936af9ce4a6f535551cf7bc547bdc))
+
+
+### Features
+
+* **i18n:** add Japanese language ([a78f2b3](https://github.com/antoinebarbier022/cv-generator-tauri/commit/a78f2b3d8695e06d6bdedd9cae1786886cd9f544))
+
 ## [0.1.1-beta.23](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.22...0.1.1-beta.23) (2024-9-16)
 
 
