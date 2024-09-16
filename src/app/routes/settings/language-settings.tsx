@@ -20,6 +20,7 @@ export const LanguageSettings = () => {
           >
             <Option value="en">{t('core.language.en.label')}</Option>
             <Option value="fr">{t('core.language.fr.label')}</Option>
+            <Option value="ja">{t('core.language.ja.label')}</Option>
           </Select>
         }
       />
