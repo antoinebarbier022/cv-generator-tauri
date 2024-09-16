@@ -22,6 +22,8 @@ export const FooterBarContainer = () => {
 
   const { countWarnings } = useFormWarnings()
 
+  const showWarnings = Boolean(countWarnings && countWarnings >= 1)
+
   const { isActiveOptionValid } = useTranslatorOption()
 
   useEffect(() => {
@@ -67,7 +69,7 @@ export const FooterBarContainer = () => {
           </>
         )}
 
-        {configFooterOptions.showErrors && (
+        {showWarnings && (
           <>
             <FooterItemWarningsCounter
               loading={countWarnings === null}
