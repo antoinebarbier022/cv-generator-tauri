@@ -1,5 +1,12 @@
 
 
+## [0.1.1-beta.27](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.26...0.1.1-beta.27) (2024-9-17)
+
+
+### Bug Fixes
+
+* **api:** wrong port was stored inside localStorage -> change to session storage ([01607e0](https://github.com/antoinebarbier022/cv-generator-tauri/commit/01607e04b0b25fac2f748bf018e6505d9a4869b7))
+
 ## [0.1.1-beta.26](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.25...0.1.1-beta.26) (2024-9-17)
 
 
