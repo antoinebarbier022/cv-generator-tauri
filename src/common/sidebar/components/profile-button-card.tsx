@@ -2,6 +2,8 @@ import { Avatar, Card, Link, Stack, Typography } from '@mui/joy'
 import { convertFileSrc } from '@tauri-apps/api/tauri'
 import { NavLink, useNavigate } from 'react-router-dom'
 
+import luffyHatImage from '@/assets/images/luffy-hat.png'
+
 interface Props {
   isCollapseSidebar?: boolean
   fullName: string
@@ -38,9 +40,18 @@ export const ProfileButtonCard = (props: Props) => {
               component={Typography}
               onClick={() => navigate(props.linkTo)}
               overlay
+              sx={{ position: 'relative' }}
               underline="none"
               aria-current={isActive ? 'page' : undefined}
             >
+              {/** Luffy hat */}
+              <Stack
+                display={'none'}
+                component={'img'}
+                src={luffyHatImage}
+                sx={{ rotate: '40deg' }}
+                className="absolute right-[-50%] top-[-40%] w-[50px]  z-10"
+              />
               <Avatar
                 variant="soft"
                 src={

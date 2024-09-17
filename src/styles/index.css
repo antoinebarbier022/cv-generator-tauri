@@ -12,14 +12,19 @@
   --app-sidebar-width: 260px;
   --titlebar-height: var(--app-border-width);
 
-  --app-background: var(--joy-palette-background-app, rgba(105, 6, 224, 0.598));
+  --app-background-color: var(--joy-palette-background-app);
+  --app-background-image: var(--joy-palette-background-app-image);
 
   --scrollbar-color: rgba(var(--joy-palette-neutral-mainChannel) / 0.3);
 }
 
 html,
 body {
-  background: var(--app-background) !important;
+  background-color: var(--app-background-color) !important;
+  background-image: var(--app-background-image) !important;
+  background-position: bottom left !important;
+  background-size: 500px;
+  background-repeat: no-repeat !important;
   overflow: hidden;
   box-sizing: border-box;
 }

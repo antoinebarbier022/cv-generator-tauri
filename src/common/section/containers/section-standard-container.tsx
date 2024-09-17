@@ -7,6 +7,7 @@ import { SectionDroppableLayout } from '@/common/section/layouts/section-droppab
 import { SectionEmptyState } from '../components/section-empty-state'
 
 import { useTranslatorOption } from '@/features/translators/hooks/useTranslatorOption'
+import { AppTheme, useAppTheme } from '@/hooks/useAppTheme'
 import { useExpandedItemStore } from '@/stores/useExpandedItemStore'
 import { Translation, UserData } from '../../../types/storage'
 import { SectionStandardItem } from './section-standard-item'
@@ -38,9 +39,26 @@ export const SectionStandardContainer = ({
 
   const { expandedItem, setExpandedItem } = useExpandedItemStore()
 
+  const { setAppTheme } = useAppTheme()
+
   const handleEditContentItem = (id: string, content: Translation) => {
     const newContent = [...formValues[sectionKey]]
+
     newContent[newContent.findIndex((e) => e.id === id)].content = content
+
+    /** Easter Egg -> One Piece Theme */
+    const hasTheSecretWord =
+      formValues.employment_history.findIndex(
+        (el) =>
+          el.content.en.toLocaleLowerCase() === 'pirate' ||
+          el.content.fr.toLocaleLowerCase() === 'pirate'
+      ) !== -1
+
+    if (hasTheSecretWord) {
+      setAppTheme(AppTheme.LUFFY)
+    } else {
+      setAppTheme(AppTheme.DEFAULT)
+    }
 
     setFormValues({
       [sectionKey]: newContent

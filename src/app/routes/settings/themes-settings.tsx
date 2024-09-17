@@ -2,11 +2,11 @@ import { SettingsItem } from '@/common/settings/settings-item'
 import { SettingsSection } from '@/common/settings/settings-section'
 import { Option, Select } from '@mui/joy'
 import { useTranslation } from 'react-i18next'
-import { AppTheme, useAppTheme } from '../../../hooks/useAppTheme'
+import { useAppTheme } from '../../../hooks/useAppTheme'
 
 export const ThemesSettings = () => {
   const { t } = useTranslation()
-  const { appTheme, setAppTheme } = useAppTheme()
+  const { appTheme, setAppTheme, allTheme } = useAppTheme()
   return (
     <SettingsSection>
       <SettingsItem
@@ -19,9 +19,14 @@ export const ThemesSettings = () => {
             value={appTheme}
             onChange={(_, value) => setAppTheme(value)}
           >
-            <Option value={AppTheme.FROG}>frog</Option>
-            <Option value={AppTheme.CAPGEMINI}>Capgemini</Option>
-            <Option value={AppTheme.DEFAULT}>Default (frog)</Option>
+            {allTheme.map(
+              (theme) =>
+                !theme.hide && (
+                  <Option key={theme.value} value={theme.value}>
+                    {theme.label}
+                  </Option>
+                )
+            )}
           </Select>
         }
       />

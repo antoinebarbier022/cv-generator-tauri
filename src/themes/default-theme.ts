@@ -5,6 +5,7 @@ declare module '@mui/joy/styles' {
   interface Palette {
     background: {
       app: string
+      'app-image': string
     }
   }
 }

@@ -80,20 +80,24 @@ export const SummaryPage = () => {
             flex: 1
           }}
         >
-          <Avatar
-            src={
-              imageProfile ? `${convertFileSrc(imageProfile)}?removeCache=${new Date()}` : undefined
-            }
-            sx={{
-              width: '140px',
-              height: '140px',
-              borderWidth: 6,
-              borderColor: imageProfile
-                ? 'var(--joy-palette-text-primary)'
-                : 'var(--joy-palette-neutral-400)',
-              borderStyle: 'solid'
-            }}
-          />
+          <Box position={'relative'} sx={{ width: 'fit-content' }}>
+            <Avatar
+              src={
+                imageProfile
+                  ? `${convertFileSrc(imageProfile)}?removeCache=${new Date()}`
+                  : undefined
+              }
+              sx={{
+                width: '140px',
+                height: '140px',
+                borderWidth: 6,
+                borderColor: imageProfile
+                  ? 'var(--joy-palette-text-primary)'
+                  : 'var(--joy-palette-neutral-400)',
+                borderStyle: 'solid'
+              }}
+            />
+          </Box>
           <Stack>
             <Typography
               fontFamily={'QuartoF'}

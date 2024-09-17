@@ -1,12 +1,15 @@
-import themeCapgemini from '@/themes/capgemini-theme.ts'
+import { useFormStore } from '@/stores/useFormStore'
+import capgeminiTheme from '@/themes/capgemini-theme.ts'
 import themeFrog from '@/themes/default-theme.ts'
-import { useMemo } from 'react'
+import luffyTheme from '@/themes/luffy-theme.ts'
+import { useEffect, useMemo } from 'react'
 import { create } from 'zustand'
 
 export enum AppTheme {
   FROG = 'frog',
   CAPGEMINI = 'capgemini',
-  DEFAULT = 'default'
+  LUFFY = 'one-piece',
+  DEFAULT = 'frog'
 }
 
 interface State {
@@ -16,10 +19,10 @@ interface State {
 
 const normalizedAppTheme = (value: AppTheme | string | null) => {
   switch (value) {
-    case 'frog':
-      return AppTheme.FROG
-    case 'capgemini':
-      return AppTheme.CAPGEMINI
+    case AppTheme.FROG:
+    case AppTheme.CAPGEMINI:
+    case AppTheme.LUFFY:
+      return value
     default:
       return AppTheme.DEFAULT
   }
@@ -36,12 +39,52 @@ const useAppThemeStore = create<State>((set) => ({
 export const useAppTheme = () => {
   const { appTheme, setAppTheme } = useAppThemeStore()
 
+  const { formValues } = useFormStore()
+
+  const isLuffyTheme = useMemo(
+    () =>
+      formValues.employment_history.findIndex(
+        (el) =>
+          el.content.en.toLocaleLowerCase() === 'pirate' ||
+          el.content.fr.toLocaleLowerCase() === 'pirate'
+      ) !== -1,
+    [formValues.employment_history]
+  )
+
+  useEffect(() => {
+    if (!isLuffyTheme && appTheme === AppTheme.LUFFY) {
+      setAppTheme(AppTheme.DEFAULT)
+    }
+  }, [])
+
+  const allTheme: { value: AppTheme; label: string; hide?: boolean }[] = useMemo(
+    () => [
+      {
+        value: AppTheme.FROG,
+        label: 'frog'
+      },
+      {
+        value: AppTheme.CAPGEMINI,
+        label: 'Capgemini'
+      },
+
+      {
+        value: AppTheme.LUFFY,
+        label: 'One Piece',
+        hide: !isLuffyTheme
+      }
+    ],
+    [isLuffyTheme]
+  )
+
   const appThemeConfig = useMemo(() => {
     switch (appTheme) {
-      case 'frog':
+      case AppTheme.FROG:
         return themeFrog
-      case 'capgemini':
-        return themeCapgemini
+      case AppTheme.CAPGEMINI:
+        return capgeminiTheme
+      case AppTheme.LUFFY:
+        return luffyTheme
       default:
         return themeFrog
     }
@@ -50,6 +93,7 @@ export const useAppTheme = () => {
   return {
     appTheme,
     setAppTheme,
-    appThemeConfig
+    appThemeConfig,
+    allTheme
   }
 }

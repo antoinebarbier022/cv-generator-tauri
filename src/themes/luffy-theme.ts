@@ -12,23 +12,23 @@ declare module '@mui/joy/styles' {
 
 export default extendTheme({
   fontFamily: {
-    display: 'Ubuntu, Arial, Sans-serif',
+    display: 'Ubuntu, Arial,  Sans-serif',
     body: 'Ubuntu, Arial, Sans-serif'
   },
   colorSchemes: {
     light: {
       palette: {
         primary: {
-          50: '#DBF3FF',
-          100: '#BDE8FF',
-          200: '#7AD1FF',
-          300: '#33B8FF',
-          400: '#009CF0',
-          500: '#0070AD',
-          600: '#005A8A',
-          700: '#004266',
-          800: '#002E47',
-          900: '#001724'
+          50: '#CFEAF7',
+          100: '#9FD4EF',
+          200: '#3FA9DE',
+          300: '#196B94',
+          400: '#092635',
+          500: '#07202C',
+          600: '#061923',
+          700: '#04131A',
+          800: '#030D11',
+          900: '#010609'
         },
         warning: {
           '50': '#FFF1EB',
@@ -55,7 +55,8 @@ export default extendTheme({
           900: '#1C1C1C'
         },
         background: {
-          app: 'rgba(13, 71, 161, 0.75)'
+          app: '#092635',
+          'app-image': "url('src/assets/images/luffy-boat-bg.png')"
         }
       }
     }
