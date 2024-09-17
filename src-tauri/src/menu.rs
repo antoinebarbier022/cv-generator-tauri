@@ -21,6 +21,8 @@ pub(crate) enum MyMenu {
     DebugOpenPanel,
     DebugSendError,
 
+    ViewToggleSidebar,
+
     HelpOpenSlack,
 }
 
@@ -41,6 +43,8 @@ enum MenuEvent {
 
     DebugOpenPanel,
     AppPreferences,
+
+    ViewToggleSidebar,
 }
 
 impl MenuEvent {
@@ -78,6 +82,10 @@ pub fn on_menu_event(event: WindowMenuEvent) {
         Some(MyMenu::AppUpdate) => {
             todo!()
         }
+        Some(MyMenu::ViewToggleSidebar) => event
+            .window()
+            .emit(&MenuEvent::ViewToggleSidebar.as_event_name(), "")
+            .unwrap(),
         Some(MyMenu::DebugOpenPanel) => event
             .window()
             .emit(&MenuEvent::DebugOpenPanel.as_event_name(), "")
@@ -115,6 +123,7 @@ pub fn create_app_menu() -> Menu {
         .add_submenu(app_menu())
         .add_submenu(file_menu())
         .add_submenu(edit_menu())
+        .add_submenu(view_menu())
         .add_submenu(window_menu())
         .add_submenu(debug_menu())
         .add_submenu(help_menu())
@@ -175,6 +184,15 @@ fn debug_menu() -> Submenu {
                     .accelerator("Cmd+Shift+D"),
             )
             .add_item(CustomMenuItem::new(MyMenu::DebugSendError, "Send an error")),
+    )
+}
+
+fn view_menu() -> Submenu {
+    Submenu::new(
+        "View",
+        Menu::new().add_item(
+            CustomMenuItem::new(MyMenu::ViewToggleSidebar, "Toggle Sidebar").accelerator("Cmd+S"),
+        ),
     )
 }
 

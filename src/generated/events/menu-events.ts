@@ -8,4 +8,5 @@ export enum MenuEvent {
   FileGenerateAndSaveAs = "file-generate-and-save-as",
   DebugOpenPanel = "debug-open-panel",
   AppPreferences = "app-preferences",
+  ViewToggleSidebar = "view-toggle-sidebar",
 }

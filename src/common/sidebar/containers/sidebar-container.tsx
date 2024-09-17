@@ -1,6 +1,7 @@
 import {
   BusinessRounded,
   Construction,
+  DownloadRounded,
   HandymanRounded,
   HomeRepairServiceRounded,
   LanguageRounded,
@@ -14,6 +15,7 @@ import { useAskOutputPath } from '@/features/generation/hooks/useAskOutputPath'
 import { useGenerate } from '@/features/generation/hooks/useGenerate'
 import { useFormCV } from '@/hooks/useFormCV'
 import { useServerPort } from '@/hooks/userServerPort'
+import { useSidebarStore } from '@/stores/useSidebarStore'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { NavigationType } from '../../../types/sidebar'
@@ -28,6 +30,8 @@ interface Props {
 }
 export const SidebarContainer = ({ isLoadingGenerate }: Props) => {
   const { t } = useTranslation()
+
+  const { isCollapsed: isCollapsedSidebar } = useSidebarStore()
 
   const askOutputPath = useAskOutputPath()
   const generate = useGenerate()
@@ -122,7 +126,13 @@ export const SidebarContainer = ({ isLoadingGenerate }: Props) => {
         color="primary"
         variant="solid"
         invertedColors
-        sx={{ backgroundColor: 'transparent', height: '100%' }}
+        sx={{
+          position: 'relative',
+          width: isCollapsedSidebar ? '65px' : 'var(--app-sidebar-width)',
+          backgroundColor: 'transparent',
+          transition: 'width 100ms linear',
+          height: '100%'
+        }}
       >
         <Stack
           data-tauri-drag-region
@@ -132,6 +142,7 @@ export const SidebarContainer = ({ isLoadingGenerate }: Props) => {
             paddingX: 'var(--app-border-width)'
           }}
         />
+
         <Stack
           height={'100%'}
           justifyContent={'space-between'}
@@ -140,6 +151,7 @@ export const SidebarContainer = ({ isLoadingGenerate }: Props) => {
         >
           <Stack>
             <ProfileButtonCard
+              isCollapseSidebar={isCollapsedSidebar}
               image={formValues.picture}
               subtile={role.fr}
               fullName={Boolean(fullName) ? fullName : ''}
@@ -158,11 +170,10 @@ export const SidebarContainer = ({ isLoadingGenerate }: Props) => {
             <Button
               color="primary"
               variant="solid"
-              //sx={{ marginX: 1 }}
               loading={generate.isPending || isLoadingGenerate}
               onClick={handleGenerateCV}
             >
-              {t('button.generate.label')}
+              {isCollapsedSidebar ? <DownloadRounded /> : t('button.generate.label')}
             </Button>
           </Stack>
         </Stack>

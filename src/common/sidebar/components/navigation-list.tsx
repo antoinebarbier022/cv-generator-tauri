@@ -37,7 +37,7 @@ export const NavigationList = (props: Props) => {
                   {({ isActive }) => (
                     <ListItemButton tabIndex={-1} selected={isActive} sx={{ borderRadius: 'sm' }}>
                       <ListItemDecorator>{value.icon}</ListItemDecorator>
-                      <ListItemContent>{value.label}</ListItemContent>
+                      <ListItemContent sx={{ whiteSpace: 'nowrap' }}>{value.label}</ListItemContent>
                     </ListItemButton>
                   )}
                 </NavLink>

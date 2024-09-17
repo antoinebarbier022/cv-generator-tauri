@@ -3,6 +3,7 @@ import { convertFileSrc } from '@tauri-apps/api/tauri'
 import { NavLink } from 'react-router-dom'
 
 interface Props {
+  isCollapseSidebar?: boolean
   fullName: string
   subtile?: string
   linkTo: string
@@ -16,7 +17,9 @@ export const ProfileButtonCard = (props: Props) => {
         position: 'sticky',
         top: 0,
         paddingY: 1.5,
-        paddingX: 2,
+
+        paddingX: props.isCollapseSidebar ? 0.75 : 2,
+        transition: 'padding 100ms linear',
         border: 'none',
         backgroundColor: `transparent`,
         '&:hover': {
@@ -27,16 +30,32 @@ export const ProfileButtonCard = (props: Props) => {
         }
       })}
     >
-      <Stack direction={'row'} gap={2} alignItems={'center'}>
-        <Avatar
-          variant="soft"
-          src={props.image ? `${convertFileSrc(props.image)}?removeCache=${new Date()}` : undefined}
-          size="sm"
-        />
+      <Stack direction={'row'} gap={2.1} alignItems={'center'}>
+        <NavLink to={props.linkTo}>
+          {({ isActive }) => (
+            <Link
+              component={Typography}
+              overlay
+              underline="none"
+              aria-current={isActive ? 'page' : undefined}
+            >
+              <Avatar
+                variant="soft"
+                src={
+                  props.image
+                    ? `${convertFileSrc(props.image)}?removeCache=${new Date()}`
+                    : undefined
+                }
+                size="sm"
+              />
+            </Link>
+          )}
+        </NavLink>
 
         <Stack>
           <Typography
             level="body-md"
+            minWidth={'160px'}
             lineHeight={'1.25rem'}
             textColor={'text.primary'}
             className="!line-clamp-2"

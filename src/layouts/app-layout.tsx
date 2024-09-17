@@ -21,9 +21,9 @@ export const AppLayout = ({ sidebar, footerBar }: Props) => {
         sx={{
           position: 'relative',
           display: 'grid',
-          gridTemplateColumns: 'var(--app-sidebar-width) auto',
+          gridTemplateColumns: 'auto 1fr',
           paddingRight: 'var(--app-border-width)',
-          paddingBottom: 'calc(var(--app-border-width) + var(--app-footer-height)) '
+          paddingBottom: 'calc(var(--app-border-width) + var(--app-footer-height))'
         }}
       >
         <Stack

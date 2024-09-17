@@ -8,12 +8,15 @@ import { useGenerate } from '@/features/generation/hooks/useGenerate'
 import { MenuEvent } from '@/generated/events/menu-events'
 import { useImportDataContent } from '@/hooks/useImportDataContent'
 import { useResetDataStorage } from '@/hooks/useResetDataStorage'
+import { useSidebarStore } from '@/stores/useSidebarStore'
 import { useServerPort } from './userServerPort'
 
 export const useMenuEvents = () => {
   const navigate = useNavigate()
 
   const routerLocation = useLocation()
+
+  const { toggle: toggleCollapseSidebar } = useSidebarStore()
 
   const resetDataStorage = useResetDataStorage()
 
@@ -60,6 +63,15 @@ export const useMenuEvents = () => {
       unlisten.then((dispose) => dispose())
     }
   }, [history])
+
+  useEffect(() => {
+    const unlisten = listen(MenuEvent.ViewToggleSidebar, async () => {
+      toggleCollapseSidebar()
+    })
+    return () => {
+      unlisten.then((dispose) => dispose())
+    }
+  }, [])
 
   useEffect(() => {
     const unlisten = listen(MenuEvent.FileReset, async () => {
