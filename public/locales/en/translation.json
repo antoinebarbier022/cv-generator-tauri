@@ -127,5 +127,7 @@
   "settings.option-translate.deepl.api-key.description": "An API key is required to use the translation feature. You can subscribe to different plans based on your needs on DeepL's website. A free plan offers up to 500,000 characters for translation per month.\nIf you already have an API key, you can find it in your **[DeepL account](https://www.deepl.com/en/your-account/keys)**.",
   "settings.option-translate.deepl.api-usage.title": "Usage tracking",
   "settings.option-translate.deepl.api-usage.description": "Limit of {{limit}} characters per month",
-  "settings.option-translate.deepl.api-usage.char-count-left": "You have {{value}} characters left for translation."
+  "settings.option-translate.deepl.api-usage.char-count-left": "You have {{value}} characters left for translation.",
+  "welcome-page.first-information.title": "Let's start creating your CV!",
+  "core.next": "Next"
 }

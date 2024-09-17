@@ -49,9 +49,9 @@ export const WelcomePage = () => {
     return (
       <Stack gap={4} component={'form'} onSubmit={formik.handleSubmit}>
         <Stack>
-          <Typography level="title-lg">C'est parti pour la création de ton CV !</Typography>
+          <Typography level="title-lg">{t('welcome-page.first-information.title')}</Typography>
           <Typography level="body-lg" fontWeight={300}>
-            Renseigne quelques informations avant d'accéder à l'interface d'administration.
+            {t('welcome-page.first-information.description')}
           </Typography>
         </Stack>
 
@@ -83,7 +83,7 @@ export const WelcomePage = () => {
             endDecorator={<ArrowForwardRounded />}
             disabled={!(formik.isValid && formik.touched)}
           >
-            Suivant
+            {t('core.next')}
           </Button>
         </Stack>
       </Stack>

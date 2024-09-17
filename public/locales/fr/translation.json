@@ -115,7 +115,7 @@
   "settings.navigation.language": "Language",
   "display-inside-finder": "Afficher dans le finder",
   "open-inside-powerpoint": "Ouvrir dans Microsoft PowerPoint",
-  "toast-success.reset-data": "All data has been successfully reset.",
+  "toast-success.reset-data": "Toutes les données ont été réinitialisées avec succès.",
   "settings.navigation.about": "À propos",
   "settings.language.title": "Changer de langue",
   "settings.language.description": " Sélectionnez la langue d’affichage de l’application. Cette modification ajustera la langue de l’interface utilisateur et de tous les contenus associés.",
@@ -127,5 +127,8 @@
   "settings.option-translate.deepl.api-key.description": "Une clé API est nécessaire pour utiliser la fonctionnalité de traduction. Vous pouvez souscrire à différents plans en fonction de vos besoins sur le site de DeepL. Un plan gratuit vous offre jusqu'à 500 000 caractères à traduire par mois. \nSi vous possédez déjà une clé API, vous pouvez la retrouver sur votre **[compte DeepL](https://www.deepl.com/fr/your-account/keys)**.",
   "settings.option-translate.deepl.api-usage.title": "Suivi de l'usage",
   "settings.option-translate.deepl.api-usage.description": "Limitation à {{limit}} caractères par mois",
-  "settings.option-translate.deepl.api-usage.char-count-left": "Il vous reste {{value}} caractères pouvant être traduits."
+  "settings.option-translate.deepl.api-usage.char-count-left": "Il vous reste {{value}} caractères pouvant être traduits.",
+  "welcome-page.first-information.title": "C'est parti pour la création de ton CV !",
+  "welcome-page.first-information.description": "",
+  "core.next": "Suivant"
 }

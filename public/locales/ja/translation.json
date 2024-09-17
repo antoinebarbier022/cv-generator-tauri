@@ -127,5 +127,7 @@
   "settings.option-translate.deepl.api-key.description": "翻訳機能を使用するには API キーが必要です。DeepL のウェブサイトで、ニーズに応じてさまざまなプランに加入できます。無料プランでは、月に 500,000 文字まで翻訳できます。\nすでに API キーをお持ちの場合は、**[DeepL アカウント](https://www.deepl.com/fr/your-account/keys)** で確認できます。",
   "settings.option-translate.deepl.api-usage.title": "使用状況の追跡",
   "settings.option-translate.deepl.api-usage.description": "月に {{limit}} 文字までの制限",
-  "settings.option-translate.deepl.api-usage.char-count-left": "翻訳可能な残り文字数: {{value}}"
+  "settings.option-translate.deepl.api-usage.char-count-left": "翻訳可能な残り文字数: {{value}}",
+  "welcome-page.first-information.title": "履歴書の作成を始めましょう!",
+  "core.next": "続く"
 }
