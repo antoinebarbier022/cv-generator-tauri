@@ -34,7 +34,7 @@ export const SummaryPage = () => {
     }
     return (
       (formValues[sectionKey] as ResumeContentSection<T>[]).filter(
-        (e) => !(e.isHidden && isEmptyObject(e.content))
+        (e) => !(e.isHidden || isEmptyObject(e.content))
       ) ?? []
     )
   }
