@@ -1,6 +1,8 @@
 import { extendTheme } from '@mui/joy/styles'
 import { themeComponents } from './default-theme-components'
 
+import luffyBoatBackground from '@/assets/images/luffy-boat-bg.png'
+
 declare module '@mui/joy/styles' {
   interface Palette {
     background: {
@@ -56,7 +58,7 @@ export default extendTheme({
         },
         background: {
           app: '#092635',
-          'app-image': "url('src/assets/images/luffy-boat-bg.png')"
+          'app-image': `url('${luffyBoatBackground}')`
         }
       }
     }
