@@ -29,7 +29,8 @@ export const AppLayout = ({ sidebar, footerBar }: Props) => {
         <Stack
           sx={{
             userSelect: 'none',
-            margin: 0,
+            marginY: '-1rem',
+            paddingY: '1rem',
             scrollbarGutter: 'stable',
             overscrollBehavior: 'none',
             overflow: 'hidden'

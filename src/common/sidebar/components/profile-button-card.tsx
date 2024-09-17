@@ -1,6 +1,6 @@
 import { Avatar, Card, Link, Stack, Typography } from '@mui/joy'
 import { convertFileSrc } from '@tauri-apps/api/tauri'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 
 interface Props {
   isCollapseSidebar?: boolean
@@ -10,6 +10,7 @@ interface Props {
   image: string | undefined
 }
 export const ProfileButtonCard = (props: Props) => {
+  const navigate = useNavigate()
   return (
     <Card
       role="navigation"
@@ -17,11 +18,11 @@ export const ProfileButtonCard = (props: Props) => {
         position: 'sticky',
         top: 0,
         paddingY: 1.5,
-
         paddingX: props.isCollapseSidebar ? 0.75 : 2,
         transition: 'padding 100ms linear',
         border: 'none',
         backgroundColor: `transparent`,
+
         '&:hover': {
           backgroundColor: `rgba(${theme.vars.palette.primary.lightChannel} / 0.15)`
         },
@@ -35,6 +36,7 @@ export const ProfileButtonCard = (props: Props) => {
           {({ isActive }) => (
             <Link
               component={Typography}
+              onClick={() => navigate(props.linkTo)}
               overlay
               underline="none"
               aria-current={isActive ? 'page' : undefined}
@@ -60,10 +62,11 @@ export const ProfileButtonCard = (props: Props) => {
             textColor={'text.primary'}
             className="!line-clamp-2"
           >
-            <NavLink to={props.linkTo}>
+            <NavLink to={props.linkTo} tabIndex={-1}>
               {({ isActive }) => (
                 <Link
                   component={Typography}
+                  tabIndex={-1}
                   overlay
                   underline="none"
                   aria-current={isActive ? 'page' : undefined}

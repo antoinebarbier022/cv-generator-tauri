@@ -170,10 +170,16 @@ export const SidebarContainer = ({ isLoadingGenerate }: Props) => {
             <Button
               color="primary"
               variant="solid"
+              sx={{ height: '2.25rem' }}
               loading={generate.isPending || isLoadingGenerate}
               onClick={handleGenerateCV}
+              className="@container"
             >
-              {isCollapsedSidebar ? <DownloadRounded /> : t('button.generate.label')}
+              <Stack height={'100%'} className="!block @[10ch]:!hidden">
+                <DownloadRounded sx={{ height: '100%' }} />
+              </Stack>
+
+              <span className="hidden @[10ch]:block">{t('button.generate.label')}</span>
             </Button>
           </Stack>
         </Stack>

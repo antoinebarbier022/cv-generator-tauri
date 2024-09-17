@@ -6,7 +6,7 @@ import {
   ListItemContent,
   ListItemDecorator
 } from '@mui/joy'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { Fragment } from 'react/jsx-runtime'
 import { NavigationType } from '../../../types/sidebar'
 
@@ -14,15 +14,18 @@ interface Props {
   navigation: NavigationType[]
 }
 export const NavigationList = (props: Props) => {
+  const navigate = useNavigate()
   return (
     <List
       sx={{
-        my: 0,
-        py: 0,
+        my: '-6px',
+        py: '6px',
         scrollbarGutter: 'stable',
         overscrollBehavior: 'none',
         scrollbarWidth: '0',
         overflow: 'auto',
+        mx: '-6px',
+        px: '6px',
         '::-webkit-scrollbar': {
           display: 'none'
         }
@@ -33,9 +36,18 @@ export const NavigationList = (props: Props) => {
           !value.hide && (
             <Fragment key={`nav-${index}-${value.to}`}>
               <ListItem>
-                <NavLink to={value.to} className={'w-full no-underline'}>
+                <NavLink
+                  to={value.to}
+                  tabIndex={-1}
+                  onClick={(e) => e.stopPropagation()}
+                  className={'w-full no-underline'}
+                >
                   {({ isActive }) => (
-                    <ListItemButton tabIndex={-1} selected={isActive} sx={{ borderRadius: 'sm' }}>
+                    <ListItemButton
+                      onClick={() => value.to && navigate(value.to)}
+                      selected={isActive}
+                      sx={{ borderRadius: 'sm' }}
+                    >
                       <ListItemDecorator>{value.icon}</ListItemDecorator>
                       <ListItemContent sx={{ whiteSpace: 'nowrap' }}>{value.label}</ListItemContent>
                     </ListItemButton>
