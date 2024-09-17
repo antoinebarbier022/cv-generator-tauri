@@ -22,6 +22,7 @@ export const FooterItem = ({ icon, to, isOpenModalRouter, children }: Props) => 
           backgroundColor: to && 'rgba(var(--joy-palette-primary-darkChannel) / 0.6)'
         }
       }}
+      tabIndex={-1}
       state={
         isOpenModalRouter && {
           background: { ...routerLocation, pathname: location.pathname }
