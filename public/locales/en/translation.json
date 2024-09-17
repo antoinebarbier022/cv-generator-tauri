@@ -129,5 +129,7 @@
   "settings.option-translate.deepl.api-usage.description": "Limit of {{limit}} characters per month",
   "settings.option-translate.deepl.api-usage.char-count-left": "You have {{value}} characters left for translation.",
   "welcome-page.first-information.title": "Let's start creating your CV!",
-  "core.next": "Next"
+  "core.next": "Next",
+  "core.enabled": "enabled",
+  "core.disabled": "disabled"
 }

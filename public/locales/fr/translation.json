@@ -130,5 +130,7 @@
   "settings.option-translate.deepl.api-usage.char-count-left": "Il vous reste {{value}} caractères pouvant être traduits.",
   "welcome-page.first-information.title": "C'est parti pour la création de ton CV !",
   "welcome-page.first-information.description": "",
-  "core.next": "Suivant"
+  "core.next": "Suivant",
+  "core.enabled": "activé",
+  "core.disabled": "désactivée"
 }

@@ -9,7 +9,7 @@ export const FooterItemOptionTranslate = ({ isActive }: Props) => {
   const { t } = useTranslation()
   return (
     <FooterItem icon={<TranslateRounded fontSize="inherit" />} isOpenModalRouter to={'/settings'}>
-      {t('footer.option-translate', { state: isActive ? 'activée' : 'désactivée' })}
+      {t('footer.option-translate', { state: isActive ? t('core.enabled') : t('core.disabled') })}
     </FooterItem>
   )
 }

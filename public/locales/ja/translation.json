@@ -129,5 +129,7 @@
   "settings.option-translate.deepl.api-usage.description": "月に {{limit}} 文字までの制限",
   "settings.option-translate.deepl.api-usage.char-count-left": "翻訳可能な残り文字数: {{value}}",
   "welcome-page.first-information.title": "履歴書の作成を始めましょう!",
-  "core.next": "続く"
+  "core.next": "続く",
+  "core.enabled": "有効",
+  "core.disabled": "無効"
 }
