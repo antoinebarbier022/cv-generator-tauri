@@ -1,5 +1,13 @@
 
 
+## [0.1.1-beta.26](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.25...0.1.1-beta.26) (2024-9-17)
+
+
+### Bug Fixes
+
+* **easter-egg:** import img bg inside luffy theme ([2b81feb](https://github.com/antoinebarbier022/cv-generator-tauri/commit/2b81feb1f366cd49b3425859934579f49b6e06b6))
+* **summary-page:** hide an item if he is hidden ([cfa6ee3](https://github.com/antoinebarbier022/cv-generator-tauri/commit/cfa6ee32e369de8cf6b548a74dda71902658c033))
+
 ## [0.1.1-beta.25](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.24...0.1.1-beta.25) (2024-9-17)
 
 

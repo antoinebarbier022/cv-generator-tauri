@@ -1,6 +1,6 @@
 [package]
 name = "cv_generator"
-version = "0.1.1-beta.25"
+version = "0.1.1-beta.26"
 description = ""
 authors = [ "Antoine Barbier <antoine.c.barbier@frog.co>" ]
 license = ""
