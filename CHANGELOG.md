@@ -1,5 +1,22 @@
 
 
+## [0.1.1-beta.25](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.24...0.1.1-beta.25) (2024-9-17)
+
+
+### Bug Fixes
+
+* **accessibility:** sidebar ([af08b5f](https://github.com/antoinebarbier022/cv-generator-tauri/commit/af08b5fbe803de83c47a280775c28db78e0e51ce))
+* **footer:** remove accessibility ([1d28190](https://github.com/antoinebarbier022/cv-generator-tauri/commit/1d281901af7267596db94a596490711f800c9f13))
+* **i18n:** footer ([cf42f80](https://github.com/antoinebarbier022/cv-generator-tauri/commit/cf42f80d96b535a9a38b6fe189f8af43cb62c132))
+* **i18n:** welcome page ([89090af](https://github.com/antoinebarbier022/cv-generator-tauri/commit/89090afb32a0d455b43175a8312e4ee40f64f202))
+* **profile img:** change the filename for env DEV ([d13dfa8](https://github.com/antoinebarbier022/cv-generator-tauri/commit/d13dfa86f4a417677b134c247d8c5f57e3ef301e))
+
+
+### Features
+
+* **easter-egg:** add luffy theme when the employment "Pirate" is defined ([c30fedc](https://github.com/antoinebarbier022/cv-generator-tauri/commit/c30fedc442fe0aac082e89cb6dea27c1a6f787d8))
+* **toggle-sidebar:** add toggle sidebar shortcut inside menu ([26493d2](https://github.com/antoinebarbier022/cv-generator-tauri/commit/26493d249c1695660dc7a10eccb9f239d15e5c39))
+
 ## [0.1.1-beta.24](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.23...0.1.1-beta.24) (2024-9-16)
 
 
