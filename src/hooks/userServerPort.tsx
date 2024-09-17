@@ -1,24 +1,27 @@
 import { invoke } from '@tauri-apps/api/tauri'
 import { useEffect } from 'react'
 import { create } from 'zustand'
+import { createJSONStorage, persist } from 'zustand/middleware'
 
 interface State {
   apiPort: string | null
   setApiPort: (value: string | null) => void
 }
 
-const useApiPortStore = create<State>((set) => ({
-  apiPort: localStorage.getItem('server-api-port'),
-  setApiPort: (value: string | null) => {
-    if (value === null) {
-      localStorage.removeItem('server-api-port')
-    } else {
-      localStorage.setItem('server-api-port', value)
+const useApiPortStore = create(
+  persist<State>(
+    (set) => ({
+      apiPort: null,
+      setApiPort: (value: string | null) => {
+        set(() => ({ apiPort: value }))
+      }
+    }),
+    {
+      name: 'server-api-port',
+      storage: createJSONStorage(() => sessionStorage)
     }
-
-    set(() => ({ apiPort: value }))
-  }
-}))
+  )
+)
 
 export const useServerPort = () => {
   const { apiPort, setApiPort } = useApiPortStore()
