@@ -172,14 +172,15 @@ export const StorageService = {
     try {
       const extension = await extname(filePath as string)
       const picture = await readBinaryFile(filePath as string)
+      const filename = import.meta.env.DEV ? `[DEBUG]-profile.${extension}` : `profile.${extension}`
       await writeBinaryFile(
         {
-          path: `profile.${extension}`,
+          path: filename,
           contents: picture
         },
         { dir: BaseDirectory.AppData }
       )
-      return await join(await appDataDir(), `profile.${extension}`)
+      return await join(await appDataDir(), filename)
     } catch (error) {
       console.error('Error write image inside AppDataDir:', error)
       throw error
