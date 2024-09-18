@@ -1,12 +1,12 @@
-use crate::errors::{EmitError, ErrorPayload};
+use std::str::FromStr;
 use convert_case::{Case, Casing};
 use strum::{EnumString, IntoStaticStr};
-use tauri::api::shell::open;
-use tauri::menu::{Menu, MenuBuilder};
-use tauri::{AboutMetadata, AppHandle, Manager, WindowMenuEvent};
-use tauri::{MenuItemBuilder, MenuItem, Submenu};
+use tauri::menu::{AboutMetadataBuilder, Menu, MenuBuilder, MenuId, MenuItemBuilder, Submenu, SubmenuBuilder};
+use tauri::{AppHandle, Emitter, Runtime};
+use tauri_plugin_shell::ShellExt;
 use ts_const_enums::TsConstEnum;
 use ts_rs::TS;
+use crate::errors::{EmitError, ErrorPayload};
 
 #[derive(IntoStaticStr, EnumString, PartialEq, Debug)]
 pub(crate) enum MyMenu {
@@ -33,6 +33,19 @@ impl From<MyMenu> for String {
     }
 }
 
+impl Into<MenuId> for MyMenu {
+    fn into(self) -> MenuId {
+        MenuId(self.into())
+    }
+}
+impl TryFrom<&MenuId> for MyMenu {
+    type Error = strum::ParseError;
+
+    fn try_from(value: &MenuId) -> Result<Self, Self::Error> {
+        MyMenu::from_str(value.0.as_str())
+    }
+}
+
 #[derive(IntoStaticStr, TsConstEnum)]
 #[ts(export_to = "events/menu-events.ts")]
 enum MenuEvent {
@@ -56,49 +69,39 @@ impl MenuEvent {
     }
 }
 
-pub fn on_menu_event(event: WindowMenuEvent) {
-    match MyMenu::try_from(event.menu_item_id()).ok() {
-        Some(MyMenu::FileImport) => event
-            .window()
+pub fn on_menu_event(app: &AppHandle, event: tauri::menu::MenuEvent) {
+    match MyMenu::try_from(event.id()).ok() {
+        Some(MyMenu::FileImport) => app
             .emit(&MenuEvent::FileImport.as_event_name(), "")
             .unwrap(),
-        Some(MyMenu::FileExport) => event
-            .window()
+        Some(MyMenu::FileExport) => app
             .emit(&MenuEvent::FileExport.as_event_name(), "")
             .unwrap(),
-        Some(MyMenu::FileReset) => event
-            .window()
+        Some(MyMenu::FileReset) => app
             .emit(&MenuEvent::FileReset.as_event_name(), "")
             .unwrap(),
-        Some(MyMenu::FileGenerate) => event
-            .window()
+        Some(MyMenu::FileGenerate) => app
             .emit(&MenuEvent::FileGenerate.as_event_name(), "")
             .unwrap(),
-        Some(MyMenu::FileGenerateAndSaveAs) => event
-            .window()
+        Some(MyMenu::FileGenerateAndSaveAs) => app
             .emit(&MenuEvent::FileGenerateAndSaveAs.as_event_name(), "")
             .unwrap(),
-        Some(MyMenu::AppPreferences) => event
-            .window()
+        Some(MyMenu::AppPreferences) => app
             .emit(&MenuEvent::AppPreferences.as_event_name(), "")
             .unwrap(),
-        Some(MyMenu::AppCheckUpdate) => event
-            .window()
+        Some(MyMenu::AppCheckUpdate) => app
             .emit(
                 &MenuEvent::AppCheckUpdate.as_event_name(),
                 "check-update-from-menu",
             )
             .unwrap(),
-        Some(MyMenu::ViewToggleSidebar) => event
-            .window()
+        Some(MyMenu::ViewToggleSidebar) => app
             .emit(&MenuEvent::ViewToggleSidebar.as_event_name(), "")
             .unwrap(),
-        Some(MyMenu::DebugOpenPanel) => event
-            .window()
+        Some(MyMenu::DebugOpenPanel) => app
             .emit(&MenuEvent::DebugOpenPanel.as_event_name(), "")
             .unwrap(),
-        Some(MyMenu::DebugSendError) => event
-            .window()
+        Some(MyMenu::DebugSendError) => app
             .emit_error(
                 ErrorPayload::new()
                     .with_title("Ceci est un titre")
@@ -106,13 +109,11 @@ pub fn on_menu_event(event: WindowMenuEvent) {
             )
             .unwrap(),
         Some(MyMenu::HelpOpenSlack) => {
-            if let Err(err) = open(
-                &event.window().shell_scope(),
+            if let Err(err) = app.shell().open(
                 "https://capgemini.enterprise.slack.com/archives/C07DCNBUT4Z",
                 None,
             ) {
-                event
-                    .window()
+                app
                     .emit_error(
                         ErrorPayload::new()
                             .with_title("Failed to open Slack channel")
@@ -125,99 +126,85 @@ pub fn on_menu_event(event: WindowMenuEvent) {
     };
 }
 
-pub fn create_app_menu<R: tauri::Runtime>(app: &'_ AppHandle) -> tauri::Result<Menu<R>> {
+pub fn create_app_menu<R: Runtime>(app: &AppHandle<R>) -> tauri::Result<Menu<R>> {
     MenuBuilder::new(app)
-        .item(&app_menu())
-        .item(&file_menu())
-        .item(&edit_menu())
-        .item(&view_menu())
-        .item(&window_menu())
-        .item(&debug_menu())
-        .item(&help_menu())
+        .item(&app_menu(app)?)
+        .item(&file_menu(app)?)
+        .item(&edit_menu(app)?)
+        .item(&view_menu(app)?)
+        .item(&window_menu(app)?)
+        .item(&debug_menu(app)?)
+        .item(&help_menu(app)?)
+        .build()
 }
 
-fn help_menu() -> Submenu {
-    SubmenuBuilder::new(app, "Help")
-        .add_item(MenuItemBuilder::new(MyMenu::HelpOpenSlack, "Canal Slack")).build()?;
-    
+fn help_menu<R: Runtime>(app: &AppHandle<R>) -> tauri::Result<Submenu<R>> {
+    SubmenuBuilder::new(
+        app,
+        "Help",
+    ).item(
+        &MenuItemBuilder::with_id(MyMenu::HelpOpenSlack, "Canal Slack").build(app)?
+    ).build()
 }
 
-fn app_menu() -> Submenu {
+fn app_menu<R: Runtime>(app: &AppHandle<R>) -> tauri::Result<Submenu<R>> {
     SubmenuBuilder::new(app, "App")
-    
-            .about(
-                "CV generator".into(),
-                AboutMetadata::default(),
-            )
-            .separator()
-            .add_item(
-                MenuItemBuilder::new(MyMenu::AppPreferences, "Preferences...").accelerator("Cmd+,"),
-            )
-            .separator()
-            .add_item(MenuItemBuilder::new(
-                MyMenu::AppCheckUpdate,
-                "Check for Updates...",
-            ))
-            .separator()
-            .services()
-            .separator()
-            .hide()
-            .hide_others()
-            .show_all()
-            .separator()
-            .quit()
-            .build()?;
-    
+        .about(Some(AboutMetadataBuilder::default().name("CV generator".into()).build()))
+        .separator()
+        .item(&MenuItemBuilder::with_id(MyMenu::AppPreferences, "Preferences...").accelerator("Cmd+,").build(app)?)
+        .separator()
+        .item(&MenuItemBuilder::with_id(MyMenu::AppCheckUpdate, "Check for Updates...").build(app)?)
+        .separator()
+        .services()
+        .separator()
+        .hide()
+        .hide_others()
+        .show_all()
+        .separator()
+        .quit()
+        .build()
 }
 
+fn edit_menu<R: Runtime>(app: &AppHandle<R>) -> tauri::Result<Submenu<R>> {
+    SubmenuBuilder::new(app, "Edit")
+        .undo()
+        .redo()
+        .separator()
+        .cut()
+        .copy()
+        .paste()
+        .select_all()
+        .build()
+}
 
-
-fn debug_menu() -> Submenu {
+fn debug_menu<R: Runtime>(app: &AppHandle<R>) -> tauri::Result<Submenu<R>> {
     SubmenuBuilder::new(app, "Debug")
-       
-            .add_item(
-                MenuItemBuilder::new(MyMenu::DebugOpenPanel, "Open debug panel")
-                    .accelerator("Cmd+Shift+D"),
-            )
-            .add_item(MenuItemBuilder::new(MyMenu::DebugSendError, "Send an error")),
-    
+        .item(&MenuItemBuilder::with_id(MyMenu::DebugOpenPanel, "Open debug panel").accelerator("Cmd+Shift+D").build(app)?)
+        .item(&MenuItemBuilder::with_id(MyMenu::DebugSendError, "Send an error").build(app)?)
+        .build()
 }
 
-fn view_menu() -> Submenu {
+fn view_menu<R: Runtime>(app: &AppHandle<R>) -> tauri::Result<Submenu<R>> {
     SubmenuBuilder::new(app, "View")
-        .item(
-            &MenuItem::new(MyMenu::ViewToggleSidebar, "Toggle Sidebar").accelerator("Cmd+S"),
-        
-    )
+        .item(&MenuItemBuilder::with_id(MyMenu::ViewToggleSidebar, "Toggle Sidebar").accelerator("Cmd+S").build(app)?)
+        .build()
 }
 
-fn window_menu() -> Submenu {
+fn window_menu<R: Runtime>(app: &AppHandle<R>) -> tauri::Result<Submenu<R>> {
     SubmenuBuilder::new(app, "Window")
-        
-            .fullscreen()
-            .maximize()
-            .minimize()
-            .add_native_item(MenuItem::Zoom)
-            .build()?;
-    
+        .fullscreen()
+        .minimize()
+        .build()
 }
 
-fn file_menu() -> Submenu {
+fn file_menu<R: Runtime>(app: &AppHandle<R>) -> tauri::Result<Submenu<R>> {
     SubmenuBuilder::new(app, "File")
-    
-            .add_item(MenuItemBuilder::new(MyMenu::FileExport, "Export").disabled())
-            .add_item(MenuItemBuilder::new(MyMenu::FileImport, "Import"))
-            .separator()
-            .add_item(MenuItemBuilder::new(MyMenu::FileReset, "Reset all"))
-            .separator()
-            .add_item(
-                MenuItemBuilder::new(MyMenu::FileGenerate, "Generate and save")
-                    .accelerator("Cmd+G")
-                    .disabled(),
-            )
-            .add_item(
-                MenuItemBuilder::new(MyMenu::FileGenerateAndSaveAs, "Generate and save as...")
-                    .accelerator("Cmd+Shift+G"),
-            )
-    
+        .item(&MenuItemBuilder::with_id(MyMenu::FileExport, "Export").enabled(false).build(app)?)
+        .item(&MenuItemBuilder::with_id(MyMenu::FileImport, "Import").build(app)?)
+        .separator()
+        .item(&MenuItemBuilder::with_id(MyMenu::FileReset, "Reset all").build(app)?)
+        .separator()
+        .item(&MenuItemBuilder::with_id(MyMenu::FileGenerate, "Generate and save").accelerator("Cmd+G").enabled(false).build(app)?)
+        .item(&MenuItemBuilder::with_id(MyMenu::FileGenerateAndSaveAs, "Generate and save as...").accelerator("Cmd+Shift+G").build(app)?)
+    .build()
 }

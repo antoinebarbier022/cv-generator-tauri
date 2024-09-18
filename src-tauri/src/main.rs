@@ -20,10 +20,9 @@ use std::ops::Deref;
 use std::sync::Mutex;
 use std::{sync, thread};
 use sync::mpsc::{channel, Sender};
-use tauri::api::process::{Command, CommandEvent, TerminatedPayload};
-use tauri::menu::MenuItemBuilder;
-use tauri::menu::{MenuBuilder, SubmenuBuilder};
-use tauri::Manager;
+use tauri::{AppHandle, Manager};
+use tauri_plugin_shell::process::{CommandEvent, TerminatedPayload};
+use tauri_plugin_shell::ShellExt;
 use window_vibrancy::*;
 
 const DEFAULT_BACKEND_PORT: u16 = 8008;
@@ -37,9 +36,9 @@ fn find_free_port() -> String {
     port.to_string()
 }
 
-fn start_backend(tx: Sender<BackendEvent>) -> anyhow::Result<()> {
+fn start_backend(app: &AppHandle, tx: Sender<BackendEvent>) -> anyhow::Result<()> {
     println!("Spawning api server...");
-    spawn_backend(tx)?;
+    spawn_backend(app, tx)?;
 
     Ok(())
 }
@@ -57,8 +56,8 @@ fn get_backend_port() -> &'static str {
     &BACKEND_PORT
 }
 
-fn spawn_backend(tx: Sender<BackendEvent>) -> anyhow::Result<()> {
-    let (mut rx, _) = Command::new_sidecar("cv-generator-api")
+fn spawn_backend(app: &AppHandle, tx: Sender<BackendEvent>) -> anyhow::Result<()> {
+    let (mut rx, _) = app.shell().sidecar("cv-generator-api")
         .context("Failed to create `api` binary command")?
         .args(["--port", &BACKEND_PORT])
         .spawn()
@@ -67,8 +66,8 @@ fn spawn_backend(tx: Sender<BackendEvent>) -> anyhow::Result<()> {
     tauri::async_runtime::spawn(async move {
         while let Some(event) = rx.recv().await {
             match event {
-                CommandEvent::Stderr(line) => print!("[API-LOG]: {line}"),
-                CommandEvent::Stdout(line) => print!("[API]: {line}"),
+                CommandEvent::Stderr(line) => print!("[API-LOG]: {}", String::from_utf8_lossy(&line)),
+                CommandEvent::Stdout(line) => print!("[API]: {}", String::from_utf8_lossy(&line)),
                 CommandEvent::Error(err) => println!("Error listening to api {err}"),
                 CommandEvent::Terminated(TerminatedPayload { code, signal }) => {
                     let infos = vec![
@@ -142,48 +141,11 @@ fn main() -> anyhow::Result<()> {
 
     tauri::Builder::default()
         .manage(AppState::default())
-        //.menu(create_app_menu())
-        //.on_menu_event(on_menu_event)
+        .menu(create_app_menu)
         .setup(move |app| {
-            let edit_menu = SubmenuBuilder::new(app, "Edit")
-                .undo()
-                .redo()
-                .separator()
-                .cut()
-                .copy()
-                .paste()
-                .select_all()
-                .build()?;
+            app.on_menu_event(on_menu_event);
 
-            let debug_menu = SubmenuBuilder::new(app, "Debug")
-                .item(
-                    &MenuItemBuilder::with_id(MyMenu::DebugOpenPanel, "Open debug panel")
-                        .accelerator("Cmd+Shift+D"),
-                )
-                .item(&MenuItemBuilder::with_id(
-                    MyMenu::DebugSendError,
-                    "Send an error",
-                ))
-                .build()?;
-
-            let view_menu = SubmenuBuilder::new(app, "View")
-                .item(
-                    &MenuItem::new(MyMenu::ViewToggleSidebar, "Toggle Sidebar")
-                        .accelerator("Cmd+S"),
-                )
-                .build()?;
-
-            let menu = MenuBuilder::new(app)
-                .item(&edit_menu)
-                .item(&debug_menu)
-                .build()?;
-
-            app.set_menu(menu)?;
-
-            let window = app
-                .get_webview_window("main")
-                .expect("No window labelled `main`");
-
+            let window = app.get_webview_window("main").expect("No window labelled `main`");
             #[cfg(target_os = "macos")]
             apply_vibrancy(&window, NSVisualEffectMaterial::HudWindow, None, None)
                 .expect("Unsupported platform! 'apply_vibrancy' is only supported on macOS");
@@ -194,7 +156,7 @@ fn main() -> anyhow::Result<()> {
 
             let (tx, rx) = channel::<BackendEvent>();
 
-            if let Err(err) = start_backend(tx) {
+            if let Err(err) = start_backend(app.handle(), tx) {
                 println!("Failed to start backend: {err}");
                 *app.state::<AppState>().backend_error.lock().unwrap() = Some(err.to_string());
             }
