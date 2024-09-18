@@ -57,7 +57,9 @@ fn get_backend_port() -> &'static str {
 }
 
 fn spawn_backend(app: &AppHandle, tx: Sender<BackendEvent>) -> anyhow::Result<()> {
-    let (mut rx, _) = app.shell().sidecar("cv-generator-api")
+    let (mut rx, _) = app
+        .shell()
+        .sidecar("cv-generator-api")
         .context("Failed to create `api` binary command")?
         .args(["--port", &BACKEND_PORT])
         .spawn()
@@ -66,7 +68,9 @@ fn spawn_backend(app: &AppHandle, tx: Sender<BackendEvent>) -> anyhow::Result<()
     tauri::async_runtime::spawn(async move {
         while let Some(event) = rx.recv().await {
             match event {
-                CommandEvent::Stderr(line) => print!("[API-LOG]: {}", String::from_utf8_lossy(&line)),
+                CommandEvent::Stderr(line) => {
+                    print!("[API-LOG]: {}", String::from_utf8_lossy(&line))
+                }
                 CommandEvent::Stdout(line) => print!("[API]: {}", String::from_utf8_lossy(&line)),
                 CommandEvent::Error(err) => println!("Error listening to api {err}"),
                 CommandEvent::Terminated(TerminatedPayload { code, signal }) => {
@@ -140,12 +144,19 @@ fn main() -> anyhow::Result<()> {
     register_exit_handling()?;
 
     tauri::Builder::default()
+        .plugin(tauri_plugin_fs::init())
+        .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_dialog::init())
+        .plugin(tauri_plugin_shell::init())
         .manage(AppState::default())
         .menu(create_app_menu)
         .setup(move |app| {
             app.on_menu_event(on_menu_event);
 
-            let window = app.get_webview_window("main").expect("No window labelled `main`");
+            let window = app
+                .get_webview_window("main")
+                .expect("No window labelled `main`");
+
             #[cfg(target_os = "macos")]
             apply_vibrancy(&window, NSVisualEffectMaterial::HudWindow, None, None)
                 .expect("Unsupported platform! 'apply_vibrancy' is only supported on macOS");

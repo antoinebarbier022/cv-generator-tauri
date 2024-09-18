@@ -18,7 +18,8 @@ import {
   writeTextFile
 } from '@tauri-apps/plugin-fs'
 import { format } from 'date-fns'
-const CONTENT_DATA_FILE = import.meta.env.DEV ? `[DEBUG]-data.json` : `data.json`
+
+const DATA_FILENAME = import.meta.env.DEV ? `[DEBUG]-data.json` : `data.json`
 
 export const StorageService = {
   importContentData: async (): Promise<any | null> => {
@@ -44,7 +45,7 @@ export const StorageService = {
   resetContentData: async (): Promise<void> => {
     const appVersion = await getVersion()
     const formattedDate = format(new Date(), 'yyyy-MM-dd_HH-mm')
-    await rename(CONTENT_DATA_FILE, `data--${formattedDate}--${appVersion}.json`, {
+    await rename(DATA_FILENAME, `data--${formattedDate}--${appVersion}.json`, {
       oldPathBaseDir: BaseDirectory.AppData,
       newPathBaseDir: BaseDirectory.AppData
     })
@@ -56,7 +57,7 @@ export const StorageService = {
 
     try {
       await writeTextFile(
-        CONTENT_DATA_FILE,
+        DATA_FILENAME,
         JSON.stringify(emptyInitialResume),
 
         { baseDir: BaseDirectory.AppData }
@@ -67,7 +68,7 @@ export const StorageService = {
     }
   },
   isContentDataFile: async (): Promise<boolean> => {
-    return await exists(CONTENT_DATA_FILE, {
+    return await exists(DATA_FILENAME, {
       baseDir: BaseDirectory.AppData
     })
   },
@@ -88,11 +89,11 @@ export const StorageService = {
       const existFile = await StorageService.isContentDataFile()
 
       if (!existFile) {
-        console.warn(`File ${CONTENT_DATA_FILE} does not exist. Returning empty initial content.`)
+        console.warn(`File ${DATA_FILENAME} does not exist. Returning empty initial content.`)
         return emptyInitialResume
       }
 
-      data = await readTextFile(CONTENT_DATA_FILE, {
+      data = await readTextFile(DATA_FILENAME, {
         baseDir: BaseDirectory.AppData
       })
     } catch (error) {
@@ -109,7 +110,7 @@ export const StorageService = {
   },
 
   getLastModified: async (): Promise<Date | null> => {
-    const meta_properties = await stat(CONTENT_DATA_FILE, { baseDir: BaseDirectory.AppData })
+    const meta_properties = await stat(DATA_FILENAME, { baseDir: BaseDirectory.AppData })
     console.log(meta_properties)
     return meta_properties.mtime
   },
@@ -122,7 +123,7 @@ export const StorageService = {
     }
 
     try {
-      await writeTextFile(CONTENT_DATA_FILE, JSON.stringify(values), {
+      await writeTextFile(DATA_FILENAME, JSON.stringify(values), {
         baseDir: BaseDirectory.AppData
       })
     } catch (writeFileError) {

@@ -1,5 +1,5 @@
-use std::process::Command;
 use crate::AppState;
+use std::process::Command;
 
 #[tauri::command]
 pub fn open_finder(path: String) {

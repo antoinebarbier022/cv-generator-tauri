@@ -6,13 +6,15 @@ import { UserData } from '../../../types/storage'
 import { generateResponse } from '../types/generateResponse'
 import { generateV2Request } from '../types/generateV2Request'
 
+const DATA_FILENAME = import.meta.env.DEV ? `[DEBUG]-data.json` : `data.json`
+
 export const CVGenerationService = {
   askOutputPath: async (): Promise<string | null> => {
     console.count('ask output')
     let data: UserData
     try {
       data = JSON.parse(
-        await readTextFile('data.json', {
+        await readTextFile(DATA_FILENAME, {
           baseDir: BaseDirectory.AppData
         })
       )
@@ -59,7 +61,7 @@ export const CVGenerationService = {
       body: JSON.stringify({
         output_filename: outputFileName,
         output_folder: outputFolderPath,
-        path_data: await join(appDataDirPath, 'data.json'),
+        path_data: await join(appDataDirPath, DATA_FILENAME),
         path_template: await resolveResource(
           await join('resources', 'CV_Nom_Prenom_Capability.pptx')
         )
