@@ -1,4 +1,4 @@
-import { confirm } from '@tauri-apps/api/dialog'
+import { confirm } from '@tauri-apps/plugin-dialog'
 import { DropResult } from 'react-beautiful-dnd'
 
 import { reorderListSection } from '../utils/drag-and-drop.utils'
@@ -115,7 +115,7 @@ export const useFormCV = () => {
     if (showDialogConfirm) {
       const confirmed = await confirm('This action cannot be reverted. Are you sure?', {
         title: `Delete item`,
-        type: 'warning'
+        kind: 'warning'
       })
       if (!confirmed) return
     }

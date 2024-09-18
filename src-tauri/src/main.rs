@@ -21,6 +21,8 @@ use std::sync::Mutex;
 use std::{sync, thread};
 use sync::mpsc::{channel, Sender};
 use tauri::api::process::{Command, CommandEvent, TerminatedPayload};
+use tauri::menu::MenuItemBuilder;
+use tauri::menu::{MenuBuilder, SubmenuBuilder};
 use tauri::Manager;
 use window_vibrancy::*;
 
@@ -140,10 +142,47 @@ fn main() -> anyhow::Result<()> {
 
     tauri::Builder::default()
         .manage(AppState::default())
-        .menu(create_app_menu())
-        .on_menu_event(on_menu_event)
+        //.menu(create_app_menu())
+        //.on_menu_event(on_menu_event)
         .setup(move |app| {
-            let window = app.get_window("main").expect("No window labelled `main`");
+            let edit_menu = SubmenuBuilder::new(app, "Edit")
+                .undo()
+                .redo()
+                .separator()
+                .cut()
+                .copy()
+                .paste()
+                .select_all()
+                .build()?;
+
+            let debug_menu = SubmenuBuilder::new(app, "Debug")
+                .item(
+                    &MenuItemBuilder::with_id(MyMenu::DebugOpenPanel, "Open debug panel")
+                        .accelerator("Cmd+Shift+D"),
+                )
+                .item(&MenuItemBuilder::with_id(
+                    MyMenu::DebugSendError,
+                    "Send an error",
+                ))
+                .build()?;
+
+            let view_menu = SubmenuBuilder::new(app, "View")
+                .item(
+                    &MenuItem::new(MyMenu::ViewToggleSidebar, "Toggle Sidebar")
+                        .accelerator("Cmd+S"),
+                )
+                .build()?;
+
+            let menu = MenuBuilder::new(app)
+                .item(&edit_menu)
+                .item(&debug_menu)
+                .build()?;
+
+            app.set_menu(menu)?;
+
+            let window = app
+                .get_webview_window("main")
+                .expect("No window labelled `main`");
 
             #[cfg(target_os = "macos")]
             apply_vibrancy(&window, NSVisualEffectMaterial::HudWindow, None, None)
@@ -182,7 +221,6 @@ fn main() -> anyhow::Result<()> {
             get_backend_error,
             get_backend_port
         ])
-        .plugin(tauri_plugin_fs_extra::init())
         .run(tauri::generate_context!())
         .context("Error while running app")
 }

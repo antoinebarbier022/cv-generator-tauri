@@ -3,21 +3,21 @@ import { UserData } from '@/types/storage'
 import { ResumeValidationSchemaForImportation } from '@/validations/dataContentValidationSchema'
 
 import { getVersion } from '@tauri-apps/api/app'
-import { open } from '@tauri-apps/api/dialog'
+import { convertFileSrc } from '@tauri-apps/api/core'
+import { appDataDir, extname, join, pictureDir } from '@tauri-apps/api/path'
+import { open } from '@tauri-apps/plugin-dialog'
 import {
   BaseDirectory,
-  createDir,
   exists,
-  readBinaryFile,
+  mkdir,
+  readFile,
   readTextFile,
-  renameFile,
-  writeBinaryFile,
+  rename,
+  stat,
+  writeFile,
   writeTextFile
-} from '@tauri-apps/api/fs'
-import { appDataDir, extname, join, pictureDir } from '@tauri-apps/api/path'
-import { convertFileSrc } from '@tauri-apps/api/tauri'
+} from '@tauri-apps/plugin-fs'
 import { format } from 'date-fns'
-import { metadata } from 'tauri-plugin-fs-extra-api'
 const CONTENT_DATA_FILE = import.meta.env.DEV ? `[DEBUG]-data.json` : `data.json`
 
 export const StorageService = {
@@ -44,8 +44,9 @@ export const StorageService = {
   resetContentData: async (): Promise<void> => {
     const appVersion = await getVersion()
     const formattedDate = format(new Date(), 'yyyy-MM-dd_HH-mm')
-    await renameFile(CONTENT_DATA_FILE, `data--${formattedDate}--${appVersion}.json`, {
-      dir: BaseDirectory.AppData
+    await rename(CONTENT_DATA_FILE, `data--${formattedDate}--${appVersion}.json`, {
+      oldPathBaseDir: BaseDirectory.AppData,
+      newPathBaseDir: BaseDirectory.AppData
     })
 
     const isExistAppDataDirPath = await StorageService.isAppDataDir()
@@ -55,11 +56,10 @@ export const StorageService = {
 
     try {
       await writeTextFile(
-        {
-          path: CONTENT_DATA_FILE,
-          contents: JSON.stringify(emptyInitialResume)
-        },
-        { dir: BaseDirectory.AppData }
+        CONTENT_DATA_FILE,
+        JSON.stringify(emptyInitialResume),
+
+        { baseDir: BaseDirectory.AppData }
       )
     } catch (writeFileError) {
       console.error('Failed to reset content data file:', writeFileError)
@@ -68,7 +68,7 @@ export const StorageService = {
   },
   isContentDataFile: async (): Promise<boolean> => {
     return await exists(CONTENT_DATA_FILE, {
-      dir: BaseDirectory.AppData
+      baseDir: BaseDirectory.AppData
     })
   },
   isAppDataDir: async (): Promise<boolean> => {
@@ -76,7 +76,7 @@ export const StorageService = {
   },
   createAppDataDir: async (): Promise<void> => {
     try {
-      await createDir(await appDataDir(), { recursive: true })
+      await mkdir(await appDataDir(), { recursive: true })
     } catch (error) {
       console.error('Error create folder appDataDir:', error)
       throw error
@@ -93,7 +93,7 @@ export const StorageService = {
       }
 
       data = await readTextFile(CONTENT_DATA_FILE, {
-        dir: BaseDirectory.AppData
+        baseDir: BaseDirectory.AppData
       })
     } catch (error) {
       console.error('Error accessing the content data file:', error)
@@ -108,10 +108,10 @@ export const StorageService = {
     }
   },
 
-  getLastModified: async (): Promise<Date> => {
-    const meta_properties = await metadata(await join(await appDataDir(), CONTENT_DATA_FILE))
+  getLastModified: async (): Promise<Date | null> => {
+    const meta_properties = await stat(CONTENT_DATA_FILE, { baseDir: BaseDirectory.AppData })
     console.log(meta_properties)
-    return meta_properties.modifiedAt
+    return meta_properties.mtime
   },
 
   setContentData: async ({ values }: { values: UserData }): Promise<UserData> => {
@@ -122,10 +122,9 @@ export const StorageService = {
     }
 
     try {
-      await writeTextFile(
-        { path: CONTENT_DATA_FILE, contents: JSON.stringify(values) },
-        { dir: BaseDirectory.AppData }
-      )
+      await writeTextFile(CONTENT_DATA_FILE, JSON.stringify(values), {
+        baseDir: BaseDirectory.AppData
+      })
     } catch (writeFileError) {
       console.error('Failed to write file:', writeFileError)
       throw new Error('Failed to write content data file')
@@ -162,7 +161,7 @@ export const StorageService = {
       const suggestedAppDataPath = await appDataDir()
       const isExistAppDataDirPath = await exists(suggestedAppDataPath)
       if (!isExistAppDataDirPath) {
-        await createDir(suggestedAppDataPath, { recursive: true })
+        await mkdir(suggestedAppDataPath, { recursive: true })
       }
     } catch (error) {
       console.error('Error create folder appDataDir:', error)
@@ -171,15 +170,9 @@ export const StorageService = {
 
     try {
       const extension = await extname(filePath as string)
-      const picture = await readBinaryFile(filePath as string)
+      const picture = await readFile(filePath as string)
       const filename = import.meta.env.DEV ? `[DEBUG]-profile.${extension}` : `profile.${extension}`
-      await writeBinaryFile(
-        {
-          path: filename,
-          contents: picture
-        },
-        { dir: BaseDirectory.AppData }
-      )
+      await writeFile(filename, picture, { baseDir: BaseDirectory.AppData })
       return await join(await appDataDir(), filename)
     } catch (error) {
       console.error('Error write image inside AppDataDir:', error)

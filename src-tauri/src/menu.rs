@@ -2,8 +2,9 @@ use crate::errors::{EmitError, ErrorPayload};
 use convert_case::{Case, Casing};
 use strum::{EnumString, IntoStaticStr};
 use tauri::api::shell::open;
-use tauri::{AboutMetadata, Manager, WindowMenuEvent};
-use tauri::{CustomMenuItem, Menu, MenuItem, Submenu};
+use tauri::menu::{Menu, MenuBuilder};
+use tauri::{AboutMetadata, AppHandle, Manager, WindowMenuEvent};
+use tauri::{MenuItemBuilder, MenuItem, Submenu};
 use ts_const_enums::TsConstEnum;
 use ts_rs::TS;
 
@@ -124,114 +125,99 @@ pub fn on_menu_event(event: WindowMenuEvent) {
     };
 }
 
-pub fn create_app_menu() -> Menu {
-    Menu::new()
-        .add_submenu(app_menu())
-        .add_submenu(file_menu())
-        .add_submenu(edit_menu())
-        .add_submenu(view_menu())
-        .add_submenu(window_menu())
-        .add_submenu(debug_menu())
-        .add_submenu(help_menu())
+pub fn create_app_menu<R: tauri::Runtime>(app: &'_ AppHandle) -> tauri::Result<Menu<R>> {
+    MenuBuilder::new(app)
+        .item(&app_menu())
+        .item(&file_menu())
+        .item(&edit_menu())
+        .item(&view_menu())
+        .item(&window_menu())
+        .item(&debug_menu())
+        .item(&help_menu())
 }
 
 fn help_menu() -> Submenu {
-    Submenu::new(
-        "Help",
-        Menu::new().add_item(CustomMenuItem::new(MyMenu::HelpOpenSlack, "Canal Slack")),
-    )
+    SubmenuBuilder::new(app, "Help")
+        .add_item(MenuItemBuilder::new(MyMenu::HelpOpenSlack, "Canal Slack")).build()?;
+    
 }
 
 fn app_menu() -> Submenu {
-    Submenu::new(
-        "App",
-        Menu::new()
-            .add_native_item(MenuItem::About(
+    SubmenuBuilder::new(app, "App")
+    
+            .about(
                 "CV generator".into(),
                 AboutMetadata::default(),
-            ))
-            .add_native_item(MenuItem::Separator)
-            .add_item(
-                CustomMenuItem::new(MyMenu::AppPreferences, "Preferences...").accelerator("Cmd+,"),
             )
-            .add_native_item(MenuItem::Separator)
-            .add_item(CustomMenuItem::new(
+            .separator()
+            .add_item(
+                MenuItemBuilder::new(MyMenu::AppPreferences, "Preferences...").accelerator("Cmd+,"),
+            )
+            .separator()
+            .add_item(MenuItemBuilder::new(
                 MyMenu::AppCheckUpdate,
                 "Check for Updates...",
             ))
-            .add_native_item(MenuItem::Separator)
-            .add_native_item(MenuItem::Services)
-            .add_native_item(MenuItem::Separator)
-            .add_native_item(MenuItem::Hide)
-            .add_native_item(MenuItem::HideOthers)
-            .add_native_item(MenuItem::ShowAll)
-            .add_native_item(MenuItem::Separator)
-            .add_native_item(MenuItem::Quit),
-    )
+            .separator()
+            .services()
+            .separator()
+            .hide()
+            .hide_others()
+            .show_all()
+            .separator()
+            .quit()
+            .build()?;
+    
 }
 
-fn edit_menu() -> Submenu {
-    Submenu::new(
-        "Edit",
-        Menu::new()
-            .add_native_item(MenuItem::Undo)
-            .add_native_item(MenuItem::Redo)
-            .add_native_item(MenuItem::Separator)
-            .add_native_item(MenuItem::Cut)
-            .add_native_item(MenuItem::Copy)
-            .add_native_item(MenuItem::Paste)
-            .add_native_item(MenuItem::SelectAll),
-    )
-}
+
 
 fn debug_menu() -> Submenu {
-    Submenu::new(
-        "Debug",
-        Menu::new()
+    SubmenuBuilder::new(app, "Debug")
+       
             .add_item(
-                CustomMenuItem::new(MyMenu::DebugOpenPanel, "Open debug panel")
+                MenuItemBuilder::new(MyMenu::DebugOpenPanel, "Open debug panel")
                     .accelerator("Cmd+Shift+D"),
             )
-            .add_item(CustomMenuItem::new(MyMenu::DebugSendError, "Send an error")),
-    )
+            .add_item(MenuItemBuilder::new(MyMenu::DebugSendError, "Send an error")),
+    
 }
 
 fn view_menu() -> Submenu {
-    Submenu::new(
-        "View",
-        Menu::new().add_item(
-            CustomMenuItem::new(MyMenu::ViewToggleSidebar, "Toggle Sidebar").accelerator("Cmd+S"),
-        ),
+    SubmenuBuilder::new(app, "View")
+        .item(
+            &MenuItem::new(MyMenu::ViewToggleSidebar, "Toggle Sidebar").accelerator("Cmd+S"),
+        
     )
 }
 
 fn window_menu() -> Submenu {
-    Submenu::new(
-        "Window",
-        Menu::new()
-            .add_native_item(MenuItem::EnterFullScreen)
-            .add_native_item(MenuItem::Minimize)
-            .add_native_item(MenuItem::Zoom),
-    )
+    SubmenuBuilder::new(app, "Window")
+        
+            .fullscreen()
+            .maximize()
+            .minimize()
+            .add_native_item(MenuItem::Zoom)
+            .build()?;
+    
 }
 
 fn file_menu() -> Submenu {
-    Submenu::new(
-        "File",
-        Menu::new()
-            .add_item(CustomMenuItem::new(MyMenu::FileExport, "Export").disabled())
-            .add_item(CustomMenuItem::new(MyMenu::FileImport, "Import"))
-            .add_native_item(MenuItem::Separator)
-            .add_item(CustomMenuItem::new(MyMenu::FileReset, "Reset all"))
-            .add_native_item(MenuItem::Separator)
+    SubmenuBuilder::new(app, "File")
+    
+            .add_item(MenuItemBuilder::new(MyMenu::FileExport, "Export").disabled())
+            .add_item(MenuItemBuilder::new(MyMenu::FileImport, "Import"))
+            .separator()
+            .add_item(MenuItemBuilder::new(MyMenu::FileReset, "Reset all"))
+            .separator()
             .add_item(
-                CustomMenuItem::new(MyMenu::FileGenerate, "Generate and save")
+                MenuItemBuilder::new(MyMenu::FileGenerate, "Generate and save")
                     .accelerator("Cmd+G")
                     .disabled(),
             )
             .add_item(
-                CustomMenuItem::new(MyMenu::FileGenerateAndSaveAs, "Generate and save as...")
+                MenuItemBuilder::new(MyMenu::FileGenerateAndSaveAs, "Generate and save as...")
                     .accelerator("Cmd+Shift+G"),
-            ),
-    )
+            )
+    
 }

@@ -1,6 +1,6 @@
 import { StorageService } from '@/services/StorageService'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { message } from '@tauri-apps/api/dialog'
+import { message } from '@tauri-apps/plugin-dialog'
 
 export const useSetImageProfileStorage = () => {
   const queryClient = useQueryClient()
@@ -14,7 +14,7 @@ export const useSetImageProfileStorage = () => {
       }
     },
     onError: async (error) => {
-      await message(error.message, { title: error.name, type: 'error' })
+      await message(error.message, { title: error.name, kind: 'error' })
     }
   })
 }

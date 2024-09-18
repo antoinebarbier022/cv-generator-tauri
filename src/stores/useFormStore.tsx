@@ -11,7 +11,7 @@ interface FormState {
   lastUpdated: Date | null
   formWarnings: ValidationError | null
   formValues: UserData
-  setLastUpdated: (value: Date) => void
+  setLastUpdated: (value: Date | null) => void
   setFormValues: (values: Partial<UserData>) => void
 }
 

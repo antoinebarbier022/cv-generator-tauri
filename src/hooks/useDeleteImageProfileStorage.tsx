@@ -1,7 +1,7 @@
 import { useFormCV } from '@/hooks/useFormCV'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { message } from '@tauri-apps/api/dialog'
-import { removeFile } from '@tauri-apps/api/fs'
+import { message } from '@tauri-apps/plugin-dialog'
+import { remove } from '@tauri-apps/plugin-fs'
 
 export const useDeleteImageProfileStorage = () => {
   const { formValues } = useFormCV()
@@ -9,14 +9,14 @@ export const useDeleteImageProfileStorage = () => {
   return useMutation({
     mutationKey: ['delete_image_profile'],
     mutationFn: async () => {
-      await removeFile(formValues.picture)
+      await remove(formValues.picture)
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['image_profile'] })
       await queryClient.invalidateQueries({ queryKey: ['data'] })
     },
     onError: async (error) => {
-      await message(error.message, { title: error.name, type: 'error' })
+      await message(error.message, { title: error.name, kind: 'error' })
     }
   })
 }

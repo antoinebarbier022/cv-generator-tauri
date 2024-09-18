@@ -2,7 +2,7 @@
 name = "cv_generator"
 version = "0.1.1-beta.27"
 description = ""
-authors = [ "Antoine Barbier <antoine.c.barbier@frog.co>" ]
+authors = ["Antoine Barbier <antoine.c.barbier@frog.co>"]
 license = ""
 repository = ""
 default-run = "cv_generator"
@@ -10,8 +10,8 @@ edition = "2021"
 rust-version = "1.60"
 
 [build-dependencies.tauri-build]
-version = "1.5.2"
-features = [ ]
+version = "2.0.0-rc.12"
+features = []
 
 [dependencies]
 anyhow = "1.0"
@@ -21,53 +21,26 @@ signal-hook = "0.3.17"
 window-vibrancy = "0.4"
 convert_case = "0.6.0"
 lazy_static = "1.5.0"
+tauri-plugin-updater = "2.0.0-rc.3"
+tauri-plugin-fs = "2.0.0-rc.5"
 
-  [dependencies.ts-rs]
-  version = "9.0.1"
+[dependencies.ts-rs]
+version = "9.0.1"
 
-  [dependencies.ts-const-enums]
-  path = "ts-const-enums"
+[dependencies.ts-const-enums]
+path = "ts-const-enums"
 
-  [dependencies.tauri-plugin-fs-extra]
-  git = "https://github.com/tauri-apps/plugins-workspace"
-  branch = "v1"
+[dependencies.strum]
+version = "0.26.3"
+features = ["derive"]
 
-  [dependencies.strum]
-  version = "0.26.3"
-  features = [ "derive" ]
+[dependencies.serde]
+version = "1.0"
+features = ["derive"]
 
-  [dependencies.serde]
-  version = "1.0"
-  features = [ "derive" ]
-
-  [dependencies.tauri]
-  version = "1.6.5"
-  features = [
-  "fs-rename-file",
-  "fs-remove-file",
-  "updater",
-  "shell-sidecar",
-  "shell-open",
-  "protocol-asset",
-  "window-maximize",
-  "window-close",
-  "window-start-dragging",
-  "window-minimize",
-  "window-hide",
-  "window-unmaximize",
-  "window-unminimize",
-  "window-show",
-  "macos-private-api",
-  "dialog-all",
-  "http-all",
-  "fs-read-dir",
-  "fs-exists",
-  "fs-read-file",
-  "fs-create-dir",
-  "fs-write-file",
-  "path-all",
-  "process-command-api"
-]
+[dependencies.tauri]
+version = "2.0.0-rc.15"
+features = ["protocol-asset", "macos-private-api"]
 
 [features]
-custom-protocol = [ "tauri/custom-protocol" ]
+custom-protocol = ["tauri/custom-protocol"]

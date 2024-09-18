@@ -1,5 +1,5 @@
 import { Avatar, Card, Link, Stack, Typography } from '@mui/joy'
-import { convertFileSrc } from '@tauri-apps/api/tauri'
+import { convertFileSrc } from '@tauri-apps/api/core'
 import { NavLink, useNavigate } from 'react-router-dom'
 
 import luffyHatImage from '@/assets/images/luffy-hat.png'

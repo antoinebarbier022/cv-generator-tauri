@@ -1,7 +1,6 @@
-import { save } from '@tauri-apps/api/dialog'
-import { BaseDirectory, readTextFile } from '@tauri-apps/api/fs'
 import { appDataDir, downloadDir, join, resolveResource } from '@tauri-apps/api/path'
-import { ChildProcess } from '@tauri-apps/api/shell'
+import { save } from '@tauri-apps/plugin-dialog'
+import { BaseDirectory, readTextFile } from '@tauri-apps/plugin-fs'
 
 import { UserData } from '../../../types/storage'
 import { generateResponse } from '../types/generateResponse'
@@ -14,7 +13,7 @@ export const CVGenerationService = {
     try {
       data = JSON.parse(
         await readTextFile('data.json', {
-          dir: BaseDirectory.AppData
+          baseDir: BaseDirectory.AppData
         })
       )
     } catch (error) {
@@ -36,18 +35,6 @@ export const CVGenerationService = {
     } catch {
       throw Error('Error on open save dialog')
     }
-  },
-  connected: async ({ apiPort }: { apiPort: string }): Promise<ChildProcess> => {
-    const baseURL = `http://localhost:${apiPort}`
-
-    const response = await fetch(`${baseURL}/api/v1/connect`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    const output = await response.json()
-    return output
   },
   generate: async ({
     api_port,

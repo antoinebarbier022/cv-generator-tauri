@@ -1,6 +1,6 @@
 import { Avatar, Box, Card, List, ListDivider, Stack, Typography } from '@mui/joy'
 
-import { convertFileSrc } from '@tauri-apps/api/tauri'
+import { convertFileSrc } from '@tauri-apps/api/core'
 import { useMemo } from 'react'
 
 import { useFormCV } from '@/hooks/useFormCV'

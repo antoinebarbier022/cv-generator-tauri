@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import { invoke } from '@tauri-apps/api/tauri'
+import { invoke } from '@tauri-apps/api/core'
 import { toast } from 'react-toastify'
 import { ToastGenerationSuccess } from '../components/toast-generation-success'
 import { CVGenerationService } from '../services/cv-generation.service'
