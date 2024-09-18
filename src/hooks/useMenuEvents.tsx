@@ -1,4 +1,4 @@
-import { confirm } from '@tauri-apps/api/dialog'
+import { confirm, message } from '@tauri-apps/api/dialog'
 import { listen } from '@tauri-apps/api/event'
 import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -10,6 +10,8 @@ import { useImportDataContent } from '@/hooks/useImportDataContent'
 import { useResetDataStorage } from '@/hooks/useResetDataStorage'
 import { useSidebarStore } from '@/stores/useSidebarStore'
 import { useServerPort } from './userServerPort'
+
+import { checkUpdate } from '@tauri-apps/api/updater'
 
 export const useMenuEvents = () => {
   const navigate = useNavigate()
@@ -55,7 +57,35 @@ export const useMenuEvents = () => {
     return () => {
       unlisten.then((dispose) => dispose())
     }
-  }, [history])
+  }, [])
+
+  {
+    /** App Updater */
+  }
+  useEffect(() => {
+    const unlisten = listen(MenuEvent.AppCheckUpdate, async (e) => {
+      if (e.payload === 'check-update-from-menu') {
+        try {
+          console.count('check update')
+          const { shouldUpdate, manifest } = await checkUpdate()
+          console.log({ manifest })
+          if (!shouldUpdate) {
+            await message('You are already using the latest version.', {
+              title: 'No Update Available',
+              okLabel: 'OK',
+              type: 'info'
+            })
+          }
+        } catch (error) {
+          console.error(error)
+        }
+      }
+    })
+
+    return () => {
+      unlisten.then((dispose) => dispose())
+    }
+  }, [])
 
   useEffect(() => {
     const unlisten = setupListener(MenuEvent.FileExport, '/export')

@@ -16,7 +16,7 @@ pub(crate) enum MyMenu {
     FileGenerateAndSaveAs,
 
     AppPreferences,
-    AppUpdate,
+    AppCheckUpdate,
 
     DebugOpenPanel,
     DebugSendError,
@@ -42,7 +42,9 @@ enum MenuEvent {
     FileGenerateAndSaveAs,
 
     DebugOpenPanel,
+
     AppPreferences,
+    AppCheckUpdate,
 
     ViewToggleSidebar,
 }
@@ -79,9 +81,13 @@ pub fn on_menu_event(event: WindowMenuEvent) {
             .window()
             .emit(&MenuEvent::AppPreferences.as_event_name(), "")
             .unwrap(),
-        Some(MyMenu::AppUpdate) => {
-            todo!()
-        }
+        Some(MyMenu::AppCheckUpdate) => event
+            .window()
+            .emit(
+                &MenuEvent::AppCheckUpdate.as_event_name(),
+                "check-update-from-menu",
+            )
+            .unwrap(),
         Some(MyMenu::ViewToggleSidebar) => event
             .window()
             .emit(&MenuEvent::ViewToggleSidebar.as_event_name(), "")
@@ -149,7 +155,10 @@ fn app_menu() -> Submenu {
                 CustomMenuItem::new(MyMenu::AppPreferences, "Preferences...").accelerator("Cmd+,"),
             )
             .add_native_item(MenuItem::Separator)
-            .add_item(CustomMenuItem::new(MyMenu::AppUpdate, "Check for Updates...").disabled())
+            .add_item(CustomMenuItem::new(
+                MyMenu::AppCheckUpdate,
+                "Check for Updates...",
+            ))
             .add_native_item(MenuItem::Separator)
             .add_native_item(MenuItem::Services)
             .add_native_item(MenuItem::Separator)
