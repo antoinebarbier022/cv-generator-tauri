@@ -25,7 +25,7 @@ export const AppProvider = ({ children }: PropsWithChildren) => {
       queries: {}
     }
   })
-  
+
   const { appThemeConfig } = useAppTheme()
 
   useServerPort()

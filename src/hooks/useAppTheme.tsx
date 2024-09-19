@@ -1,20 +1,15 @@
-import { useFormStore } from '@/stores/useFormStore'
 import capgeminiTheme from '@/themes/capgemini-theme.ts'
 import themeFrog from '@/themes/default-theme.ts'
 import luffyTheme from '@/themes/luffy-theme.ts'
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import { create } from 'zustand'
+import { createJSONStorage, persist } from 'zustand/middleware'
 
 export enum AppTheme {
   FROG = 'frog',
   CAPGEMINI = 'capgemini',
   LUFFY = 'one-piece',
   DEFAULT = 'frog'
-}
-
-interface State {
-  appTheme: AppTheme
-  setAppTheme: (value: AppTheme | string | null) => void
 }
 
 const normalizedAppTheme = (value: AppTheme | string | null) => {
@@ -28,34 +23,34 @@ const normalizedAppTheme = (value: AppTheme | string | null) => {
   }
 }
 
-const useAppThemeStore = create<State>((set) => ({
-  appTheme: normalizedAppTheme(localStorage.getItem('app-theme')),
-  setAppTheme: (value: AppTheme | string | null) => {
-    localStorage.setItem('app-theme', normalizedAppTheme(value))
-    set(() => ({ appTheme: normalizedAppTheme(value) }))
-  }
-}))
+interface State {
+  appTheme: AppTheme
+  setAppTheme: (value: AppTheme | string | null) => void
+  overrideAppTheme: AppTheme | null
+  setOverrideAppTheme: (value: AppTheme | string | null) => void
+}
+
+const useAppThemeStore = create(
+  persist<State>(
+    (set, get) => ({
+      appTheme: AppTheme.DEFAULT,
+      setAppTheme: (value: AppTheme | string | null) => {
+        set(() => ({ appTheme: normalizedAppTheme(value) }))
+      },
+      overrideAppTheme: null,
+      setOverrideAppTheme: (value: AppTheme | string | null) => {
+        set(() => ({ overrideAppTheme: value ? normalizedAppTheme(value) : null }))
+      }
+    }),
+    {
+      name: 'app-theme',
+      storage: createJSONStorage(() => localStorage)
+    }
+  )
+)
 
 export const useAppTheme = () => {
-  const { appTheme, setAppTheme } = useAppThemeStore()
-
-  const { formValues } = useFormStore()
-
-  const isLuffyTheme = useMemo(
-    () =>
-      formValues.employment_history.findIndex(
-        (el) =>
-          el.content.en.toLocaleLowerCase() === 'pirate' ||
-          el.content.fr.toLocaleLowerCase() === 'pirate'
-      ) !== -1,
-    [formValues.employment_history]
-  )
-
-  useEffect(() => {
-    if (!isLuffyTheme && appTheme === AppTheme.LUFFY) {
-      setAppTheme(AppTheme.DEFAULT)
-    }
-  }, [])
+  const { appTheme, overrideAppTheme, setOverrideAppTheme, setAppTheme } = useAppThemeStore()
 
   const allTheme: { value: AppTheme; label: string; hide?: boolean }[] = useMemo(
     () => [
@@ -71,14 +66,14 @@ export const useAppTheme = () => {
       {
         value: AppTheme.LUFFY,
         label: 'One Piece',
-        hide: !isLuffyTheme
+        hide: !Boolean(overrideAppTheme)
       }
     ],
-    [isLuffyTheme]
+    [overrideAppTheme]
   )
 
   const appThemeConfig = useMemo(() => {
-    switch (appTheme) {
+    switch (overrideAppTheme || appTheme) {
       case AppTheme.FROG:
         return themeFrog
       case AppTheme.CAPGEMINI:
@@ -88,12 +83,14 @@ export const useAppTheme = () => {
       default:
         return themeFrog
     }
-  }, [appTheme])
+  }, [appTheme, overrideAppTheme])
 
   return {
     appTheme,
     setAppTheme,
     appThemeConfig,
-    allTheme
+    allTheme,
+    overrideAppTheme,
+    setOverrideAppTheme
   }
 }
