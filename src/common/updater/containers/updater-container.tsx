@@ -1,4 +1,5 @@
 import AppIcon from '@/assets/images/icon.svg?react'
+import { useAppUpdater } from '../hooks/useAppUpdater'
 import { UpdaterModalLayout } from '../layouts/updater-modal-layout'
 
 interface Props {
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export const UpdaterContainer = (props: Props) => {
+  useAppUpdater()
   return (
     <UpdaterModalLayout
       open={props.open}

@@ -12,23 +12,27 @@ enum LogLevel {
   ERROR = 5
 }
 
-function forwardConsole(
+const forwardConsole = (
   fnName: 'log' | 'debug' | 'info' | 'warn' | 'error' | 'trace',
   level: number
-) {
+) => {
   const original = console[fnName]
-  console[fnName] = (message) => {
-    original(message)
+
+  console[fnName] = (...args) => {
+    original(args.join(' '))
     invoke('log', {
       level,
-      message: typeof message === 'string' ? message : JSON.stringify(message, null, 2),
+      message:
+        typeof args.join(' ') === 'string'
+          ? args.join(' ')
+          : JSON.stringify(args.join(' '), null, 2),
       location: 'window:' + getCurrentWindow().label + ':' + location.pathname
     })
   }
 }
 
 forwardConsole('trace', LogLevel.TRACE)
-forwardConsole('log', LogLevel.DEBUG)
+//forwardConsole('log', LogLevel.DEBUG)
 forwardConsole('debug', LogLevel.DEBUG)
 forwardConsole('info', LogLevel.INFO)
 forwardConsole('warn', LogLevel.WARN)

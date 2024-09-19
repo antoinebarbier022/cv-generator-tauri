@@ -1,18 +1,17 @@
-
 export const useSectionItem = (sectionKey: string, itemId: string) => {
   // Récupérer le contenu d'un item ici
 
   const handleDelete = (): void => {
-    console.log("section item handleDelete" + sectionKey + itemId );
-  };
+    console.log('section item handleDelete' + sectionKey + itemId)
+  }
 
   const handleChangeVisibility = (visible: boolean): void => {
-    console.log("section item  handleChangeVisibility : " + visible);
-  };
+    console.log('section item  handleChangeVisibility : ' + visible)
+  }
 
   const isEmpty = (): boolean => {
-    return false;
-  };
+    return false
+  }
 
-  return { handleDelete, isEmpty, handleChangeVisibility };
-};
+  return { handleDelete, isEmpty, handleChangeVisibility }
+}
