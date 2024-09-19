@@ -109,10 +109,10 @@ pub fn on_menu_event(app: &AppHandle, event: tauri::menu::MenuEvent) {
             )
             .unwrap(),
         Some(MyMenu::HelpOpenSlack) => {
-            if let Err(err) = app.shell().open(
-                "https://capgemini.enterprise.slack.com/archives/C07DCNBUT4Z",
-                None,
-            ) {
+            if let Err(err) = app
+                .shell()
+                .open("slack://user?team=T025J4GJ0&id=C07DCNBUT4Z", None)
+            {
                 app.emit_error(
                     ErrorPayload::new()
                         .with_title("Failed to open Slack channel")
