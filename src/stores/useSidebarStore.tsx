@@ -12,10 +12,12 @@ export const useSidebarStore = create(
     (set, get) => ({
       isCollapsed: false,
       toggle: () => {
-        const currentReduce = get().isCollapsed
-        set(() => ({ isCollapsed: !currentReduce }))
+        const isCollapsed = get().isCollapsed
+        console.debug(`Sidebar toggle to ${!isCollapsed ? 'collapsed' : 'expanded'} state.`)
+        set(() => ({ isCollapsed: !isCollapsed }))
       },
       setCollapsed: (value: boolean) => {
+        console.debug(`Sidebar set to ${value ? 'collapsed' : 'expanded'} state.`)
         set(() => ({ isCollapsed: value }))
       }
     }),
