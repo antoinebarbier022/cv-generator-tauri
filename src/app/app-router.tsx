@@ -9,6 +9,7 @@ import { SidebarContainer } from '@/common/sidebar/containers/sidebar-container'
 import { ProfilePage } from '@/app/routes/cv-forms/profile-page'
 
 import { useMenuEvents } from '@/hooks/useMenuEvents'
+import { useNavigationLogger } from '@/hooks/useNavigationLogger'
 import { useRedirectToWelcomePage } from '@/hooks/useRedirectToWelcomePage'
 import { AppLayout } from '@/layouts/app-layout'
 import { WelcomeLayout } from '@/layouts/welcome-layout'
@@ -31,6 +32,7 @@ export const AppRouter = () => {
   const location = useLocation()
 
   useRedirectToWelcomePage()
+  useNavigationLogger()
 
   const background = location.state && location.state.background
   return (

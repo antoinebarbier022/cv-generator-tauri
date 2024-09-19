@@ -17,7 +17,10 @@ export const ThemesSettings = () => {
             size="sm"
             sx={{ minWidth: '160px' }}
             value={appTheme}
-            onChange={(_, value) => setAppTheme(value)}
+            onChange={(_, value) => {
+              setAppTheme(value)
+              console.info(`User changed theme to '${value}'`)
+            }}
           >
             {allTheme.map(
               (theme) =>

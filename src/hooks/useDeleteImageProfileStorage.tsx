@@ -14,8 +14,10 @@ export const useDeleteImageProfileStorage = () => {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['image_profile'] })
       await queryClient.invalidateQueries({ queryKey: ['data'] })
+      console.debug(`Image profile is deleted.`)
     },
     onError: async (error) => {
+      console.error(`An error occurred on delete image profile...`)
       await message(error.message, { title: error.name, kind: 'error' })
     }
   })

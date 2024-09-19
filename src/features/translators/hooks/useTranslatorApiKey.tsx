@@ -41,10 +41,12 @@ export const useTranslatorApiKey = () => {
       {
         onSuccess: () => {
           setApiKey(value)
+          console.info(`User activated translation feature. API key validated successfully.`)
           //localStorage.setItem('deepl-api-key', value)
         },
         onError: () => {
           setApiKey('')
+          console.error(`Translation feature activation failed. Invalid API key.`)
           //localStorage.setItem('deepl-api-key', '')
         }
       }

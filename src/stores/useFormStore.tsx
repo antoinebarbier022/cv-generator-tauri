@@ -7,7 +7,6 @@ import { ValidationError } from 'yup'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 
-
 interface FormState {
   lastUpdated: Date | null
   formWarnings: ValidationError | null
@@ -37,19 +36,18 @@ export const useFormStore = create(
 
           const isOldValuesEmpty = deepEqual(oldValues, emptyInitialResume)
           const isNewValuesEmpty = deepEqual(newValues, emptyInitialResume)
-          const hasChanged = !deepEqual(oldValues, newValues) // this code is wrong
-         
-          console.warn("TODO : hasChanged doesn't work" + hasChanged)
+          //const hasChanged = !deepEqual(oldValues, newValues) // this code is wrong
+
+          //console.warn("TODO : hasChanged doesn't work -> " + hasChanged)
           const saveValueInsideStorage = !isNewValuesEmpty && !isOldValuesEmpty
           const isFirstStorageEver = !isNewValuesEmpty && isOldValuesEmpty
 
-         
           if (saveValueInsideStorage || isFirstStorageEver) {
             StorageService.setContentData({
               values: newValues
             })
-            console.info('Save form inside file storage')
-            console.trace({newValues})
+            //console.info('Save form inside file storage')
+            //console.trace({ newValues })
           }
 
           let formWarnings = null
@@ -60,11 +58,11 @@ export const useFormStore = create(
               abortEarly: false
             })
             .then(() => {
-              console.info(`Form contains 0 warning.`)
+              //console.debug(`Form contains 0 warning.`)
             })
             .catch((warnings: ValidationError) => {
               formWarnings = warnings
-              console.info(`Form contains ${formWarnings.errors.length} warnings.`)
+              //console.debug(`Form contains ${formWarnings.errors.length} warnings.`)
             })
 
           return {

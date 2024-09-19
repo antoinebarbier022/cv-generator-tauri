@@ -36,15 +36,14 @@ export const NavigationList = (props: Props) => {
           !value.hide && (
             <Fragment key={`nav-${index}-${value.to}`}>
               <ListItem>
-                <NavLink
-                  to={value.to}
-                  tabIndex={-1}
-                  onClick={(e) => e.stopPropagation()}
-                  className={'w-full no-underline'}
-                >
+                <NavLink to={value.to} tabIndex={-1} className={'w-full no-underline'}>
                   {({ isActive }) => (
                     <ListItemButton
-                      onClick={() => value.to && navigate(value.to)}
+                      onClick={() => {
+                        if (value.to) {
+                          navigate(value.to)
+                        }
+                      }}
                       selected={isActive}
                       sx={{ borderRadius: 'sm' }}
                     >

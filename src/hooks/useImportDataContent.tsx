@@ -20,10 +20,12 @@ export const useImportDataContent = () => {
         await queryClient.invalidateQueries({ queryKey: ['image_profile'] })
         await queryClient.invalidateQueries({ queryKey: ['data'] })
         toast.success('JSON is imported')
+        console.error(`New JSON is imported.`)
         navigate('/', { replace: true })
       }
     },
     onError: async (error) => {
+      console.error(`An error occurred on import data content... ${error}`)
       await message(error.message, { title: error.name, kind: 'error' })
     }
   })

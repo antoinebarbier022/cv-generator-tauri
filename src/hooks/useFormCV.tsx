@@ -76,6 +76,7 @@ export const useFormCV = () => {
       }
     }
 
+    console.info(`Add new item ${newId} from ${fieldName}.`)
     setFormValues({
       [fieldName]: [fieldValue(), ...(formValues[fieldName] ?? [])]
     })
@@ -110,8 +111,6 @@ export const useFormCV = () => {
     const showDialogConfirm =
       indexSelectedItem !== -1 && !isEmptyObject(section[indexSelectedItem].content)
 
-
-
     if (showDialogConfirm) {
       const confirmed = await confirm('This action cannot be reverted. Are you sure?', {
         title: `Delete item`,
@@ -119,6 +118,7 @@ export const useFormCV = () => {
       })
       if (!confirmed) return
     }
+    console.info(`Delete item ${idSelected} from ${fieldName}.`)
     setFormValues({
       [fieldName]: [...(formValues[fieldName]?.filter((v) => v.id !== idSelected) ?? [])]
     })

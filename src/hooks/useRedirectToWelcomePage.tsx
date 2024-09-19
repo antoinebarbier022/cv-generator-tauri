@@ -7,8 +7,8 @@ export const useRedirectToWelcomePage = () => {
   const {formValues} = useFormCV()
   useEffect(() => {
     if(formValues.firstname === '' && formValues.lastname === ''){
+      console.debug("Navigate to '/welcome' page.")
       navigate('/welcome')
-      console.info("Navigate to '/welcome' page.")
     }
   }, [])
 }

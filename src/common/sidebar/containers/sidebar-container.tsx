@@ -42,8 +42,15 @@ export const SidebarContainer = ({ isLoadingGenerate }: Props) => {
 
   const [isOpenModalMissingFont, setOpenModalMissingFont] = useState(false)
 
-  const handleOpenModalMissingFont = () => setOpenModalMissingFont(true)
-  const handleCloseModalMissingFont = () => setOpenModalMissingFont(false)
+  const handleOpenModalMissingFont = () => {
+    console.info(`User opened "Missing Font" information modal`)
+    setOpenModalMissingFont(true)
+  }
+  const handleCloseModalMissingFont = () => {
+    console.info(`User closed "Missing Font" information modal`)
+    setOpenModalMissingFont(false)
+
+  }
 
   const fullName = useMemo(() => {
     const firstname = formValues.firstname
@@ -62,6 +69,7 @@ export const SidebarContainer = ({ isLoadingGenerate }: Props) => {
   const role = formValues.role
 
   const handleGenerateCV = () => {
+    console.info(`User clicked "Generate" inside the sidebar`)
     askOutputPath.mutate(undefined, {
       onSettled: () => {},
       onSuccess: (outputFilePath) => {

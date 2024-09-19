@@ -16,6 +16,7 @@ export const LanguageSettings = () => {
             defaultValue={i18n.languages[0]}
             onChange={(_, value) => {
               value && i18n.changeLanguage(value)
+              console.info(`User changed language to '${value}'`)
             }}
           >
             <Option value="en">English</Option>
