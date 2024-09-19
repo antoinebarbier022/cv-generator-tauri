@@ -109,6 +109,7 @@ pub fn on_menu_event(app: &AppHandle, event: tauri::menu::MenuEvent) {
             )
             .unwrap(),
         Some(MyMenu::HelpOpenSlack) => {
+            log::info!(target: "menu:help", "User clicked on Slack Channel button.");
             if let Err(err) = app
                 .shell()
                 .open("slack://user?team=T025J4GJ0&id=C07DCNBUT4Z", None)
