@@ -52,7 +52,7 @@ export const CVGenerationService = {
 
     const baseURL = `http://localhost:${api_port}`
 
-    console.log({ outputFolderPath })
+    
     const response = await fetch(`${baseURL}/api/v1/generate-cv-pptx`, {
       method: 'POST',
       headers: {

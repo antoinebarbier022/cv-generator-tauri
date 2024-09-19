@@ -111,12 +111,12 @@ export const StorageService = {
 
   getLastModified: async (): Promise<Date | null> => {
     const meta_properties = await stat(DATA_FILENAME, { baseDir: BaseDirectory.AppData })
-    console.log(meta_properties)
+
     return meta_properties.mtime
   },
 
   setContentData: async ({ values }: { values: UserData }): Promise<UserData> => {
-    console.log({ values })
+
     const isExistAppDataDirPath = await StorageService.isAppDataDir()
     if (isExistAppDataDirPath) {
       await StorageService.createAppDataDir()

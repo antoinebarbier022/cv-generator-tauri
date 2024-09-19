@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 
+
 interface State {
   expandedItem: string | undefined
   setExpandedItem: (id: string | undefined) => void
@@ -8,7 +9,7 @@ interface State {
 export const useExpandedItemStore = create<State>((set) => ({
   expandedItem: undefined,
   setExpandedItem: (id: string | undefined) => {
-    console.log(id)
+    console.trace("Expanded item : " + id)
     set(() => ({ expandedItem: id }))
   }
 }))

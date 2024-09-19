@@ -6,8 +6,6 @@ import 'react-toastify/dist/ReactToastify.css'
 /* eslint-enable import/order */
 
 import '@/styles/index.css'
-import themeCapgemini from '@/themes/capgemini-theme.ts'
-import themeFrog from '@/themes/default-theme.ts'
 
 import { useErrors } from '@/errors/hooks/useErrors'
 import { useAppTheme } from '@/hooks/useAppTheme'
@@ -27,8 +25,7 @@ export const AppProvider = ({ children }: PropsWithChildren) => {
       queries: {}
     }
   })
-  console.log({ themeFrog })
-  console.log({ themeCapgemini })
+  
   const { appThemeConfig } = useAppTheme()
 
   useServerPort()

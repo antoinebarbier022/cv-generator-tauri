@@ -24,12 +24,19 @@ lazy_static = "1.5.0"
 tauri-plugin-updater = "2.0.0-rc.3"
 tauri-plugin-fs = "2.0.0-rc"
 tauri-plugin-shell = "2.0.0-rc"
-tauri = { version = "2.0.0-rc.15", features = ["protocol-asset", "macos-private-api"] }
+tauri = { version = "2.0.0-rc.15", features = [
+    "protocol-asset",
+    "macos-private-api",
+] }
 serde = { version = "1.0", features = ["derive"] }
 strum = { version = "0.26.3", features = ["derive"] }
 ts-rs = { version = "9.0.1" }
 ts-const-enums = { path = "ts-const-enums" }
 tauri-plugin-dialog = "2.0.0-rc"
+tauri-plugin-log = { version = "2.0.0-rc", features = ["colored"] }
+log = "0.4"
+
+time = "0.3.17"
 
 [features]
 custom-protocol = ["tauri/custom-protocol"]

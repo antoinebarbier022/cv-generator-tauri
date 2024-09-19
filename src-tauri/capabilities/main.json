@@ -10,13 +10,11 @@
     "core:window:default",
     "core:window:allow-start-dragging",
     "core:event:allow-emit",
-    
     "shell:default",
-    
     "dialog:default",
-
     "updater:default",
-
+    "log:default",
+    "log:allow-log",
     "fs:default",
     "fs:allow-stat",
     "fs:allow-write-text-file",
@@ -33,7 +31,7 @@
         }
       ]
     }
-    
+   
   ],
   "platforms": [
     "macOS"

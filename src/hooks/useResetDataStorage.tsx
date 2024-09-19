@@ -4,6 +4,7 @@ import { message } from '@tauri-apps/plugin-dialog'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
+
 export const useResetDataStorage = () => {
   const queryClient = useQueryClient()
   const { t } = useTranslation()
@@ -13,7 +14,7 @@ export const useResetDataStorage = () => {
     mutationFn: StorageService.resetContentData,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['data'] })
-      console.log(t('toast-success.reset-data'))
+      console.info(t('toast-success.reset-data'))
       navigate('/welcome')
     },
     onError: async (error) => {

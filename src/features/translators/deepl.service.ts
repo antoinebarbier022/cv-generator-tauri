@@ -1,5 +1,7 @@
+import { error } from '@tauri-apps/plugin-log'
 import axios from 'axios'
 import { DeepLUsage } from './deepl.types'
+
 
 export const DeepLService = {
   usage: async ({
@@ -19,13 +21,14 @@ export const DeepLService = {
         }
       })
       return response.data
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
+    } catch (e) {
+      if (axios.isAxiosError(e) && e.response) {
         // Extracting error message from server response
-        const errorMessage = error.response.data.detail || 'An error has occurred…'
-        console.log(error.response.data.detail)
+        const errorMessage = e.response.data.detail || 'An error has occurred…'
+        console.error("DeepLService.usage() : Axios Error -> " + e.response.data.detail)
         throw new Error(errorMessage)
       }
+      console.error("DeepLService.usage() : An error has occurred…")
       throw new Error('An error has occurred…')
     }
   },
@@ -58,8 +61,9 @@ export const DeepLService = {
         }
       )
       return response.data
-    } catch (error) {
-      throw new Error(`An error has occurred… ${error}`)
+    } catch (e) {
+      error(`DeepLService.translate() : An error has occurred… ${e}`)
+      throw new Error(`An error has occurred… ${e}`)
     }
   }
 }

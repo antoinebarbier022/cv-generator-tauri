@@ -15,6 +15,7 @@ import { relaunch } from '@tauri-apps/plugin-process'
 
 import { check } from '@tauri-apps/plugin-updater'
 
+
 export const useMenuEvents = () => {
   const navigate = useNavigate()
 
@@ -78,7 +79,7 @@ export const useMenuEvents = () => {
             })
           }
           if (update) {
-            console.log(
+            console.info(
               `found update ${update.version} from ${update.date} with notes ${update.body}`
             )
             let downloaded = 0
@@ -88,19 +89,19 @@ export const useMenuEvents = () => {
               switch (event.event) {
                 case 'Started':
                   contentLength = event.data.contentLength ?? 0
-                  console.log(`started downloading ${event.data.contentLength} bytes`)
+                  console.info(`started downloading ${event.data.contentLength} bytes`)
                   break
                 case 'Progress':
                   downloaded += event.data.chunkLength
-                  console.log(`downloaded ${downloaded} from ${contentLength}`)
+                  console.info(`downloaded ${downloaded} from ${contentLength}`)
                   break
                 case 'Finished':
-                  console.log('download finished')
+                  console.info('download finished')
                   break
               }
             })
 
-            console.log('update installed')
+            console.info('update installed')
             await relaunch()
           }
         } catch (error) {
@@ -132,8 +133,6 @@ export const useMenuEvents = () => {
 
   useEffect(() => {
     const unlisten = listen(MenuEvent.FileReset, async () => {
-      console.log('reset')
-
       const confirmed = await confirm('This action cannot be reverted. Are you sure?', {
         title: 'Reset all data',
         kind: 'warning'
