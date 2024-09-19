@@ -7,13 +7,16 @@ import { SectionDroppableLayout } from '@/common/section/layouts/section-droppab
 import { SectionEmptyState } from '../components/section-empty-state'
 
 import { useTranslatorOption } from '@/features/translators/hooks/useTranslatorOption'
-import { AppTheme, useAppTheme } from '@/hooks/useAppTheme'
+import { AppTheme } from '@/hooks/useAppTheme'
+import { useEasterEggTheme } from '@/hooks/useEasterEggTheme'
 import { useExpandedItemStore } from '@/stores/useExpandedItemStore'
 import { Translation, UserData } from '../../../types/storage'
+
+import { SectionFieldName } from '../sections.types'
 import { SectionStandardItem } from './section-standard-item'
 
 interface Props {
-  sectionKey: 'skills' | 'sectors' | 'languages' | 'formation' | 'employment_history'
+  sectionKey: Exclude<SectionFieldName, 'experiences'>
   options?: {
     isOptionTranslation?: boolean
     inputType?: 'input' | 'textarea'
@@ -29,6 +32,8 @@ export const SectionStandardContainer = ({
   const { formValues, setFormValues, handleAddItemSection, handleDeleteItemSection, dragEnded } =
     useFormCV()
 
+  const { checkAndApplyTo: checkAndApplyEasterEggThemeTo } = useEasterEggTheme()
+
   const handleChangeVisibility = (index: number, value: boolean) => {
     const newContent = [...formValues[sectionKey]]
     newContent[index].isHidden = value
@@ -39,39 +44,18 @@ export const SectionStandardContainer = ({
 
   const { expandedItem, setExpandedItem } = useExpandedItemStore()
 
-  const { appTheme, setAppTheme, setOverrideAppTheme } = useAppTheme()
-
   const handleEditContentItem = (id: string, content: Translation) => {
     const newContent = [...formValues[sectionKey]]
 
     newContent[newContent.findIndex((e) => e.id === id)].content = content
 
-    /** Easter Egg -> One Piece Theme */
-    const secretWordItemId = formValues.employment_history.findIndex(
-      (el) =>
-        el.content.en.toLocaleLowerCase() === 'pirate' ||
-        el.content.fr.toLocaleLowerCase() === 'pirate'
-    )
-
-    const newContentHasTheSecretWord =
-      content.en.toLocaleLowerCase() === 'pirate' || content.fr.toLocaleLowerCase() === 'pirate'
-
-    if (secretWordItemId !== -1) {
-      if (newContentHasTheSecretWord && sectionKey === 'employment_history') {
-        console.debug('🎉 Entered Easter Egg mode for "One Piece" theme.')
-        setOverrideAppTheme(AppTheme.LUFFY)
-        console.debug(`Theme changed to 'One Piece' theme`)
-      }
-    } else {
-      console.debug('🎉 Exiting Easter Egg mode for "One Piece" theme.')
-      if (appTheme === AppTheme.LUFFY) {
-        setAppTheme(AppTheme.DEFAULT)
-        console.debug('Default theme applied. ')
-      } else {
-        console.debug('🔄 Reverted to previous theme')
-      }
-      setOverrideAppTheme(null)
-    }
+    checkAndApplyEasterEggThemeTo({
+      currentContent: content,
+      secretWord: 'pirate',
+      targetSectionKey: 'employment_history',
+      currentSectionKey: sectionKey,
+      targetTheme: AppTheme.ONE_PIECE
+    })
 
     setFormValues({
       [sectionKey]: newContent
@@ -79,14 +63,6 @@ export const SectionStandardContainer = ({
   }
 
   const handleDelete = (id: string) => {
-    const secretWordItemId = formValues.employment_history.findIndex(
-      (el) =>
-        el.content.en.toLocaleLowerCase() === 'pirate' ||
-        el.content.fr.toLocaleLowerCase() === 'pirate'
-    )
-    if (secretWordItemId === -1) {
-      setAppTheme(AppTheme.DEFAULT)
-    }
     handleDeleteItemSection({
       fieldName: sectionKey,
       idSelected: id

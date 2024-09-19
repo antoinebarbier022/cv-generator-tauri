@@ -1,7 +1,7 @@
-import { ResumeContentSection, Translation, UserDataExperience } from '@/types/storage'
+import { ResumeCommonSection, ResumeExperiencesSection } from '@/types/storage'
 
 export const reorderListSection = (
-  list: ResumeContentSection<Translation | UserDataExperience>[],
+  list: (ResumeCommonSection | ResumeExperiencesSection)[],
   startIndex: number,
   endIndex: number
 ) => {

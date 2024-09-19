@@ -8,7 +8,7 @@ import { SectionEmptyState } from '@/common/section/components/section-empty-sta
 import { useTranslatorApiKey } from '@/features/translators/hooks/useTranslatorApiKey'
 import { useFormCV } from '@/hooks/useFormCV'
 import { useExpandedItemStore } from '@/stores/useExpandedItemStore'
-import { ResumeContentSection, UserDataExperience } from '@/types/storage'
+import { ResumeExperiencesSection } from '@/types/storage'
 import { SectionProjectItem } from './section-project-item'
 
 export const SectionProjectsContainer = () => {
@@ -26,7 +26,7 @@ export const SectionProjectsContainer = () => {
     handleDeleteItemSection({ fieldName: 'experiences', idSelected: id })
   }
 
-  const handleEditContentItem = (data: ResumeContentSection<UserDataExperience>) => {
+  const handleEditContentItem = (data: ResumeExperiencesSection) => {
     const newContent = [...formValues['experiences']]
     const indexNewContent = newContent.findIndex((e) => e.id === data.id)
     newContent[indexNewContent] = { ...data }

@@ -4,12 +4,15 @@ import { DropResult } from 'react-beautiful-dnd'
 import { reorderListSection } from '../utils/drag-and-drop.utils'
 import { isEmptyObject } from '../utils/object.utils'
 
-import { ResumeContentSection, Translation, UserDataExperience } from '@/types/storage'
+import { ResumeCommonSection, ResumeSection, UserDataExperience } from '@/types/storage'
 
 import { useExpandedItemStore } from '@/stores/useExpandedItemStore'
 import { useFormStore } from '@/stores/useFormStore'
 
+import { SectionFieldName } from '@/common/section/sections.types'
 import { useEffect } from 'react'
+import { AppTheme } from './useAppTheme'
+import { useEasterEggTheme } from './useEasterEggTheme'
 import { useGetDataStorage } from './useGetDataStorage'
 
 export const useFormCV = () => {
@@ -27,15 +30,9 @@ export const useFormCV = () => {
     }
   }, [userData.data])
 
-  type ResumeSectionFieldName =
-    | 'employment_history'
-    | 'skills'
-    | 'sectors'
-    | 'languages'
-    | 'formation'
-    | 'experiences'
+  const { remove: removeEasterEggTheme } = useEasterEggTheme()
 
-  const handleAddItemSection = ({ fieldName }: { fieldName: ResumeSectionFieldName }) => {
+  const handleAddItemSection = ({ fieldName }: { fieldName: SectionFieldName }) => {
     if (formValues[fieldName].length >= 1 && isEmptyObject(formValues[fieldName][0].content)) {
       setExpandedItem(formValues[fieldName][0].id)
       return
@@ -63,7 +60,7 @@ export const useFormCV = () => {
                 fr: ''
               }
             }
-          } as ResumeContentSection<UserDataExperience>
+          } as ResumeSection<UserDataExperience>
         case 'employment_history':
         case 'skills':
         case 'languages':
@@ -72,7 +69,7 @@ export const useFormCV = () => {
           return {
             id: newId,
             content: { fr: '', en: '' }
-          } as ResumeContentSection<Translation>
+          } as ResumeCommonSection
       }
     }
 
@@ -84,7 +81,7 @@ export const useFormCV = () => {
     setExpandedItem(newId)
   }
 
-  const dragEnded = (result: DropResult, fieldName: ResumeSectionFieldName) => {
+  const dragEnded = (result: DropResult, fieldName: SectionFieldName) => {
     if (!result.destination) {
       return
     }
@@ -102,10 +99,10 @@ export const useFormCV = () => {
     fieldName,
     idSelected
   }: {
-    fieldName: ResumeSectionFieldName
+    fieldName: SectionFieldName
     idSelected: string
   }) => {
-    const section = formValues[fieldName] as unknown as ResumeContentSection<unknown>[]
+    const section = formValues[fieldName] as unknown as ResumeSection<unknown>[]
 
     const indexSelectedItem = section.findIndex((e) => e.id === idSelected)
     const showDialogConfirm =
@@ -117,6 +114,15 @@ export const useFormCV = () => {
         kind: 'warning'
       })
       if (!confirmed) return
+    }
+    if (fieldName !== 'experiences') {
+      removeEasterEggTheme({
+        secretWord: 'pirate',
+        targetSectionKey: 'employment_history',
+        currentSectionKey: fieldName,
+        itemId: idSelected,
+        targetTheme: AppTheme.ONE_PIECE
+      })
     }
     console.info(`Delete item ${idSelected} from ${fieldName}.`)
     setFormValues({

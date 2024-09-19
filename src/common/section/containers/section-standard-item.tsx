@@ -4,7 +4,7 @@ import { useFormik } from 'formik'
 import debounce from 'just-debounce-it'
 import { Fragment, memo, useCallback } from 'react'
 
-import { ResumeContentSection, Translation } from '../../../types/storage'
+import { ResumeCommonSection, Translation } from '../../../types/storage'
 
 import * as yup from 'yup'
 import { AccordionCardTitle } from '../../../components/accordion-card-title'
@@ -29,7 +29,7 @@ interface Props extends Omit<SectionItemProps, 'title' | 'isExpanded' | 'onExpan
   inputType?: 'input' | 'textarea'
   isExpanded: boolean
   onExpandedChange?: ((event: React.SyntheticEvent, expanded: boolean) => void) | undefined
-  onChange: (values: ResumeContentSection<Translation>) => void
+  onChange: (values: ResumeCommonSection) => void
 }
 
 export const SectionStandardItem = memo(
@@ -46,10 +46,11 @@ export const SectionStandardItem = memo(
     onChange,
     ...rest
   }: Props) => {
-    const initialValues = {
+    const initialValues: ResumeCommonSection = {
       id,
       content: content,
-      isHidden: rest.isVisible
+      isHidden: rest.isVisible,
+      type: 'common'
     }
 
     const validationSchema = yup.object().shape({
@@ -58,7 +59,7 @@ export const SectionStandardItem = memo(
       isHidden: yup.boolean()
     })
 
-    const formik = useFormik<ResumeContentSection<Translation>>({
+    const formik = useFormik<ResumeCommonSection>({
       initialValues: initialValues,
       onSubmit: (values) => {
         formikOnlyWarning.setValues(values)
@@ -69,7 +70,7 @@ export const SectionStandardItem = memo(
     // this formik is just to have the validations errors
     // It's not possible to submit a formik form with errors, so to have warning
     // we need this form
-    const formikOnlyWarning = useFormik<ResumeContentSection<Translation>>({
+    const formikOnlyWarning = useFormik<ResumeCommonSection>({
       initialValues: initialValues,
       validationSchema,
       validateOnMount: true,

@@ -8,7 +8,7 @@ import { createJSONStorage, persist } from 'zustand/middleware'
 export enum AppTheme {
   FROG = 'frog',
   CAPGEMINI = 'capgemini',
-  LUFFY = 'one-piece',
+  ONE_PIECE = 'one-piece',
   DEFAULT = 'frog'
 }
 
@@ -16,7 +16,7 @@ const normalizedAppTheme = (value: AppTheme | string | null) => {
   switch (value) {
     case AppTheme.FROG:
     case AppTheme.CAPGEMINI:
-    case AppTheme.LUFFY:
+    case AppTheme.ONE_PIECE:
       return value
     default:
       return AppTheme.DEFAULT
@@ -32,7 +32,7 @@ interface State {
 
 const useAppThemeStore = create(
   persist<State>(
-    (set, get) => ({
+    (set) => ({
       appTheme: AppTheme.DEFAULT,
       setAppTheme: (value: AppTheme | string | null) => {
         set(() => ({ appTheme: normalizedAppTheme(value) }))
@@ -64,7 +64,7 @@ export const useAppTheme = () => {
       },
 
       {
-        value: AppTheme.LUFFY,
+        value: AppTheme.ONE_PIECE,
         label: 'One Piece',
         hide: !Boolean(overrideAppTheme)
       }
@@ -78,7 +78,7 @@ export const useAppTheme = () => {
         return themeFrog
       case AppTheme.CAPGEMINI:
         return capgeminiTheme
-      case AppTheme.LUFFY:
+      case AppTheme.ONE_PIECE:
         return luffyTheme
       default:
         return themeFrog

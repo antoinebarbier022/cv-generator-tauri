@@ -5,7 +5,7 @@ import { useMemo } from 'react'
 
 import { useFormCV } from '@/hooks/useFormCV'
 import { PageLayout } from '@/layouts/page-layout'
-import { ResumeContentSection, Translation, UserDataExperience } from '@/types/storage'
+import { ResumeSection, Translation, UserDataExperience } from '@/types/storage'
 import { useTranslation } from 'react-i18next'
 import { isEmptyObject } from '../../utils/object.utils'
 
@@ -28,12 +28,12 @@ export const SummaryPage = () => {
       | 'sectors'
       | 'employment_history'
       | 'experiences'
-  ): ResumeContentSection<T>[] => {
+  ): ResumeSection<T>[] => {
     if (!formValues) {
       return []
     }
     return (
-      (formValues[sectionKey] as ResumeContentSection<T>[]).filter(
+      (formValues[sectionKey] as ResumeSection<T>[]).filter(
         (e) => !(e.isHidden || isEmptyObject(e.content))
       ) ?? []
     )

@@ -5,7 +5,7 @@ import { TranslateButton } from '@/features/translators/components/translate-but
 import { DeepLService } from '@/features/translators/deepl.service'
 import { useTranslatorApiKey } from '@/features/translators/hooks/useTranslatorApiKey'
 import { useServerPort } from '@/hooks/userServerPort'
-import { ResumeContentSection, UserDataExperience } from '@/types/storage'
+import { ResumeExperiencesSection } from '@/types/storage'
 import { countWarnings } from '@/utils/warnings.utils'
 import { experienceSchemaWithValidation } from '@/validations/dataContentValidationSchema'
 import { Chip, FormLabel, Input, Stack, Textarea, Typography } from '@mui/joy'
@@ -18,17 +18,17 @@ import * as yup from 'yup'
 import { SectionProjectItemTitle } from './section-project-item-title'
 
 interface Props extends Omit<SectionItemProps, 'title' | 'isExpanded' | 'onExpandedChange'> {
-  data: ResumeContentSection<UserDataExperience>
+  data: ResumeExperiencesSection
   isOptionTranslate?: boolean
   isExpanded: boolean
   onExpandedChange?: ((event: React.SyntheticEvent, expanded: boolean) => void) | undefined
-  onChange: (values: ResumeContentSection<UserDataExperience>) => void
+  onChange: (values: ResumeExperiencesSection) => void
 }
 export const SectionProjectItem = memo(
   ({ data, isOptionTranslate, isExpanded, index, onExpandedChange, onChange, ...rest }: Props) => {
     const { t } = useTranslation()
 
-    const formik = useFormik<ResumeContentSection<UserDataExperience>>({
+    const formik = useFormik<ResumeExperiencesSection>({
       initialValues: data,
       onSubmit: (values) => {
         formikOnlyWarning.setValues(values)
@@ -39,7 +39,7 @@ export const SectionProjectItem = memo(
     // this formik is just to have the validations errors
     // It's not possible to submit a formik form with errors, so to have warnings
     // we need this form
-    const formikOnlyWarning = useFormik<ResumeContentSection<UserDataExperience>>({
+    const formikOnlyWarning = useFormik<ResumeExperiencesSection>({
       initialValues: data,
       validationSchema: yup.object().shape({
         id: yup.string(),

@@ -44,7 +44,7 @@
   "input.lastname.label": "Nom",
   "input.lastname.placeholder": "Nom",
   "input.grade.label": "Grade",
-  "input.grade.placeholder": " ",
+  "input.grade.placeholder": "--",
   "input.entity.label": "Entité",
   "input.entity.placeholder": "Entité/Équipe",
   "input.linkedin.label": "LinkedIn",

@@ -41,7 +41,7 @@
   "input.lastname.label": "姓",
   "input.lastname.placeholder": "姓",
   "input.grade.label": "等級",
-  "input.grade.placeholder": " ",
+  "input.grade.placeholder": "--",
   "input.entity.label": "組織",
   "input.entity.placeholder": "組織/チーム",
   "input.linkedin.label": "LinkedIn",

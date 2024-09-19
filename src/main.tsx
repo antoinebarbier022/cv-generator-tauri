@@ -21,7 +21,7 @@ function forwardConsole(
     original(message)
     invoke('plugin:log|log', {
       level,
-      message: JSON.stringify(message, null, 2),
+      message: typeof message === 'string' ? message : JSON.stringify(message, null, 2),
       location: 'window:' + getCurrentWindow().label + ':' + location.pathname
     })
   }

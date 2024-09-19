@@ -6,11 +6,21 @@ interface Translation {
   [key: string]: string
 }
 
-export interface ResumeContentSection<T> {
+export interface ResumeSection<T> {
+  type: 'common' | 'experiences'
   id: UUID
   isHidden?: boolean
   content: T
 }
+
+export interface ResumeCommonSection extends ResumeSection<Translation> {
+  type: 'common'
+}
+
+export interface ResumeExperiencesSection extends ResumeSection<UserDataExperience> {
+  type: 'experiences'
+}
+
 export interface UserData {
   firstname: string
   lastname: string
@@ -24,13 +34,13 @@ export interface UserData {
   linkedin: string
   twitter: string
   github: string
-  formation: ResumeContentSection<Translation>[]
-  employment_history: ResumeContentSection<Translation>[]
-  articles_and_others: ResumeContentSection<Translation>[]
-  sectors: ResumeContentSection<Translation>[]
-  skills: ResumeContentSection<Translation>[]
-  languages: ResumeContentSection<Translation>[]
-  experiences: ResumeContentSection<UserDataExperience>[]
+  formation: ResumeCommonSection[]
+  employment_history: ResumeCommonSection[]
+  articles_and_others: ResumeCommonSection[]
+  sectors: ResumeCommonSection[]
+  skills: ResumeCommonSection[]
+  languages: ResumeCommonSection[]
+  experiences: ResumeExperiencesSection[]
   [key as string]: any
 }
 
