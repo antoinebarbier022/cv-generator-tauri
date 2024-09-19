@@ -5,9 +5,11 @@
 
 mod commands;
 mod errors;
+mod logs;
 mod menu;
 use crate::commands::{get_backend_error, open_finder, open_powerpoint};
 use crate::errors::{EmitError, ErrorPayload};
+use crate::logs::log;
 use crate::menu::{create_app_menu, on_menu_event};
 use anyhow::Context;
 use core::str;
@@ -21,7 +23,7 @@ use std::sync::Mutex;
 use std::{sync, thread};
 use sync::mpsc::{channel, Sender};
 use tauri::{AppHandle, Manager};
-use tauri_plugin_log::fern::colors::{Color, ColoredLevelConfig};
+
 use tauri_plugin_shell::process::{CommandEvent, TerminatedPayload};
 use tauri_plugin_shell::ShellExt;
 use window_vibrancy::*;
@@ -168,8 +170,21 @@ fn register_exit_handling() -> anyhow::Result<()> {
 fn main() -> anyhow::Result<()> {
     register_exit_handling()?;
 
-    tauri::Builder::default()
-        .plugin(
+    #[cfg(debug_assertions)] // only enable instrumentation in development builds
+    let devtools = tauri_plugin_devtools::init();
+
+    let mut builder = tauri::Builder::default();
+
+    #[cfg(debug_assertions)]
+    {
+        builder = builder.plugin(devtools);
+    }
+
+    #[cfg(not(debug_assertions))]
+    {
+        use tauri_plugin_log::fern::colors::{Color, ColoredLevelConfig};
+
+        builder.plugin(
             tauri_plugin_log::Builder::new()
                 .target(tauri_plugin_log::Target::new(
                     tauri_plugin_log::TargetKind::Webview,
@@ -183,7 +198,11 @@ fn main() -> anyhow::Result<()> {
                 })
                 .level_for("tao", log::LevelFilter::Info)
                 .build(),
-        )
+        );
+    }
+
+    builder
+        .plugin(tauri_plugin_process::init())
         .plugin(tauri_plugin_fs::init())
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_dialog::init())
@@ -232,7 +251,8 @@ fn main() -> anyhow::Result<()> {
             open_finder,
             open_powerpoint,
             get_backend_error,
-            get_backend_port
+            get_backend_port,
+            log
         ])
         .run(tauri::generate_context!())
         .context("Error while running app")

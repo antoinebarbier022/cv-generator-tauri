@@ -19,7 +19,7 @@ function forwardConsole(
   const original = console[fnName]
   console[fnName] = (message) => {
     original(message)
-    invoke('plugin:log|log', {
+    invoke('log', {
       level,
       message: typeof message === 'string' ? message : JSON.stringify(message, null, 2),
       location: 'window:' + getCurrentWindow().label + ':' + location.pathname

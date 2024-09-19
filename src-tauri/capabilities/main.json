@@ -13,6 +13,8 @@
     "shell:default",
     "dialog:default",
     "updater:default",
+    "process:default",
+    "process:allow-restart",
     "log:default",
     "log:allow-log",
     "fs:default",
@@ -31,7 +33,6 @@
         }
       ]
     }
-   
   ],
   "platforms": [
     "macOS"

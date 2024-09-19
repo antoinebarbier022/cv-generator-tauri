@@ -7,8 +7,12 @@
     "devUrl": "http://localhost:3000"
   },
   "bundle": {
-    "externalBin": ["binaries/cv-generator-api"],
-    "resources": ["resources/*"],
+    "externalBin": [
+      "binaries/cv-generator-api"
+    ],
+    "resources": [
+      "resources/*"
+    ],
     "active": true,
     "category": "productivity",
     "copyright": "@2024 frog. All rights reserved.",
@@ -49,7 +53,7 @@
     "updater": {
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDJDRkYyM0EyQTYwMDkwQzUKUldURmtBQ21vaVAvTEtNbGJhMXNqTnl2MkY2bzJtYXNwVDJVRU9ib3BtK0VKcGlvcDFSRVUyaGsK",
       "endpoints": [
-        "https://github.com/antoinebarbier022/cv-generator-tauri/releases/latest/download/latest.json"
+        "https://gist.githubusercontent.com/antoinebarbier022/d2506656ce2b9815bc70d6d3d4fe9ecf/raw/b75748999d3a91d97faf0dc902a86a98fc5c542b/gistfile1.txt"
       ]
     }
   },
@@ -71,7 +75,10 @@
     ],
     "security": {
       "assetProtocol": {
-        "scope": ["$RESOURCE/**", "$APPDATA/**"],
+        "scope": [
+          "$RESOURCE/**",
+          "$APPDATA/**"
+        ],
         "enable": true
       },
       "csp": null
