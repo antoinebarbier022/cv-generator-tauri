@@ -54,18 +54,6 @@ export const StorageService = {
     if (isExistAppDataDirPath) {
       await StorageService.createAppDataDir()
     }
-
-    try {
-      await writeTextFile(
-        DATA_FILENAME,
-        JSON.stringify(emptyInitialResume),
-
-        { baseDir: BaseDirectory.AppData }
-      )
-    } catch (writeFileError) {
-      console.error('Failed to reset content data file:', writeFileError)
-      throw new Error('Failed to reset content data file')
-    }
   },
   isContentDataFile: async (): Promise<boolean> => {
     return await exists(DATA_FILENAME, {
@@ -116,7 +104,6 @@ export const StorageService = {
   },
 
   setContentData: async ({ values }: { values: UserData }): Promise<UserData> => {
-
     const isExistAppDataDirPath = await StorageService.isAppDataDir()
     if (isExistAppDataDirPath) {
       await StorageService.createAppDataDir()

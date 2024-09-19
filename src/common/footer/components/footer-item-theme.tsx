@@ -5,11 +5,11 @@ import { FooterItem } from './footer-item'
 
 interface Props {}
 export const FooterItemTheme = ({}: Props) => {
-  const { appTheme } = useAppTheme()
+  const { appTheme, overrideAppTheme } = useAppTheme()
 
   return (
     <FooterItem icon={<BrushRounded fontSize="inherit" />} isOpenModalRouter to={'settings-themes'}>
-      {t('footer.theme', { state: appTheme })}
+      {t('footer.theme', { state: overrideAppTheme || appTheme })}
     </FooterItem>
   )
 }

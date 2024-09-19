@@ -6,7 +6,7 @@ import { useAppTheme } from '../../../hooks/useAppTheme'
 
 export const ThemesSettings = () => {
   const { t } = useTranslation()
-  const { appTheme, setAppTheme, allTheme } = useAppTheme()
+  const { appTheme, overrideAppTheme, setOverrideAppTheme, setAppTheme, allTheme } = useAppTheme()
   return (
     <SettingsSection>
       <SettingsItem
@@ -16,8 +16,11 @@ export const ThemesSettings = () => {
           <Select
             size="sm"
             sx={{ minWidth: '160px' }}
-            value={appTheme}
+            value={overrideAppTheme || appTheme}
             onChange={(_, value) => {
+              if (overrideAppTheme) {
+                setOverrideAppTheme(value)
+              }
               setAppTheme(value)
               console.info(`User changed theme to '${value}'`)
             }}

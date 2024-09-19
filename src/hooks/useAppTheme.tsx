@@ -50,7 +50,14 @@ const useAppThemeStore = create(
 )
 
 export const useAppTheme = () => {
-  const { appTheme, overrideAppTheme, setOverrideAppTheme, setAppTheme } = useAppThemeStore()
+  const {
+    appTheme,
+
+    overrideAppTheme,
+
+    setOverrideAppTheme,
+    setAppTheme
+  } = useAppThemeStore()
 
   const allTheme: { value: AppTheme; label: string; hide?: boolean }[] = useMemo(
     () => [
@@ -86,11 +93,14 @@ export const useAppTheme = () => {
   }, [appTheme, overrideAppTheme])
 
   return {
-    appTheme,
-    setAppTheme,
-    appThemeConfig,
     allTheme,
+    appThemeConfig,
+
+    appTheme,
+
     overrideAppTheme,
+    setAppTheme,
+
     setOverrideAppTheme
   }
 }

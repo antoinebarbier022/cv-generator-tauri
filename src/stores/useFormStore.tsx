@@ -11,6 +11,7 @@ interface FormState {
   lastUpdated: Date | null
   formWarnings: ValidationError | null
   formValues: UserData
+  resetValues: () => void
   setLastUpdated: (value: Date | null) => void
   setFormValues: (values: Partial<UserData>) => void
 }
@@ -25,6 +26,9 @@ export const useFormStore = create(
         set(() => ({
           lastUpdated: value
         }))
+      },
+      resetValues: () => {
+        set(() => ({ formValues: emptyInitialResume }))
       },
       setFormValues: (values) => {
         set((state) => {

@@ -70,7 +70,7 @@ export const useEasterEggTheme = () => {
 
     if (secretWordItemId !== -1) {
       if (newContentHasTheSecretWord && targetSectionKey === currentSectionKey) {
-        console.debug('🎉 Entered Easter Egg mode for "One Piece" theme.')
+        console.debug(`🎉 Entered Easter Egg mode for '${targetTheme}' theme.`)
         setOverrideAppTheme(targetTheme)
         console.debug(`Theme changed to '${targetTheme}' theme`)
       }
