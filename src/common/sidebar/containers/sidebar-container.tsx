@@ -49,7 +49,6 @@ export const SidebarContainer = ({ isLoadingGenerate }: Props) => {
   const handleCloseModalMissingFont = () => {
     console.info(`User closed "Missing Font" information modal`)
     setOpenModalMissingFont(false)
-
   }
 
   const fullName = useMemo(() => {

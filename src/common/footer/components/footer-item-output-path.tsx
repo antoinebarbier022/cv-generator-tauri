@@ -8,7 +8,8 @@ export const FooterItemOutputPath = ({ path }: Props) => {
     <Typography
       sx={{
         py: 0.5,
-        px: 1
+        px: 1,
+        userSelect: 'none'
       }}
     >
       {path}

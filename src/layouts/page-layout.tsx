@@ -1,11 +1,11 @@
-import { Alert, Chip, Container, Divider, Stack, Typography } from "@mui/joy";
-import { forwardRef, PropsWithChildren, ReactNode } from "react";
-import { ErrorBoundary, FallbackProps } from "react-error-boundary";
+import { Alert, Chip, Container, Divider, Stack, Typography } from '@mui/joy'
+import { forwardRef, PropsWithChildren, ReactNode } from 'react'
+import { ErrorBoundary, FallbackProps } from 'react-error-boundary'
 
 interface Props extends PropsWithChildren {
-  title?: string;
-  chip?: string;
-  endDecorator?: ReactNode;
+  title?: string
+  chip?: string
+  endDecorator?: ReactNode
 }
 export const PageLayout = forwardRef<HTMLDivElement, Props>(
   ({ title, chip, endDecorator, children, ...props }, ref) => {
@@ -17,37 +17,29 @@ export const PageLayout = forwardRef<HTMLDivElement, Props>(
             <pre className="m-0">{error.message}</pre>
           </Stack>
         </Alert>
-      );
-    };
+      )
+    }
 
     return (
-      <Stack
-        ref={ref}
-        {...props}
-        component={Container}
-        gap={4}
-        sx={{ flex: 1 }}
-      >
+      <Stack ref={ref} {...props} component={Container} gap={4} sx={{ flex: 1 }}>
         {title && (
-          <Stack gap={1}>
+          <Stack gap={1} sx={{ userSelect: 'none' }}>
             <Stack>
               <Typography
                 endDecorator={
                   chip && (
-                    <Chip
-                      size="md"
-                      sx={{ marginTop: "6px", borderRadius: "lg" }}
-                    >
+                    <Chip size="md" sx={{ marginTop: '6px', borderRadius: 'lg' }}>
                       {chip}
                     </Chip>
                   )
                 }
+                sx={{ cursor: 'default' }}
                 slotProps={{
                   endDecorator: {
                     sx: {
-                      alignSelf: "center",
-                    },
-                  },
+                      alignSelf: 'center'
+                    }
+                  }
                 }}
                 level="h2"
               >
@@ -56,17 +48,17 @@ export const PageLayout = forwardRef<HTMLDivElement, Props>(
 
               <Stack
                 sx={{
-                  position: "fixed",
-                  top: "2rem",
-                  right: "2rem",
-                  zIndex: 10,
+                  position: 'fixed',
+                  top: '2rem',
+                  right: '2rem',
+                  zIndex: 10
                 }}
               >
                 {endDecorator}
               </Stack>
             </Stack>
 
-            <Divider></Divider>
+            <Divider />
           </Stack>
         )}
         <ErrorBoundary fallbackRender={fallbackRender}>
@@ -75,6 +67,6 @@ export const PageLayout = forwardRef<HTMLDivElement, Props>(
           </Stack>
         </ErrorBoundary>
       </Stack>
-    );
+    )
   }
-);
+)

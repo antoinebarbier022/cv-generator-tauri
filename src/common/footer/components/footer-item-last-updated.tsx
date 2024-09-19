@@ -10,7 +10,8 @@ export const FooterItemLastUpdated = ({ date }: Props) => {
     <Typography
       sx={{
         py: 0.5,
-        px: 1
+        px: 1,
+        userSelect: 'none'
       }}
       startDecorator={
         <Stack fontSize={'16px'}>

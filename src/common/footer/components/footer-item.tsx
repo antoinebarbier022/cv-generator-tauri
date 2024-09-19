@@ -16,6 +16,7 @@ export const FooterItem = ({ icon, to, isOpenModalRouter, children }: Props) => 
     <Typography
       textColor={'text.secondary'}
       sx={{
+        userSelect: 'none',
         py: 0.5,
         px: 1,
         textDecoration: 'none',

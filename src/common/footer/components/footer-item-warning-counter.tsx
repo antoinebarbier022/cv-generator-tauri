@@ -11,7 +11,8 @@ export const FooterItemWarningsCounter = ({ count, loading }: Props) => {
       <Typography
         sx={{
           py: 0.5,
-          px: 1
+          px: 1,
+          userSelect: 'none'
         }}
         paddingRight={0.25}
         startDecorator={

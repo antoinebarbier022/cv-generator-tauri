@@ -9,11 +9,17 @@ interface Props {
 }
 export const SectionEmptyState = (props: Props) => {
   return (
-    <Stack component={Container} maxWidth={'sm'} textAlign={'center'} marginTop={2}>
-      <Typography level="title-md" textColor={'text.secondary'}>
+    <Stack
+      component={Container}
+      maxWidth={'sm'}
+      textAlign={'center'}
+      marginTop={2}
+      sx={{ userSelect: 'none' }}
+    >
+      <Typography level="title-md" textColor={'text.secondary'} sx={{ cursor: 'default' }}>
         {props.title}
       </Typography>
-      <Typography level="body-sm" textColor={'text.tertiary'}>
+      <Typography level="body-sm" textColor={'text.tertiary'} sx={{ cursor: 'default' }}>
         {props.description}
       </Typography>
       <Stack justifyContent={'center'} alignItems={'center'} marginTop={2}>

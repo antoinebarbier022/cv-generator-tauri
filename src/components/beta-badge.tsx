@@ -11,7 +11,8 @@ export const BetaBadge = () => {
         right: 0,
         zIndex: 10,
         rotate: '45deg',
-        userSelect: 'none'
+        userSelect: 'none',
+        cursor: 'default'
       }}
     >
       <Typography
