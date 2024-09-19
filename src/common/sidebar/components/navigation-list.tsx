@@ -41,7 +41,7 @@ export const NavigationList = (props: Props) => {
                     <ListItemButton
                       onClick={() => {
                         if (value.to) {
-                          navigate(value.to)
+                          navigate(value.to, { replace: true })
                         }
                       }}
                       selected={isActive}

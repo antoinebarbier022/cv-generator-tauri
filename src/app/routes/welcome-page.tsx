@@ -33,7 +33,7 @@ export const WelcomePage = () => {
       })
       setLoading(true)
       setTimeout(() => {
-        navigate('/profile')
+        navigate('/profile', { replace: true })
       }, 1700)
     }
   })

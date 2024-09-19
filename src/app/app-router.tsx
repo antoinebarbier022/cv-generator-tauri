@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 
 import { EmploymentHistoryPage } from '@/app/routes/cv-forms/employment-history-page'
 import { LanguagesPage } from '@/app/routes/cv-forms/languages-page'
@@ -8,7 +8,9 @@ import { SidebarContainer } from '@/common/sidebar/containers/sidebar-container'
 
 import { ProfilePage } from '@/app/routes/cv-forms/profile-page'
 
+import { UpdaterContainer } from '@/common/updater/containers/updater-container'
 import { useMenuEvents } from '@/hooks/useMenuEvents'
+import { useNavigateToModal } from '@/hooks/useNavigateToModal'
 import { useNavigationLogger } from '@/hooks/useNavigationLogger'
 import { useRedirectToWelcomePage } from '@/hooks/useRedirectToWelcomePage'
 import { AppLayout } from '@/layouts/app-layout'
@@ -27,17 +29,38 @@ import { WelcomePage } from './routes/welcome-page'
 
 export const AppRouter = () => {
   const { isLoadingGenerate } = useMenuEvents()
-
-  const navigate = useNavigate()
-  const location = useLocation()
+  const modal = useNavigateToModal()
 
   useRedirectToWelcomePage()
   useNavigationLogger()
 
-  const background = location.state && location.state.background
   return (
     <>
-      <Routes location={background || location}>
+      <UpdaterContainer open={modal.isOpen('updater')} onClose={modal.close} />
+      <DebugModal open={modal.isOpen('debug')} onClose={modal.close} />
+
+      <SettingsModal
+        open={modal.isOpen('settings')}
+        onClose={modal.close}
+        children={<TranslatorSettings />}
+      />
+      <SettingsModal
+        open={modal.isOpen('settings-translate')}
+        onClose={modal.close}
+        children={<TranslatorSettings />}
+      />
+      <SettingsModal
+        open={modal.isOpen('settings-themes')}
+        onClose={modal.close}
+        children={<ThemesSettings />}
+      />
+      <SettingsModal
+        open={modal.isOpen('settings-language')}
+        onClose={modal.close}
+        children={<LanguageSettings />}
+      />
+
+      <Routes>
         <Route path="/welcome" element={<WelcomeLayout />}>
           <Route index element={<WelcomePage />} />
         </Route>
@@ -62,31 +85,6 @@ export const AppRouter = () => {
           <Route path="*" element={<Alert>Error 404.</Alert>} />
         </Route>
       </Routes>
-
-      {background && (
-        <Routes>
-          <Route path="debug" element={<DebugModal open onClose={() => navigate(-1)} />} />
-          <Route
-            path="/settings"
-            element={<SettingsModal open onClose={() => navigate(background)} />}
-          >
-            <Route
-              index
-              element={
-                <Navigate
-                  to={'general'}
-                  state={{
-                    background
-                  }}
-                />
-              }
-            />
-            <Route path="general" element={<TranslatorSettings />} />
-            <Route path="themes" element={<ThemesSettings />} />
-            <Route path="language" element={<LanguageSettings />} />
-          </Route>
-        </Routes>
-      )}
     </>
   )
 }

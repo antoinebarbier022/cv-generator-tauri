@@ -1,6 +1,7 @@
+import { useNavigateToModal } from '@/hooks/useNavigateToModal'
 import { Stack, Typography } from '@mui/joy'
 import { PropsWithChildren, ReactNode } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 interface Props extends PropsWithChildren {
   to: string
@@ -8,11 +9,11 @@ interface Props extends PropsWithChildren {
   icon: ReactNode
 }
 export const FooterItem = ({ icon, to, isOpenModalRouter, children }: Props) => {
-  const routerLocation = useLocation()
+  const navigate = useNavigate()
+  const modal = useNavigateToModal()
 
   return (
     <Typography
-      component={Link}
       textColor={'text.secondary'}
       sx={{
         py: 0.5,
@@ -23,12 +24,7 @@ export const FooterItem = ({ icon, to, isOpenModalRouter, children }: Props) => 
         }
       }}
       tabIndex={-1}
-      state={
-        isOpenModalRouter && {
-          background: { ...routerLocation, pathname: location.pathname }
-        }
-      }
-      to={to}
+      onClick={() => (isOpenModalRouter ? modal.open(to) : navigate(to))}
       startDecorator={icon && <Stack fontSize={'1rem'}>{icon}</Stack>}
     >
       {children}

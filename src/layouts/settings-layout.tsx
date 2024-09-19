@@ -1,3 +1,4 @@
+import { useNavigateToModal } from '@/hooks/useNavigateToModal'
 import {
   BrushRounded,
   InfoRounded,
@@ -18,34 +19,34 @@ import {
   ModalDialog,
   Stack
 } from '@mui/joy'
+import { PropsWithChildren } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
-interface Props {
+interface Props extends PropsWithChildren {
   open: boolean
   onClose: () => void
 }
 
 export const SettingsModal = (props: Props) => {
-  const routerLocation = useLocation()
+  const modal = useNavigateToModal()
   const { t } = useTranslation()
-  const navigate = useNavigate()
+
   const menu = [
     {
       label: t('settings.navigation.general'),
-      to: '/settings/general',
+      to: 'settings',
       icon: <SettingsRounded />,
       disabled: false
     },
     { divider: true, hide: true },
     {
       label: t('settings.navigation.language'),
-      to: '/settings/language',
+      to: 'settings-language',
       icon: <PublicRounded />
     },
     {
       label: t('settings.navigation.theme'),
-      to: '/settings/themes',
+      to: 'settings-themes',
       icon: <BrushRounded />,
       disabled: false
     },
@@ -58,7 +59,7 @@ export const SettingsModal = (props: Props) => {
     },
     {
       label: t('settings.navigation.advanced'),
-      to: '/settings/advanced',
+      to: 'settings-advanced',
       icon: <TuneRounded />,
       disabled: true,
       hide: true
@@ -66,14 +67,12 @@ export const SettingsModal = (props: Props) => {
     { divider: true, hide: true },
     {
       label: t('settings.navigation.about'),
-      to: '/settings/about',
+      to: 'settings-about',
       icon: <InfoRounded />,
       disabled: true,
       hide: true
     }
   ]
-
-  const background = routerLocation.state && routerLocation.state.background
 
   return (
     <Modal open={props.open} onClose={props.onClose}>
@@ -108,17 +107,12 @@ export const SettingsModal = (props: Props) => {
                 return (
                   <ListItem>
                     <ListItemButton
-                      selected={value.to === location.pathname}
-                      variant={value.to === location.pathname ? 'solid' : undefined}
-                      color={value.to === location.pathname ? 'primary' : undefined}
-                      onClick={() =>
-                        value.to &&
-                        navigate(value.to, {
-                          state: {
-                            background
-                          }
-                        })
-                      }
+                      selected={Boolean(value.to && modal.isOpen(value.to))}
+                      variant={Boolean(value.to && modal.isOpen(value.to)) ? 'solid' : undefined}
+                      color={Boolean(value.to && modal.isOpen(value.to)) ? 'primary' : undefined}
+                      onClick={() => {
+                        value.to && modal.open(value.to)
+                      }}
                       disabled={value.disabled}
                       sx={{
                         borderRadius: 'sm',
@@ -135,9 +129,7 @@ export const SettingsModal = (props: Props) => {
             </List>
           </Stack>
 
-          <Stack sx={{ height: '100%', overflowY: 'scroll' }}>
-            <Outlet />
-          </Stack>
+          <Stack sx={{ height: '100%', overflowY: 'scroll' }}>{props.children}</Stack>
         </Stack>
       </ModalDialog>
     </Modal>

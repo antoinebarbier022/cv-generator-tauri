@@ -38,7 +38,7 @@ export const ProfileButtonCard = (props: Props) => {
           {({ isActive }) => (
             <Link
               component={Typography}
-              onClick={() => navigate(props.linkTo)}
+              onClick={() => navigate(props.linkTo, { replace: true })}
               overlay
               sx={{ position: 'relative' }}
               underline="none"
