@@ -184,7 +184,7 @@ fn main() -> anyhow::Result<()> {
     {
         use tauri_plugin_log::fern::colors::{Color, ColoredLevelConfig};
 
-        builder.plugin(
+        builder = builder.plugin(
             tauri_plugin_log::Builder::new()
                 .target(tauri_plugin_log::Target::new(
                     tauri_plugin_log::TargetKind::Webview,
