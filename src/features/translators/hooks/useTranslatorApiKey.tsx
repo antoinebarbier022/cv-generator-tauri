@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 import { DeepLService } from '../deepl.service'
 
-import { useServerPort } from '@/hooks/userServerPort'
+import { useServerPort } from '@/shared/hooks/userServerPort'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 

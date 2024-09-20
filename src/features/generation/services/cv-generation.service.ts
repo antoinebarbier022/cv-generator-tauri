@@ -2,7 +2,7 @@ import { appDataDir, downloadDir, join, resolveResource } from '@tauri-apps/api/
 import { save } from '@tauri-apps/plugin-dialog'
 import { BaseDirectory, readTextFile } from '@tauri-apps/plugin-fs'
 
-import { UserData } from '../../../types/storage'
+import { UserData } from '../../../core/storage/types/storage'
 import { generateResponse } from '../types/generateResponse'
 import { generateV2Request } from '../types/generateV2Request'
 
@@ -52,7 +52,6 @@ export const CVGenerationService = {
 
     const baseURL = `http://localhost:${api_port}`
 
-    
     const response = await fetch(`${baseURL}/api/v1/generate-cv-pptx`, {
       method: 'POST',
       headers: {

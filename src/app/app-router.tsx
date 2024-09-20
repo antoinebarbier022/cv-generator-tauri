@@ -1,31 +1,32 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 
-import { EmploymentHistoryPage } from '@/app/routes/cv-forms/employment-history-page'
-import { LanguagesPage } from '@/app/routes/cv-forms/languages-page'
-import { SkillsPage } from '@/app/routes/cv-forms/skills-page'
-import { FooterBarContainer } from '@/common/footer/containers/footer-bar-container'
-import { SidebarContainer } from '@/common/sidebar/containers/sidebar-container'
+import { EmploymentHistoryPage } from '@/app/views/cv-forms/employment-history-page'
+import { LanguagesPage } from '@/app/views/cv-forms/languages-page'
+import { SkillsPage } from '@/app/views/cv-forms/skills-page'
+import { FooterBarContainer } from '@/core/footer/containers/footer-bar-container'
 
-import { ProfilePage } from '@/app/routes/cv-forms/profile-page'
+import { ProfilePage } from '@/app/views/cv-forms/profile-page'
 
-import { UpdaterContainer } from '@/common/updater/containers/updater-container'
-import { useMenuEvents } from '@/hooks/useMenuEvents'
-import { useNavigateToModal } from '@/hooks/useNavigateToModal'
-import { useNavigationLogger } from '@/hooks/useNavigationLogger'
-import { useRedirectToWelcomePage } from '@/hooks/useRedirectToWelcomePage'
-import { AppLayout } from '@/layouts/app-layout'
-import { WelcomeLayout } from '@/layouts/welcome-layout'
+import { AppLayout } from '@/app/layouts/app-layout'
+import { WelcomeLayout } from '@/app/views/welcome-page/layouts/welcome-layout'
+import { useNavigationLogger } from '@/core/logs/useNavigationLogger'
+import { UpdaterContainer } from '@/features/updater/containers/updater-container'
+
+import { useMenuEvents } from '@/core/menu/useMenuEvents'
+import { SidebarContainer } from '@/core/sidebar/containers/sidebar-container'
 import { Alert } from '@mui/joy'
-import { SettingsModal } from '../layouts/settings-layout'
-import { FormationPage } from './routes/cv-forms/formation-page'
-import { ProjectsPage } from './routes/cv-forms/projects-page'
-import { SectorsPage } from './routes/cv-forms/sectors-page'
-import { DebugModal } from './routes/debug/debug-modal'
-import { LanguageSettings } from './routes/settings/language-settings'
-import { ThemesSettings } from './routes/settings/themes-settings'
-import { TranslatorSettings } from './routes/settings/translator-settings'
-import { SummaryPage } from './routes/summary-page'
-import { WelcomePage } from './routes/welcome-page'
+import { SettingsModal } from '../features/settings/settings-layout'
+import { useNavigateToModal } from './router/useNavigateToModal'
+import { useRedirectToWelcomePage } from './router/useRedirectToWelcomePage'
+import { FormationPage } from './views/cv-forms/formation-page'
+import { ProjectsPage } from './views/cv-forms/projects-page'
+import { SectorsPage } from './views/cv-forms/sectors-page'
+import { DebugModal } from './views/debug/debug-modal'
+import { LanguageSettings } from './views/settings/language-settings'
+import { ThemesSettings } from './views/settings/themes-settings'
+import { TranslatorSettings } from './views/settings/translator-settings'
+import { SummaryPage } from './views/summary-page/summary-page'
+import { WelcomePage } from './views/welcome-page/welcome-page'
 
 export const AppRouter = () => {
   const { isLoadingGenerate } = useMenuEvents()
@@ -38,27 +39,20 @@ export const AppRouter = () => {
     <>
       <UpdaterContainer open={modal.isOpen('updater')} onClose={modal.close} />
       <DebugModal open={modal.isOpen('debug')} onClose={modal.close} />
-
       <SettingsModal
-        open={modal.isOpen('settings')}
+        open={modal.isOpen([
+          'settings',
+          'settings-translate',
+          'settings-themes',
+          'settings-language'
+        ])}
         onClose={modal.close}
-        children={<TranslatorSettings />}
-      />
-      <SettingsModal
-        open={modal.isOpen('settings-translate')}
-        onClose={modal.close}
-        children={<TranslatorSettings />}
-      />
-      <SettingsModal
-        open={modal.isOpen('settings-themes')}
-        onClose={modal.close}
-        children={<ThemesSettings />}
-      />
-      <SettingsModal
-        open={modal.isOpen('settings-language')}
-        onClose={modal.close}
-        children={<LanguageSettings />}
-      />
+      >
+        {modal.isOpen('settings') && <TranslatorSettings />}
+        {modal.isOpen('settings-translate') && <TranslatorSettings />}
+        {modal.isOpen('settings-themes') && <ThemesSettings />}
+        {modal.isOpen('settings-language') && <LanguageSettings />}
+      </SettingsModal>
 
       <Routes>
         <Route path="/welcome" element={<WelcomeLayout />}>
