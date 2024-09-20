@@ -1,3 +1,4 @@
+import { useGetDataStorage } from '@/core/storage/useGetDataStorage'
 import { useFormCV } from '@/shared/hooks/useFormCV'
 import { ArrowForwardRounded } from '@mui/icons-material'
 import { Button, CircularProgress, Input, Stack, Typography } from '@mui/joy'
@@ -14,17 +15,20 @@ export const WelcomePage = () => {
   const [isLoading, setLoading] = useState(false)
   const [isForm, setIsForm] = useState(false)
 
+  const { data } = useGetDataStorage()
+
   const { setFormValues } = useFormCV()
 
   const formik = useFormik<{ firstname: string; lastname: string }>({
     initialValues: {
-      firstname: '',
-      lastname: ''
+      firstname: data?.firstname ?? '',
+      lastname: data?.lastname ?? ''
     },
     validationSchema: yup.object().shape({
       firstname: yup.string().required(),
       lastname: yup.string().required()
     }),
+    enableReinitialize: true,
     validateOnMount: true,
     onSubmit: (values) => {
       setFormValues({
