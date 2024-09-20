@@ -2,6 +2,7 @@ import { appDataDir, downloadDir, join, resolveResource } from '@tauri-apps/api/
 import { save } from '@tauri-apps/plugin-dialog'
 import { BaseDirectory, readTextFile } from '@tauri-apps/plugin-fs'
 
+import { invoke } from '@tauri-apps/api/core'
 import { UserData } from '../../../core/storage/types/storage'
 import { generateResponse } from '../types/generateResponse'
 import { generateV2Request } from '../types/generateV2Request'
@@ -38,17 +39,13 @@ export const CVGenerationService = {
       throw Error('Error on open save dialog')
     }
   },
-  generate: async ({
-    api_port,
-    outputFilePath
-  }: {
-    api_port: string | null
-    outputFilePath: string
-  }): Promise<generateResponse> => {
+  generate: async ({ outputFilePath }: { outputFilePath: string }): Promise<generateResponse> => {
     const appDataDirPath = await appDataDir()
     const fileName = outputFilePath.split('/').slice(-1).join('')
     const outputFolderPath = outputFilePath.replace(fileName, '')
     const outputFileName = outputFilePath.replace(outputFolderPath, '').replace('.pptx', '')
+
+    const api_port = await invoke<string>('get_backend_port')
 
     const baseURL = `http://localhost:${api_port}`
 
@@ -72,18 +69,18 @@ export const CVGenerationService = {
   },
   generateV2: async ({
     outputFilePath,
-    data,
-    apiPort
+    data
   }: {
     outputFilePath: string
     data: generateV2Request
-    apiPort: string
   }): Promise<generateResponse> => {
     const fileName = outputFilePath.split('/').slice(-1).join('')
     const outputFolderPath = outputFilePath.replace(fileName, '')
     const outputFileName = outputFilePath.replace(outputFolderPath, '').replace('.pptx', '')
 
-    const baseURL = `http://localhost:${apiPort}`
+    const api_port = await invoke<string>('get_backend_port')
+
+    const baseURL = `http://localhost:${api_port}`
 
     const response = await fetch(`${baseURL}/api/v2/generate-cv-pptx`, {
       method: 'POST',

@@ -2,7 +2,7 @@ import '@/configs/i18n.config'
 import { useErrors } from '@/core/errors/hooks/useErrors'
 import { BetaBadge } from '@/shared/components/beta-badge'
 import { useAppTheme } from '@/shared/hooks/useAppTheme'
-import { useServerPort } from '@/shared/hooks/userServerPort'
+
 import { CssBaseline, CssVarsProvider } from '@mui/joy'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
@@ -23,8 +23,6 @@ export const AppProvider = ({ children }: PropsWithChildren) => {
   })
 
   const { appThemeConfig } = useAppTheme()
-
-  useServerPort()
 
   return (
     <CssVarsProvider

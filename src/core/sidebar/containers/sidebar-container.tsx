@@ -14,7 +14,6 @@ import { Button, Divider, Sheet, Stack } from '@mui/joy'
 import { useAskOutputPath } from '@/features/generation/hooks/useAskOutputPath'
 import { useGenerate } from '@/features/generation/hooks/useGenerate'
 import { useFormCV } from '@/shared/hooks/useFormCV'
-import { useServerPort } from '@/shared/hooks/userServerPort'
 
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -36,8 +35,6 @@ export const SidebarContainer = ({ isLoadingGenerate }: Props) => {
 
   const askOutputPath = useAskOutputPath()
   const generate = useGenerate()
-
-  const { port: apiPort } = useServerPort()
 
   const { formValues } = useFormCV()
 
@@ -74,7 +71,7 @@ export const SidebarContainer = ({ isLoadingGenerate }: Props) => {
       onSettled: () => {},
       onSuccess: (outputFilePath) => {
         if (outputFilePath) {
-          generate.mutate({ outputFilePath, api_port: apiPort })
+          generate.mutate({ outputFilePath })
         }
       }
     })

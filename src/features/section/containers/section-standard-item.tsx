@@ -12,7 +12,6 @@ import { AccordionCardTitle } from '../../../shared/components/accordion-card-ti
 
 import { DeepLService } from '@/features/translators/deepl.service'
 import { useTranslatorApiKey } from '@/features/translators/hooks/useTranslatorApiKey'
-import { useServerPort } from '@/shared/hooks/userServerPort'
 import { useMutation } from '@tanstack/react-query'
 import { translationSchemaWithValidation } from '../../../shared/validations/dataContentValidationSchema'
 import { SectionItemLayout, SectionItemProps } from '../layouts/section-item-layout'
@@ -78,8 +77,6 @@ export const SectionStandardItem = ({
 
   const { apiKey: translatorApiKey } = useTranslatorApiKey()
 
-  const { port: api_port } = useServerPort()
-
   const mutation = useMutation({
     mutationKey: ['translators', 'deepl', 'usage'],
     mutationFn: DeepLService.translate
@@ -94,7 +91,7 @@ export const SectionStandardItem = ({
     mutation.mutate(
       {
         api_key: translatorApiKey,
-        api_port,
+
         text: formik.values.content.fr,
         target_lang: lang
       },

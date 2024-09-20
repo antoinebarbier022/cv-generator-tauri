@@ -28,7 +28,6 @@ import { SectionTextarea } from '@/features/section/containers/section-textarea'
 import { SectionTextfield } from '@/features/section/containers/section-textfield'
 import { CV_LANGUAGES } from '@/shared/constants/cv-languages'
 import { useFormCV } from '@/shared/hooks/useFormCV'
-import { useServerPort } from '@/shared/hooks/userServerPort'
 import { useMutation } from '@tanstack/react-query'
 import { convertFileSrc } from '@tauri-apps/api/core'
 import { useFormik } from 'formik'
@@ -105,8 +104,6 @@ export const ProfilePage = () => {
   const variantInputStyle = 'plain'
 
   const { isActiveOptionValid: isOptionTranslate } = useTranslatorOption()
-
-  const { port: api_port } = useServerPort()
 
   const mutation = useMutation({
     mutationKey: ['translators', 'deepl', 'usage'],
@@ -295,7 +292,7 @@ export const ProfilePage = () => {
                     mutation.mutate(
                       {
                         api_key: translatorApiKey,
-                        api_port,
+
                         text: formik.values.role.fr,
                         target_lang: lang
                       },
@@ -336,7 +333,7 @@ export const ProfilePage = () => {
                     mutation.mutate(
                       {
                         api_key: translatorApiKey,
-                        api_port,
+
                         text: formik.values.description.fr,
                         target_lang: lang
                       },

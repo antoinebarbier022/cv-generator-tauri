@@ -6,7 +6,6 @@ import { DeepLService } from '@/features/translators/deepl.service'
 import { useTranslatorApiKey } from '@/features/translators/hooks/useTranslatorApiKey'
 import { AccordionCardTitle } from '@/shared/components/accordion-card-title'
 import { CV_LANGUAGES } from '@/shared/constants/cv-languages'
-import { useServerPort } from '@/shared/hooks/userServerPort'
 import { experienceSchemaWithValidation } from '@/shared/validations/dataContentValidationSchema'
 import { Chip, FormLabel, Input, Stack, Textarea, Typography } from '@mui/joy'
 import { useMutation } from '@tanstack/react-query'
@@ -110,8 +109,6 @@ export const SectionProjectItem = ({
   )
 
   const { apiKey: translatorApiKey } = useTranslatorApiKey()
-
-  const { port: api_port } = useServerPort()
 
   const mutation = useMutation({
     mutationKey: ['translators', 'deepl', 'usage'],
@@ -252,7 +249,6 @@ export const SectionProjectItem = ({
                             mutation.mutate(
                               {
                                 api_key: translatorApiKey,
-                                api_port,
                                 text: formik.values.content[item.name].fr,
                                 target_lang: lang
                               },

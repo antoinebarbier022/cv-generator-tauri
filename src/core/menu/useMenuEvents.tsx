@@ -8,8 +8,6 @@ import { useAskOutputPath } from '@/features/generation/hooks/useAskOutputPath'
 import { useGenerate } from '@/features/generation/hooks/useGenerate'
 import { MenuEvent } from '@/generated/events/menu-events'
 
-import { useServerPort } from '../../shared/hooks/userServerPort'
-
 import { useNavigateToModal } from '../../app/router/useNavigateToModal'
 import { useSidebarStore } from '../sidebar/stores/useSidebarStore'
 
@@ -23,9 +21,7 @@ export const useMenuEvents = () => {
 
   const setupListener = (eventName: string, navigateTo: string) => {
     return listen(eventName, () => {
-      if (location.pathname !== navigateTo) {
-        modal.open(navigateTo)
-      }
+      modal.open(navigateTo)
     })
   }
 
@@ -35,7 +31,7 @@ export const useMenuEvents = () => {
     return () => {
       unlisten.then((dispose) => dispose())
     }
-  }, [history])
+  }, [])
 
   useEffect(() => {
     const unlisten = setupListener(MenuEvent.AppPreferences, 'settings')
@@ -43,7 +39,7 @@ export const useMenuEvents = () => {
     return () => {
       unlisten.then((dispose) => dispose())
     }
-  }, [history])
+  }, [])
 
   useEffect(() => {
     const unlisten = listen(MenuEvent.FileImport, () => mutationImport.mutate())
@@ -72,7 +68,7 @@ export const useMenuEvents = () => {
     return () => {
       unlisten.then((dispose) => dispose())
     }
-  }, [history])
+  }, [])
 
   useEffect(() => {
     const unlisten = listen(MenuEvent.ViewToggleSidebar, async () => {
@@ -96,7 +92,7 @@ export const useMenuEvents = () => {
     return () => {
       unlisten.then((dispose) => dispose())
     }
-  }, [history])
+  }, [])
 
   useEffect(() => {
     const unlisten = setupListener(MenuEvent.FileGenerate, 'generate')
@@ -107,15 +103,13 @@ export const useMenuEvents = () => {
 
   const askOutputPath = useAskOutputPath()
   const generate = useGenerate()
-  const { port: api_port } = useServerPort()
 
   useEffect(() => {
     const unlisten = listen(MenuEvent.FileGenerateAndSaveAs, async () => {
       askOutputPath.mutate(undefined, {
-        onSettled: () => {},
         onSuccess: (outputFilePath) => {
           if (outputFilePath) {
-            generate.mutate({ outputFilePath, api_port })
+            generate.mutate({ outputFilePath })
           }
         }
       })
@@ -123,7 +117,7 @@ export const useMenuEvents = () => {
         unlisten.then((dispose) => dispose())
       }
     })
-  }, [history])
+  }, [])
 
   return { isLoadingGenerate: generate.isPending }
 }

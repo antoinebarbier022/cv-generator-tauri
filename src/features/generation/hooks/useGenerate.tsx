@@ -52,8 +52,9 @@ export const useGenerate = () => {
       }
     },
     onError: (e, variables) => {
-      console.error(`Generate [error] : ${e}`)
-      console.error(`Generate variables : ${variables}`)
+      console.error(`Generate [error]`, e)
+      console.error(e)
+      console.error(`Generate variables`, JSON.stringify(variables))
       alert(`Generate [error] : ${e}`)
     }
   })
