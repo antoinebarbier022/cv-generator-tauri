@@ -19,23 +19,18 @@ export const useMenuEvents = () => {
 
   const mutationImport = useImportDataContent()
 
-  const setupListener = (eventName: string, navigateTo: string) => {
-    return listen(eventName, () => {
-      modal.open(navigateTo)
-    })
-  }
+  const askOutputPath = useAskOutputPath()
+  const generate = useGenerate()
 
   useEffect(() => {
-    const unlisten = setupListener(MenuEvent.DebugOpenPanel, 'debug')
-
+    const unlisten = listen(MenuEvent.DebugOpenPanel, () => modal.open('debug'))
     return () => {
       unlisten.then((dispose) => dispose())
     }
   }, [])
 
   useEffect(() => {
-    const unlisten = setupListener(MenuEvent.AppPreferences, 'settings')
-
+    const unlisten = listen(MenuEvent.AppPreferences, () => modal.open('settings'))
     return () => {
       unlisten.then((dispose) => dispose())
     }
@@ -48,32 +43,19 @@ export const useMenuEvents = () => {
     }
   }, [])
 
-  {
-    /** App Updater */
-  }
   useEffect(() => {
     const unlisten = listen(MenuEvent.AppCheckUpdate, async (e) => {
       if (e.payload === 'check-update-from-menu') {
         modal.open('updater')
       }
     })
-
     return () => {
       unlisten.then((dispose) => dispose())
     }
   }, [])
 
   useEffect(() => {
-    const unlisten = setupListener(MenuEvent.FileExport, 'export')
-    return () => {
-      unlisten.then((dispose) => dispose())
-    }
-  }, [])
-
-  useEffect(() => {
-    const unlisten = listen(MenuEvent.ViewToggleSidebar, async () => {
-      toggleCollapseSidebar()
-    })
+    const unlisten = listen(MenuEvent.ViewToggleSidebar, async () => toggleCollapseSidebar())
     return () => {
       unlisten.then((dispose) => dispose())
     }
@@ -93,16 +75,6 @@ export const useMenuEvents = () => {
       unlisten.then((dispose) => dispose())
     }
   }, [])
-
-  useEffect(() => {
-    const unlisten = setupListener(MenuEvent.FileGenerate, 'generate')
-    return () => {
-      unlisten.then((dispose) => dispose())
-    }
-  }, [])
-
-  const askOutputPath = useAskOutputPath()
-  const generate = useGenerate()
 
   useEffect(() => {
     const unlisten = listen(MenuEvent.FileGenerateAndSaveAs, async () => {
