@@ -58,7 +58,9 @@ export const useMenuEvents = () => {
       if (
         statusRef.current !== AppUpdaterStatus.INSTALLING_UPDATE &&
         statusRef.current !== AppUpdaterStatus.UPDATE_DOWNLOADED &&
-        statusRef.current !== AppUpdaterStatus.DOWNLOADING_UPDATE
+        statusRef.current !== AppUpdaterStatus.DOWNLOADING_UPDATE &&
+        statusRef.current !== AppUpdaterStatus.CHECK_ERROR &&
+        statusRef.current !== AppUpdaterStatus.DOWNLOAD_FAILED
       ) {
         setStatus(AppUpdaterStatus.CHECKING_FOR_UPDATES)
       }

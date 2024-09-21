@@ -14,6 +14,7 @@ export const useAppUpdater = (): {
   update: Pick<Update, 'available' | 'version' | 'body' | 'currentVersion' | 'date'> | null
   downloadedLength: number | null
   totalUpdateLength: number | null
+  checkForUpdates: () => void
   relaunch: () => void
   cancelUpdater: () => void
   downloadAndInstall: () => void
@@ -65,14 +66,12 @@ export const useAppUpdater = (): {
             contentLenght = event.data.contentLength ?? 0
             setUpdateLength(contentLenght)
             console.info(`[Updater] started downloading ${event.data.contentLength} bytes`)
-            setStatus(AppUpdaterStatus.UPDATE_AVAILABLE)
+            setStatus(AppUpdaterStatus.DOWNLOADING_UPDATE)
             break
           case 'Progress':
-            setStatus(AppUpdaterStatus.DOWNLOADING_UPDATE)
             downloaded += event.data.chunkLength
             setDownloadedLength(downloaded)
             console.trace(`[Updater] ⬇ downloaded ${downloaded} from ${contentLenght}`)
-
             break
           case 'Finished':
             console.info('[Updater] download finished')
@@ -82,7 +81,7 @@ export const useAppUpdater = (): {
         }
       })
     } catch (e) {
-      setStatus(AppUpdaterStatus.UPDATE_FAILED)
+      setStatus(AppUpdaterStatus.DOWNLOAD_FAILED)
       openModal('updater')
       console.error(`[Updater] ${e}`)
     }
@@ -91,7 +90,8 @@ export const useAppUpdater = (): {
   const checkForUpdates = async () => {
     try {
       resetUpdater()
-      const update = await check({ timeout: 30000 })
+      setStatus(AppUpdaterStatus.CHECKING_FOR_UPDATES)
+      const update = await check({ timeout: 10000 })
       await sleep(500)
       setUpdate(update)
 
@@ -102,7 +102,7 @@ export const useAppUpdater = (): {
         console.info(`[Updater] Found available update ${update.version} from ${update.date}`)
       }
     } catch (error) {
-      setStatus(AppUpdaterStatus.ERROR)
+      setStatus(AppUpdaterStatus.CHECK_ERROR)
       console.error(error)
     }
   }
@@ -122,6 +122,7 @@ export const useAppUpdater = (): {
       : null,
     downloadedLength,
     totalUpdateLength,
+    checkForUpdates,
     downloadAndInstall,
     cancelUpdater,
     relaunch: relaunchApp

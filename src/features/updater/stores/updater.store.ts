@@ -36,7 +36,7 @@ export const useUpdaterStore = create(
           case AppUpdaterStatus.DOWNLOADING_UPDATE:
             break
 
-          case AppUpdaterStatus.ERROR:
+          case AppUpdaterStatus.CHECK_ERROR:
             console.error(`[Updater] An error occurred during the update process`)
             break
 
@@ -44,8 +44,8 @@ export const useUpdaterStore = create(
             console.info(`[Updater] No update available`)
             break
 
-          case AppUpdaterStatus.UPDATE_FAILED:
-            console.error(`[Updater] Update failed`)
+          case AppUpdaterStatus.DOWNLOAD_FAILED:
+            console.error(`[Updater] Download failed`)
             break
 
           case AppUpdaterStatus.UPDATE_SUCCESS:

@@ -71,11 +71,13 @@ export const FooterBarContainer = () => {
         sx={{ cursor: 'default' }}
         gap={0.5}
       >
-        {(status === AppUpdaterStatus.UPDATE_FAILED ||
+        {(status === AppUpdaterStatus.DOWNLOAD_FAILED ||
           status === AppUpdaterStatus.DOWNLOADING_UPDATE) && (
           <FooterItem onClick={() => modal.open('updater')}>
             <Stack direction={'row'} alignItems={'center'} gap={1}>
-              {status !== AppUpdaterStatus.UPDATE_FAILED ? (
+              {status == AppUpdaterStatus.DOWNLOAD_FAILED ? (
+                <ErrorOutline fontSize="inherit" />
+              ) : (
                 <CircularProgress
                   sx={{
                     '--CircularProgress-size': '12px',
@@ -83,11 +85,15 @@ export const FooterBarContainer = () => {
                     '--CircularProgress-progressThickness': '2px'
                   }}
                 />
-              ) : (
-                <ErrorOutline fontSize="inherit" />
               )}
-              Update progression : <span className="text-end w-[2ch]"> {updaterProgression}</span>%
-              {''}
+              {status === AppUpdaterStatus.DOWNLOAD_FAILED ? (
+                'Update error'
+              ) : (
+                <>
+                  Update progression :{' '}
+                  <span className="text-end w-[2ch]"> {updaterProgression}</span>%
+                </>
+              )}
             </Stack>
           </FooterItem>
         )}

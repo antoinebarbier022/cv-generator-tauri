@@ -6,7 +6,7 @@ export enum AppUpdaterStatus {
   DOWNLOADING_UPDATE = 'downloading_update',
   UPDATE_DOWNLOADED = 'update_downloaded',
   INSTALLING_UPDATE = 'installing_update',
-  UPDATE_FAILED = 'update_failed',
+  DOWNLOAD_FAILED = 'download_failed',
   UPDATE_SUCCESS = 'update_success',
-  ERROR = 'error'
+  CHECK_ERROR = 'error'
 }

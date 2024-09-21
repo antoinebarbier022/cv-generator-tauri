@@ -56,6 +56,8 @@ export const UpdaterModal = ({
   const marginTop = size === 'sm' ? 2 : 0
   const paddingTop = size === 'sm' ? 0 : 2.5
   const marginBottom = size === 'sm' ? 1 : 0
+
+  const actionsButtonDirection = size === 'sm' ? 'column-reverse' : 'row'
   return (
     <Modal open={open}>
       <ModalDialog
@@ -78,7 +80,7 @@ export const UpdaterModal = ({
 
           <Stack gap={8} width={'100%'} sx={{ paddingTop: paddingTop }}>
             <Stack gap={1} marginRight={marginRight}>
-              <Stack>
+              <Stack gap={0.5}>
                 {title && (
                   <Typography color={color} level="title-md" width={'100%'} textAlign={alignement}>
                     {title}
@@ -99,7 +101,11 @@ export const UpdaterModal = ({
               <Stack>{children}</Stack>
             </Stack>
 
-            <Stack direction={'row'} justifyContent={alignement ?? 'flex-end'} gap={1}>
+            <Stack
+              direction={actionsButtonDirection}
+              justifyContent={alignement ?? 'flex-end'}
+              gap={1}
+            >
               {onCancel && (
                 <Button variant="soft" color="neutral" onClick={onCancel} sx={{ flex: '1' }}>
                   {cancelLabel}

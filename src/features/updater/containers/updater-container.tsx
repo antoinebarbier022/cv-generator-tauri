@@ -1,5 +1,7 @@
 import { useNavigateToModal } from '@/app/router/useNavigateToModal'
 import AppIcon from '@/assets/images/icon.svg?react'
+import UpdateErrorSVG from '@/assets/images/update-error.svg?react'
+
 import i18n from '@/configs/i18n.config'
 import { Card, LinearProgress, Stack } from '@mui/joy'
 import { partial } from 'filesize'
@@ -25,6 +27,7 @@ export const UpdaterContainer = (props: Props) => {
     downloadedLength,
     totalUpdateLength,
     downloadAndInstall,
+    checkForUpdates,
     cancelUpdater,
     update,
     relaunch
@@ -63,7 +66,7 @@ export const UpdaterContainer = (props: Props) => {
       if (status === AppUpdaterStatus.DOWNLOADING_UPDATE) {
         return `${size(downloadedLength ?? 0)} / ${size(totalUpdateLength)}`
       }
-      return 'Waiting 2...'
+      return 'Waiting...'
     }
     return (
       <UpdaterModal
@@ -91,11 +94,13 @@ export const UpdaterContainer = (props: Props) => {
         <UpdaterModal
           open={props.open}
           onConfirm={relaunch}
+          onCancel={hideModal}
           onClose={handleClose}
           config={{
             icon: <AppIcon />,
-            title: 'Ready to install',
-            confirmLabel: 'Install and reload'
+            title: `Ready to install v${update?.version}`,
+            confirmLabel: 'Restart now',
+            cancelLabel: 'On next launch'
           }}
         >
           <Stack pt={2}>
@@ -106,20 +111,20 @@ export const UpdaterContainer = (props: Props) => {
     )
   }
 
-  if (status === AppUpdaterStatus.UPDATE_FAILED) {
+  if (status === AppUpdaterStatus.DOWNLOAD_FAILED) {
     const progression =
       downloadedLength && totalUpdateLength ? (downloadedLength / totalUpdateLength) * 100 : 0
     return (
       <>
         <UpdaterModal
           open={props.open}
-          onClose={handleClose}
+          onCancel={cancelUpdater}
           onConfirm={downloadAndInstall}
           config={{
-            icon: <AppIcon />,
-            title: 'Error',
+            icon: <UpdateErrorSVG />,
+            title: 'Failed to Download Update',
             kind: 'error',
-            confirmLabel: 'Restart'
+            confirmLabel: 'Try Again'
           }}
         >
           <Stack pt={2}>
@@ -165,6 +170,22 @@ export const UpdaterContainer = (props: Props) => {
           <LinearProgress size="lg" />
         </Stack>
       </UpdaterModal>
+    )
+  }
+
+  if (status === AppUpdaterStatus.CHECK_ERROR) {
+    return (
+      <UpdaterModal
+        open={props.open}
+        onCancel={cancelUpdater}
+        onConfirm={checkForUpdates}
+        config={{
+          kind: status === AppUpdaterStatus.CHECK_ERROR ? 'error' : 'info',
+          icon: <UpdateErrorSVG />,
+          title: `Failed to check for updates`,
+          confirmLabel: 'Try Again'
+        }}
+      ></UpdaterModal>
     )
   }
 
