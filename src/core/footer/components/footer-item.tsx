@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 interface Props extends PropsWithChildren {
   to: string
   isOpenModalRouter: boolean
-  icon: ReactNode
+  icon?: ReactNode
 }
 export const FooterItem = ({ icon, to, isOpenModalRouter, children }: Props) => {
   const navigate = useNavigate()

@@ -21,11 +21,15 @@ export const FooterItemWarningsCounter = ({ count, loading }: Props) => {
           </Stack>
         }
       >
-        <span className="text-center w-[2ch]">
+        <span className="flex items-center text-center  w-[2ch]">
           {loading ? (
-            <Stack>
-              <CircularProgress size="sm" sx={{ scale: '0.5' }} />
-            </Stack>
+            <CircularProgress
+              sx={{
+                '--CircularProgress-size': '12px',
+                '--CircularProgress-trackThickness': '2px',
+                '--CircularProgress-progressThickness': '2px'
+              }}
+            />
           ) : (
             count
           )}

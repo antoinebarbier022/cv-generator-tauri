@@ -11,7 +11,7 @@ export const RealeaseNoteMarkdown = ({ content }: Props) => {
   const fontWeight = 300
 
   return (
-    <Stack>
+    <Stack maxHeight={'10lh'} overflow={'auto'}>
       <Markdown
         remarkPlugins={[remarkGfm]}
         components={{

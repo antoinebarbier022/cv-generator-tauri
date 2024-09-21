@@ -1,6 +1,8 @@
+import { useNavigateToModal } from '@/app/router/useNavigateToModal'
 import AppIcon from '@/assets/images/icon.svg?react'
+import i18n from '@/configs/i18n.config'
 import { Card, LinearProgress, Stack } from '@mui/joy'
-import { filesize } from 'filesize'
+import { partial } from 'filesize'
 import { RealeaseNoteMarkdown } from '../components/release-note-markdown'
 import { UpdaterModal } from '../components/updater-modal'
 import { useAppUpdater } from '../hooks/useAppUpdater'
@@ -16,10 +18,17 @@ interface Props {
 }
 
 export const UpdaterContainer = (props: Props) => {
-  const { status, downloadedLength, totalUpdateLength, downloadAndInstall, cancelUpdater, update } =
-    useAppUpdater({
-      enabled: props.open
-    })
+  const { close: hideModal } = useNavigateToModal()
+
+  const {
+    status,
+    downloadedLength,
+    totalUpdateLength,
+    downloadAndInstall,
+    cancelUpdater,
+    update,
+    relaunch
+  } = useAppUpdater()
 
   const handleClose = () => {
     cancelUpdater()
@@ -31,41 +40,39 @@ export const UpdaterContainer = (props: Props) => {
       <UpdaterModal
         open={props.open}
         onClose={handleClose}
+        onCancel={handleClose}
         config={{
           icon: <AppIcon />,
           title: 'No update available',
-          description: 'You are already using the latest version',
-          hideConfirmButton: true
+          description: 'You are already using the latest version'
         }}
       />
     )
   }
 
-  if (
-    (update && downloadedLength !== null && status === AppUpdaterStatus.DOWNLOADING_UPDATE) ||
-    status === AppUpdaterStatus.UPDATE_DOWNLOADED
-  ) {
+  if (update && downloadedLength !== null && status === AppUpdaterStatus.DOWNLOADING_UPDATE) {
     const isProgression = Boolean(downloadedLength && downloadedLength >= 1)
     const progression =
       downloadedLength && totalUpdateLength ? (downloadedLength / totalUpdateLength) * 100 : 0
-    console.log(progression)
+
+    const size = partial({ standard: 'jedec', locale: i18n.languages[0], pad: true })
     const getTitle = () => {
       if (totalUpdateLength === null || totalUpdateLength === 0) {
         return 'Waiting...'
       }
-      if (AppUpdaterStatus.UPDATE_DOWNLOADED) {
-        return `${filesize(downloadedLength ?? 0, { standard: 'jedec' })} / ${filesize(totalUpdateLength, { standard: 'jedec' })}`
+      if (status === AppUpdaterStatus.DOWNLOADING_UPDATE) {
+        return `${size(downloadedLength ?? 0)} / ${size(totalUpdateLength)}`
       }
       return 'Waiting 2...'
     }
     return (
       <UpdaterModal
         open={props.open}
-        onClose={handleClose}
+        onCancel={hideModal}
         config={{
           icon: <AppIcon />,
           title: getTitle(),
-          hideConfirmButton: true
+          cancelLabel: 'Hide'
         }}
       >
         <Stack pt={2}>
@@ -78,11 +85,57 @@ export const UpdaterContainer = (props: Props) => {
     )
   }
 
+  if (status === AppUpdaterStatus.UPDATE_DOWNLOADED) {
+    return (
+      <>
+        <UpdaterModal
+          open={props.open}
+          onConfirm={relaunch}
+          onClose={handleClose}
+          config={{
+            icon: <AppIcon />,
+            title: 'Ready to install',
+            confirmLabel: 'Install and reload'
+          }}
+        >
+          <Stack pt={2}>
+            <LinearProgress determinate value={100} />
+          </Stack>
+        </UpdaterModal>
+      </>
+    )
+  }
+
+  if (status === AppUpdaterStatus.DOWNLOAD_ERROR) {
+    const progression =
+      downloadedLength && totalUpdateLength ? (downloadedLength / totalUpdateLength) * 100 : 0
+    return (
+      <>
+        <UpdaterModal
+          open={props.open}
+          onClose={handleClose}
+          onConfirm={downloadAndInstall}
+          config={{
+            icon: <AppIcon />,
+            title: 'Error',
+            kind: 'error',
+            confirmLabel: 'Restart'
+          }}
+        >
+          <Stack pt={2}>
+            <LinearProgress color="danger" determinate value={progression} />
+          </Stack>
+        </UpdaterModal>
+      </>
+    )
+  }
+
   if (update && status === AppUpdaterStatus.UPDATE_AVAILABLE) {
     return (
       <UpdaterModal
         open={props.open}
-        onClose={handleClose}
+        onClose={cancelUpdater}
+        onCancel={cancelUpdater}
         onConfirm={downloadAndInstall}
         config={{
           size: 'md',
@@ -98,15 +151,14 @@ export const UpdaterContainer = (props: Props) => {
       </UpdaterModal>
     )
   }
-  if (update && status === AppUpdaterStatus.CHECKING_FOR_UPDATES) {
+  if (status === AppUpdaterStatus.CHECKING_FOR_UPDATES) {
     return (
       <UpdaterModal
         open={props.open}
         onClose={handleClose}
         config={{
           icon: <AppIcon />,
-          title: `Checking for updates`,
-          hideConfirmButton: true
+          title: `Checking for updates`
         }}
       >
         <Stack pt={2}>

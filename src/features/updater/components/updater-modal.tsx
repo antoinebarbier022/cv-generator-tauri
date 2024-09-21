@@ -4,9 +4,11 @@ import { PropsWithChildren, ReactNode } from 'react'
 
 interface Props extends PropsWithChildren {
   open: boolean
-  onClose: () => void
+  onClose?: () => void
   onConfirm?: () => void
+  onCancel?: () => void
   config?: {
+    kind?: 'error' | 'info'
     size?: 'sm' | 'md'
     icon: ReactNode | null
     title?: string
@@ -14,7 +16,6 @@ interface Props extends PropsWithChildren {
     releaseNotes?: string
     confirmLabel?: string
     cancelLabel?: string
-    hideConfirmButton?: boolean
   }
 }
 
@@ -22,27 +23,30 @@ export const UpdaterModal = ({
   open,
   onClose,
   onConfirm,
+  onCancel,
   config = {
+    kind: 'info',
     size: 'sm',
     icon: undefined,
     title: undefined,
     description: undefined,
     releaseNotes: undefined,
     confirmLabel: 'OK',
-    cancelLabel: 'Cancel',
-    hideConfirmButton: false
+    cancelLabel: 'Cancel'
   },
   children
 }: Props) => {
   const {
+    kind = 'info',
     size = 'sm',
     icon = undefined,
     title,
     description,
     confirmLabel: okLabel = 'OK',
-    cancelLabel = 'Cancel',
-    hideConfirmButton = false
+    cancelLabel = 'Cancel'
   } = config
+
+  const color = kind === 'error' ? 'danger' : undefined
 
   const width = size === 'sm' ? '380px' : '650px'
   const direction = size === 'sm' ? 'column' : 'row'
@@ -55,7 +59,7 @@ export const UpdaterModal = ({
   return (
     <Modal open={open}>
       <ModalDialog size="lg" sx={{ minWidth: width, maxWidth: width, width: width }}>
-        <ModalClose onClick={onClose} />
+        {onClose && <ModalClose onClick={onClose} />}
         <Stack
           direction={direction}
           alignItems={alignement}
@@ -73,13 +77,18 @@ export const UpdaterModal = ({
             <Stack gap={1} marginRight={marginRight}>
               <Stack>
                 {title && (
-                  <Typography level="title-md" textAlign={alignement}>
+                  <Typography color={color} level="title-md" width={'100%'} textAlign={alignement}>
                     {title}
                   </Typography>
                 )}
 
                 {description && (
-                  <Typography level="body-sm" textColor={'text.tertiary'} textAlign={alignement}>
+                  <Typography
+                    color={color}
+                    level="body-sm"
+                    textColor={'text.tertiary'}
+                    textAlign={alignement}
+                  >
                     {description}
                   </Typography>
                 )}
@@ -88,11 +97,13 @@ export const UpdaterModal = ({
             </Stack>
 
             <Stack direction={'row'} justifyContent={alignement ?? 'flex-end'} gap={1}>
-              <Button variant="soft" color="neutral" onClick={onClose} sx={{ flex: '1' }}>
-                {cancelLabel}
-              </Button>
-              {!hideConfirmButton && onConfirm && (
-                <Button sx={{ flex: '1' }} onClick={onConfirm}>
+              {onCancel && (
+                <Button variant="soft" color="neutral" onClick={onCancel} sx={{ flex: '1' }}>
+                  {cancelLabel}
+                </Button>
+              )}
+              {onConfirm && (
+                <Button color={color} sx={{ flex: '1' }} onClick={onConfirm}>
                   {okLabel}
                 </Button>
               )}

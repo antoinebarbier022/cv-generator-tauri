@@ -8,6 +8,8 @@ import { useAskOutputPath } from '@/features/generation/hooks/useAskOutputPath'
 import { useGenerate } from '@/features/generation/hooks/useGenerate'
 import { MenuEvent } from '@/generated/events/menu-events'
 
+import { useUpdaterStore } from '@/features/updater/stores/updater.store'
+import { AppUpdaterStatus } from '@/features/updater/types/updater.types'
 import { useNavigateToModal } from '../../app/router/useNavigateToModal'
 import { useSidebarStore } from '../sidebar/stores/useSidebarStore'
 
@@ -21,6 +23,8 @@ export const useMenuEvents = () => {
 
   const askOutputPath = useAskOutputPath()
   const generate = useGenerate()
+
+  const { setStatus } = useUpdaterStore()
 
   useEffect(() => {
     const unlisten = listen(MenuEvent.DebugOpenPanel, () => modal.open('debug'))
@@ -46,6 +50,7 @@ export const useMenuEvents = () => {
   useEffect(() => {
     const unlisten = listen(MenuEvent.AppCheckUpdate, async (e) => {
       if (e.payload === 'check-update-from-menu') {
+        setStatus(AppUpdaterStatus.CHECKING_FOR_UPDATES)
         modal.open('updater')
       }
     })

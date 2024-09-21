@@ -1,18 +1,15 @@
+import { useNavigateToModal } from '@/app/router/useNavigateToModal'
 import { relaunch } from '@tauri-apps/plugin-process'
 import { check, Update } from '@tauri-apps/plugin-updater'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect } from 'react'
+import { useUpdaterStore } from '../stores/updater.store'
 import { AppUpdaterStatus } from '../types/updater.types'
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-interface Props {
-  enabled: boolean
-}
-export const useAppUpdater = ({
-  enabled
-}: Props): {
+export const useAppUpdater = (): {
   status: AppUpdaterStatus
   update: Pick<Update, 'available' | 'version' | 'body' | 'currentVersion' | 'date'> | null
   downloadedLength: number | null
@@ -21,20 +18,30 @@ export const useAppUpdater = ({
   cancelUpdater: () => void
   downloadAndInstall: () => void
 } => {
-  const [status, setStatus] = useState<AppUpdaterStatus>(AppUpdaterStatus.IDLE)
-  const [update, setUpdate] = useState<Update | null>(null)
-  const [downloadedLength, setDownloadedLength] = useState<number | null>(null)
-  const [totalUpdateLength, setUpdateLength] = useState<number | null>(null)
+  const {
+    status,
+    setStatus,
+    update,
+    setUpdate,
+    downloadedLength,
+    setDownloadedLength,
+    totalUpdateLength,
+    setUpdateLength
+  } = useUpdaterStore()
 
-  const cancelUpdater = () => {
+  const { open: openModal } = useNavigateToModal()
+
+  const cancelUpdater = useCallback(() => {
     setStatus(AppUpdaterStatus.IDLE)
     setUpdate(null)
     setDownloadedLength(null)
     setUpdateLength(null)
+
     console.info(`[Updater] Cancel`)
-  }
+  }, [])
 
   const relaunchApp = async () => {
+    console.info(`[Updater] Relaunch application CV Generator.`)
     await relaunch()
   }
 
@@ -62,61 +69,45 @@ export const useAppUpdater = ({
             downloaded += event.data.chunkLength
             setDownloadedLength(downloaded)
             console.trace(`[Updater] ⬇ downloaded ${downloaded} from ${contentLenght}`)
+
             break
           case 'Finished':
             console.info('[Updater] download finished')
             setStatus(AppUpdaterStatus.UPDATE_DOWNLOADED)
+            openModal('updater')
             break
         }
       })
     } catch (e) {
-      setStatus(AppUpdaterStatus.ERROR)
-      console.error(`[Updater] Error occured during download: ${e}`)
+      setStatus(AppUpdaterStatus.DOWNLOAD_ERROR)
+      openModal('updater')
+      console.error(`[Updater] ${e}`)
     }
   }
 
   const updater = async () => {
     try {
-      console.info(`[Updater] Checking for updates...`)
       const update = await check({ timeout: 30000 })
       await sleep(500)
       setUpdate(update)
 
       if (!update) {
         setStatus(AppUpdaterStatus.NO_UPDATE_AVAILABLE)
-        console.info(`[Updater] No update available`)
-      }
-      if (update) {
+      } else {
         setStatus(AppUpdaterStatus.UPDATE_AVAILABLE)
         console.info(`[Updater] Found available update ${update.version} from ${update.date}`)
-
-        /*
-        const confirmedRestart = await confirm(
-          `The update has been downloaded. Restart the app to apply the update.`,
-          {
-            title: `Update downloaded`,
-            cancelLabel: 'Cancel',
-            okLabel: 'Restart',
-            kind: 'info'
-          }
-        )
-        if (!confirmedRestart) return
-
-        console.info('update installed')
-        await relaunch()
-        */
       }
     } catch (error) {
+      setStatus(AppUpdaterStatus.ERROR)
       console.error(error)
     }
   }
 
   useEffect(() => {
-    if (enabled) {
-      setStatus(AppUpdaterStatus.CHECKING_FOR_UPDATES)
+    if (status === AppUpdaterStatus.CHECKING_FOR_UPDATES) {
       updater()
     }
-  }, [enabled])
+  }, [status])
 
   return {
     status,
