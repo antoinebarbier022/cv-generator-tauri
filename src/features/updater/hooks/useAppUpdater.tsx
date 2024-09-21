@@ -31,12 +31,15 @@ export const useAppUpdater = (): {
 
   const { open: openModal } = useNavigateToModal()
 
-  const cancelUpdater = useCallback(() => {
-    setStatus(AppUpdaterStatus.IDLE)
+  const resetUpdater = useCallback(() => {
     setUpdate(null)
     setDownloadedLength(null)
     setUpdateLength(null)
+  }, [])
 
+  const cancelUpdater = useCallback(() => {
+    resetUpdater()
+    setStatus(AppUpdaterStatus.IDLE)
     console.info(`[Updater] Cancel`)
   }, [])
 
@@ -79,14 +82,15 @@ export const useAppUpdater = (): {
         }
       })
     } catch (e) {
-      setStatus(AppUpdaterStatus.DOWNLOAD_ERROR)
+      setStatus(AppUpdaterStatus.UPDATE_FAILED)
       openModal('updater')
       console.error(`[Updater] ${e}`)
     }
   }
 
-  const updater = async () => {
+  const checkForUpdates = async () => {
     try {
+      resetUpdater()
       const update = await check({ timeout: 30000 })
       await sleep(500)
       setUpdate(update)
@@ -105,7 +109,7 @@ export const useAppUpdater = (): {
 
   useEffect(() => {
     if (status === AppUpdaterStatus.CHECKING_FOR_UPDATES) {
-      updater()
+      checkForUpdates()
     }
   }, [status])
 

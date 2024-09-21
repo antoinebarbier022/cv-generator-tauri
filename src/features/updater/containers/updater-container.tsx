@@ -31,7 +31,6 @@ export const UpdaterContainer = (props: Props) => {
   } = useAppUpdater()
 
   const handleClose = () => {
-    cancelUpdater()
     props.onClose()
   }
 
@@ -40,11 +39,12 @@ export const UpdaterContainer = (props: Props) => {
       <UpdaterModal
         open={props.open}
         onClose={handleClose}
-        onCancel={handleClose}
+        onCancel={cancelUpdater}
         config={{
           icon: <AppIcon />,
           title: 'No update available',
-          description: 'You are already using the latest version'
+          description: 'You are already using the latest version',
+          cancelLabel: 'Close'
         }}
       />
     )
@@ -106,7 +106,7 @@ export const UpdaterContainer = (props: Props) => {
     )
   }
 
-  if (status === AppUpdaterStatus.DOWNLOAD_ERROR) {
+  if (status === AppUpdaterStatus.UPDATE_FAILED) {
     const progression =
       downloadedLength && totalUpdateLength ? (downloadedLength / totalUpdateLength) * 100 : 0
     return (
@@ -134,7 +134,7 @@ export const UpdaterContainer = (props: Props) => {
     return (
       <UpdaterModal
         open={props.open}
-        onClose={cancelUpdater}
+        onClose={hideModal}
         onCancel={cancelUpdater}
         onConfirm={downloadAndInstall}
         config={{

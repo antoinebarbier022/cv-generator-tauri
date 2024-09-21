@@ -4,10 +4,12 @@ import { createJSONStorage, persist } from 'zustand/middleware'
 import { AppUpdaterStatus } from '../types/updater.types'
 
 interface State {
+  alreadyAutoDetect: boolean
   status: AppUpdaterStatus
   update: Update | null
   downloadedLength: number | null
   totalUpdateLength: number | null
+  setAlreadyAutoDetect: (value: boolean) => void
   setStatus: (value: AppUpdaterStatus) => void
   setUpdate: (value: Update | null) => void
   setDownloadedLength: (value: number | null) => void
@@ -17,10 +19,14 @@ interface State {
 export const useUpdaterStore = create(
   persist<State>(
     (set) => ({
+      alreadyAutoDetect: false,
       status: AppUpdaterStatus.IDLE,
       update: null,
       downloadedLength: null,
       totalUpdateLength: null,
+      setAlreadyAutoDetect: (value: boolean) => {
+        set(() => ({ alreadyAutoDetect: value }))
+      },
       setStatus: (value: AppUpdaterStatus) => {
         switch (value) {
           case AppUpdaterStatus.CHECKING_FOR_UPDATES:
@@ -28,10 +34,6 @@ export const useUpdaterStore = create(
             break
 
           case AppUpdaterStatus.DOWNLOADING_UPDATE:
-            break
-
-          case AppUpdaterStatus.DOWNLOAD_ERROR:
-            console.error(`[Updater] An error occurred during the update process`)
             break
 
           case AppUpdaterStatus.ERROR:

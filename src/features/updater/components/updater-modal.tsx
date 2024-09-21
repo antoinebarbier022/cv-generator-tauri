@@ -58,7 +58,10 @@ export const UpdaterModal = ({
   const marginBottom = size === 'sm' ? 1 : 0
   return (
     <Modal open={open}>
-      <ModalDialog size="lg" sx={{ minWidth: width, maxWidth: width, width: width }}>
+      <ModalDialog
+        size="lg"
+        sx={{ minWidth: width, maxWidth: width, width: width, minHeight: '340px' }}
+      >
         {onClose && <ModalClose onClick={onClose} />}
         <Stack
           direction={direction}

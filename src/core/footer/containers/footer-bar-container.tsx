@@ -2,16 +2,17 @@ import { useFormStore } from '@/shared/stores/useFormStore'
 
 import { useTranslatorOption } from '@/features/translators/hooks/useTranslatorOption'
 
+import { useNavigateToModal } from '@/app/router/useNavigateToModal'
 import { useFormWarnings } from '@/core/warnings/hooks/useFormWarnings'
 import { useUpdaterStore } from '@/features/updater/stores/updater.store'
 import { AppUpdaterStatus } from '@/features/updater/types/updater.types'
-import { ErrorOutline } from '@mui/icons-material'
+import { useAppTheme } from '@/shared/hooks/useAppTheme'
+import { BrushRounded, ErrorOutline, TranslateRounded } from '@mui/icons-material'
 import { CircularProgress, Sheet, Stack, Typography } from '@mui/joy'
+import { useTranslation } from 'react-i18next'
 import { FooterItem } from '../components/footer-item'
 import { FooterItemLastUpdated } from '../components/footer-item-last-updated'
-import { FooterItemOptionTranslate } from '../components/footer-item-option-translate'
 import { FooterItemOutputPath } from '../components/footer-item-output-path'
-import { FooterItemTheme } from '../components/footer-item-theme'
 import { FooterItemWarningsCounter } from '../components/footer-item-warning-counter'
 
 const configFooterOptions = {
@@ -36,6 +37,10 @@ export const FooterBarContainer = () => {
       ? Math.round((downloadedLength / totalUpdateLength) * 100)
       : 0
 
+  const modal = useNavigateToModal()
+  const { appTheme, overrideAppTheme } = useAppTheme()
+
+  const { t } = useTranslation()
   return (
     <Stack
       direction={'row'}
@@ -66,11 +71,11 @@ export const FooterBarContainer = () => {
         sx={{ cursor: 'default' }}
         gap={0.5}
       >
-        {(status === AppUpdaterStatus.DOWNLOAD_ERROR ||
+        {(status === AppUpdaterStatus.UPDATE_FAILED ||
           status === AppUpdaterStatus.DOWNLOADING_UPDATE) && (
-          <FooterItem isOpenModalRouter to={'updater'}>
+          <FooterItem onClick={() => modal.open('updater')}>
             <Stack direction={'row'} alignItems={'center'} gap={1}>
-              {status !== AppUpdaterStatus.DOWNLOAD_ERROR ? (
+              {status !== AppUpdaterStatus.UPDATE_FAILED ? (
                 <CircularProgress
                   sx={{
                     '--CircularProgress-size': '12px',
@@ -81,12 +86,27 @@ export const FooterBarContainer = () => {
               ) : (
                 <ErrorOutline fontSize="inherit" />
               )}
-              Update progression : {updaterProgression} %{' '}
+              Update progression : <span className="text-end w-[2ch]"> {updaterProgression}</span>%
+              {''}
             </Stack>
           </FooterItem>
         )}
-        <FooterItemTheme />
-        <FooterItemOptionTranslate isActive={isActiveOptionValid} />
+
+        <FooterItem
+          icon={<BrushRounded fontSize="inherit" />}
+          onClick={() => modal.open('settings-themes')}
+        >
+          {t('footer.theme', { state: overrideAppTheme || appTheme })}
+        </FooterItem>
+
+        <FooterItem
+          icon={<TranslateRounded fontSize="inherit" />}
+          onClick={() => modal.open('settings')}
+        >
+          {t('footer.option-translate', {
+            state: isActiveOptionValid ? t('core.enabled') : t('core.disabled')
+          })}
+        </FooterItem>
         {configFooterOptions.showOutputPathGeneratedFile && (
           <>
             <FooterItemOutputPath path="/Users/antoinebarbier/Downloads/CV_Barbier_Antoine_CDT.pptx" />
@@ -96,7 +116,7 @@ export const FooterBarContainer = () => {
         {showWarnings && (
           <>
             <FooterItemWarningsCounter
-              loading={countWarnings !== null}
+              loading={countWarnings === null}
               count={countWarnings ?? 0}
             />
           </>

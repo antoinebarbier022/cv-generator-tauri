@@ -1,6 +1,6 @@
 import { listen } from '@tauri-apps/api/event'
 import { confirm } from '@tauri-apps/plugin-dialog'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 import { useImportDataContent } from '@/core/storage/useImportDataContent'
 import { useResetDataStorage } from '@/core/storage/useResetDataStorage'
@@ -24,7 +24,7 @@ export const useMenuEvents = () => {
   const askOutputPath = useAskOutputPath()
   const generate = useGenerate()
 
-  const { setStatus } = useUpdaterStore()
+  const { status, setStatus } = useUpdaterStore()
 
   useEffect(() => {
     const unlisten = listen(MenuEvent.DebugOpenPanel, () => modal.open('debug'))
@@ -47,13 +47,24 @@ export const useMenuEvents = () => {
     }
   }, [])
 
+  const statusRef = useRef(status)
+
   useEffect(() => {
-    const unlisten = listen(MenuEvent.AppCheckUpdate, async (e) => {
-      if (e.payload === 'check-update-from-menu') {
+    statusRef.current = status
+  }, [status])
+
+  useEffect(() => {
+    const unlisten = listen(MenuEvent.AppCheckUpdate, async () => {
+      if (
+        statusRef.current !== AppUpdaterStatus.INSTALLING_UPDATE &&
+        statusRef.current !== AppUpdaterStatus.UPDATE_DOWNLOADED &&
+        statusRef.current !== AppUpdaterStatus.DOWNLOADING_UPDATE
+      ) {
         setStatus(AppUpdaterStatus.CHECKING_FOR_UPDATES)
-        modal.open('updater')
       }
+      modal.open('updater')
     })
+
     return () => {
       unlisten.then((dispose) => dispose())
     }

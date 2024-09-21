@@ -12,8 +12,10 @@ import { WelcomeLayout } from '@/app/views/welcome-page/layouts/welcome-layout'
 import { useNavigationLogger } from '@/core/logs/useNavigationLogger'
 import { UpdaterContainer } from '@/features/updater/containers/updater-container'
 
-import { useMenuEvents } from '@/core/menu/useMenuEvents'
+import { useMenuEvents } from '@/core/events/useMenuEvents'
 import { SidebarContainer } from '@/core/sidebar/containers/sidebar-container'
+import { MissingFontModal } from '@/features/missing-font/components/missing-font-modal'
+import { useAutoDetectUpdater } from '@/features/updater/hooks/useAutoDetectUpdater'
 import { Alert } from '@mui/joy'
 import { SettingsModal } from '../features/settings/settings-layout'
 import { useNavigateToModal } from './router/useNavigateToModal'
@@ -34,11 +36,13 @@ export const AppRouter = () => {
 
   useRedirectToWelcomePage()
   useNavigationLogger()
+  useAutoDetectUpdater()
 
   return (
     <>
       <UpdaterContainer open={modal.isOpen('updater')} onClose={modal.close} />
       <DebugModal open={modal.isOpen('debug')} onClose={modal.close} />
+      <MissingFontModal open={modal.isOpen('missing-font')} onClose={modal.close} />
       <SettingsModal
         open={modal.isOpen([
           'settings',

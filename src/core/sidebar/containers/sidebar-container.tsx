@@ -11,14 +11,14 @@ import {
 } from '@mui/icons-material'
 import { Button, Divider, Sheet, Stack } from '@mui/joy'
 
-import { useAskOutputPath } from '@/features/generation/hooks/useAskOutputPath'
-import { useGenerate } from '@/features/generation/hooks/useGenerate'
 import { useFormCV } from '@/shared/hooks/useFormCV'
 
-import { useMemo, useState } from 'react'
+import { useNavigateToModal } from '@/app/router/useNavigateToModal'
+import { MenuEvent } from '@/generated/events/menu-events'
+import { emit } from '@tauri-apps/api/event'
+import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { MissingFontAlert } from '../../../features/missing-font/components/missing-font-alert'
-import { MissingFontModal } from '../../../features/missing-font/components/missing-font-modal'
 import { useMissingFont } from '../../../features/missing-font/hooks/useMissingFont'
 import { NavigationList } from '../components/navigation-list'
 import { ProfileButtonCard } from '../components/profile-button-card'
@@ -33,21 +33,9 @@ export const SidebarContainer = ({ isLoadingGenerate }: Props) => {
 
   const { isCollapsed: isCollapsedSidebar } = useSidebarStore()
 
-  const askOutputPath = useAskOutputPath()
-  const generate = useGenerate()
-
   const { formValues } = useFormCV()
 
-  const [isOpenModalMissingFont, setOpenModalMissingFont] = useState(false)
-
-  const handleOpenModalMissingFont = () => {
-    console.info(`User opened "Missing Font" information modal`)
-    setOpenModalMissingFont(true)
-  }
-  const handleCloseModalMissingFont = () => {
-    console.info(`User closed "Missing Font" information modal`)
-    setOpenModalMissingFont(false)
-  }
+  const modal = useNavigateToModal()
 
   const fullName = useMemo(() => {
     const firstname = formValues.firstname
@@ -64,18 +52,6 @@ export const SidebarContainer = ({ isLoadingGenerate }: Props) => {
   }, [formValues.firstname, formValues.lastname])
 
   const role = formValues.role
-
-  const handleGenerateCV = () => {
-    console.info(`User clicked "Generate" inside the sidebar`)
-    askOutputPath.mutate(undefined, {
-      onSettled: () => {},
-      onSuccess: (outputFilePath) => {
-        if (outputFilePath) {
-          generate.mutate({ outputFilePath })
-        }
-      }
-    })
-  }
 
   const navigation: NavigationType[] = [
     {
@@ -171,13 +147,15 @@ export const SidebarContainer = ({ isLoadingGenerate }: Props) => {
           <Stack data-tauri-drag-region sx={{ flex: 1 }}></Stack>
 
           <Stack gap={1} sx={{ position: 'sticky', bottom: '0' }}>
-            {showAlertMissingFont && <MissingFontAlert onClick={handleOpenModalMissingFont} />}
+            {showAlertMissingFont && (
+              <MissingFontAlert onClick={() => modal.open('missing-font')} />
+            )}
             <Button
               color="primary"
               variant="solid"
               sx={{ height: '2.25rem' }}
-              loading={generate.isPending || isLoadingGenerate}
-              onClick={handleGenerateCV}
+              loading={isLoadingGenerate}
+              onClick={() => emit(MenuEvent.FileGenerateAndSaveAs)}
               className="@container"
             >
               <Stack height={'100%'} className="!block @[10ch]:!hidden">
@@ -189,7 +167,6 @@ export const SidebarContainer = ({ isLoadingGenerate }: Props) => {
           </Stack>
         </Stack>
       </Sheet>
-      <MissingFontModal open={isOpenModalMissingFont} onClose={handleCloseModalMissingFont} />
     </>
   )
 }

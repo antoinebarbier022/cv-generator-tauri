@@ -5,7 +5,6 @@ export const useNavigateToModal = () => {
   const navigate = useNavigate()
 
   const open = (value: string) => {
-    searchParams.set('modal', encodeURIComponent(value))
     const newSearchParams = new URLSearchParams(searchParams)
     newSearchParams.set('modal', encodeURIComponent(value))
 
