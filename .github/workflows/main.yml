@@ -11,10 +11,6 @@ on:
         required: false
         default: 'false'
         type: boolean
-      branch:
-        description: 'The branch to build'
-        required: true
-        type: string
 
 jobs:
   publish-tauri:
@@ -33,7 +29,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.inputs.branch || github.ref }}
+          ref: ${{ github.ref }}
 
       - name: install dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-22.04'
