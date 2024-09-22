@@ -170,33 +170,24 @@ fn register_exit_handling() -> anyhow::Result<()> {
 fn main() -> anyhow::Result<()> {
     register_exit_handling()?;
 
-    #[cfg(debug_assertions)] // only enable instrumentation in development builds
-    let devtools = tauri_plugin_devtools::init();
-
     let mut builder = tauri::Builder::default();
 
     #[cfg(debug_assertions)]
     {
+        let devtools = tauri_plugin_devtools::init();
         builder = builder.plugin(devtools);
     }
 
     #[cfg(not(debug_assertions))]
     {
-        use tauri_plugin_log::fern::colors::{Color, ColoredLevelConfig};
-
         builder = builder.plugin(
             tauri_plugin_log::Builder::new()
-                .target(tauri_plugin_log::Target::new(
-                    tauri_plugin_log::TargetKind::Webview,
-                ))
-                .with_colors(ColoredLevelConfig {
-                    error: Color::Red,
-                    warn: Color::Yellow,
-                    info: Color::Blue,
-                    debug: Color::Green,
-                    trace: Color::BrightWhite,
-                })
                 .level_for("tao", log::LevelFilter::Info)
+                .filter(|metadata| metadata.target() != "tauri::app")
+                .filter(|metadata| metadata.target() != "tauri::manager")
+                .filter(|metadata| metadata.target() != "tracing::span")
+                .filter(|metadata| metadata.target() != "wry::wkwebview")
+                .level(log::LevelFilter::Info)
                 .build(),
         );
     }
