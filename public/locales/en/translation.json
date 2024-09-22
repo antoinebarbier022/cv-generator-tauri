@@ -132,7 +132,7 @@
   "core.enabled": "enabled",
   "core.disabled": "disabled",
   "updater.no-update.title": "No update available",
-  "updater.no-update.description": "You are already using the latest version",
+  "updater.no-update.description": "Current version is v{{currentVersion}}",
   "updater.no-update.cancel": "Close",
   "updater.downloading-update.waiting": "Update setup in progress…",
   "updater.downloading-update.progress": "{{downloaded}} / {{total}}",

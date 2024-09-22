@@ -1,7 +1,8 @@
 import { useNavigateToModal } from '@/app/router/useNavigateToModal'
+import { getVersion } from '@tauri-apps/api/app'
 import { relaunch } from '@tauri-apps/plugin-process'
 import { check, Update } from '@tauri-apps/plugin-updater'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useUpdaterStore } from '../stores/updater.store'
 import { AppUpdaterStatus } from '../types/updater.types'
 
@@ -12,6 +13,7 @@ function sleep(ms: number): Promise<void> {
 export const useAppUpdater = (): {
   status: AppUpdaterStatus
   update: Pick<Update, 'available' | 'version' | 'body' | 'currentVersion' | 'date'> | null
+  currentVersion: string | null
   downloadedLength: number | null
   totalUpdateLength: number | null
   checkForUpdates: () => Promise<Update | null>
@@ -29,6 +31,8 @@ export const useAppUpdater = (): {
     totalUpdateLength,
     setUpdateLength
   } = useUpdaterStore()
+
+  const [currentVersion, setCurrentVersion] = useState<string | null>(null)
 
   const { open: openModal } = useNavigateToModal()
 
@@ -103,7 +107,10 @@ export const useAppUpdater = (): {
 
       if (!update) {
         setStatus(AppUpdaterStatus.NO_UPDATE_AVAILABLE)
+        const version = await getVersion()
+        setCurrentVersion(version)
       } else {
+        setCurrentVersion(update.currentVersion)
         setStatus(AppUpdaterStatus.UPDATE_AVAILABLE)
         console.info(`[Updater] Found available update ${update.version} from ${update.date}`)
       }
@@ -128,6 +135,7 @@ export const useAppUpdater = (): {
           ...update
         }
       : null,
+    currentVersion,
     downloadedLength,
     totalUpdateLength,
     checkForUpdates,

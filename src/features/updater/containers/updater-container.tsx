@@ -26,12 +26,13 @@ export const UpdaterContainer = (props: Props) => {
 
   const {
     status,
+    update,
+    currentVersion,
     downloadedLength,
     totalUpdateLength,
     downloadAndInstall,
     checkForUpdates,
     cancelUpdater,
-    update,
     relaunch
   } = useAppUpdater()
 
@@ -48,7 +49,9 @@ export const UpdaterContainer = (props: Props) => {
         config={{
           icon: <AppIcon />,
           title: t('updater.no-update.title'),
-          description: t('updater.no-update.description'),
+          description: t('updater.no-update.description', {
+            currentVersion: currentVersion ?? ''
+          }),
           cancelLabel: t('updater.no-update.cancel')
         }}
       />
