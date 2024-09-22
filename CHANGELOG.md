@@ -1,5 +1,17 @@
 
 
+## [0.1.1-beta.28](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.27...0.1.1-beta.28) (2024-9-22)
+
+
+### Bug Fixes
+
+* **updater:** hide release note card if there is nothing to display ([0d83a3c](https://github.com/antoinebarbier022/cv-generator-tauri/commit/0d83a3c2cc0b802e682bc1510a8d10eef34ed777))
+
+
+### Features
+
+* **migration:** migrate to Tauri v2, add custom updater, enhance logging, and fix post-migration issues ([#8](https://github.com/antoinebarbier022/cv-generator-tauri/issues/8)) ([cd5a14d](https://github.com/antoinebarbier022/cv-generator-tauri/commit/cd5a14dcdee7c779939635011e232f7590cd4638))
+
 ## [0.1.1-beta.27](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.26...0.1.1-beta.27) (2024-9-17)
 
 
