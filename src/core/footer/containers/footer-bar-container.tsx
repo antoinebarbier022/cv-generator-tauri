@@ -7,7 +7,12 @@ import { useFormWarnings } from '@/core/warnings/hooks/useFormWarnings'
 import { useUpdaterStore } from '@/features/updater/stores/updater.store'
 import { AppUpdaterStatus } from '@/features/updater/types/updater.types'
 import { useAppTheme } from '@/shared/hooks/useAppTheme'
-import { BrushRounded, ErrorOutline, TranslateRounded } from '@mui/icons-material'
+import {
+  BrushRounded,
+  CheckCircleOutlineRounded,
+  ErrorOutline,
+  TranslateRounded
+} from '@mui/icons-material'
 import { CircularProgress, Sheet, Stack, Typography } from '@mui/joy'
 import { useTranslation } from 'react-i18next'
 import { FooterItem } from '../components/footer-item'
@@ -22,23 +27,19 @@ const configFooterOptions = {
 }
 
 export const FooterBarContainer = () => {
+  const modal = useNavigateToModal()
+  const { appTheme, overrideAppTheme } = useAppTheme()
   const { lastUpdated } = useFormStore()
-
   const { countWarnings } = useFormWarnings()
+  const { isActiveOptionValid } = useTranslatorOption()
+  const { downloadedLength, totalUpdateLength, status } = useUpdaterStore()
 
   const showWarnings = Boolean(countWarnings && countWarnings >= 1)
-
-  const { isActiveOptionValid } = useTranslatorOption()
-
-  const { downloadedLength, totalUpdateLength, status } = useUpdaterStore()
 
   const updaterProgression =
     downloadedLength && totalUpdateLength
       ? Math.round((downloadedLength / totalUpdateLength) * 100)
       : 0
-
-  const modal = useNavigateToModal()
-  const { appTheme, overrideAppTheme } = useAppTheme()
 
   const { t } = useTranslation()
   return (
@@ -72,12 +73,19 @@ export const FooterBarContainer = () => {
         gap={0.5}
       >
         {(status === AppUpdaterStatus.DOWNLOAD_FAILED ||
-          status === AppUpdaterStatus.DOWNLOADING_UPDATE) && (
-          <FooterItem onClick={() => modal.open('updater')}>
+          status === AppUpdaterStatus.DOWNLOADING_UPDATE ||
+          status === AppUpdaterStatus.UPDATE_DOWNLOADED) && (
+          <FooterItem
+            onClick={() => modal.open('updater')}
+            icon={
+              status == AppUpdaterStatus.UPDATE_DOWNLOADED && (
+                <CheckCircleOutlineRounded fontSize="inherit" />
+              )
+            }
+          >
             <Stack direction={'row'} alignItems={'center'} gap={1}>
-              {status == AppUpdaterStatus.DOWNLOAD_FAILED ? (
-                <ErrorOutline fontSize="inherit" />
-              ) : (
+              {status == AppUpdaterStatus.DOWNLOAD_FAILED && <ErrorOutline fontSize="inherit" />}
+              {status == AppUpdaterStatus.DOWNLOADING_UPDATE && (
                 <CircularProgress
                   sx={{
                     '--CircularProgress-size': '12px',
@@ -86,11 +94,12 @@ export const FooterBarContainer = () => {
                   }}
                 />
               )}
-              {status === AppUpdaterStatus.DOWNLOAD_FAILED ? (
-                t('footer.updater.error')
-              ) : (
+              {status === AppUpdaterStatus.DOWNLOAD_FAILED && t('footer.updater.error')}
+              {status === AppUpdaterStatus.DOWNLOADING_UPDATE && (
                 <>{t('footer.updater.progression', { value: updaterProgression })}</>
               )}
+              {status === AppUpdaterStatus.UPDATE_DOWNLOADED &&
+                t('footer.updater.progression-done')}
             </Stack>
           </FooterItem>
         )}

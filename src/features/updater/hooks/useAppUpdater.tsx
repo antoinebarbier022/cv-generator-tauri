@@ -46,6 +46,7 @@ export const useAppUpdater = (): {
 
   const relaunchApp = async () => {
     console.info(`[Updater] Relaunch application CV Generator.`)
+    setStatus(AppUpdaterStatus.UPDATE_SUCCESS)
     await relaunch()
   }
 
