@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "tauri dev",
     "build": "tauri build",
-    "build:debug": "tauri build -- --debug",
     "tauri": "tauri",
     "dev:front": "vite",
     "build:front": "tsc && vite build",
