@@ -159,9 +159,11 @@ export const UpdaterContainer = (props: Props) => {
           cancelLabel: t('updater.update-available.cancel')
         }}
       >
-        <Card variant="soft" sx={{ mt: 1, backgroundColor: 'neutral.50' }}>
-          <RealeaseNoteMarkdown content={update.body} />
-        </Card>
+        {update.body && (
+          <Card variant="soft" sx={{ mt: 1, backgroundColor: 'neutral.50' }}>
+            <RealeaseNoteMarkdown content={update.body} />
+          </Card>
+        )}
       </UpdaterModal>
     )
   }
