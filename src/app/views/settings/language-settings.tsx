@@ -23,7 +23,6 @@ export const LanguageSettings = () => {
           >
             <Option value="en">English</Option>
             <Option value="fr">Français</Option>
-            <Option value="ja">日本語</Option>
           </Select>
         }
       />

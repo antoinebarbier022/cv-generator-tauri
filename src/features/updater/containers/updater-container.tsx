@@ -5,6 +5,7 @@ import UpdateErrorSVG from '@/assets/images/update-error.svg?react'
 import i18n from '@/configs/i18n.config'
 import { Card, LinearProgress, Stack } from '@mui/joy'
 import { partial } from 'filesize'
+import { useTranslation } from 'react-i18next'
 import { RealeaseNoteMarkdown } from '../components/release-note-markdown'
 import { UpdaterModal } from '../components/updater-modal'
 import { useAppUpdater } from '../hooks/useAppUpdater'
@@ -21,6 +22,7 @@ interface Props {
 
 export const UpdaterContainer = (props: Props) => {
   const { close: hideModal } = useNavigateToModal()
+  const { t } = useTranslation()
 
   const {
     status,
@@ -45,9 +47,9 @@ export const UpdaterContainer = (props: Props) => {
         onCancel={cancelUpdater}
         config={{
           icon: <AppIcon />,
-          title: 'No update available',
-          description: 'You are already using the latest version',
-          cancelLabel: 'Close'
+          title: t('updater.no-update.title'),
+          description: t('updater.no-update.description'),
+          cancelLabel: t('updater.no-update.cancel')
         }}
       />
     )
@@ -61,12 +63,12 @@ export const UpdaterContainer = (props: Props) => {
     const size = partial({ standard: 'jedec', locale: i18n.languages[0], pad: true })
     const getTitle = () => {
       if (totalUpdateLength === null || totalUpdateLength === 0) {
-        return 'Waiting...'
+        return t('updater.downloading-update.waiting')
       }
       if (status === AppUpdaterStatus.DOWNLOADING_UPDATE) {
         return `${size(downloadedLength ?? 0)} / ${size(totalUpdateLength)}`
       }
-      return 'Waiting...'
+      return t('updater.downloading-update.waiting')
     }
     return (
       <UpdaterModal
@@ -75,7 +77,7 @@ export const UpdaterContainer = (props: Props) => {
         config={{
           icon: <AppIcon />,
           title: getTitle(),
-          cancelLabel: 'Hide'
+          cancelLabel: t('updater.downloading-update.cancel')
         }}
       >
         <Stack pt={2}>
@@ -98,9 +100,9 @@ export const UpdaterContainer = (props: Props) => {
           onClose={handleClose}
           config={{
             icon: <AppIcon />,
-            title: `Ready to install v${update?.version}`,
-            confirmLabel: 'Restart now',
-            cancelLabel: 'On next launch'
+            title: t('updater.update-downloaded.title', { version: update?.version }),
+            confirmLabel: t('updater.update-downloaded.confirm'),
+            cancelLabel: t('updater.update-downloaded.cancel')
           }}
         >
           <Stack pt={2}>
@@ -122,9 +124,9 @@ export const UpdaterContainer = (props: Props) => {
           onConfirm={downloadAndInstall}
           config={{
             icon: <UpdateErrorSVG />,
-            title: 'Failed to Download Update',
+            title: t('updater.download-failed.title'),
             kind: 'error',
-            confirmLabel: 'Try Again'
+            confirmLabel: t('updater.download-failed.confirm')
           }}
         >
           <Stack pt={2}>
@@ -145,10 +147,13 @@ export const UpdaterContainer = (props: Props) => {
         config={{
           size: 'md',
           icon: <AppIcon />,
-          title: `A new version is available!`,
-          description: `${update.version} is now available -- you have ${update.currentVersion}`,
-          confirmLabel: 'Download',
-          cancelLabel: 'Remind me later'
+          title: t('updater.update-available.title'),
+          description: t('updater.update-available.description', {
+            newVersion: update.version,
+            currentVersion: update.currentVersion
+          }),
+          confirmLabel: t('updater.update-available.confirm'),
+          cancelLabel: t('updater.update-available.cancel')
         }}
       >
         <Card variant="soft" sx={{ mt: 1, backgroundColor: 'neutral.50' }}>
@@ -164,7 +169,7 @@ export const UpdaterContainer = (props: Props) => {
         onClose={handleClose}
         config={{
           icon: <AppIcon />,
-          title: `Checking for updates`
+          title: t('updater.checking-for-updates.title')
         }}
       >
         <Stack pt={2}>
@@ -183,8 +188,8 @@ export const UpdaterContainer = (props: Props) => {
         config={{
           kind: status === AppUpdaterStatus.CHECK_ERROR ? 'error' : 'info',
           icon: <UpdateErrorSVG />,
-          title: `Failed to check for updates`,
-          confirmLabel: 'Try Again'
+          title: t('updater.check-error.title'),
+          confirmLabel: t('updater.check-error.confirm')
         }}
       ></UpdaterModal>
     )

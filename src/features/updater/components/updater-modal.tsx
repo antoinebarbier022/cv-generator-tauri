@@ -101,22 +101,24 @@ export const UpdaterModal = ({
               <Stack>{children}</Stack>
             </Stack>
 
-            <Stack
-              direction={actionsButtonDirection}
-              justifyContent={alignement ?? 'flex-end'}
-              gap={1}
-            >
-              {onCancel && (
-                <Button variant="soft" color="neutral" onClick={onCancel} sx={{ flex: '1' }}>
-                  {cancelLabel}
-                </Button>
-              )}
-              {onConfirm && (
-                <Button color={color} sx={{ flex: '1' }} onClick={onConfirm}>
-                  {okLabel}
-                </Button>
-              )}
-            </Stack>
+            {(onCancel || onConfirm) && (
+              <Stack
+                direction={actionsButtonDirection}
+                justifyContent={alignement ?? 'flex-end'}
+                gap={1}
+              >
+                {onCancel && (
+                  <Button variant="soft" color="neutral" onClick={onCancel} sx={{ flex: '1' }}>
+                    {cancelLabel}
+                  </Button>
+                )}
+                {onConfirm && (
+                  <Button color={color} sx={{ flex: '1' }} onClick={onConfirm}>
+                    {okLabel}
+                  </Button>
+                )}
+              </Stack>
+            )}
           </Stack>
         </Stack>
       </ModalDialog>

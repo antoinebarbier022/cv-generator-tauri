@@ -87,12 +87,9 @@ export const FooterBarContainer = () => {
                 />
               )}
               {status === AppUpdaterStatus.DOWNLOAD_FAILED ? (
-                'Update error'
+                t('footer.updater.error')
               ) : (
-                <>
-                  Update progression :{' '}
-                  <span className="text-end w-[2ch]"> {updaterProgression}</span>%
-                </>
+                <>{t('footer.updater.progression', { value: updaterProgression })}</>
               )}
             </Stack>
           </FooterItem>
