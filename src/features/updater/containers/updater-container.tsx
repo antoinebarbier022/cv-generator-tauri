@@ -147,7 +147,8 @@ export const UpdaterContainer = (props: Props) => {
           icon: <AppIcon />,
           title: `A new version is available!`,
           description: `${update.version} is now available -- you have ${update.currentVersion}`,
-          confirmLabel: 'Download and Install'
+          confirmLabel: 'Download',
+          cancelLabel: 'Remind me later'
         }}
       >
         <Card variant="soft" sx={{ mt: 1, backgroundColor: 'neutral.50' }}>

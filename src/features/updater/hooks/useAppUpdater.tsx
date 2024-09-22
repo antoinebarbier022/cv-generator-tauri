@@ -14,7 +14,7 @@ export const useAppUpdater = (): {
   update: Pick<Update, 'available' | 'version' | 'body' | 'currentVersion' | 'date'> | null
   downloadedLength: number | null
   totalUpdateLength: number | null
-  checkForUpdates: () => void
+  checkForUpdates: () => Promise<Update | null>
   relaunch: () => void
   cancelUpdater: () => void
   downloadAndInstall: () => void
@@ -101,9 +101,11 @@ export const useAppUpdater = (): {
         setStatus(AppUpdaterStatus.UPDATE_AVAILABLE)
         console.info(`[Updater] Found available update ${update.version} from ${update.date}`)
       }
+      return update
     } catch (error) {
       setStatus(AppUpdaterStatus.CHECK_ERROR)
       console.error(error)
+      return null
     }
   }
 
