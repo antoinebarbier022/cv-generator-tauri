@@ -1,10 +1,20 @@
-name: 'publish'
+name: 'build & publish'
 
 on:
   push:
     tags:
       - '*'
   workflow_dispatch:
+    inputs:
+      test_build:
+        description: 'Run a test build'
+        required: false
+        default: 'false'
+        type: boolean
+      branch:
+        description: 'The branch to build'
+        required: true
+        type: string
 
 jobs:
   publish-tauri:
@@ -22,6 +32,8 @@ jobs:
     runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch || github.ref }}
 
       - name: install dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-22.04'
@@ -62,11 +74,11 @@ jobs:
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-          TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
-          TAURI_KEY_PASSWORD: ${{ secrets.TAURI_PRIVATE_KEY_PASSWORD }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_PRIVATE_KEY_PASSWORD }}
         with:
-          tagName: '__VERSION__'
-          releaseName: 'Release v__VERSION__'
-          releaseDraft: false
-          includeUpdaterJson: true
+          tagName: ${{ github.event.inputs.test_build == 'true' && 'test-build' || '__VERSION__' }}
+          releaseName: ${{ github.event.inputs.test_build == 'true' && 'Test Build' || 'Release v__VERSION__' }}
+          releaseDraft: ${{ github.event.inputs.test_build == 'true' && 'true' || 'false' }}
+          includeUpdaterJson: ${{ github.event.inputs.test_build == 'true' && 'true' || 'false' }}
           args: ${{ matrix.args }}

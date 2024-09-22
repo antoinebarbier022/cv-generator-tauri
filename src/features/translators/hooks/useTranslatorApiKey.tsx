@@ -1,7 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 import { DeepLService } from '../deepl.service'
 
-import { useServerPort } from '@/hooks/userServerPort'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 
@@ -28,8 +27,6 @@ const useApiKeyStore = create(
 export const useTranslatorApiKey = () => {
   const { apiKey, setApiKey } = useApiKeyStore()
 
-  const { port: api_port } = useServerPort()
-
   const mutation = useMutation({
     mutationKey: ['translators', 'deepl', 'usage'],
     mutationFn: DeepLService.usage
@@ -37,14 +34,16 @@ export const useTranslatorApiKey = () => {
 
   const handleSaveApiKey = async (value: string) => {
     mutation.mutate(
-      { api_key: value, api_port },
+      { api_key: value },
       {
         onSuccess: () => {
           setApiKey(value)
+          console.info(`User activated translation feature. API key validated successfully.`)
           //localStorage.setItem('deepl-api-key', value)
         },
         onError: () => {
           setApiKey('')
+          console.error(`Translation feature activation failed. Invalid API key.`)
           //localStorage.setItem('deepl-api-key', '')
         }
       }

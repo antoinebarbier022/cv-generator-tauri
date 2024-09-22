@@ -1,14 +1,10 @@
+import { invoke } from '@tauri-apps/api/core'
 import axios from 'axios'
 import { DeepLUsage } from './deepl.types'
 
 export const DeepLService = {
-  usage: async ({
-    api_key,
-    api_port
-  }: {
-    api_key: string
-    api_port: string | null
-  }): Promise<DeepLUsage> => {
+  usage: async ({ api_key }: { api_key: string }): Promise<DeepLUsage> => {
+    const api_port = await invoke<string>('get_backend_port')
     const BASE_URL = `http://localhost:${api_port}`
 
     try {
@@ -19,29 +15,29 @@ export const DeepLService = {
         }
       })
       return response.data
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
+    } catch (e) {
+      if (axios.isAxiosError(e) && e.response) {
         // Extracting error message from server response
-        const errorMessage = error.response.data.detail || 'An error has occurred…'
-        console.log(error.response.data.detail)
+        const errorMessage = e.response.data.detail || 'An error has occurred…'
+
         throw new Error(errorMessage)
       }
+
       throw new Error('An error has occurred…')
     }
   },
 
   translate: async ({
     api_key,
-    api_port,
     text
   }: {
     api_key: string
-    api_port: string | null
     text: string
     target_lang: string
   }): Promise<{
     translated_text: 'string'
   }> => {
+    const api_port = await invoke<string>('get_backend_port')
     const BASE_URL = `http://localhost:${api_port}`
     try {
       const response = await axios.post(
@@ -58,8 +54,8 @@ export const DeepLService = {
         }
       )
       return response.data
-    } catch (error) {
-      throw new Error(`An error has occurred… ${error}`)
+    } catch (e) {
+      throw new Error(`DeepLService.translate(): An error has occurred… ${e}`)
     }
   }
 }

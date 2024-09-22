@@ -1,5 +1,5 @@
 use serde::Serialize;
-use tauri::{Result, Runtime, Window};
+use tauri::{AppHandle, Emitter, Result, Runtime, WebviewWindow};
 use ts_rs::TS;
 
 #[derive(Clone, Serialize, Debug, Default, TS)]
@@ -33,7 +33,13 @@ pub(crate) trait EmitError {
     fn emit_error(&self, error: ErrorPayload) -> Result<()>;
 }
 
-impl<R: Runtime> EmitError for Window<R> {
+impl<R: Runtime> EmitError for WebviewWindow<R> {
+    fn emit_error(&self, error: ErrorPayload) -> Result<()> {
+        self.emit("error", error)
+    }
+}
+
+impl<R: Runtime> EmitError for AppHandle<R> {
     fn emit_error(&self, error: ErrorPayload) -> Result<()> {
         self.emit("error", error)
     }

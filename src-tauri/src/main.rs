@@ -5,9 +5,11 @@
 
 mod commands;
 mod errors;
+mod logs;
 mod menu;
 use crate::commands::{get_backend_error, open_finder, open_powerpoint};
 use crate::errors::{EmitError, ErrorPayload};
+use crate::logs::log;
 use crate::menu::{create_app_menu, on_menu_event};
 use anyhow::Context;
 use core::str;
@@ -20,8 +22,10 @@ use std::ops::Deref;
 use std::sync::Mutex;
 use std::{sync, thread};
 use sync::mpsc::{channel, Sender};
-use tauri::api::process::{Command, CommandEvent, TerminatedPayload};
-use tauri::Manager;
+use tauri::{AppHandle, Manager};
+
+use tauri_plugin_shell::process::{CommandEvent, TerminatedPayload};
+use tauri_plugin_shell::ShellExt;
 use window_vibrancy::*;
 
 const DEFAULT_BACKEND_PORT: u16 = 8008;
@@ -35,11 +39,31 @@ fn find_free_port() -> String {
     port.to_string()
 }
 
-fn start_backend(tx: Sender<BackendEvent>) -> anyhow::Result<()> {
-    println!("Spawning api server...");
-    spawn_backend(tx)?;
+fn start_backend(app: &AppHandle, tx: Sender<BackendEvent>) -> anyhow::Result<()> {
+    log::info!("Spawning api server...");
+    spawn_backend(app, tx)?;
 
     Ok(())
+}
+
+fn parse_backend_log(line: Vec<u8>) -> (log::Level, String) {
+    let line = String::from_utf8_lossy(&line);
+    let (level, message) =
+        if let [level, message] = line.trim().splitn(2, ":").collect::<Vec<_>>()[..] {
+            (Some(level), message.to_string())
+        } else {
+            (None, line.to_string())
+        };
+
+    let level = match level {
+        Some("DEBUG") => log::Level::Debug,
+        Some("INFO") => log::Level::Info,
+        Some("WARNING") => log::Level::Warn,
+        Some("ERROR") | Some("CRITICAL") => log::Level::Error,
+        _ => log::Level::Trace,
+    };
+
+    (level, message)
 }
 
 enum BackendEvent {
@@ -55,8 +79,10 @@ fn get_backend_port() -> &'static str {
     &BACKEND_PORT
 }
 
-fn spawn_backend(tx: Sender<BackendEvent>) -> anyhow::Result<()> {
-    let (mut rx, _) = Command::new_sidecar("cv-generator-api")
+fn spawn_backend(app: &AppHandle, tx: Sender<BackendEvent>) -> anyhow::Result<()> {
+    let (mut rx, _) = app
+        .shell()
+        .sidecar("cv-generator-api")
         .context("Failed to create `api` binary command")?
         .args(["--port", &BACKEND_PORT])
         .spawn()
@@ -65,9 +91,15 @@ fn spawn_backend(tx: Sender<BackendEvent>) -> anyhow::Result<()> {
     tauri::async_runtime::spawn(async move {
         while let Some(event) = rx.recv().await {
             match event {
-                CommandEvent::Stderr(line) => print!("[API-LOG]: {line}"),
-                CommandEvent::Stdout(line) => print!("[API]: {line}"),
-                CommandEvent::Error(err) => println!("Error listening to api {err}"),
+                CommandEvent::Stderr(line) => {
+                    let (level, message) = parse_backend_log(line);
+                    log::log!(target: "API", level, "{}", message.trim());
+                }
+                CommandEvent::Stdout(line) => {
+                    let (level, message) = parse_backend_log(line);
+                    log::log!(target: "API", level, "{}", message.trim());
+                }
+                CommandEvent::Error(err) => log::error!("listening to api {err}"),
                 CommandEvent::Terminated(TerminatedPayload { code, signal }) => {
                     let infos = vec![
                         code.map(|code| format!("code {code}")),
@@ -79,9 +111,9 @@ fn spawn_backend(tx: Sender<BackendEvent>) -> anyhow::Result<()> {
                     .join(" and ");
 
                     if infos.trim().is_empty() {
-                        println!("Api terminated.")
+                        log::info!(target: "API", "terminated.")
                     } else {
-                        println!("Api terminated with {infos}.")
+                        log::info!(target: "API", "terminated with {infos}.")
                     }
 
                     if let Some(48) = code {
@@ -89,7 +121,7 @@ fn spawn_backend(tx: Sender<BackendEvent>) -> anyhow::Result<()> {
                     }
                 }
                 event => {
-                    println!("Received unexpected event from api {event:?}")
+                    log::warn!("Received unexpected event from api {event:?}")
                 }
             }
         }
@@ -104,7 +136,7 @@ struct AppState {
 }
 
 extern "C" fn on_exit() {
-    println!("Application exited.\nClosing `api` sidecar...");
+    log::info!("Application exited.\nClosing `api` sidecar...");
 
     let response = std::process::Command::new("curl")
         .args(vec![
@@ -117,7 +149,7 @@ extern "C" fn on_exit() {
         .stdout;
     let response = str::from_utf8(&response).unwrap();
 
-    println!("Server shutdown : {response}");
+    log::info!("Server shutdown : {response}");
 }
 
 fn register_exit_handling() -> anyhow::Result<()> {
@@ -138,12 +170,42 @@ fn register_exit_handling() -> anyhow::Result<()> {
 fn main() -> anyhow::Result<()> {
     register_exit_handling()?;
 
-    tauri::Builder::default()
+    let mut builder = tauri::Builder::default();
+
+    #[cfg(debug_assertions)]
+    {
+        let devtools = tauri_plugin_devtools::init();
+        builder = builder.plugin(devtools);
+    }
+
+    #[cfg(not(debug_assertions))]
+    {
+        builder = builder.plugin(
+            tauri_plugin_log::Builder::new()
+                .level_for("tao", log::LevelFilter::Info)
+                .filter(|metadata| metadata.target() != "tauri::app")
+                .filter(|metadata| metadata.target() != "tauri::manager")
+                .filter(|metadata| metadata.target() != "tracing::span")
+                .filter(|metadata| metadata.target() != "wry::wkwebview")
+                .level(log::LevelFilter::Info)
+                .build(),
+        );
+    }
+
+    builder
+        .plugin(tauri_plugin_process::init())
+        .plugin(tauri_plugin_fs::init())
+        .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_dialog::init())
+        .plugin(tauri_plugin_shell::init())
         .manage(AppState::default())
-        .menu(create_app_menu())
-        .on_menu_event(on_menu_event)
+        .menu(create_app_menu)
         .setup(move |app| {
-            let window = app.get_window("main").expect("No window labelled `main`");
+            app.on_menu_event(on_menu_event);
+
+            let window = app
+                .get_webview_window("main")
+                .expect("No window labelled `main`");
 
             #[cfg(target_os = "macos")]
             apply_vibrancy(&window, NSVisualEffectMaterial::HudWindow, None, None)
@@ -155,8 +217,8 @@ fn main() -> anyhow::Result<()> {
 
             let (tx, rx) = channel::<BackendEvent>();
 
-            if let Err(err) = start_backend(tx) {
-                println!("Failed to start backend: {err}");
+            if let Err(err) = start_backend(app.handle(), tx) {
+                log::info!("Failed to start backend: {err}");
                 *app.state::<AppState>().backend_error.lock().unwrap() = Some(err.to_string());
             }
 
@@ -180,9 +242,9 @@ fn main() -> anyhow::Result<()> {
             open_finder,
             open_powerpoint,
             get_backend_error,
-            get_backend_port
+            get_backend_port,
+            log
         ])
-        .plugin(tauri_plugin_fs_extra::init())
         .run(tauri::generate_context!())
         .context("Error while running app")
 }

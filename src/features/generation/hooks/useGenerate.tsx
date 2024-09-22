@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import { invoke } from '@tauri-apps/api/tauri'
+import { invoke } from '@tauri-apps/api/core'
 import { toast } from 'react-toastify'
 import { ToastGenerationSuccess } from '../components/toast-generation-success'
 import { CVGenerationService } from '../services/cv-generation.service'
@@ -52,7 +52,9 @@ export const useGenerate = () => {
       }
     },
     onError: (e, variables) => {
-      console.log(variables)
+      console.error(`Generate [error]`, e)
+      console.error(e)
+      console.error(`Generate variables`, JSON.stringify(variables))
       alert(`Generate [error] : ${e}`)
     }
   })

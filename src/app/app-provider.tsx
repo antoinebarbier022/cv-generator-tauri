@@ -1,23 +1,17 @@
-import { BetaBadge } from '@/components/beta-badge'
 import '@/configs/i18n.config'
+import { useErrors } from '@/core/errors/hooks/useErrors'
+import { BetaBadge } from '@/shared/components/beta-badge'
+import { useAppTheme } from '@/shared/hooks/useAppTheme'
 
-/* eslint-disable import/order */
-import 'react-toastify/dist/ReactToastify.css'
-/* eslint-enable import/order */
-
-import '@/styles/index.css'
-import themeCapgemini from '@/themes/capgemini-theme.ts'
-import themeFrog from '@/themes/default-theme.ts'
-
-import { useErrors } from '@/errors/hooks/useErrors'
-import { useAppTheme } from '@/hooks/useAppTheme'
-import { useServerPort } from '@/hooks/userServerPort'
 import { CssBaseline, CssVarsProvider } from '@mui/joy'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { PropsWithChildren } from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
+import '@/styles/index.css'
 
 export const AppProvider = ({ children }: PropsWithChildren) => {
   useErrors()
@@ -27,11 +21,8 @@ export const AppProvider = ({ children }: PropsWithChildren) => {
       queries: {}
     }
   })
-  console.log({ themeFrog })
-  console.log({ themeCapgemini })
-  const { appThemeConfig } = useAppTheme()
 
-  useServerPort()
+  const { appThemeConfig } = useAppTheme()
 
   return (
     <CssVarsProvider

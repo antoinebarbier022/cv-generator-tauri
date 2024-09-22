@@ -1,11 +1,13 @@
-import { save } from '@tauri-apps/api/dialog'
-import { BaseDirectory, readTextFile } from '@tauri-apps/api/fs'
 import { appDataDir, downloadDir, join, resolveResource } from '@tauri-apps/api/path'
-import { ChildProcess } from '@tauri-apps/api/shell'
+import { save } from '@tauri-apps/plugin-dialog'
+import { BaseDirectory, readTextFile } from '@tauri-apps/plugin-fs'
 
-import { UserData } from '../../../types/storage'
+import { invoke } from '@tauri-apps/api/core'
+import { UserData } from '../../../core/storage/types/storage'
 import { generateResponse } from '../types/generateResponse'
 import { generateV2Request } from '../types/generateV2Request'
+
+const DATA_FILENAME = import.meta.env.DEV ? `[DEBUG]-data.json` : `data.json`
 
 export const CVGenerationService = {
   askOutputPath: async (): Promise<string | null> => {
@@ -13,8 +15,8 @@ export const CVGenerationService = {
     let data: UserData
     try {
       data = JSON.parse(
-        await readTextFile('data.json', {
-          dir: BaseDirectory.AppData
+        await readTextFile(DATA_FILENAME, {
+          baseDir: BaseDirectory.AppData
         })
       )
     } catch (error) {
@@ -37,33 +39,16 @@ export const CVGenerationService = {
       throw Error('Error on open save dialog')
     }
   },
-  connected: async ({ apiPort }: { apiPort: string }): Promise<ChildProcess> => {
-    const baseURL = `http://localhost:${apiPort}`
-
-    const response = await fetch(`${baseURL}/api/v1/connect`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    const output = await response.json()
-    return output
-  },
-  generate: async ({
-    api_port,
-    outputFilePath
-  }: {
-    api_port: string | null
-    outputFilePath: string
-  }): Promise<generateResponse> => {
+  generate: async ({ outputFilePath }: { outputFilePath: string }): Promise<generateResponse> => {
     const appDataDirPath = await appDataDir()
     const fileName = outputFilePath.split('/').slice(-1).join('')
     const outputFolderPath = outputFilePath.replace(fileName, '')
     const outputFileName = outputFilePath.replace(outputFolderPath, '').replace('.pptx', '')
 
+    const api_port = await invoke<string>('get_backend_port')
+
     const baseURL = `http://localhost:${api_port}`
 
-    console.log({ outputFolderPath })
     const response = await fetch(`${baseURL}/api/v1/generate-cv-pptx`, {
       method: 'POST',
       headers: {
@@ -72,7 +57,7 @@ export const CVGenerationService = {
       body: JSON.stringify({
         output_filename: outputFileName,
         output_folder: outputFolderPath,
-        path_data: await join(appDataDirPath, 'data.json'),
+        path_data: await join(appDataDirPath, DATA_FILENAME),
         path_template: await resolveResource(
           await join('resources', 'CV_Nom_Prenom_Capability.pptx')
         )
@@ -84,18 +69,18 @@ export const CVGenerationService = {
   },
   generateV2: async ({
     outputFilePath,
-    data,
-    apiPort
+    data
   }: {
     outputFilePath: string
     data: generateV2Request
-    apiPort: string
   }): Promise<generateResponse> => {
     const fileName = outputFilePath.split('/').slice(-1).join('')
     const outputFolderPath = outputFilePath.replace(fileName, '')
     const outputFileName = outputFilePath.replace(outputFolderPath, '').replace('.pptx', '')
 
-    const baseURL = `http://localhost:${apiPort}`
+    const api_port = await invoke<string>('get_backend_port')
+
+    const baseURL = `http://localhost:${api_port}`
 
     const response = await fetch(`${baseURL}/api/v2/generate-cv-pptx`, {
       method: 'POST',
