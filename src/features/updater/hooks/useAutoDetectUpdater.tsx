@@ -16,8 +16,6 @@ export const useAutoDetectUpdater = () => {
         setStatus(AppUpdaterStatus.UPDATE_AVAILABLE)
         emit(MenuEvent.AppCheckUpdate)
         setAlreadyAutoDetect(true)
-      } else {
-        setStatus(AppUpdaterStatus.NO_UPDATE_AVAILABLE)
       }
     }
     if (!alreadyAutoDetect) check()

@@ -61,26 +61,31 @@ export const useAppUpdater = (): {
     setDownloadedLength(0)
     setUpdateLength(0)
     try {
-      await update.downloadAndInstall((event) => {
-        switch (event.event) {
-          case 'Started':
-            contentLenght = event.data.contentLength ?? 0
-            setUpdateLength(contentLenght)
-            console.info(`[Updater] started downloading ${event.data.contentLength} bytes`)
-            setStatus(AppUpdaterStatus.DOWNLOADING_UPDATE)
-            break
-          case 'Progress':
-            downloaded += event.data.chunkLength
-            setDownloadedLength(downloaded)
-            console.trace(`[Updater] ⬇ downloaded ${downloaded} from ${contentLenght}`)
-            break
-          case 'Finished':
-            console.info('[Updater] download finished')
-            setStatus(AppUpdaterStatus.UPDATE_DOWNLOADED)
-            openModal('updater')
-            break
+      await update.downloadAndInstall(
+        (event) => {
+          switch (event.event) {
+            case 'Started':
+              contentLenght = event.data.contentLength ?? 0
+              setUpdateLength(contentLenght)
+              console.info(`[Updater] started downloading ${event.data.contentLength} bytes`)
+              setStatus(AppUpdaterStatus.DOWNLOADING_UPDATE)
+              break
+            case 'Progress':
+              downloaded += event.data.chunkLength
+              setDownloadedLength(downloaded)
+              console.trace(`[Updater] ⬇ downloaded ${downloaded} from ${contentLenght}`)
+              break
+            case 'Finished':
+              console.info('[Updater] download finished')
+              setStatus(AppUpdaterStatus.UPDATE_DOWNLOADED)
+              openModal('updater')
+              break
+          }
+        },
+        {
+          timeout: 300000 // 5min
         }
-      })
+      )
     } catch (e) {
       setStatus(AppUpdaterStatus.DOWNLOAD_FAILED)
       openModal('updater')
