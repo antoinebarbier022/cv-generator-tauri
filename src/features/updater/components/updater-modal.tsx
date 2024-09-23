@@ -79,7 +79,7 @@ export const UpdaterModal = ({
           )}
 
           <Stack gap={8} width={'100%'} sx={{ paddingTop: paddingTop }}>
-            <Stack gap={1} marginRight={marginRight}>
+            <Stack gap={1} marginRight={marginRight} flex={1}>
               <Stack gap={0.5}>
                 {title && (
                   <Typography color={color} level="title-md" width={'100%'} textAlign={alignement}>
