@@ -2,7 +2,7 @@
 
 [![release & publish](https://github.com/antoinebarbier022/frog-cv-generator-tauri/actions/workflows/main.yml/badge.svg)](https://github.com/antoinebarbier022/frog-cv-generator-tauri/actions/workflows/main.yml)
 
-**CV Generator** is a desktop application for generating CVs. Given a predefined template, the app populates it with user data and outputs a PPTX file.
+**CV Generator** is a desktop application for generating CVs. Given a predefined template (temporarily inside the source code), the app populates it with user data and outputs a PPTX file.
 
 ![docs/app-screen.png](docs/app-screen.png)
 
