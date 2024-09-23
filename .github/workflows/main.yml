@@ -9,7 +9,7 @@ on:
       test_build:
         description: 'Run a test build'
         required: false
-        default: 'false'
+        default: false
         type: boolean
 
 jobs:
@@ -76,5 +76,5 @@ jobs:
           tagName: ${{ github.event.inputs.test_build == 'true' && 'test-build' || '__VERSION__' }}
           releaseName: ${{ github.event.inputs.test_build == 'true' && 'Test Build' || 'Release v__VERSION__' }}
           releaseDraft: ${{ github.event.inputs.test_build == 'true' && 'true' || 'false' }}
-          includeUpdaterJson: ${{ github.event.inputs.test_build == 'true' && 'true' || 'false' }}
+          includeUpdaterJson: ${{ github.event.inputs.test_build == 'true' && 'false' || 'true' }}
           args: ${{ matrix.args }}
