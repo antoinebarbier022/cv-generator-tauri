@@ -1,5 +1,12 @@
 
 
+## [0.1.1-beta.29](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.28...0.1.1-beta.29) (2024-9-23)
+
+
+### Bug Fixes
+
+* **updater:** close modal onCancel ([29d69cd](https://github.com/antoinebarbier022/cv-generator-tauri/commit/29d69cda93e1a95b1e7508436df1aaec6c0fcb21))
+
 ## [0.1.1-beta.28](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.27...0.1.1-beta.28) (2024-9-22)
 
 
