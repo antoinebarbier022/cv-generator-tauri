@@ -144,7 +144,7 @@
   "updater.download-failed.title": "Échec du téléchargement",
   "updater.download-failed.confirm": "Réessayer",
   "updater.update-available.title": "Nouvelle version disponible !",
-  "updater.update-available.description": "La version {{newVersion}} est disponible, vous avez actuellement {{currentVersion}}",
+  "updater.update-available.description": "La version {{newVersion}} est disponible, vous avez actuellement la version {{currentVersion}}",
   "updater.update-available.confirm": "Télécharger",
   "updater.update-available.cancel": "Me rappeler plus tard",
   "updater.checking-for-updates.title": "Vérification des mises à jour...",

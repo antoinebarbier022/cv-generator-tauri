@@ -63,7 +63,7 @@ export const useAppUpdater = (): {
     }
 
     let downloaded = 0
-    let contentLenght = 0
+    let contentLength = 0
     setDownloadedLength(0)
     setUpdateLength(0)
     try {
@@ -71,15 +71,15 @@ export const useAppUpdater = (): {
         (event) => {
           switch (event.event) {
             case 'Started':
-              contentLenght = event.data.contentLength ?? 0
-              setUpdateLength(contentLenght)
+              contentLength = event.data.contentLength ?? 0
+              setUpdateLength(contentLength)
               console.info(`[Updater] started downloading ${event.data.contentLength} bytes`)
               setStatus(AppUpdaterStatus.DOWNLOADING_UPDATE)
               break
             case 'Progress':
               downloaded += event.data.chunkLength
               setDownloadedLength(downloaded)
-              console.trace(`[Updater] ⬇ downloaded ${downloaded} from ${contentLenght}`)
+              console.trace(`[Updater] ⬇ downloaded ${downloaded} from ${contentLength}`)
               break
             case 'Finished':
               console.info('[Updater] download finished')
