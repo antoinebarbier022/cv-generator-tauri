@@ -33,6 +33,7 @@ export const useAppUpdater = (): {
   } = useUpdaterStore()
 
   const [currentVersion, setCurrentVersion] = useState<string | null>(null)
+  const { close: closeModal } = useNavigateToModal()
 
   const { open: openModal } = useNavigateToModal()
 
@@ -45,6 +46,7 @@ export const useAppUpdater = (): {
   const cancelUpdater = useCallback(() => {
     resetUpdater()
     setStatus(AppUpdaterStatus.IDLE)
+    closeModal()
     console.info(`[Updater] Cancel`)
   }, [])
 
