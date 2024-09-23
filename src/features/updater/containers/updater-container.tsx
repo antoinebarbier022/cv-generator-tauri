@@ -1,4 +1,3 @@
-import { useNavigateToModal } from '@/app/router/useNavigateToModal'
 import AppIcon from '@/assets/images/icon.svg?react'
 import UpdateErrorSVG from '@/assets/images/update-error.svg?react'
 
@@ -21,7 +20,6 @@ interface Props {
 }
 
 export const UpdaterContainer = (props: Props) => {
-  const { close: hideModal } = useNavigateToModal()
   const { t } = useTranslation()
 
   const {
@@ -40,12 +38,17 @@ export const UpdaterContainer = (props: Props) => {
     props.onClose()
   }
 
-  if (status === AppUpdaterStatus.NO_UPDATE_AVAILABLE) {
+  const handleCancel = () => {
+    props.onClose()
+    cancelUpdater()
+  }
+
+  if (currentVersion && status === AppUpdaterStatus.NO_UPDATE_AVAILABLE) {
     return (
       <UpdaterModal
         open={props.open}
         onClose={handleClose}
-        onCancel={cancelUpdater}
+        onCancel={handleCancel}
         config={{
           icon: <AppIcon />,
           title: t('updater.no-update.title'),
@@ -76,7 +79,7 @@ export const UpdaterContainer = (props: Props) => {
     return (
       <UpdaterModal
         open={props.open}
-        onCancel={hideModal}
+        onCancel={handleClose}
         config={{
           icon: <AppIcon />,
           title: getTitle(),
@@ -99,7 +102,7 @@ export const UpdaterContainer = (props: Props) => {
         <UpdaterModal
           open={props.open}
           onConfirm={relaunch}
-          onCancel={hideModal}
+          onCancel={handleClose}
           onClose={handleClose}
           config={{
             icon: <AppIcon />,
@@ -123,7 +126,7 @@ export const UpdaterContainer = (props: Props) => {
       <>
         <UpdaterModal
           open={props.open}
-          onCancel={cancelUpdater}
+          onCancel={handleCancel}
           onConfirm={downloadAndInstall}
           config={{
             icon: <UpdateErrorSVG />,
@@ -144,8 +147,8 @@ export const UpdaterContainer = (props: Props) => {
     return (
       <UpdaterModal
         open={props.open}
-        onClose={hideModal}
-        onCancel={cancelUpdater}
+        onClose={handleClose}
+        onCancel={handleCancel}
         onConfirm={downloadAndInstall}
         config={{
           size: 'md',
@@ -188,7 +191,7 @@ export const UpdaterContainer = (props: Props) => {
     return (
       <UpdaterModal
         open={props.open}
-        onCancel={cancelUpdater}
+        onCancel={handleCancel}
         onConfirm={checkForUpdates}
         config={{
           kind: status === AppUpdaterStatus.CHECK_ERROR ? 'error' : 'info',

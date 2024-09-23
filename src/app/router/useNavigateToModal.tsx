@@ -1,7 +1,7 @@
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
 export const useNavigateToModal = () => {
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
   const navigate = useNavigate()
 
   const open = (value: string) => {
@@ -15,9 +15,10 @@ export const useNavigateToModal = () => {
 
   const close = () => {
     const newSearchParams = new URLSearchParams(searchParams)
+    const idModal = newSearchParams.get('modal')
+    console.info(`Closed modal "${idModal}"`)
     newSearchParams.delete('modal')
-    setSearchParams(newSearchParams)
-    console.info(`Closed modal "${searchParams.get('modal')}"`)
+    navigate(`${location.pathname}?${newSearchParams}`)
   }
 
   const isOpen = (value: string | string[]) => {

@@ -44,9 +44,9 @@ export const useAppUpdater = (): {
   }, [])
 
   const cancelUpdater = useCallback(() => {
+    closeModal()
     resetUpdater()
     setStatus(AppUpdaterStatus.IDLE)
-    closeModal()
     console.info(`[Updater] Cancel`)
   }, [])
 
