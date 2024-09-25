@@ -49,6 +49,7 @@ export const UpdaterModal = ({
   const color = kind === 'error' ? 'danger' : undefined
 
   const width = size === 'sm' ? '380px' : '650px'
+  const minHeight = size === 'sm' ? '340px' : undefined
   const direction = size === 'sm' ? 'column' : 'row'
   const alignement = size === 'sm' ? 'center' : undefined
   const marginRight = size === 'sm' ? undefined : 0
@@ -62,7 +63,7 @@ export const UpdaterModal = ({
     <Modal open={open}>
       <ModalDialog
         size="lg"
-        sx={{ minWidth: width, maxWidth: width, width: width, minHeight: '340px' }}
+        sx={{ minWidth: width, maxWidth: width, width: width, minHeight: minHeight }}
       >
         {onClose && <ModalClose onClick={onClose} />}
         <Stack
