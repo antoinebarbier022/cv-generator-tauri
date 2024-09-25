@@ -5,6 +5,7 @@ import {
   LaptopChromebookRounded,
   PublicRounded,
   SettingsRounded,
+  TranslateRounded,
   TuneRounded
 } from '@mui/icons-material'
 import {
@@ -50,7 +51,13 @@ export const SettingsModal = (props: Props) => {
       icon: <BrushRounded />,
       disabled: false
     },
-    { divider: true, hide: true },
+    { divider: true, hide: false },
+    {
+      label: t('settings.navigation.translate'),
+      to: 'settings-translate',
+      icon: <TranslateRounded />,
+      disabled: false
+    },
     {
       label: t('settings.navigation.cv-configuration'),
       icon: <LaptopChromebookRounded />,
@@ -80,14 +87,21 @@ export const SettingsModal = (props: Props) => {
         size="sm"
         sx={{
           p: 0,
-          minWidth: { sm: '80vw', xl: '1400px', overflow: 'hidden' },
-          maxWidth: { sm: '80vw', xl: '1400px' },
-          minHeight: '80vh',
-          maxHeight: '80vh'
+          minWidth: { sm: '90vw', xl: '1400px' },
+          maxWidth: { sm: '90vw', xl: '1400px' },
+          minHeight: '400px',
+          maxHeight: '600px',
+          height: '85vh',
+          overflowY: 'scroll'
         }}
       >
         <ModalClose />
-        <Stack direction={'row'} display={'grid'} gridTemplateColumns={'230px auto'}>
+        <Stack
+          direction={'row'}
+          display={'grid'}
+          height={'100%'}
+          gridTemplateColumns={'230px auto'}
+        >
           <Stack
             sx={{
               height: '100%',

@@ -5,19 +5,19 @@ import { useUpdaterStore } from '../stores/updater.store'
 import { AppUpdaterStatus } from '../types/updater.types'
 import { useAppUpdater } from './useAppUpdater'
 
-export const useAutoDetectUpdater = () => {
+export const useUpdaterOnFirstLaunch = () => {
   const { checkForUpdates } = useAppUpdater()
-  const { alreadyAutoDetect, setAlreadyAutoDetect, setStatus } = useUpdaterStore()
+  const { alreadyAutoCheck, setAlreadyAutoCheck, setStatus } = useUpdaterStore()
 
   useEffect(() => {
-    const check = async () => {
+    const firstCheckOnLaunch = async () => {
       const update = await checkForUpdates()
       if (update && update.available) {
         setStatus(AppUpdaterStatus.UPDATE_AVAILABLE)
         emit(MenuEvent.AppCheckUpdate)
-        setAlreadyAutoDetect(true)
+        setAlreadyAutoCheck(true)
       }
     }
-    if (!alreadyAutoDetect) check()
+    if (!alreadyAutoCheck) firstCheckOnLaunch()
   }, [])
 }

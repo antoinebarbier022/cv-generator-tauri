@@ -4,12 +4,16 @@ import { createJSONStorage, persist } from 'zustand/middleware'
 import { AppUpdaterStatus } from '../types/updater.types'
 
 interface State {
-  alreadyAutoDetect: boolean
+  autoCheckActive: boolean
+  alreadyAutoCheck: boolean
   status: AppUpdaterStatus
   update: Update | null
   downloadedLength: number | null
   totalUpdateLength: number | null
-  setAlreadyAutoDetect: (value: boolean) => void
+  lastCheck: Date | null
+  setAutoCheckActive: (value: boolean) => void
+  setLastCheck: (value: Date) => void
+  setAlreadyAutoCheck: (value: boolean) => void
   setStatus: (value: AppUpdaterStatus) => void
   setUpdate: (value: Update | null) => void
   setDownloadedLength: (value: number | null) => void
@@ -19,13 +23,21 @@ interface State {
 export const useUpdaterStore = create(
   persist<State>(
     (set) => ({
-      alreadyAutoDetect: false,
+      autoCheckActive: true,
+      alreadyAutoCheck: false,
       status: AppUpdaterStatus.IDLE,
       update: null,
       downloadedLength: null,
       totalUpdateLength: null,
-      setAlreadyAutoDetect: (value: boolean) => {
-        set(() => ({ alreadyAutoDetect: value }))
+      lastCheck: null,
+      setAutoCheckActive: (value: boolean) => {
+        set(() => ({ autoCheckActive: value }))
+      },
+      setLastCheck: (value: Date) => {
+        set(() => ({ lastCheck: value }))
+      },
+      setAlreadyAutoCheck: (value: boolean) => {
+        set(() => ({ alreadyAutoCheck: value }))
       },
       setStatus: (value: AppUpdaterStatus) => {
         switch (value) {

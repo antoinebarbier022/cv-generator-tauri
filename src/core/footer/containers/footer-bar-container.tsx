@@ -76,7 +76,9 @@ export const FooterBarContainer = () => {
           status === AppUpdaterStatus.DOWNLOADING_UPDATE ||
           status === AppUpdaterStatus.UPDATE_DOWNLOADED) && (
           <FooterItem
-            onClick={() => modal.open('updater')}
+            onClick={() => {
+              modal.open('updater')
+            }}
             icon={
               status == AppUpdaterStatus.UPDATE_DOWNLOADED && (
                 <CheckCircleOutlineRounded fontSize="inherit" />
@@ -113,7 +115,7 @@ export const FooterBarContainer = () => {
 
         <FooterItem
           icon={<TranslateRounded fontSize="inherit" />}
-          onClick={() => modal.open('settings')}
+          onClick={() => modal.open('settings-translate')}
         >
           {t('footer.option-translate', {
             state: isActiveOptionValid ? t('core.enabled') : t('core.disabled')

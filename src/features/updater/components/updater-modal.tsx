@@ -82,7 +82,13 @@ export const UpdaterModal = ({
             <Stack gap={1} marginRight={marginRight} flex={1}>
               <Stack gap={0.5}>
                 {title && (
-                  <Typography color={color} level="title-md" width={'100%'} textAlign={alignement}>
+                  <Typography
+                    color={color}
+                    level="title-md"
+                    width={'100%'}
+                    textAlign={alignement}
+                    whiteSpace={'pre-wrap'}
+                  >
                     {title}
                   </Typography>
                 )}
@@ -91,7 +97,7 @@ export const UpdaterModal = ({
                   <Typography
                     color={color}
                     level="body-sm"
-                    textColor={'text.tertiary'}
+                    textColor={color ?? 'text.tertiary'}
                     textAlign={alignement}
                   >
                     {description}

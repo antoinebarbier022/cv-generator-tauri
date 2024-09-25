@@ -10,22 +10,16 @@ function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-export const useAppUpdater = (): {
-  status: AppUpdaterStatus
-  update: Pick<Update, 'available' | 'version' | 'body' | 'currentVersion' | 'date'> | null
-  currentVersion: string | null
-  downloadedLength: number | null
-  totalUpdateLength: number | null
-  checkForUpdates: () => Promise<Update | null>
-  relaunch: () => void
-  cancelUpdater: () => void
-  downloadAndInstall: () => void
-} => {
+export const useAppUpdater = () => {
   const {
     status,
+    autoCheckActive,
+    setAutoCheckActive,
     setStatus,
     update,
     setUpdate,
+    setLastCheck,
+    lastCheck,
     downloadedLength,
     setDownloadedLength,
     totalUpdateLength,
@@ -56,9 +50,23 @@ export const useAppUpdater = (): {
     await relaunch()
   }
 
-  const downloadAndInstall = async () => {
+  const downloadAndInstall = async ({
+    autoOpenModal = true,
+    checkUpdate = false
+  }: {
+    autoOpenModal?: boolean
+    checkUpdate?: boolean
+  }) => {
     setStatus(AppUpdaterStatus.DOWNLOADING_UPDATE)
-    if (!update || !update.available) {
+    let currentUpdate: Update | null
+    if (checkUpdate) {
+      currentUpdate = await check({ timeout: 10000 })
+    }
+    {
+      currentUpdate = update
+    }
+
+    if (!currentUpdate || !currentUpdate.available) {
       return
     }
 
@@ -67,7 +75,7 @@ export const useAppUpdater = (): {
     setDownloadedLength(0)
     setUpdateLength(0)
     try {
-      await update.downloadAndInstall(
+      await currentUpdate.downloadAndInstall(
         (event) => {
           switch (event.event) {
             case 'Started':
@@ -84,24 +92,29 @@ export const useAppUpdater = (): {
             case 'Finished':
               console.info('[Updater] download finished')
               setStatus(AppUpdaterStatus.UPDATE_DOWNLOADED)
-              openModal('updater')
+              if (autoOpenModal) openModal('updater')
               break
           }
         },
         {
-          timeout: 300000 // 5min
+          timeout: 300000 // 5min,
         }
       )
     } catch (e) {
       setStatus(AppUpdaterStatus.DOWNLOAD_FAILED)
-      openModal('updater')
+      if (autoOpenModal) openModal('updater')
       console.error(`[Updater] ${e}`)
     }
   }
 
+  useEffect(() => {
+    getVersion().then((version) => setCurrentVersion(version))
+  }, [])
+
   const checkForUpdates = async () => {
     try {
       resetUpdater()
+      setLastCheck(new Date())
       setStatus(AppUpdaterStatus.CHECKING_FOR_UPDATES)
       const update = await check({ timeout: 10000 })
       await sleep(500)
@@ -128,6 +141,9 @@ export const useAppUpdater = (): {
     if (status === AppUpdaterStatus.CHECKING_FOR_UPDATES) {
       checkForUpdates()
     }
+    if (status === AppUpdaterStatus.DOWNLOADING_UPDATE && (!update || !update?.available)) {
+      setStatus(AppUpdaterStatus.IDLE)
+    }
   }, [status])
 
   return {
@@ -137,6 +153,9 @@ export const useAppUpdater = (): {
           ...update
         }
       : null,
+    lastCheck,
+    autoCheckActive,
+    setAutoCheckActive,
     currentVersion,
     downloadedLength,
     totalUpdateLength,

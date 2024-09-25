@@ -43,6 +43,10 @@ export const UpdaterContainer = (props: Props) => {
     cancelUpdater()
   }
 
+  const handleDownloadAndInstall = () => {
+    downloadAndInstall({ autoOpenModal: true })
+  }
+
   if (currentVersion && status === AppUpdaterStatus.NO_UPDATE_AVAILABLE) {
     return (
       <UpdaterModal
@@ -127,10 +131,11 @@ export const UpdaterContainer = (props: Props) => {
         <UpdaterModal
           open={props.open}
           onCancel={handleCancel}
-          onConfirm={downloadAndInstall}
+          onConfirm={handleDownloadAndInstall}
           config={{
             icon: <UpdateErrorSVG />,
             title: t('updater.download-failed.title'),
+            description: update?.version && `v${update?.version}`,
             kind: 'error',
             confirmLabel: t('updater.download-failed.confirm')
           }}
@@ -149,7 +154,7 @@ export const UpdaterContainer = (props: Props) => {
         open={props.open}
         onClose={handleClose}
         onCancel={handleCancel}
-        onConfirm={downloadAndInstall}
+        onConfirm={handleDownloadAndInstall}
         config={{
           size: 'md',
           icon: <AppIcon />,

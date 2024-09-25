@@ -15,7 +15,8 @@ import { UpdaterContainer } from '@/features/updater/containers/updater-containe
 import { useMenuEvents } from '@/core/events/useMenuEvents'
 import { SidebarContainer } from '@/core/sidebar/containers/sidebar-container'
 import { MissingFontModal } from '@/features/missing-font/components/missing-font-modal'
-import { useAutoDetectUpdater } from '@/features/updater/hooks/useAutoDetectUpdater'
+
+import { useUpdaterOnFirstLaunch } from '@/features/updater/hooks/useUpdaterOnFirstLaunch'
 import { Alert } from '@mui/joy'
 import { SettingsModal } from '../features/settings/settings-layout'
 import { useNavigateToModal } from './router/useNavigateToModal'
@@ -24,6 +25,7 @@ import { FormationPage } from './views/cv-forms/formation-page'
 import { ProjectsPage } from './views/cv-forms/projects-page'
 import { SectorsPage } from './views/cv-forms/sectors-page'
 import { DebugModal } from './views/debug/debug-modal'
+import { ApplicationSettings } from './views/settings/application-settings'
 import { LanguageSettings } from './views/settings/language-settings'
 import { ThemesSettings } from './views/settings/themes-settings'
 import { TranslatorSettings } from './views/settings/translator-settings'
@@ -36,7 +38,7 @@ export const AppRouter = () => {
 
   useRedirectToWelcomePage()
   useNavigationLogger()
-  useAutoDetectUpdater()
+  useUpdaterOnFirstLaunch()
 
   return (
     <>
@@ -52,7 +54,7 @@ export const AppRouter = () => {
         ])}
         onClose={modal.close}
       >
-        {modal.isOpen('settings') && <TranslatorSettings />}
+        {modal.isOpen('settings') && <ApplicationSettings />}
         {modal.isOpen('settings-translate') && <TranslatorSettings />}
         {modal.isOpen('settings-themes') && <ThemesSettings />}
         {modal.isOpen('settings-language') && <LanguageSettings />}

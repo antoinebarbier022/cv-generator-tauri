@@ -152,5 +152,12 @@
   "updater.check-error.confirm": "Réessayer",
   "footer.updater.progression": "Mise à jour : {{value}}%",
   "footer.updater.progression-done": "Mise à jour téléchargé",
-  "footer.updater.error": "Erreur lors de la mise à jour"
+  "footer.updater.error": "Erreur lors de la mise à jour",
+  "settings.navigation.translate": "Traduction",
+  "settings.app.auto-updater": "Mises à jou",
+  "settings.app.auto-updater.title": "Mises à jour automatiques",
+  "settings.app.check-for-updates.title": "Version actuelle : v{{currentVersion}}",
+  "settings.app.check-for-updates.description.is-up-to-date": "Votre application est à jour ! \nDernière recherche de mise à jour {{lastCheckDate}}",
+  "settings.app.auto-updater.description": "Désactiver pour empêcher l'application de chercher les mises à jour au démarage de l'application.",
+  "settings.app.check-for-updates.cta.check-for-updates": "Rechercher des mises à jours"
 }
