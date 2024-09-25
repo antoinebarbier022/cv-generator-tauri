@@ -1,5 +1,12 @@
 
 
+## [0.1.1-beta.31](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.30...0.1.1-beta.31) (2024-9-25)
+
+
+### Bug Fixes
+
+* **updater:** wrong endpoint ([c078e19](https://github.com/antoinebarbier022/cv-generator-tauri/commit/c078e19e06c0f4e744822f257230930a51eb86fa))
+
 ## [0.1.1-beta.30](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.29...0.1.1-beta.30) (2024-9-25)
 
 
