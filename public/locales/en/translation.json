@@ -143,7 +143,7 @@
   "updater.download-failed.title": "Failed to download",
   "updater.download-failed.confirm": "Try Again",
   "updater.update-available.title": "A new version is available!",
-  "updater.update-available.description": "{{newVersion}} is now available -- you have {{currentVersion}}",
+  "updater.update-available.description": "v{{newVersion}} is now available -- you have v{{currentVersion}}",
   "updater.update-available.confirm": "Download",
   "updater.update-available.cancel": "Remind me later",
   "updater.checking-for-updates.title": "Checking for updates",
