@@ -1,5 +1,12 @@
 
 
+## [0.1.1-beta.33](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.32...0.1.1-beta.33) (2024-9-25)
+
+
+### Bug Fixes
+
+* **updater:** design on new version available ([64d74f3](https://github.com/antoinebarbier022/cv-generator-tauri/commit/64d74f3bd1017edc0df63e6d090dff4748c62d26))
+
 ## [0.1.1-beta.32](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.31...0.1.1-beta.32) (2024-9-25)
 
 
