@@ -1,5 +1,12 @@
 
 
+## [0.1.1-beta.32](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.31...0.1.1-beta.32) (2024-9-25)
+
+
+### Bug Fixes
+
+* **settings:** overflow scroll to hidden ([91c3d3e](https://github.com/antoinebarbier022/cv-generator-tauri/commit/91c3d3e498c39488d250739b451f25acd2455af2))
+
 ## [0.1.1-beta.31](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.30...0.1.1-beta.31) (2024-9-25)
 
 

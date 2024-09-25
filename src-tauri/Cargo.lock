@@ -941,7 +941,7 @@ dependencies = [
 
 [[package]]
 name = "cv_generator"
-version = "0.1.1-beta.31"
+version = "0.1.1-beta.32"
 dependencies = [
  "anyhow",
  "convert_case 0.6.0",
