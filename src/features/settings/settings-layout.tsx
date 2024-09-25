@@ -92,7 +92,7 @@ export const SettingsModal = (props: Props) => {
           minHeight: '400px',
           maxHeight: '600px',
           height: '85vh',
-          overflowY: 'scroll'
+          overflow: 'hidden'
         }}
       >
         <ModalClose />
