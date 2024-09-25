@@ -19,7 +19,7 @@ interface Props extends PropsWithChildren {
   }
 }
 
-export const UpdaterModal = ({
+export const UpdaterModalLayout = ({
   open,
   onClose,
   onConfirm,
@@ -70,7 +70,6 @@ export const UpdaterModal = ({
           direction={direction}
           alignItems={alignement}
           gap={2}
-          width={'100%'}
           sx={{ px: 2, mt: marginTop, mb: marginBottom }}
         >
           {icon && (

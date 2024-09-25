@@ -5,9 +5,8 @@ export const useNavigationLogger = () => {
   const location = useLocation()
 
   useEffect(() => {
-    // Log chaque fois que la route change
     console.info(`Navigated to "${location.pathname}"`)
-  }, [location.pathname]) // On observe location.pathname pour déclencher le log à chaque changement
+  }, [location.pathname])
 
-  return null // Ce composant ne rend rien mais loggue la navigation
+  return null
 }
