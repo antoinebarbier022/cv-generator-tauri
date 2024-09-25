@@ -1,5 +1,19 @@
 
 
+## [0.1.1-beta.30](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.29...0.1.1-beta.30) (2024-9-25)
+
+
+### Bug Fixes
+
+* **updater:** design when there is no children ([7c2dcca](https://github.com/antoinebarbier022/cv-generator-tauri/commit/7c2dcca6a39dd9d2c69364b044de13916bac65e7))
+* **updater:** handleClose and handleCancel ([fa1495d](https://github.com/antoinebarbier022/cv-generator-tauri/commit/fa1495d81870b3636e9af0ccbb7dfc8b2fdf12b5))
+* **updater:** wording ([049f7c6](https://github.com/antoinebarbier022/cv-generator-tauri/commit/049f7c63baee9c04b09b67d96abc8f41dd544c12))
+
+
+### Features
+
+* **settings:** add access to update check inside settings ([83a7b2f](https://github.com/antoinebarbier022/cv-generator-tauri/commit/83a7b2fd802822341d413b5bd36c532d0f35ffcf))
+
 ## [0.1.1-beta.29](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.28...0.1.1-beta.29) (2024-9-23)
 
 
