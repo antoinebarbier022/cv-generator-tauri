@@ -1,72 +1,58 @@
-import { useNavigateToModal } from '@/app/router/useNavigateToModal'
 import { getVersion } from '@tauri-apps/api/app'
 import { relaunch } from '@tauri-apps/plugin-process'
 import { check, Update } from '@tauri-apps/plugin-updater'
-import { useCallback, useEffect, useState } from 'react'
-import { useUpdaterStore } from '../stores/updater.store'
+import { useEffect } from 'react'
+import { useUpdateInfoStore } from '../stores/useUpdateInfoStore'
+import { useUpdateSettingsStore } from '../stores/useUpdateSettingsStore'
 import { AppUpdaterStatus } from '../types/updater.types'
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-export const useAppUpdater = () => {
+export interface UpdaterHookResponse {
+  status: AppUpdaterStatus
+  nextVersion: string | null
+  releaseNote: string | null
+  currentVersion: string | null
+  downloadedLength: number | null
+  totalUpdateLength: number | null
+  checkForUpdates: () => Promise<Update | null>
+  downloadAndInstall: () => Promise<void>
+  relaunchApplication: () => Promise<void>
+  resetUpdater: () => void
+}
+
+export const useUpdater = (): UpdaterHookResponse => {
   const {
     status,
-    autoCheckActive,
-    setAutoCheckActive,
-    setStatus,
-    update,
-    setUpdate,
-    setLastCheck,
-    lastCheck,
+    currentVersion,
+    nextVersion,
+    releaseNote: releaseNote,
     downloadedLength,
-    setDownloadedLength,
     totalUpdateLength,
-    setUpdateLength
-  } = useUpdaterStore()
+    setStatus,
+    setCurrentVersion,
+    setNextVersion,
+    setReleaseNote: setReleaseNote,
+    setDownloadedLength,
+    setUpdateLength,
+    reset: resetUpdater
+  } = useUpdateInfoStore()
 
-  const [currentVersion, setCurrentVersion] = useState<string | null>(null)
-  const { close: closeModal } = useNavigateToModal()
+  const { setLastCheck } = useUpdateSettingsStore()
 
-  const { open: openModal } = useNavigateToModal()
-
-  const resetUpdater = useCallback(() => {
-    setUpdate(null)
-    setDownloadedLength(null)
-    setUpdateLength(null)
-  }, [])
-
-  const cancelUpdater = useCallback(() => {
-    closeModal()
-    resetUpdater()
-    setStatus(AppUpdaterStatus.IDLE)
-    console.info(`[Updater] Cancel`)
-  }, [])
-
-  const relaunchApp = async () => {
+  const relaunchApplication = async () => {
     console.info(`[Updater] Relaunch application CV Generator.`)
     setStatus(AppUpdaterStatus.UPDATE_SUCCESS)
     await relaunch()
   }
 
-  const downloadAndInstall = async ({
-    autoOpenModal = true,
-    checkUpdate = false
-  }: {
-    autoOpenModal?: boolean
-    checkUpdate?: boolean
-  }) => {
+  const downloadAndInstall = async () => {
     setStatus(AppUpdaterStatus.DOWNLOADING_UPDATE)
-    let currentUpdate: Update | null
-    if (checkUpdate) {
-      currentUpdate = await check({ timeout: 10000 })
-    }
-    {
-      currentUpdate = update
-    }
-
-    if (!currentUpdate || !currentUpdate.available) {
+    const update = await check({ timeout: 10000 })
+    if (!update || !update.available) {
+      setStatus(AppUpdaterStatus.DOWNLOAD_FAILED)
       return
     }
 
@@ -75,7 +61,7 @@ export const useAppUpdater = () => {
     setDownloadedLength(0)
     setUpdateLength(0)
     try {
-      await currentUpdate.downloadAndInstall(
+      await update.downloadAndInstall(
         (event) => {
           switch (event.event) {
             case 'Started':
@@ -92,7 +78,6 @@ export const useAppUpdater = () => {
             case 'Finished':
               console.info('[Updater] download finished')
               setStatus(AppUpdaterStatus.UPDATE_DOWNLOADED)
-              if (autoOpenModal) openModal('updater')
               break
           }
         },
@@ -102,29 +87,23 @@ export const useAppUpdater = () => {
       )
     } catch (e) {
       setStatus(AppUpdaterStatus.DOWNLOAD_FAILED)
-      if (autoOpenModal) openModal('updater')
       console.error(`[Updater] ${e}`)
     }
   }
 
-  useEffect(() => {
-    getVersion().then((version) => setCurrentVersion(version))
-  }, [])
-
   const checkForUpdates = async () => {
     try {
-      resetUpdater()
-      setLastCheck(new Date())
       setStatus(AppUpdaterStatus.CHECKING_FOR_UPDATES)
       const update = await check({ timeout: 10000 })
       await sleep(500)
-      setUpdate(update)
 
       if (!update) {
         setStatus(AppUpdaterStatus.NO_UPDATE_AVAILABLE)
         const version = await getVersion()
         setCurrentVersion(version)
       } else {
+        setNextVersion(update.version)
+        setReleaseNote(update.body ?? null)
         setCurrentVersion(update.currentVersion)
         setStatus(AppUpdaterStatus.UPDATE_AVAILABLE)
         console.info(`[Updater] Found available update ${update.version} from ${update.date}`)
@@ -138,30 +117,27 @@ export const useAppUpdater = () => {
   }
 
   useEffect(() => {
+    getVersion().then((version) => setCurrentVersion(version))
+  }, [])
+
+  useEffect(() => {
     if (status === AppUpdaterStatus.CHECKING_FOR_UPDATES) {
+      resetUpdater()
       checkForUpdates()
-    }
-    if (status === AppUpdaterStatus.DOWNLOADING_UPDATE && (!update || !update?.available)) {
-      setStatus(AppUpdaterStatus.IDLE)
+      setLastCheck(new Date())
     }
   }, [status])
 
   return {
     status,
-    update: update
-      ? {
-          ...update
-        }
-      : null,
-    lastCheck,
-    autoCheckActive,
-    setAutoCheckActive,
+    nextVersion,
+    releaseNote,
     currentVersion,
     downloadedLength,
     totalUpdateLength,
     checkForUpdates,
     downloadAndInstall,
-    cancelUpdater,
-    relaunch: relaunchApp
+    relaunchApplication,
+    resetUpdater
   }
 }

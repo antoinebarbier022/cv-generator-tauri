@@ -1,7 +1,7 @@
 import { locales } from '@/configs/i18n.config'
 import { SettingsItem } from '@/features/settings/settings-item'
 import { SettingsSection } from '@/features/settings/settings-section'
-import { useAppUpdater } from '@/features/updater/hooks/useAppUpdater'
+import { useUpdater } from '@/features/updater/hooks/useAppUpdater'
 import { MenuEvent } from '@/generated/events/menu-events'
 import { Button, Divider, Option, Select } from '@mui/joy'
 import { emit } from '@tauri-apps/api/event'
@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next'
 
 export const ApplicationSettings = () => {
   const { t, i18n } = useTranslation()
-  const { currentVersion, lastCheck } = useAppUpdater()
+  const { currentVersion, lastCheck } = useUpdater()
 
   return (
     <SettingsSection>

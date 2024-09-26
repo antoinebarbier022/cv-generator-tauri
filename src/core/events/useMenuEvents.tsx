@@ -1,6 +1,6 @@
 import { listen } from '@tauri-apps/api/event'
 import { confirm } from '@tauri-apps/plugin-dialog'
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 
 import { useImportDataContent } from '@/core/storage/useImportDataContent'
 import { useResetDataStorage } from '@/core/storage/useResetDataStorage'
@@ -8,8 +8,7 @@ import { useAskOutputPath } from '@/features/generation/hooks/useAskOutputPath'
 import { useGenerate } from '@/features/generation/hooks/useGenerate'
 import { MenuEvent } from '@/generated/events/menu-events'
 
-import { useUpdaterStore } from '@/features/updater/stores/updater.store'
-import { AppUpdaterStatus } from '@/features/updater/types/updater.types'
+import { useCheckForUpdatesEvent } from '@/features/updater/hooks/useCheckForUpdatesEvent'
 import { useNavigateToModal } from '../../app/router/useNavigateToModal'
 import { useSidebarStore } from '../sidebar/stores/useSidebarStore'
 
@@ -23,8 +22,6 @@ export const useMenuEvents = () => {
 
   const askOutputPath = useAskOutputPath()
   const generate = useGenerate()
-
-  const { status, setStatus } = useUpdaterStore()
 
   useEffect(() => {
     const unlisten = listen(MenuEvent.DebugOpenPanel, () => modal.open('debug'))
@@ -47,30 +44,7 @@ export const useMenuEvents = () => {
     }
   }, [])
 
-  const statusRef = useRef(status)
-
-  useEffect(() => {
-    statusRef.current = status
-  }, [status])
-
-  useEffect(() => {
-    const unlisten = listen(MenuEvent.AppCheckUpdate, async () => {
-      if (
-        statusRef.current !== AppUpdaterStatus.INSTALLING_UPDATE &&
-        statusRef.current !== AppUpdaterStatus.UPDATE_DOWNLOADED &&
-        statusRef.current !== AppUpdaterStatus.DOWNLOADING_UPDATE &&
-        statusRef.current !== AppUpdaterStatus.CHECK_ERROR &&
-        statusRef.current !== AppUpdaterStatus.DOWNLOAD_FAILED
-      ) {
-        setStatus(AppUpdaterStatus.CHECKING_FOR_UPDATES)
-      }
-      modal.open('updater')
-    })
-
-    return () => {
-      unlisten.then((dispose) => dispose())
-    }
-  }, [])
+  useCheckForUpdatesEvent()
 
   useEffect(() => {
     const unlisten = listen(MenuEvent.ViewToggleSidebar, async () => toggleCollapseSidebar())

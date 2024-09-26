@@ -14,7 +14,7 @@ interface Props extends PropsWithChildren, HTMLAttributes<Element> {
     icon: ReactNode | null
     title?: string
     description?: string
-    releaseNotes?: string
+    releaseNote?: string
     confirmLabel?: string
     cancelLabel?: string
   }
@@ -31,7 +31,7 @@ export const UpdaterModalLayout = ({
     icon: undefined,
     title: undefined,
     description: undefined,
-    releaseNotes: undefined,
+    releaseNote: undefined,
     confirmLabel: 'OK',
     cancelLabel: 'Cancel'
   },
@@ -67,7 +67,7 @@ export const UpdaterModalLayout = ({
         size="lg"
         sx={{ minWidth: width, maxWidth: width, width: width, minHeight: minHeight }}
       >
-        {onClose && <ModalClose onClick={onClose} />}
+        {onClose && <ModalClose data-testid="on-close" onClick={onClose} />}
         <Stack
           direction={direction}
           alignItems={alignement}
@@ -116,12 +116,23 @@ export const UpdaterModalLayout = ({
                 gap={1}
               >
                 {onCancel && (
-                  <Button variant="soft" color="neutral" onClick={onCancel} sx={{ flex: '1' }}>
+                  <Button
+                    data-testid="on-cancel"
+                    variant="soft"
+                    color="neutral"
+                    onClick={onCancel}
+                    sx={{ flex: '1' }}
+                  >
                     {cancelLabel}
                   </Button>
                 )}
                 {onConfirm && (
-                  <Button color={color} sx={{ flex: '1' }} onClick={onConfirm}>
+                  <Button
+                    data-testid="on-confirm"
+                    color={color}
+                    sx={{ flex: '1' }}
+                    onClick={onConfirm}
+                  >
                     {okLabel}
                   </Button>
                 )}

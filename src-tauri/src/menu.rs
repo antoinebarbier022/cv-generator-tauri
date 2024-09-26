@@ -1,5 +1,6 @@
 use crate::errors::{EmitError, ErrorPayload};
 use convert_case::{Case, Casing};
+use serde::{Deserialize, Serialize};
 use std::str::FromStr;
 use strum::{EnumString, IntoStaticStr};
 use tauri::menu::{
@@ -71,6 +72,12 @@ impl MenuEvent {
     }
 }
 
+#[derive(Serialize, Deserialize)]
+struct UpdaterEventPayload {
+    open_modal_before_check: bool,
+    open_odal_after_check: bool,
+}
+
 pub fn on_menu_event(app: &AppHandle, event: tauri::menu::MenuEvent) {
     match MyMenu::try_from(event.id()).ok() {
         Some(MyMenu::FileImport) => app
@@ -89,12 +96,18 @@ pub fn on_menu_event(app: &AppHandle, event: tauri::menu::MenuEvent) {
         Some(MyMenu::AppPreferences) => app
             .emit(&MenuEvent::AppPreferences.as_event_name(), "")
             .unwrap(),
-        Some(MyMenu::AppCheckUpdate) => app
-            .emit(
-                &MenuEvent::AppCheckUpdate.as_event_name(),
-                "check-update-from-menu",
-            )
-            .unwrap(),
+        Some(MyMenu::AppCheckUpdate) => {
+            let payload = UpdaterEventPayload {
+                open_modal_before_check: true,
+                open_odal_after_check: false,
+            };
+
+            // Serialize the payload to JSON
+            let payload_json = serde_json::to_string(&payload).unwrap();
+
+            app.emit(&MenuEvent::AppCheckUpdate.as_event_name(), payload_json)
+                .unwrap();
+        }
         Some(MyMenu::ViewToggleSidebar) => app
             .emit(&MenuEvent::ViewToggleSidebar.as_event_name(), "")
             .unwrap(),

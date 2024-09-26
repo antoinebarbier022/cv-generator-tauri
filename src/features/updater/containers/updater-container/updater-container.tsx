@@ -1,6 +1,5 @@
-import { BetaBadge } from '@/shared/components/beta-badge'
 import { UpdaterModal } from '../../components/updater-modal/updater-modal'
-import { useAppUpdater } from '../../hooks/useAppUpdater'
+import { useUpdater } from '../../hooks/useUpdater'
 import { AppUpdaterStatus } from '../../types/updater.types'
 
 interface Props {
@@ -11,28 +10,28 @@ interface Props {
 export const UpdaterContainer = (props: Props) => {
   const {
     status,
-    update,
+    nextVersion,
+    releaseNote,
     currentVersion,
     downloadedLength,
     totalUpdateLength,
     downloadAndInstall,
     checkForUpdates,
-    cancelUpdater,
-    relaunch
-  } = useAppUpdater()
+    resetUpdater,
+    relaunchApplication
+  } = useUpdater()
 
   const handleClose = () => {
     props.onClose()
   }
 
-  const handleCancel = () => {
+  const handleResetUpdater = () => {
     props.onClose()
-    cancelUpdater()
+    resetUpdater()
   }
 
-  const handleDownloadAndInstall = () => {
-    downloadAndInstall({ autoOpenModal: true })
-  }
+  const handleDownloadAndInstall = downloadAndInstall
+  const handleRelaunchApplication = relaunchApplication
 
   if (currentVersion && status === AppUpdaterStatus.NO_UPDATE_AVAILABLE) {
     return (
@@ -40,7 +39,7 @@ export const UpdaterContainer = (props: Props) => {
         status={AppUpdaterStatus.NO_UPDATE_AVAILABLE}
         open={props.open}
         onClose={handleClose}
-        onCancel={handleCancel}
+        onCancel={handleResetUpdater}
         optionalContent={{
           currentVersion
         }}
@@ -48,14 +47,14 @@ export const UpdaterContainer = (props: Props) => {
     )
   }
 
-  if (update && downloadedLength !== null && status === AppUpdaterStatus.DOWNLOADING_UPDATE) {
+  if (downloadedLength !== null && status === AppUpdaterStatus.DOWNLOADING_UPDATE) {
     return (
       <UpdaterModal
         status={AppUpdaterStatus.UPDATE_DOWNLOADED}
         open={props.open}
         onCancel={handleClose}
         optionalContent={{
-          nextVersion: update?.version,
+          nextVersion: nextVersion ?? undefined,
           downloadedLength: downloadedLength ?? undefined,
           totalUpdateLength: totalUpdateLength ?? undefined
         }}
@@ -63,21 +62,18 @@ export const UpdaterContainer = (props: Props) => {
     )
   }
 
-  if (status === AppUpdaterStatus.UPDATE_DOWNLOADED) {
+  if (nextVersion && status === AppUpdaterStatus.UPDATE_DOWNLOADED) {
     return (
-      <div>
-        <p>toto va a lecole</p>
-        <UpdaterModal
-          status={AppUpdaterStatus.UPDATE_DOWNLOADED}
-          open={props.open}
-          onClose={handleClose}
-          onCancel={handleClose}
-          onConfirm={relaunch}
-          optionalContent={{
-            nextVersion: update?.version
-          }}
-        />
-      </div>
+      <UpdaterModal
+        status={AppUpdaterStatus.UPDATE_DOWNLOADED}
+        open={props.open}
+        onClose={handleClose}
+        onCancel={handleClose}
+        onConfirm={handleRelaunchApplication}
+        optionalContent={{
+          nextVersion: nextVersion
+        }}
+      />
     )
   }
 
@@ -86,10 +82,10 @@ export const UpdaterContainer = (props: Props) => {
       <UpdaterModal
         status={AppUpdaterStatus.DOWNLOAD_FAILED}
         open={props.open}
-        onCancel={handleCancel}
+        onCancel={handleResetUpdater}
         onConfirm={handleDownloadAndInstall}
         optionalContent={{
-          nextVersion: update?.version,
+          nextVersion: nextVersion ?? undefined,
           downloadedLength: downloadedLength ?? undefined,
           totalUpdateLength: totalUpdateLength ?? undefined
         }}
@@ -97,18 +93,18 @@ export const UpdaterContainer = (props: Props) => {
     )
   }
 
-  if (update && status === AppUpdaterStatus.UPDATE_AVAILABLE) {
+  if (status === AppUpdaterStatus.UPDATE_AVAILABLE) {
     return (
       <UpdaterModal
         status={AppUpdaterStatus.UPDATE_AVAILABLE}
         open={props.open}
         onClose={handleClose}
-        onCancel={handleCancel}
+        onCancel={handleResetUpdater}
         onConfirm={handleDownloadAndInstall}
         optionalContent={{
-          nextVersion: update?.version,
-          currentVersion: update?.currentVersion,
-          releaseNote: update?.body
+          nextVersion: nextVersion ?? undefined,
+          currentVersion: currentVersion ?? undefined,
+          releaseNote: releaseNote ?? undefined
         }}
       />
     )
@@ -130,23 +126,10 @@ export const UpdaterContainer = (props: Props) => {
       <UpdaterModal
         status={AppUpdaterStatus.CHECK_ERROR}
         open={props.open}
-        onCancel={handleCancel}
+        onCancel={handleResetUpdater}
         onConfirm={checkForUpdates}
         optionalContent={{}}
       />
-    )
-  }
-
-  if (status === AppUpdaterStatus.UPDATE_SUCCESS) {
-    return <div data-testid="modal-UPDATE_SUCCESS"></div>
-  }
-
-  if (status === AppUpdaterStatus.INSTALLING_UPDATE) {
-    return (
-      <div data-testid="modal-INSTALLING_UPDATEe">
-        <p>toto</p>
-        <BetaBadge />
-      </div>
     )
   }
 
