@@ -87,8 +87,8 @@ export const SettingsModal = (props: Props) => {
         size="sm"
         sx={{
           p: 0,
-          minWidth: { sm: '90vw', xl: '1400px' },
-          maxWidth: { sm: '90vw', xl: '1400px' },
+          minWidth: { sm: '90vw', xl: '1100px' },
+          maxWidth: { sm: '90vw', xl: '1100px' },
           minHeight: '400px',
           maxHeight: '600px',
           height: '85vh',

@@ -9,7 +9,7 @@ interface Props {
 export const SettingsItem = (props: Props) => {
   return (
     <Stack direction={'row'} justifyContent={'space-between'} gap={2}>
-      <Stack gap={0.5} width={'100%'}>
+      <Stack gap={0.5} width={'fit-content'} maxWidth={'80%'}>
         <Typography level="title-md" fontWeight={400}>
           {props.title}
         </Typography>
@@ -17,7 +17,6 @@ export const SettingsItem = (props: Props) => {
           level="body-xs"
           fontWeight={300}
           textColor={'text.tertiary'}
-          width={'80%'}
           whiteSpace={'pre-wrap'}
         >
           {props.description}
