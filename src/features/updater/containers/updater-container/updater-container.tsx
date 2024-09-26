@@ -1,6 +1,7 @@
-import { UpdaterModal } from '../components/updater-modal/updater-modal'
-import { useAppUpdater } from '../hooks/useAppUpdater'
-import { AppUpdaterStatus } from '../types/updater.types'
+import { BetaBadge } from '@/shared/components/beta-badge'
+import { UpdaterModal } from '../../components/updater-modal/updater-modal'
+import { useAppUpdater } from '../../hooks/useAppUpdater'
+import { AppUpdaterStatus } from '../../types/updater.types'
 
 interface Props {
   open: boolean
@@ -64,16 +65,19 @@ export const UpdaterContainer = (props: Props) => {
 
   if (status === AppUpdaterStatus.UPDATE_DOWNLOADED) {
     return (
-      <UpdaterModal
-        status={AppUpdaterStatus.UPDATE_DOWNLOADED}
-        open={props.open}
-        onClose={handleClose}
-        onCancel={handleClose}
-        onConfirm={relaunch}
-        optionalContent={{
-          nextVersion: update?.version
-        }}
-      />
+      <div>
+        <p>toto va a lecole</p>
+        <UpdaterModal
+          status={AppUpdaterStatus.UPDATE_DOWNLOADED}
+          open={props.open}
+          onClose={handleClose}
+          onCancel={handleClose}
+          onConfirm={relaunch}
+          optionalContent={{
+            nextVersion: update?.version
+          }}
+        />
+      </div>
     )
   }
 
@@ -130,6 +134,19 @@ export const UpdaterContainer = (props: Props) => {
         onConfirm={checkForUpdates}
         optionalContent={{}}
       />
+    )
+  }
+
+  if (status === AppUpdaterStatus.UPDATE_SUCCESS) {
+    return <div data-testid="modal-UPDATE_SUCCESS"></div>
+  }
+
+  if (status === AppUpdaterStatus.INSTALLING_UPDATE) {
+    return (
+      <div data-testid="modal-INSTALLING_UPDATEe">
+        <p>toto</p>
+        <BetaBadge />
+      </div>
     )
   }
 

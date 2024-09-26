@@ -1,9 +1,10 @@
 import { AspectRatio, Button, Modal, ModalClose, ModalDialog, Stack, Typography } from '@mui/joy'
 
-import { PropsWithChildren, ReactNode } from 'react'
+import { HTMLAttributes, PropsWithChildren, ReactNode } from 'react'
 
-interface Props extends PropsWithChildren {
+interface Props extends PropsWithChildren, HTMLAttributes<Element> {
   open: boolean
+  dataTestid?: string
   onClose?: () => void
   onConfirm?: () => void
   onCancel?: () => void
@@ -34,6 +35,7 @@ export const UpdaterModalLayout = ({
     confirmLabel: 'OK',
     cancelLabel: 'Cancel'
   },
+  dataTestid,
   children
 }: Props) => {
   const {
@@ -60,7 +62,7 @@ export const UpdaterModalLayout = ({
 
   const actionsButtonDirection = size === 'sm' ? 'column-reverse' : 'row'
   return (
-    <Modal open={open}>
+    <Modal open={open} data-testid={dataTestid}>
       <ModalDialog
         size="lg"
         sx={{ minWidth: width, maxWidth: width, width: width, minHeight: minHeight }}

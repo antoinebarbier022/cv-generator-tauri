@@ -30,9 +30,10 @@ export const UpdaterModal = (props: Props) => {
   const { currentVersion, nextVersion, releaseNote, downloadedLength, totalUpdateLength } =
     props.optionalContent
 
-  if (props.optionalContent && props.status === AppUpdaterStatus.NO_UPDATE_AVAILABLE) {
+  if (props.status === AppUpdaterStatus.NO_UPDATE_AVAILABLE) {
     return (
       <UpdaterModalLayout
+        dataTestid={`modal-${props.status}`}
         open={props.open}
         onClose={props.onClose}
         onCancel={props.onCancel}
@@ -68,6 +69,7 @@ export const UpdaterModal = (props: Props) => {
     }
     return (
       <UpdaterModalLayout
+        dataTestid={`modal-${props.status}`}
         open={props.open}
         onCancel={props.onClose}
         config={{
@@ -90,6 +92,7 @@ export const UpdaterModal = (props: Props) => {
     return (
       <>
         <UpdaterModalLayout
+          dataTestid={`modal-${props.status}`}
           open={props.open}
           onConfirm={props.onConfirm}
           onCancel={props.onClose}
@@ -115,6 +118,7 @@ export const UpdaterModal = (props: Props) => {
     return (
       <>
         <UpdaterModalLayout
+          dataTestid={`modal-${props.status}`}
           open={props.open}
           onCancel={props.onCancel}
           onConfirm={props.onConfirm}
@@ -137,6 +141,7 @@ export const UpdaterModal = (props: Props) => {
   if (props.status === AppUpdaterStatus.UPDATE_AVAILABLE) {
     return (
       <UpdaterModalLayout
+        dataTestid={`modal-${props.status}`}
         open={props.open}
         onClose={props.onClose}
         onCancel={props.onCancel}
@@ -164,6 +169,7 @@ export const UpdaterModal = (props: Props) => {
   if (props.status === AppUpdaterStatus.CHECKING_FOR_UPDATES) {
     return (
       <UpdaterModalLayout
+        dataTestid={`modal-${props.status}`}
         open={props.open}
         onClose={props.onClose}
         config={{
@@ -181,6 +187,7 @@ export const UpdaterModal = (props: Props) => {
   if (props.status === AppUpdaterStatus.CHECK_ERROR) {
     return (
       <UpdaterModalLayout
+        dataTestid={`modal-${props.status}`}
         open={props.open}
         onCancel={props.onCancel}
         onConfirm={props.onConfirm}

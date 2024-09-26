@@ -6,6 +6,11 @@ import svgr from 'vite-plugin-svgr'
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
   plugins: [react(), svgr()],
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: ['./src/tests/setup.ts']
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src')

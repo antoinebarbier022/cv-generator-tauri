@@ -8,5 +8,5 @@ export enum AppUpdaterStatus {
   INSTALLING_UPDATE = 'installing_update',
   DOWNLOAD_FAILED = 'download_failed',
   UPDATE_SUCCESS = 'update_success',
-  CHECK_ERROR = 'error'
+  CHECK_ERROR = 'check_error'
 }

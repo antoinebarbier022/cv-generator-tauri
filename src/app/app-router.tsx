@@ -10,7 +10,7 @@ import { ProfilePage } from '@/app/views/cv-forms/profile-page'
 import { AppLayout } from '@/app/layouts/app-layout'
 import { WelcomeLayout } from '@/app/views/welcome-page/layouts/welcome-layout'
 import { useNavigationLogger } from '@/core/logs/useNavigationLogger'
-import { UpdaterContainer } from '@/features/updater/containers/updater-container'
+import { UpdaterContainer } from '@/features/updater/containers/updater-container/updater-container'
 
 import { useMenuEvents } from '@/core/events/useMenuEvents'
 import { SidebarContainer } from '@/core/sidebar/containers/sidebar-container'
