@@ -4,7 +4,6 @@ import * as matchers from '@testing-library/jest-dom/matchers'
 import { cleanup } from '@testing-library/react'
 import { afterEach, expect, vi } from 'vitest'
 import './tauri/mocks/tauri-mocks'
-import './tauri/tauri-tests'
 
 vi.mock('react-i18next', () => ({
   // this mock makes sure any components using the translate hook can use it without a warning being shown
