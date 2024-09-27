@@ -145,7 +145,6 @@
   "updater.update-available.title": "A new version is available!",
   "updater.update-available.description": "v{{newVersion}} is now available -- you have v{{currentVersion}}",
   "updater.update-available.confirm": "Download",
-  "updater.update-available.cancel": "Remind me later",
   "updater.checking-for-updates.title": "Checking for updates",
   "updater.check-error.title": "Failed to check for updates",
   "updater.check-error.confirm": "Try again",
@@ -157,5 +156,6 @@
   "settings.app.check-for-updates.title": "Current version: v{{currentVersion}}",
   "settings.app.check-for-updates.description.is-up-to-date": "Your application is up to date! \nLast update check {{lastCheckDate}}",
   "settings.app.auto-updater.description": "Disable to prevent the application from checking for updates when the application starts.",
-  "settings.app.check-for-updates.cta.check-for-updates": "Check for updates"
+  "settings.app.check-for-updates.cta.check-for-updates": "Check for updates",
+  "updater.update-available.cancel": "Close"
 }

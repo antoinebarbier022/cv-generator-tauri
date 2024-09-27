@@ -146,7 +146,6 @@
   "updater.update-available.title": "Nouvelle version disponible !",
   "updater.update-available.description": "La version {{newVersion}} est disponible, vous avez actuellement la version {{currentVersion}}",
   "updater.update-available.confirm": "Télécharger",
-  "updater.update-available.cancel": "Me rappeler plus tard",
   "updater.checking-for-updates.title": "Vérification des mises à jour...",
   "updater.check-error.title": "Impossible de vérifier les mises à jour",
   "updater.check-error.confirm": "Réessayer",
@@ -159,5 +158,6 @@
   "settings.app.check-for-updates.title": "Version actuelle : v{{currentVersion}}",
   "settings.app.check-for-updates.description.is-up-to-date": "Votre application est à jour ! \nDernière recherche de mise à jour {{lastCheckDate}}",
   "settings.app.auto-updater.description": "Désactiver pour empêcher l'application de chercher les mises à jour au démarage de l'application.",
-  "settings.app.check-for-updates.cta.check-for-updates": "Rechercher des mises à jours"
+  "settings.app.check-for-updates.cta.check-for-updates": "Rechercher des mises à jours",
+  "updater.update-available.cancel": "Fermer"
 }
