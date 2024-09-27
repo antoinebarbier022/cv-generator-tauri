@@ -11,7 +11,7 @@ export const RealeaseNoteMarkdown = ({ content }: Props) => {
   const fontWeight = 300
 
   return (
-    <Stack maxHeight={'10lh'} overflow={'auto'}>
+    <Stack maxHeight={'10lh'} sx={{ overflowY: 'scroll' }}>
       <Markdown
         remarkPlugins={[remarkGfm]}
         components={{
@@ -36,6 +36,7 @@ export const RealeaseNoteMarkdown = ({ content }: Props) => {
               textColor={textColor}
               fontWeight={fontWeight}
               whiteSpace={'pre-line'}
+              pb={1}
             >
               {children}
             </Typography>
@@ -45,6 +46,7 @@ export const RealeaseNoteMarkdown = ({ content }: Props) => {
               level={level}
               textColor={textColor}
               fontWeight={fontWeight}
+              whiteSpace={'pre-wrap'}
               sx={{ textDecoration: 'line-through' }}
             >
               {children}
@@ -55,6 +57,7 @@ export const RealeaseNoteMarkdown = ({ content }: Props) => {
               level={level}
               textColor={textColor}
               fontWeight={fontWeight}
+              whiteSpace={'pre-wrap'}
               fontStyle={'italic'}
             >
               {children}
@@ -66,12 +69,12 @@ export const RealeaseNoteMarkdown = ({ content }: Props) => {
             </Typography>
           ),
 
-          h1: ({ children }) => <Typography level={'title-md'}>{children}</Typography>,
+          h1: ({ children }) => <Typography level={'title-sm'}>{children}</Typography>,
           h2: ({ children }) => <Typography level={'title-sm'}>{children}</Typography>,
-          h3: 'h2',
-          h4: 'h2',
-          h5: 'h2',
-          h6: 'h2',
+          h3: ({ children }) => <Typography level={'title-sm'}>{children}</Typography>,
+          h4: ({ children }) => <Typography level={'title-sm'}>{children}</Typography>,
+          h5: ({ children }) => <Typography level={'title-sm'}>{children}</Typography>,
+          h6: ({ children }) => <Typography level={'title-sm'}>{children}</Typography>,
           table: 'p',
           ol: 'ul',
           b: 'strong',
@@ -95,8 +98,14 @@ export const RealeaseNoteMarkdown = ({ content }: Props) => {
             </List>
           ),
           li: ({ children }) => (
-            <ListItem component={Typography} level={level} sx={{ m: 0, p: 0, ml: 2 }}>
-              <Typography textColor={textColor}>{children}</Typography>
+            <ListItem
+              component={Typography}
+              level={level}
+              textColor={textColor}
+              fontWeight={fontWeight}
+              sx={{ m: 0, p: 0, ml: 1 }}
+            >
+              {children}
             </ListItem>
           )
         }}

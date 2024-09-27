@@ -67,7 +67,24 @@ export const UPDATE_AVAILABLE_with_release_note: Story = {
   args: {
     status: AppUpdaterStatus.UPDATE_AVAILABLE,
     optionalContent: {
-      releaseNote: '**Release note** \n- hello world'
+      currentVersion: '0.1.20',
+      nextVersion: '0.1.26',
+      downloadedLength: 25,
+      totalUpdateLength: 100,
+      releaseNote: `# Release Note - Version 1.0.0
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin non turpis ac libero dictum bibendum. Nullam vestibulum, ligula sed suscipit tincidunt, risus enim convallis urna, sit amet fermentum justo nisi nec metus.
+
+Nouvelles fonctionnalités :
+- Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+- Integer convallis ligula et libero varius, nec tempus lorem accumsan.
+- Fusce eget mi eu turpis vulputate molestie.
+
+Nouvelles fonctionnalités :
+- Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+- Integer convallis ligula et libero varius, nec tempus lorem accumsan.
+- Fusce eget mi eu turpis vulputate molestie.
+`
     }
   }
 }

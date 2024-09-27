@@ -116,25 +116,22 @@ export const UpdaterModal = (props: Props) => {
     const progression =
       downloadedLength && totalUpdateLength ? (downloadedLength / totalUpdateLength) * 100 : 0
     return (
-      <>
-        <UpdaterModalLayout
-          dataTestid={`modal-${props.status}`}
-          open={props.open}
-          onCancel={props.onCancel}
-          onConfirm={props.onConfirm}
-          config={{
-            icon: <UpdateErrorSVG />,
-            title: t('updater.download-failed.title'),
-            description: nextVersion && `v${nextVersion}`,
-            kind: 'error',
-            confirmLabel: t('updater.download-failed.confirm')
-          }}
-        >
-          <Stack pt={2}>
-            <LinearProgress color="danger" determinate value={progression} />
-          </Stack>
-        </UpdaterModalLayout>
-      </>
+      <UpdaterModalLayout
+        dataTestid={`modal-${props.status}`}
+        open={props.open}
+        onCancel={props.onCancel}
+        onConfirm={props.onConfirm}
+        config={{
+          icon: <UpdateErrorSVG />,
+          title: t('updater.download-failed.title', { version: nextVersion }),
+          kind: 'error',
+          confirmLabel: t('updater.download-failed.confirm')
+        }}
+      >
+        <Stack pt={2}>
+          <LinearProgress color="danger" determinate value={progression} />
+        </Stack>
+      </UpdaterModalLayout>
     )
   }
 
@@ -149,9 +146,10 @@ export const UpdaterModal = (props: Props) => {
         config={{
           size: 'md',
           icon: <AppIcon />,
-          title: t('updater.update-available.title'),
+          title: t('updater.update-available.title', {
+            newVersion: nextVersion
+          }),
           description: t('updater.update-available.description', {
-            newVersion: nextVersion,
             currentVersion: currentVersion
           }),
           confirmLabel: t('updater.update-available.confirm'),

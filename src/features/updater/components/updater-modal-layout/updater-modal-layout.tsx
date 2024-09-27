@@ -51,14 +51,14 @@ export const UpdaterModalLayout = ({
   const color = kind === 'error' ? 'danger' : undefined
 
   const width = size === 'sm' ? '380px' : '650px'
-  const minHeight = size === 'sm' ? '340px' : undefined
+  const minHeight = size === 'sm' ? '240px' : undefined
   const direction = size === 'sm' ? 'column' : 'row'
   const alignement = size === 'sm' ? 'center' : undefined
   const marginRight = size === 'sm' ? undefined : 0
 
   const marginTop = size === 'sm' ? 2 : 0
   const paddingTop = size === 'sm' ? 0 : 2.5
-  const marginBottom = size === 'sm' ? 1 : 0
+  const marginBottom = 1
 
   const actionsButtonDirection = size === 'sm' ? 'column-reverse' : 'row'
   return (
@@ -68,21 +68,22 @@ export const UpdaterModalLayout = ({
         sx={{ minWidth: width, maxWidth: width, width: width, minHeight: minHeight }}
       >
         {onClose && <ModalClose data-testid="on-close" onClick={onClose} />}
-        <Stack
-          direction={direction}
-          alignItems={alignement}
-          gap={2}
-          sx={{ px: 2, mt: marginTop, mb: marginBottom }}
-        >
-          {icon && (
-            <AspectRatio variant="plain" ratio={1} sx={{ m: 2, width: '60px' }}>
-              {icon}
-            </AspectRatio>
-          )}
 
-          <Stack gap={8} width={'100%'} sx={{ paddingTop: paddingTop }}>
-            <Stack gap={1} marginRight={marginRight} flex={1}>
-              <Stack gap={0.5}>
+        <Stack
+          gap={4}
+          width={'100%'}
+          flex={1}
+          sx={{ paddingTop: paddingTop, px: 2, mt: marginTop, mb: marginBottom }}
+        >
+          <Stack gap={2} marginRight={marginRight} flex={1}>
+            <Stack direction={direction} alignItems={alignement} gap={size === 'sm' ? 2 : 3}>
+              {icon && (
+                <AspectRatio variant="plain" ratio={1} sx={{ m: 0, width: '60px' }}>
+                  {icon}
+                </AspectRatio>
+              )}
+
+              <Stack gap={0.5} justifyContent={'center'}>
                 {title && (
                   <Typography
                     color={color}
@@ -106,39 +107,40 @@ export const UpdaterModalLayout = ({
                   </Typography>
                 )}
               </Stack>
-              <Stack>{children}</Stack>
             </Stack>
-
-            {(onCancel || onConfirm) && (
-              <Stack
-                direction={actionsButtonDirection}
-                justifyContent={alignement ?? 'flex-end'}
-                gap={1}
-              >
-                {onCancel && (
-                  <Button
-                    data-testid="on-cancel"
-                    variant="soft"
-                    color="neutral"
-                    onClick={onCancel}
-                    sx={{ flex: '1' }}
-                  >
-                    {cancelLabel}
-                  </Button>
-                )}
-                {onConfirm && (
-                  <Button
-                    data-testid="on-confirm"
-                    color={color}
-                    sx={{ flex: '1' }}
-                    onClick={onConfirm}
-                  >
-                    {okLabel}
-                  </Button>
-                )}
-              </Stack>
-            )}
+            {children && <Stack>{children}</Stack>}
           </Stack>
+
+          {(onCancel || onConfirm) && (
+            <Stack
+              direction={actionsButtonDirection}
+              justifyContent={alignement ?? 'flex-end'}
+              mt={2}
+              gap={1}
+            >
+              {onCancel && (
+                <Button
+                  data-testid="on-cancel"
+                  variant="soft"
+                  color="neutral"
+                  onClick={onCancel}
+                  sx={{ flex: '1' }}
+                >
+                  {cancelLabel}
+                </Button>
+              )}
+              {onConfirm && (
+                <Button
+                  data-testid="on-confirm"
+                  color={color}
+                  sx={{ flex: '1' }}
+                  onClick={onConfirm}
+                >
+                  {okLabel}
+                </Button>
+              )}
+            </Stack>
+          )}
         </Stack>
       </ModalDialog>
     </Modal>
