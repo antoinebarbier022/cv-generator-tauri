@@ -1,7 +1,6 @@
-import { MenuEvent } from '@/generated/events/menu-events'
-import { emit } from '@tauri-apps/api/event'
 import { useEffect } from 'react'
 
+import { emitApplicationEvents } from '@/core/events/emit-application-events'
 import { useUpdateSettingsStore } from '../stores/useUpdateSettingsStore'
 
 export const useUpdaterOnFirstLaunch = () => {
@@ -9,10 +8,9 @@ export const useUpdaterOnFirstLaunch = () => {
 
   useEffect(() => {
     if (!alreadyAutoCheck) {
-      emit(MenuEvent.AppCheckUpdate, {
-        payload: {
-          openModal: true
-        }
+      emitApplicationEvents.checkForUpdates({
+        open_modal_after_check: true,
+        open_modal_before_check: false
       })
       setAlreadyAutoCheck(true)
     }

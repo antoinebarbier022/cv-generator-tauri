@@ -50,7 +50,7 @@ export const UpdaterContainer = (props: Props) => {
   if (downloadedLength !== null && status === AppUpdaterStatus.DOWNLOADING_UPDATE) {
     return (
       <UpdaterModal
-        status={AppUpdaterStatus.UPDATE_DOWNLOADED}
+        status={AppUpdaterStatus.DOWNLOADING_UPDATE}
         open={props.open}
         onCancel={handleClose}
         optionalContent={{

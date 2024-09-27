@@ -4,7 +4,7 @@
     "beforeBuildCommand": "npm run build:front",
     "beforeDevCommand": "npm run dev:front",
     "frontendDist": "../dist",
-    "devUrl": "http://localhost:3000"
+    "devUrl": "http://localhost:3008"
   },
   "bundle": {
     "externalBin": [

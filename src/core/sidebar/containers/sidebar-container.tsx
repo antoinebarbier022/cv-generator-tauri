@@ -14,8 +14,7 @@ import { Button, Divider, Sheet, Stack } from '@mui/joy'
 import { useFormCV } from '@/shared/hooks/useFormCV'
 
 import { useNavigateToModal } from '@/app/router/useNavigateToModal'
-import { MenuEvent } from '@/generated/events/menu-events'
-import { emit } from '@tauri-apps/api/event'
+import { emitApplicationEvents } from '@/core/events/emit-application-events'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { MissingFontAlert } from '../../../features/missing-font/components/missing-font-alert'
@@ -155,7 +154,7 @@ export const SidebarContainer = ({ isLoadingGenerate }: Props) => {
               variant="solid"
               sx={{ height: '2.25rem' }}
               loading={isLoadingGenerate}
-              onClick={() => emit(MenuEvent.FileGenerateAndSaveAs)}
+              onClick={() => emitApplicationEvents.generatePPTX()}
               className="@container"
             >
               <Stack height={'100%'} className="!block @[10ch]:!hidden">

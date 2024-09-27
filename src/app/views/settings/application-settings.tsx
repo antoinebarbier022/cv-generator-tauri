@@ -1,16 +1,19 @@
 import { locales } from '@/configs/i18n.config'
+import { emitApplicationEvents } from '@/core/events/emit-application-events'
 import { SettingsItem } from '@/features/settings/settings-item'
 import { SettingsSection } from '@/features/settings/settings-section'
-import { useUpdater } from '@/features/updater/hooks/useAppUpdater'
-import { MenuEvent } from '@/generated/events/menu-events'
+import { useUpdateInfoStore } from '@/features/updater/stores/useUpdateInfoStore'
+import { useUpdateSettingsStore } from '@/features/updater/stores/useUpdateSettingsStore'
+
 import { Button, Divider, Option, Select } from '@mui/joy'
-import { emit } from '@tauri-apps/api/event'
 import { formatDistanceToNow } from 'date-fns'
 import { useTranslation } from 'react-i18next'
 
 export const ApplicationSettings = () => {
   const { t, i18n } = useTranslation()
-  const { currentVersion, lastCheck } = useUpdater()
+
+  const { currentVersion } = useUpdateInfoStore()
+  const { lastCheck } = useUpdateSettingsStore()
 
   return (
     <SettingsSection>
@@ -33,7 +36,12 @@ export const ApplicationSettings = () => {
         endAction={
           <Button
             sx={{ whiteSpace: { md: 'nowrap' } }}
-            onClick={() => emit(MenuEvent.AppCheckUpdate)}
+            onClick={() =>
+              emitApplicationEvents.checkForUpdates({
+                open_modal_before_check: true,
+                open_modal_after_check: false
+              })
+            }
           >
             {t('settings.app.check-for-updates.cta.check-for-updates')}
           </Button>

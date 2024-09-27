@@ -92,8 +92,10 @@ export const useUpdater = (): UpdaterHookResponse => {
   }
 
   const checkForUpdates = async () => {
+    resetUpdater()
+    setStatus(AppUpdaterStatus.CHECKING_FOR_UPDATES)
+    setLastCheck(new Date())
     try {
-      setStatus(AppUpdaterStatus.CHECKING_FOR_UPDATES)
       const update = await check({ timeout: 10000 })
       await sleep(500)
 
@@ -119,14 +121,6 @@ export const useUpdater = (): UpdaterHookResponse => {
   useEffect(() => {
     getVersion().then((version) => setCurrentVersion(version))
   }, [])
-
-  useEffect(() => {
-    if (status === AppUpdaterStatus.CHECKING_FOR_UPDATES) {
-      resetUpdater()
-      checkForUpdates()
-      setLastCheck(new Date())
-    }
-  }, [status])
 
   return {
     status,

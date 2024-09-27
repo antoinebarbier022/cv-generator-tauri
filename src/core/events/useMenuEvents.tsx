@@ -23,6 +23,8 @@ export const useMenuEvents = () => {
   const askOutputPath = useAskOutputPath()
   const generate = useGenerate()
 
+  useCheckForUpdatesEvent()
+
   useEffect(() => {
     const unlisten = listen(MenuEvent.DebugOpenPanel, () => modal.open('debug'))
     return () => {
@@ -43,8 +45,6 @@ export const useMenuEvents = () => {
       unlisten.then((dispose) => dispose())
     }
   }, [])
-
-  useCheckForUpdatesEvent()
 
   useEffect(() => {
     const unlisten = listen(MenuEvent.ViewToggleSidebar, async () => toggleCollapseSidebar())

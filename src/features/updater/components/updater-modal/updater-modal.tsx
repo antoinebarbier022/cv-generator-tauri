@@ -71,7 +71,7 @@ export const UpdaterModal = (props: Props) => {
       <UpdaterModalLayout
         dataTestid={`modal-${props.status}`}
         open={props.open}
-        onCancel={props.onClose}
+        onCancel={props.onCancel}
         config={{
           icon: <AppIcon />,
           title: getTitle(),
@@ -95,7 +95,7 @@ export const UpdaterModal = (props: Props) => {
           dataTestid={`modal-${props.status}`}
           open={props.open}
           onConfirm={props.onConfirm}
-          onCancel={props.onClose}
+          onCancel={props.onCancel}
           onClose={props.onClose}
           config={{
             icon: <AppIcon />,

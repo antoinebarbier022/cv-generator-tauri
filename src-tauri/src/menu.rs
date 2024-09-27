@@ -1,6 +1,6 @@
 use crate::errors::{EmitError, ErrorPayload};
 use convert_case::{Case, Casing};
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 use std::str::FromStr;
 use strum::{EnumString, IntoStaticStr};
 use tauri::menu::{
@@ -72,10 +72,11 @@ impl MenuEvent {
     }
 }
 
-#[derive(Serialize, Deserialize)]
-struct UpdaterEventPayload {
-    open_modal_before_check: bool,
-    open_odal_after_check: bool,
+#[derive(Clone, Serialize, Debug, Default, TS)]
+#[ts(export, export_to = "events/types/event.d.ts")]
+pub struct UpdaterEventPayload {
+    pub open_modal_before_check: bool,
+    pub open_modal_after_check: bool,
 }
 
 pub fn on_menu_event(app: &AppHandle, event: tauri::menu::MenuEvent) {
@@ -97,16 +98,14 @@ pub fn on_menu_event(app: &AppHandle, event: tauri::menu::MenuEvent) {
             .emit(&MenuEvent::AppPreferences.as_event_name(), "")
             .unwrap(),
         Some(MyMenu::AppCheckUpdate) => {
-            let payload = UpdaterEventPayload {
-                open_modal_before_check: true,
-                open_odal_after_check: false,
-            };
-
-            // Serialize the payload to JSON
-            let payload_json = serde_json::to_string(&payload).unwrap();
-
-            app.emit(&MenuEvent::AppCheckUpdate.as_event_name(), payload_json)
-                .unwrap();
+            app.emit(
+                &MenuEvent::AppCheckUpdate.as_event_name(),
+                UpdaterEventPayload {
+                    open_modal_before_check: true,
+                    open_modal_after_check: false,
+                },
+            )
+            .unwrap();
         }
         Some(MyMenu::ViewToggleSidebar) => app
             .emit(&MenuEvent::ViewToggleSidebar.as_event_name(), "")

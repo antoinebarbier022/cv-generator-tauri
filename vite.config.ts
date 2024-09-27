@@ -9,7 +9,12 @@ export default defineConfig(async () => ({
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: ['./src/tests/setup.ts']
+    setupFiles: ['./src/tests/setup.ts'],
+    browser: {
+      enabled: true,
+      provider: 'playwright',
+      name: 'chromium'
+    }
   },
   resolve: {
     alias: {
@@ -22,7 +27,7 @@ export default defineConfig(async () => ({
   clearScreen: false,
   // 2. tauri expects a fixed port, fail if that port is not available
   server: {
-    port: 3000,
+    port: 3008,
     strictPort: true,
     watch: {
       // 3. tell vite to ignore watching `src-tauri`

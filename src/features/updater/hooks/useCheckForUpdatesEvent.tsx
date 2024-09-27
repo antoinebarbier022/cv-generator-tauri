@@ -1,8 +1,9 @@
 import { useNavigateToModal } from '@/app/router/useNavigateToModal'
 import { MenuEvent } from '@/generated/events/menu-events'
+import { UpdaterEventPayload } from '@/generated/events/types/event'
 import { listen } from '@tauri-apps/api/event'
 import { useEffect, useRef } from 'react'
-import { AppUpdaterStatus, UpdaterEventPayload } from '../types/updater.types'
+import { AppUpdaterStatus } from '../types/updater.types'
 import { useUpdater } from './useUpdater'
 
 export const useCheckForUpdatesEvent = () => {
@@ -17,7 +18,7 @@ export const useCheckForUpdatesEvent = () => {
 
   useEffect(() => {
     const unlisten = listen<UpdaterEventPayload>(MenuEvent.AppCheckUpdate, async (event) => {
-      if (event.payload.openModalBeforeCheck) {
+      if (event.payload.open_modal_before_check) {
         modal.open('updater')
       }
       if (
@@ -28,7 +29,7 @@ export const useCheckForUpdatesEvent = () => {
         statusRef.current !== AppUpdaterStatus.DOWNLOAD_FAILED
       ) {
         checkForUpdates().finally(() => {
-          if (event.payload.openModalAfterCheck) {
+          if (event.payload.open_modal_after_check) {
             modal.open('updater')
           }
         })

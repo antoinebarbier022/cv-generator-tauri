@@ -1,12 +1,11 @@
 import { vi } from 'vitest'
 
 vi.mock('@tauri-apps/plugin-process', () => ({
-  relaunch: vi.fn()
+  relaunch: vi.fn().mockResolvedValue(undefined)
 }))
 
 vi.mock('@tauri-apps/plugin-updater', () => ({
-  check: vi.fn(),
-  Update: vi.fn().mockImplementation(() => ({
+  check: vi.fn().mockImplementation(() => ({
     check: vi.fn().mockResolvedValue({
       /* mocked check result */
     }),

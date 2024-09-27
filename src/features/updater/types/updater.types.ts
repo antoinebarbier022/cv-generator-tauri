@@ -10,8 +10,3 @@ export enum AppUpdaterStatus {
   UPDATE_SUCCESS = 'update_success',
   CHECK_ERROR = 'check_error'
 }
-
-export interface UpdaterEventPayload {
-  openModalBeforeCheck: boolean
-  openModalAfterCheck: boolean
-}

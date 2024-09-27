@@ -4,7 +4,8 @@ import { useTranslatorOption } from '@/features/translators/hooks/useTranslatorO
 
 import { useNavigateToModal } from '@/app/router/useNavigateToModal'
 import { useFormWarnings } from '@/core/warnings/hooks/useFormWarnings'
-import { useUpdaterStore } from '@/features/updater/stores/updater.store'
+
+import { useUpdateInfoStore } from '@/features/updater/stores/useUpdateInfoStore'
 import { AppUpdaterStatus } from '@/features/updater/types/updater.types'
 import { useAppTheme } from '@/shared/hooks/useAppTheme'
 import {
@@ -32,7 +33,7 @@ export const FooterBarContainer = () => {
   const { lastUpdated } = useFormStore()
   const { countWarnings } = useFormWarnings()
   const { isActiveOptionValid } = useTranslatorOption()
-  const { downloadedLength, totalUpdateLength, status } = useUpdaterStore()
+  const { downloadedLength, totalUpdateLength, status } = useUpdateInfoStore()
 
   const showWarnings = Boolean(countWarnings && countWarnings >= 1)
 
