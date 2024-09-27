@@ -1,5 +1,12 @@
 
 
+## [0.1.1-beta.37](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.36...0.1.1-beta.37) (2024-09-27)
+
+
+### Bug Fixes
+
+* **updater:** display modal on first launch only if there is an update ([2c8bc27](https://github.com/antoinebarbier022/cv-generator-tauri/commit/2c8bc27c0049dc96dc4760ef63068c30da8d5e37))
+
 ## [0.1.1-beta.36](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.35...0.1.1-beta.36) (2024-09-27)
 
 
