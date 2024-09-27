@@ -28,8 +28,8 @@ export const useCheckForUpdatesEvent = () => {
         statusRef.current !== AppUpdaterStatus.CHECK_ERROR &&
         statusRef.current !== AppUpdaterStatus.DOWNLOAD_FAILED
       ) {
-        checkForUpdates().finally(() => {
-          if (event.payload.open_modal_after_check) {
+        checkForUpdates().then((update) => {
+          if (update && event.payload.open_modal_after_check) {
             modal.open('updater')
           }
         })
