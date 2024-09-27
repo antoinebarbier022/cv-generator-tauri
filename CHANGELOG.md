@@ -1,5 +1,12 @@
 
 
+## [0.1.1-beta.36](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.35...0.1.1-beta.36) (2024-09-27)
+
+
+### Bug Fixes
+
+* **updater:** wording on button cancel inside downloading modal ([14579e7](https://github.com/antoinebarbier022/cv-generator-tauri/commit/14579e7638efc55150e5fd37eec38674fbc9c7bf))
+
 ## [0.1.1-beta.35](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.34...0.1.1-beta.35) (2024-09-27)
 
 ## [0.1.1-beta.34](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.33...0.1.1-beta.34) (2024-9-25)
