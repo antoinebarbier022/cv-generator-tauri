@@ -51,7 +51,7 @@
   "identifier": "com.frog.cv-generator",
   "plugins": {
     "updater": {
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDJDRkYyM0EyQTYwMDkwQzUKUldURmtBQ21vaVAvTEtNbGJhMXNqTnl2MkY2bzJtYXNwVDJVRU9ib3BtK0VKcGlvcDFSRVUyaGsK",
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDdBNTM4MDgzMUZENDYxMzMKUldRellkUWZnNEJUZXQ3RmtqMVIwV0JrS0Q5YVM4ZlRIQnRkTnp4amlhUEFaMzJBTDlIY0V5UTMK",
       "endpoints": [
         "https://github.com/antoinebarbier022/cv-generator-tauri/releases/latest/download/latest.json"
       ]
