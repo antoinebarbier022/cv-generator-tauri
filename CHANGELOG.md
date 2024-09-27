@@ -1,5 +1,7 @@
 
 
+## [0.1.1-beta.35](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.34...0.1.1-beta.35) (2024-09-27)
+
 ## [0.1.1-beta.34](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.33...0.1.1-beta.34) (2024-9-25)
 
 ## [0.1.1-beta.33](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.32...0.1.1-beta.33) (2024-9-25)
