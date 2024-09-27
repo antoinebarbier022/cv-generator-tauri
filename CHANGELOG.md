@@ -1,5 +1,12 @@
 
 
+## [0.1.1-beta.38](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.37...0.1.1-beta.38) (2024-09-27)
+
+
+### Bug Fixes
+
+* **updater:** redesign modals ([b7daac9](https://github.com/antoinebarbier022/cv-generator-tauri/commit/b7daac9194e3939d6de0598ab4e6c3872c477f5f))
+
 ## [0.1.1-beta.37](https://github.com/antoinebarbier022/cv-generator-tauri/compare/0.1.1-beta.36...0.1.1-beta.37) (2024-09-27)
 
 
